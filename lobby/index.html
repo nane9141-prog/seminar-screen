@@ -328,17 +328,21 @@ let sd=7;const rnd=()=>{sd=(sd*1664525+1013904223)>>>0;return sd/4294967296;};
 const RD=new Float32Array(NPT),RA=new Float32Array(NPT),RB=new Float32Array(NPT),RP=new Float32Array(NPT);
 const RS=new Float32Array(NPT);for(let i=0;i<NPT;i++){RD[i]=rnd();RA[i]=rnd();RB[i]=(rnd()+rnd()+rnd()-1.5)*2;RP[i]=rnd()*6.283;RS[i]=rnd();}
 /* 점을 1/3만 쓰고(덜 빽빽하게), 밝은 점끼리 가까운 이웃을 선으로 이어 윤곽을 살린다 */
-const KEEP=5,ED=PD.map(d=>{
-  const idx=[];for(let i=0;i<NPT;i+=KEEP)idx.push(i);
-  const G=22,cells=new Map(),key=(x,y)=>((x/G)|0)+','+((y/G)|0);
-  idx.forEach(i=>{if(d.L[i]<.18)return;const k=key(d.X[i],d.Y[i]);(cells.get(k)||cells.set(k,[]).get(k)).push(i);});
+/* 얼굴은 원래 점 형태, 몸은 아래로 갈수록 점이 듬성듬성 커지고 선도 길어짐 */
+const sm=(a,b,x)=>{x=(x-a)/(b-a);x=x<0?0:x>1?1:x;return x*x*(3-2*x);};
+const BV=PD.map(d=>{let y0=1e9,y1=-1e9;for(let i=0;i<NPT;i++){if(d.L[i]<.05)continue;y0=Math.min(y0,d.Y[i]);y1=Math.max(y1,d.Y[i]);}
+  const b=new Float32Array(NPT);for(let i=0;i<NPT;i++)b[i]=sm(.34,.46,(d.Y[i]-y0)/(y1-y0))*(.35+.65*sm(.4,1,(d.Y[i]-y0)/(y1-y0)));return b;});
+const KEEP=5,ED=PD.map((d,pk)=>{const bv=BV[pk];
+  const idx=[];for(let i=0;i<NPT;i+=KEEP)if(bv[i]>.02&&RS[i]<1-.8*bv[i])idx.push(i);
+  const G=56,cells=new Map(),key=(x,y)=>((x/G)|0)+','+((y/G)|0);
+  idx.forEach(i=>{if(d.L[i]<.07)return;const k=key(d.X[i],d.Y[i]);(cells.get(k)||cells.set(k,[]).get(k)).push(i);});
   const A=[],B=[],seen=new Set();
   cells.forEach((list,k)=>{const [cx,cy]=k.split(',').map(Number);
     list.forEach(i=>{const nb=[];
       for(let dx=-1;dx<=1;dx++)for(let dy=-1;dy<=1;dy++){const L2=cells.get((cx+dx)+','+(cy+dy));if(!L2)continue;
         for(const j of L2){if(j===i)continue;nb.push([j,(d.X[i]-d.X[j])**2+(d.Y[i]-d.Y[j])**2]);}}
       nb.sort((a,b)=>a[1]-b[1]);
-      nb.slice(0,3).forEach(([j,e])=>{if(e>22*22)return;const h=i<j?i*NPT+j:j*NPT+i;if(seen.has(h))return;seen.add(h);A.push(i);B.push(j);});});});
+      const mx=14+42*bv[i];nb.slice(0,3).forEach(([j,e])=>{if(e>mx*mx)return;const h=i<j?i*NPT+j:j*NPT+i;if(seen.has(h))return;seen.add(h);A.push(i);B.push(j);});});});
   return{A:Int32Array.from(A),B:Int32Array.from(B)};});
 const pc=document.getElementById('pc'),px=pc.getContext('2d');pc.width=1920;pc.height=1080;
 const IN=2.8,OUT=2.4;let port=null; // {k,t0,tOut}
@@ -361,14 +365,14 @@ function drawPort(now){
       xs[i]=x;ys[i]=y;ls[i]=(1-ee)*90*(e>0?1:0);
       const f=ee*ee*Math.pow(1-eo,1.6);fa[i]=f;
       const a=d.L[i]*(.05+.95*f)*(.88+.12*Math.sin(t*2.2+RP[i]))*(e<=0?0:Math.min(1,e*3))*(1-eo)*gx;
-      if(RS[i]>.62-.42*d.L[i])continue; // 점은 일부만: 밝을수록 더 많이 생략(선은 그대로 이어짐)
-      const l=Math.round(Math.min(1,a*1.15)*LV);lev[i]=l;cnt[l+1]++;ord[n++]=i;
+      const bv=BV[port.k][i];if(bv>.02&&RS[i]>1-.8*bv)continue; // 얼굴은 전부, 몸은 아래로 갈수록 듬성듬성
+      const l=Math.round(Math.min(1,a*1.15*(1+1.6*bv)+.12*bv*fa[i])*LV);lev[i]=l;cnt[l+1]++;ord[n++]=i;
     }
     // 선: 형태가 잡힌 뒤에만 옅게
     const E=ED[port.k];px.lineWidth=.9;
     for(const band of [.35,.7,1]){px.beginPath();let any=false;
-      for(let k=0;k<E.A.length;k++){const a=E.A[k],b=E.B[k],w=Math.pow(Math.min(fa[a],fa[b]),2)*(.35+.65*Math.min(d.L[a],d.L[b]));
-        if(w<.04||w>band||w<=band-.35)continue;const ddx=xs[a]-xs[b],ddy=ys[a]-ys[b];if(ddx*ddx+ddy*ddy>900)continue;any=true;px.moveTo(xs[a],ys[a]);px.lineTo(xs[b],ys[b]);}
+      for(let k=0;k<E.A.length;k++){const a=E.A[k],b=E.B[k],w=Math.pow(Math.min(fa[a],fa[b]),2)*Math.min(1,.45+1.1*Math.min(d.L[a],d.L[b]));
+        if(w<.04||w>band||w<=band-.35)continue;const ddx=xs[a]-xs[b],ddy=ys[a]-ys[b];if(ddx*ddx+ddy*ddy>3600)continue;any=true;px.moveTo(xs[a],ys[a]);px.lineTo(xs[b],ys[b]);}
       if(any){px.strokeStyle='rgba(214,226,246,'+(band*.5).toFixed(3)+')';px.stroke();}}
     // 꼬리: 들어오는 동안 지나온 자리(오른쪽)로 짧은 선이 따라옴
     px.lineWidth=.8;px.beginPath();for(let q=0;q<n;q++){const i=ord[q],w=ls[i];if(w<2||fa[i]>.9)continue;px.moveTo(xs[i],ys[i]);px.lineTo(xs[i]+w,ys[i]+RB[i]*w*.04);}
@@ -377,7 +381,7 @@ function drawPort(now){
     const pos=cnt.slice(),o2=new Int32Array(n);for(let q=0;q<n;q++){const i=ord[q];o2[pos[lev[i]]++]=i;}
     for(let l=1;l<=LV;l++){const a=cnt[l],b=cnt[l+1];if(a===b)continue;
       px.fillStyle='rgba(232,239,252,'+(l/LV*.8).toFixed(3)+')';px.beginPath();
-      for(let q=a;q<b;q++){const i=o2[q],z=1.1+d.L[i]*1.7;px.rect(xs[i]-z/2,ys[i]-z/2,z,z);}
+      for(let q=a;q<b;q++){const i=o2[q],z=(1.3+d.L[i]*1.9)*(1+1.6*BV[port.k][i]);px.rect(xs[i]-z/2,ys[i]-z/2,z,z);}
       px.fill();
     }}
   }
