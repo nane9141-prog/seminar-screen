@@ -14,11 +14,16 @@ html,body{height:100%;background:#000;overflow:hidden}
 body.idle{cursor:none}
 .stage{position:absolute;left:0;top:0;width:1920px;height:1080px;transform-origin:0 0;background:#000;overflow:hidden;color:#F2F5FA;font-family:"카카오 작은글씨","Pretendard Variable","Malgun Gothic","Apple SD Gothic Neo",sans-serif;word-break:keep-all}
 #c,#pc{position:absolute;left:0;top:0;width:1920px;height:1080px;display:block}
-#c{transition:opacity 1.6s ease}
+#c{transition:opacity 3s cubic-bezier(.45,0,.25,1)}
 /* 오버레이: 나타났다 사라짐 */
 .ov{position:absolute;inset:0;opacity:0;transition:opacity 1.4s ease;display:flex;flex-direction:column;justify-content:center;padding:110px 120px}
 .ov.on{opacity:1}
-#ov-title{padding:225px 310px 215px}#ov-title svg{width:100%;height:100%;display:block}
+#ov-title{padding:225px 310px 215px}#ov-title svg{width:100%;height:100%;display:block;transition:opacity 1.8s ease}
+/* 타이틀 1 → 타이틀 2: 같은 자리에서 겹쳐 바뀐다(로고 줄은 그대로) */
+#ov-title .t2{position:absolute;left:310px;top:225px;width:1300px;height:640px;object-fit:contain;opacity:0;transition:opacity 1.8s ease}
+#ov-title.b svg{opacity:0}#ov-title.b .t2{opacity:1}
+#ov-titleB{padding:120px 150px}#ov-titleB img{width:100%;height:100%;object-fit:contain;display:block}
+#ov-titleB.on img{animation:tbz 14s cubic-bezier(.2,.6,.3,1) both}@keyframes tbz{from{transform:scale(.97)}to{transform:scale(1)}}
 .head,.talk,.name{font-family:"카카오 큰글씨","Pretendard Variable","Malgun Gothic","Apple SD Gothic Neo",sans-serif}
 .head{font-size:56px;font-weight:700;letter-spacing:-1px;margin-bottom:34px}
 .rows{display:flex;flex-direction:column}
@@ -245,7 +250,9 @@ body.idle{cursor:none}
       </g>
     </g>
   </g>
-</svg></div>
+</svg>
+<img class="t2" src="../assets/screen-title-2.svg" alt=""></div>
+<div class="ov" id="ov-titleB"><img src="../assets/screen-title-b.svg" alt=""></div>
 <div class="ov" id="ov-tt"><h2 class="head">행사 프로그램</h2><div class="rows">
 <div class="prow"><p class="ptime">13:00</p><p class="ptxt">개회</p><p class="pwho"></p></div>
 <div class="prow"><p class="ptime">13:10</p><p class="ptxt">축사 · 한국주주총회연구소 출범식</p><p class="pwho"></p></div>
@@ -317,32 +324,52 @@ const PD=["IXwOaPSrenhp6Bh84TzSmUgvmjMEnaMvvnly4CjQdZtUhPb5eRUjx4yLGD2Qn5oTael/l
 let sd=7;const rnd=()=>{sd=(sd*1664525+1013904223)>>>0;return sd/4294967296;};
 const RD=new Float32Array(NPT),RA=new Float32Array(NPT),RB=new Float32Array(NPT),RP=new Float32Array(NPT);
 for(let i=0;i<NPT;i++){RD[i]=rnd();RA[i]=rnd();RB[i]=(rnd()+rnd()+rnd()-1.5)*2;RP[i]=rnd()*6.283;}
+/* 점을 1/3만 쓰고(덜 빽빽하게), 밝은 점끼리 가까운 이웃을 선으로 이어 윤곽을 살린다 */
+const KEEP=3,ED=PD.map(d=>{
+  const idx=[];for(let i=0;i<NPT;i+=KEEP)idx.push(i);
+  const G=14,cells=new Map(),key=(x,y)=>((x/G)|0)+','+((y/G)|0);
+  idx.forEach(i=>{if(d.L[i]<.32)return;const k=key(d.X[i],d.Y[i]);(cells.get(k)||cells.set(k,[]).get(k)).push(i);});
+  const A=[],B=[],seen=new Set();
+  cells.forEach((list,k)=>{const [cx,cy]=k.split(',').map(Number);
+    list.forEach(i=>{let best=-1,bd=1e9,b2=-1,bd2=1e9;
+      for(let dx=-1;dx<=1;dx++)for(let dy=-1;dy<=1;dy++){const L2=cells.get((cx+dx)+','+(cy+dy));if(!L2)continue;
+        for(const j of L2){if(j===i)continue;const e=(d.X[i]-d.X[j])**2+(d.Y[i]-d.Y[j])**2;if(e<bd){b2=best;bd2=bd;best=j;bd=e;}else if(e<bd2){b2=j;bd2=e;}}}
+      [[best,bd],[b2,bd2]].forEach(([j,e])=>{if(j<0||e>15*15)return;const h=i<j?i*NPT+j:j*NPT+i;if(seen.has(h))return;seen.add(h);A.push(i);B.push(j);});});});
+  return{A:Int32Array.from(A),B:Int32Array.from(B)};});
 const pc=document.getElementById('pc'),px=pc.getContext('2d');pc.width=1920;pc.height=1080;
-const IN=2.6,OUT=2.2;let port=null; // {k,t0,tOut}
-const LV=14,xs=new Float32Array(NPT),ys=new Float32Array(NPT),ls=new Float32Array(NPT),lev=new Uint8Array(NPT),cnt=new Int32Array(LV+2),ord=new Int32Array(NPT);
+const IN=2.8,OUT=2.4;let port=null; // {k,t0,tOut}
+const LV=14,xs=new Float32Array(NPT),ys=new Float32Array(NPT),ls=new Float32Array(NPT),fa=new Float32Array(NPT),lev=new Uint8Array(NPT),cnt=new Int32Array(LV+2),ord=new Int32Array(NPT);
 function drawPort(now){
   px.clearRect(0,0,1920,1080);
   if(port){const d=PD[port.k],t=(now-port.t0)/1000,to=port.tOut!=null?(now-port.tOut)/1000:-1;
     if(to>OUT+.3){port=null;}else{
-    px.globalCompositeOperation='lighter';cnt.fill(0);
-    for(let i=0;i<NPT;i++){
-      // 등장: 인물 오른쪽에서 점이 나타나 제자리로 모임
-      let e=(t-RD[i]*1.5)/(IN-1.5);e=e<0?0:e>1?1:e;const ee=1-Math.pow(1-e,3);
-      // 퇴장: 제자리에서 사방으로 흩어지며 사라짐
-      let eo=to<0?0:(to-RD[i]*.7)/(OUT-.7);eo=eo<0?0:eo>1?1:eo;const eq=1-Math.pow(1-eo,2);
-      const sx=d.X[i]+220+RA[i]*760,sy=d.Y[i]+RB[i]*38;
+    px.globalCompositeOperation='lighter';cnt.fill(0);let n=0;
+    const gx=to<0?1:Math.pow(Math.max(0,1-to/1.7),1.4); // 퇴장: 전체를 먼저 어둡게 해서 번쩍이지 않게
+    for(let i=0;i<NPT;i+=KEEP){
+      // 등장: 인물 오른쪽에서 점이 옅게 흘러 들어와 제자리로 모임(움직이는 동안은 어둡게)
+      let e=(t-RD[i]*1.4)/(IN-1.4);e=e<0?0:e>1?1:e;const ee=1-Math.pow(1-e,3);
+      // 퇴장: 제자리에서 조금씩 왼쪽으로 흩어지며 천천히 사라짐
+      let eo=to<0?0:(to-RD[i]*.9)/(OUT-.9);eo=eo<0?0:eo>1?1:eo;const eq=1-Math.pow(1-eo,2);
+      const sx=d.X[i]+200+RA[i]*620,sy=d.Y[i]+RB[i]*30;
       let x=sx+(d.X[i]-sx)*ee,y=sy+(d.Y[i]-sy)*ee;
-      if(eo>0){const r=eq*(90+RA[i]*520);x+=Math.cos(RP[i])*r;y+=Math.sin(RP[i])*r*.8;}
-      x+=Math.sin(t*.7+RP[i])*.6;
-      xs[i]=x;ys[i]=y;ls[i]=(1-ee)*46;
-      const a=d.L[i]*(.3+.7*ee)*(1-eo)*(.86+.14*Math.sin(t*2.2+RP[i]))*(e<=0?0:Math.min(1,e*4));
-      const l=Math.round(Math.min(1,a*1.25)*LV);lev[i]=l;cnt[l+1]++;
+      if(eo>0){const r=eq*(18+RA[i]*110);x+=Math.cos(RP[i])*r-eq*70;y+=Math.sin(RP[i])*r*.7;}
+      x+=Math.sin(t*.7+RP[i])*.5;
+      xs[i]=x;ys[i]=y;ls[i]=(1-ee)*16;
+      const f=ee*ee*Math.pow(1-eo,1.6);fa[i]=f;
+      const a=d.L[i]*(.05+.95*f)*(.88+.12*Math.sin(t*2.2+RP[i]))*(e<=0?0:Math.min(1,e*3))*(1-eo)*gx;
+      const l=Math.round(Math.min(1,a*1.15)*LV);lev[i]=l;cnt[l+1]++;ord[n++]=i;
     }
+    // 선: 형태가 잡힌 뒤에만 옅게
+    const E=ED[port.k];px.lineWidth=.7;
+    for(const band of [.35,.7,1]){px.beginPath();let any=false;
+      for(let k=0;k<E.A.length;k++){const a=E.A[k],b=E.B[k],w=Math.pow(Math.min(fa[a],fa[b]),3)*Math.min(d.L[a],d.L[b]);
+        if(w<.04||w>band||w<=band-.35)continue;const ddx=xs[a]-xs[b],ddy=ys[a]-ys[b];if(ddx*ddx+ddy*ddy>324)continue;any=true;px.moveTo(xs[a],ys[a]);px.lineTo(xs[b],ys[b]);}
+      if(any){px.strokeStyle='rgba(214,226,246,'+(band*.32).toFixed(3)+')';px.stroke();}}
     for(let l=1;l<=LV+1;l++)cnt[l]+=cnt[l-1];
-    const pos=cnt.slice();for(let i=0;i<NPT;i++)ord[pos[lev[i]]++]=i;
+    const pos=cnt.slice(),o2=new Int32Array(n);for(let q=0;q<n;q++){const i=ord[q];o2[pos[lev[i]]++]=i;}
     for(let l=1;l<=LV;l++){const a=cnt[l],b=cnt[l+1];if(a===b)continue;
-      px.fillStyle='rgba(236,242,255,'+(l/LV).toFixed(3)+')';px.beginPath();
-      for(let n=a;n<b;n++){const i=ord[n],z=1.1+d.L[i]*1.5,w=ls[i];px.rect(xs[i]-z/2,ys[i]-z/2,z+w,w>3?z*.6:z);}
+      px.fillStyle='rgba(232,239,252,'+(l/LV*.9).toFixed(3)+')';px.beginPath();
+      for(let q=a;q<b;q++){const i=o2[q],z=1.3+d.L[i]*1.9,w=ls[i];px.rect(xs[i]-z/2,ys[i]-z/2,z+w,w>3?z*.5:z);}
       px.fill();
     }}
   }
@@ -353,20 +380,26 @@ requestAnimationFrame(drawPort);
 const T=k=>parseFloat(qp.get(k)||0);
 const STEPS=[
  {n:'Data Stream',ov:null,dim:1,dur:T('idle')||7},
- {n:'타이틀',ov:'ov-title',dim:.42,dur:T('title')||12},
+ {n:'타이틀 → 타이틀 2',ov:'ov-title',dim:.42,dur:T('title')||14,swap:6},
  {n:'Data Stream',ov:null,dim:1,dur:4},
  {n:'타임테이블',ov:'ov-tt',dim:.2,dur:T('tt')||13},
- {n:'Data Stream',ov:null,dim:1,dur:3},
+ {n:'Data Stream',ov:null,dim:1,dur:4},
+ {n:'타이틀 B',ov:'ov-titleB',dim:.35,dur:T('tb')||10},
+ {n:'Data Stream',ov:null,dim:1,dur:4},
  {n:'Session 1 · 김승준',ov:'ov-spk0',dim:.2,dur:T('spk')||12,port:0},
  {n:'Session 2 · 권재열',ov:'ov-spk1',dim:.2,dur:T('spk')||12,port:1},
  {n:'Session 3 · Scott Oakland',ov:'ov-spk2',dim:.2,dur:T('spk')||12,port:2},
  {n:'Session 4 · 박성용',ov:'ov-spk3',dim:.2,dur:T('spk')||12,port:3}];
-let idx=-1,t1=null,t2=null,run=true;
-function go(n){n=(n+STEPS.length)%STEPS.length;clearTimeout(t1);clearTimeout(t2);
+let idx=-1,t1=null,t2=null,t3=null,run=true;
+function go(n){n=(n+STEPS.length)%STEPS.length;clearTimeout(t1);clearTimeout(t2);clearTimeout(t3);
+  const prev=STEPS[idx]||{};
   document.querySelectorAll('.ov.on').forEach(e=>e.classList.remove('on'));if(port&&port.tOut==null)port.tOut=performance.now();
-  idx=n;const s=STEPS[n],cv=document.getElementById('c');cv.style.opacity=s.dim;
-  const show=()=>{if(s.ov)document.getElementById(s.ov).classList.add('on');if(s.port!=null)port={k:s.port,t0:performance.now(),tOut:null};};
-  if(s.ov)t2=setTimeout(show,(s.port!=null&&port)?2300:300);  // 앞 연사 점이 빠져나간 뒤 등장
+  idx=n;const s=STEPS[n],cv=document.getElementById('c');
+  // 배경을 다시 밝힐 때는 앞 장면(글자·점)이 거의 사라진 뒤 천천히 — 연사에서 넘어갈 때 더 늦게
+  cv.style.transitionDelay=(s.dim>(prev.dim||1))?(prev.port!=null?'1.4s':'.6s'):'0s';cv.style.opacity=s.dim;
+  const show=()=>{if(s.ov){const el=document.getElementById(s.ov);el.classList.remove('b');el.classList.add('on');}if(s.port!=null)port={k:s.port,t0:performance.now(),tOut:null};
+    if(s.swap)t3=setTimeout(()=>document.getElementById(s.ov).classList.add('b'),s.swap*1000);};
+  if(s.ov)t2=setTimeout(show,(s.port!=null&&port)?2500:(prev.ov?900:300));  // 앞 장면이 빠져나간 뒤 등장
   if(run)t1=setTimeout(()=>{if(s.ov){document.getElementById(s.ov).classList.remove('on');if(port&&port.tOut==null)port.tOut=performance.now();}
     t1=setTimeout(()=>go(idx+1),s.ov?(s.port!=null?300:1500):0);},s.dur*1000);
   hud();}
@@ -402,6 +435,7 @@ const SCN=[
   {k:'converge',name:'수렴',  dur:8, tail:1.3, form:1,fl:'모임 폭'},
   {k:'vortex',name:'소용돌이',dur:10,tail:1.0,form:1,fl:'나선 감김'},
   {k:'net',   name:'연결망',  dur:8, tail:.35,form:1,fl:'연결선 밝기'},
+  {k:'orbit', name:'타원 흐름',dur:8, tail:.9, form:1,fl:'타원 높이'},
   {k:'radial',name:'방사',    dur:8, tail:.7, form:1,fl:'방사 길이'},
   {k:'ring',  name:'링',      dur:8, tail:.8, form:1,fl:'링 두께'},
   {k:'sphere',name:'구체',    dur:10,tail:1.1,form:1,fl:'구 두께'}];
@@ -414,6 +448,7 @@ Object.assign(SCN.find(s=>s.k==='net'),{tail:.22,size:.9,scale:.82,bright:.54,fo
 Object.assign(SCN.find(s=>s.k==='ring'),{tail:.56,size:1.26,scale:.9,bright:.75,form:.76});
 Object.assign(SCN.find(s=>s.k==='meridian'),{scale:.8});
 Object.assign(SCN.find(s=>s.k==='radial'),{scale:.85});
+Object.assign(SCN.find(s=>s.k==='orbit'),{scale:.46,tail:.42,size:1.5,form:.8,bright:.22});
 Object.assign(SCN.find(s=>s.k==='vortex'),{tail:.66,size:1,scale:.84,bright:.78,form:1.6});
 SCN.forEach((s,i)=>{s.on=s.k!=='sphere';s.o0=i;}); // on: 재생 여부, o0: 처음 순서
 const SCN0=SCN.map(s=>({...s})); // 초기화용 장면별 기본값
@@ -457,6 +492,14 @@ const CV=[];for(let i=0;i<NLC;i++){ // 수렴 호: 출발 방향 d와, d에 수�
   let e=[d[1]*0-d[2]*1,d[2]*0-d[0]*0,d[0]*1-d[1]*0];let l=Math.hypot(...e);if(l<.2){e=[1,0,0];l=1;}e=e.map(v=>v/l);
   CV.push([...d,...e]);}
 P.forEach(q=>{q.ln=R2();q.lj=R2()-.5;q.lv=.6+.8*R2();});
+/* 타원 흐름: 가운데 원을 사이에 두고 위·아래로 겹친 타원들(바깥 하나는 점선). 값은 화면 높이 절반(=1) 기준
+   [가로 반지름, 중심 높이, 세로 반지름, 점선 여부] — 위쪽 타원, 아래쪽은 위아래 대칭 */
+const ORB=[[.77,.65,.25,0],[1.27,.72,.46,0],[1.75,.85,.7,0],[2.24,1.2,1.2,1]];
+const ORL=ORB.map(e=>Math.PI*(3*(e[0]+e[2])-Math.sqrt((3*e[0]+e[2])*(e[0]+3*e[2])))),ORT=ORL.reduce((a,b)=>a+b,0)*2;
+P.forEach(q=>{let u=q.ln*ORT,e=0;while(e<7&&u>ORL[e%4]){u-=ORL[e%4];e++;}q.oe=e;});
+// KISM 엠블럼(두 조각) — 가운데 원 안에 흰색으로
+const KISM=new Path2D('M38.67 0 16.89 0 0 20.9 0 35.79 4.79 41.72 20.05 22.95 38.67 0Z M5.99 43.21 16.89 56.69 38.67 56.69 16.87 29.83 5.99 43.21Z');
+const ORC=.37; // 가운데 원 반지름
 const NP=[];for(let i=0;i<NODES;i++){const z=1-2*(i+.5)/NODES,r=Math.sqrt(1-z*z),a=i*2.39996;const j=.12;NP.push([r*Math.cos(a)+gauss()*j,z+gauss()*j,r*Math.sin(a)+gauss()*j].map(v=>v*.92));}
 const knn=(pts,k)=>{const E=[];pts.forEach((p,i)=>{pts.map((q,j)=>[j,Math.hypot(p[0]-q[0],p[1]-q[1],p[2]-q[2])]).filter(x=>x[0]!==i).sort((a,b)=>a[1]-b[1]).slice(0,k).forEach(([j])=>{if(!E.some(e=>(e[0]===i&&e[1]===j)||(e[0]===j&&e[1]===i)))E.push([i,j]);});});return E;};
 const EDGES=knn(NP,3);
@@ -505,6 +548,11 @@ function modePos0(m,q,i,t0,o){
     const d=RD[(q.ln*NLR)|0],u=((q.su+t*q.lv*.06)%1+1)%1,r=u*d[3]*f*1.3*sc;
     let p=rotX(rotY([d[0]*r,d[1]*r,d[2]*r],TAU*t/60),.2);
     o[2]=.7;o[3]=Math.pow(Math.sin(Math.PI*Math.min(1,u*1.15)),.6)*.9+.1*(u<.05?1:0);proj(p,o);return;}
+  case 'orbit':{ // 타원 흐름: 위·아래 타원을 따라 점이 돌고, 바깥 점선 타원은 점선 구간에서만 밝음
+    const e=q.oe,E=ORB[e%4],up=e<4?1:-1,dir=(e%2?1:-1)*up,k=HH*.98*sc;
+    const a=q.th+dir*TAU*t*q.lv/(22+e%4*7),br2=1+.04*Math.sin(t*.5+e);
+    o[0]=Math.cos(a)*E[0]*k*br2;o[1]=up*(E[1]*f+Math.sin(a)*E[2]*f)*k;
+    o[2]=E[3]?.7:.85;o[3]=E[3]?(Math.sin(a*110)>.2?.85:0):.8;return;}
   case 'net':{ // 연결망
     const n=i<NODES?i:q.node,b=NP[n];
     let p=i<NODES?[b[0],b[1],b[2]]:[b[0]+q.no[0],b[1]+q.no[1],b[2]+q.no[2]];
@@ -622,6 +670,14 @@ function draw(){
     }
     if(any)ctx.fill();
   }
+  // 타원 흐름: 가운데 검은 원 + 흰 테두리 + 흰 엠블럼 (장면 비중에 따라 나타남)
+  const OI=SCN.findIndex(x=>x.k==='orbit'),wO=OI<0?0:Math.pow(weight(s0,OI),2);
+  if(wO>.01){const sc=S.scale*SCN[OI].scale,R=ORC*HH*.98*sc*U*(.85+.15*wO);
+    ctx.globalCompositeOperation='source-over';ctx.globalAlpha=wO;
+    ctx.fillStyle=tint.bg;ctx.beginPath();ctx.arc(cx,cy,R,0,TAU);ctx.fill();
+    ctx.lineWidth=Math.max(1,1.4*PX);ctx.strokeStyle=`rgba(${fr},${fg},${fb},.9)`;ctx.stroke();
+    const h=R*.62,k2=h/56.69;ctx.save();ctx.translate(cx-38.67*k2/2,cy-h/2);ctx.scale(k2,k2);ctx.fillStyle=`rgb(${fr},${fg},${fb})`;ctx.fill(KISM);ctx.restore();
+    ctx.globalAlpha=1;LF.orb={R,h};}else LF.orb=null;
   // 패널 진행 표시
   [...$('steps').children].forEach((el,k)=>{el.setAttribute('aria-pressed',k===s0.k);el.querySelector('b').style.width=(k===s0.k?Math.min(100,s0.loc/SCN[k].dur*100):0)+'%';});
 }
