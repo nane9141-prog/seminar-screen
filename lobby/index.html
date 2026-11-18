@@ -331,9 +331,9 @@ const RS=new Float32Array(NPT);for(let i=0;i<NPT;i++){RD[i]=rnd();RA[i]=rnd();RB
 /* 얼굴은 원래 점 형태, 몸은 아래로 갈수록 점이 듬성듬성 커지고 선도 길어짐 */
 const sm=(a,b,x)=>{x=(x-a)/(b-a);x=x<0?0:x>1?1:x;return x*x*(3-2*x);};
 const BV=PD.map(d=>{let y0=1e9,y1=-1e9;for(let i=0;i<NPT;i++){if(d.L[i]<.05)continue;y0=Math.min(y0,d.Y[i]);y1=Math.max(y1,d.Y[i]);}
-  const b=new Float32Array(NPT);for(let i=0;i<NPT;i++)b[i]=sm(.3,1.05,(d.Y[i]-y0)/(y1-y0));return b;});
+  const b=new Float32Array(NPT);for(let i=0;i<NPT;i++)b[i]=.62+.38*sm(.1,1.05,(d.Y[i]-y0)/(y1-y0));return b;});
 const KEEP=5,ED=PD.map((d,pk)=>{const bv=BV[pk];
-  const idx=[];for(let i=0;i<NPT;i+=KEEP)if(bv[i]>.02&&RS[i]<1-.8*bv[i])idx.push(i);
+  const idx=[];for(let i=0;i<NPT;i+=KEEP)if(RS[i]<(1-.8*bv[i])*(1-.65*d.L[i]))idx.push(i);
   const G=56,cells=new Map(),key=(x,y)=>((x/G)|0)+','+((y/G)|0);
   idx.forEach(i=>{if(d.L[i]<.07)return;const k=key(d.X[i],d.Y[i]);(cells.get(k)||cells.set(k,[]).get(k)).push(i);});
   const A=[],B=[],seen=new Set();
@@ -345,14 +345,24 @@ const KEEP=5,ED=PD.map((d,pk)=>{const bv=BV[pk];
       const mx=14+42*bv[i];nb.slice(0,3).forEach(([j,e])=>{if(e>mx*mx)return;const h=i<j?i*NPT+j:j*NPT+i;if(seen.has(h))return;seen.add(h);A.push(i);B.push(j);});});});
   return{A:Int32Array.from(A),B:Int32Array.from(B)};});
 const pc=document.getElementById('pc'),px=pc.getContext('2d');pc.width=1920;pc.height=1080;
+/* 점·선 아래에 원본 사진을 옅게 깐다(아래로 갈수록 그라데이션으로 사라짐) */
+const PHOTO=['speaker1-1','speaker2','speaker-scott','speaker3-1'].map(n=>{const c=document.createElement('canvas');c.width=BOX.w;c.height=BOX.h;
+  const im=new Image();im.onload=()=>{const g=c.getContext('2d');g.drawImage(im,0,0,BOX.w,BOX.h);g.globalCompositeOperation='destination-in';
+    let gr=g.createLinearGradient(0,0,0,BOX.h);gr.addColorStop(0,'rgba(0,0,0,1)');gr.addColorStop(.42,'rgba(0,0,0,1)');gr.addColorStop(.88,'rgba(0,0,0,0)');g.fillStyle=gr;g.fillRect(0,0,BOX.w,BOX.h);
+    gr=g.createLinearGradient(0,0,BOX.w,0);gr.addColorStop(0,'rgba(0,0,0,0)');gr.addColorStop(.12,'rgba(0,0,0,1)');gr.addColorStop(.88,'rgba(0,0,0,1)');gr.addColorStop(1,'rgba(0,0,0,0)');g.fillStyle=gr;g.fillRect(0,0,BOX.w,BOX.h);};
+  im.src='../assets/'+n+'.webp';return c;});
+const PH_A=.34;
 const IN=2.8,OUT=2.4;let port=null; // {k,t0,tOut}
 const LV=14,xs=new Float32Array(NPT),ys=new Float32Array(NPT),ls=new Float32Array(NPT),fa=new Float32Array(NPT),lev=new Uint8Array(NPT),cnt=new Int32Array(LV+2),ord=new Int32Array(NPT);
 function drawPort(now){
   px.clearRect(0,0,1920,1080);
   if(port){const d=PD[port.k],t=(now-port.t0)/1000,to=port.tOut!=null?(now-port.tOut)/1000:-1;
     if(to>OUT+.3){port=null;}else{
-    px.globalCompositeOperation='lighter';cnt.fill(0);let n=0;
-    const gx=to<0?1:Math.pow(Math.max(0,1-to/1.7),1.4); // 퇴장: 전체를 먼저 어둡게 해서 번쩍이지 않게
+    const gx=to<0?1:Math.pow(Math.max(0,1-to/1.7),1.4);
+    { // 사진: 점이 거의 모인 뒤 천천히 떠오르고, 퇴장 때 먼저 사라짐
+      const pa=PH_A*sm(1.4,IN+1.2,t)*Math.pow(Math.max(0,1-(to<0?0:to)/1.1),1.5);
+      if(pa>.003){px.globalCompositeOperation='source-over';px.globalAlpha=pa;px.drawImage(PHOTO[port.k],BOX.x,BOX.y);px.globalAlpha=1;}}
+    px.globalCompositeOperation='lighter';cnt.fill(0);let n=0; // 퇴장: 전체를 먼저 어둡게 해서 번쩍이지 않게
     for(let i=0;i<NPT;i+=KEEP){
       // 등장: 인물 오른쪽에서 점이 옅게 흘러 들어와 제자리로 모임(움직이는 동안은 어둡게)
       let e=(t-RD[i]*1.4)/(IN-1.4);e=e<0?0:e>1?1:e;const ee=1-Math.pow(1-e,3);
@@ -365,7 +375,7 @@ function drawPort(now){
       xs[i]=x;ys[i]=y;ls[i]=(1-ee)*90*(e>0?1:0);
       const f=ee*ee*Math.pow(1-eo,1.6);fa[i]=f;
       const a=d.L[i]*(.05+.95*f)*(.88+.12*Math.sin(t*2.2+RP[i]))*(e<=0?0:Math.min(1,e*3))*(1-eo)*gx;
-      const bv=BV[port.k][i];if(bv>.02&&RS[i]>1-.8*bv)continue; // 얼굴은 전부, 몸은 아래로 갈수록 듬성듬성
+      const bv=BV[port.k][i];if(RS[i]>(1-.8*bv)*(1-.65*d.L[i]))continue; // 얼굴은 전부, 몸은 아래로 갈수록 듬성듬성
       const l=Math.round(Math.min(1,a*1.15*(1+1.6*bv)+.12*bv*fa[i])*LV);lev[i]=l;cnt[l+1]++;ord[n++]=i;
     }
     // 선: 형태가 잡힌 뒤에만 옅게
@@ -381,7 +391,7 @@ function drawPort(now){
     const pos=cnt.slice(),o2=new Int32Array(n);for(let q=0;q<n;q++){const i=ord[q];o2[pos[lev[i]]++]=i;}
     for(let l=1;l<=LV;l++){const a=cnt[l],b=cnt[l+1];if(a===b)continue;
       px.fillStyle='rgba(232,239,252,'+(l/LV*.8).toFixed(3)+')';px.beginPath();
-      for(let q=a;q<b;q++){const i=o2[q],z=(1.3+d.L[i]*1.9)*(1+1.6*BV[port.k][i]);px.rect(xs[i]-z/2,ys[i]-z/2,z,z);}
+      for(let q=a;q<b;q++){const i=o2[q],z=(1.3+d.L[i]*1.2)*(1+1.2*BV[port.k][i]);px.rect(xs[i]-z/2,ys[i]-z/2,z,z);}
       px.fill();
     }}
   }
