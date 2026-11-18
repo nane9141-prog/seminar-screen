@@ -433,6 +433,7 @@ body.idle{cursor:none}
 
 </div>
 <script src="assets/sched.js"></script>
+<script src="assets/panel.js"></script>
 <script>
 (()=>{
 const stage=document.getElementById('scr'),slides=[...document.querySelectorAll('.slide')];
@@ -449,7 +450,7 @@ let bt=performance.now();
 function bgTick(now){const f=1-Math.exp(-Math.min(.25,((now||bt)-bt)/1000)*3.2);bt=now||bt;cur.forEach((o,i)=>{const t=tgt[i];['x','y','r'].forEach(k=>{const d=t[k]-o[k];if(Math.abs(d)>1e-4)o[k]+=d*f;else o[k]=t[k];});});
   if(window.FS)FS.objs(cur.map(o=>({x:o.x,y:o.y,r:Math.max(o.r,.001),on:o.r>.004})));requestAnimationFrame(bgTick);}
 function initBG(){if(!window.FS)return;FS.mode(4);FS.resize();if(qp.get('bg'))FS.set('bgb',qp.get('bg'));if(qp.get('snap')){cur=(LAY[qp.get('snap')]||LAY.B).map(o=>({...o}));}requestAnimationFrame(bgTick);}
-let idx=-1,home=0,auto=true,autoT=null,numbuf='';
+let idx=-1,home=0,auto=true,autoT=null,numbuf='',SPD=1,autoT0=0,autoLen=0;
 const toast=(t)=>{const e=document.getElementById('toast');e.textContent=t;e.classList.add('on');clearTimeout(toast.t);toast.t=setTimeout(()=>e.classList.remove('on'),1600);};
 const isMsg=s=>s&&s.dataset.msg==='1';
 const byNo=no=>slides.findIndex(s=>s.dataset.no.toUpperCase()===String(no).toUpperCase());
@@ -466,8 +467,8 @@ function go(n){n=Math.max(0,Math.min(slides.length-1,n));if(n===idx)return;
   if(s.dataset.qa)renderQ();
   if(s.dataset.no==='M0-3')renderNotice();
   clearTimeout(autoT);
-  if(s.dataset.auto&&auto){autoT=setTimeout(()=>{const g=s.dataset.group;let m=idx+1;if(!slides[m]||slides[m].dataset.group!==g){m=slides.findIndex(x=>x.dataset.group===g);}go(m);},+s.dataset.auto*1000);}
-  hud();SCHED.pub({cur:s.dataset.no,slides:slides.map(x=>({no:x.dataset.no,title:x.dataset.title.replace(/&amp;/g,'&'),msg:isMsg(x)?1:0}))});
+  autoLen=0;if(s.dataset.auto&&auto){autoT0=performance.now();autoLen=+s.dataset.auto*1000/SPD;autoT=setTimeout(()=>{const g=s.dataset.group;let m=idx+1;if(!slides[m]||slides[m].dataset.group!==g){m=slides.findIndex(x=>x.dataset.group===g);}go(m);},autoLen);}
+  hud();if(window.CtrlPanel)CtrlPanel.draw();SCHED.pub({cur:s.dataset.no,slides:slides.map(x=>({no:x.dataset.no,title:x.dataset.title.replace(/&amp;/g,'&'),msg:isMsg(x)?1:0}))});
 }
 // 상황 메시지(data-msg)는 순서 이동에서 건너뜀. 메시지에서 → 는 띄우기 전 화면의 다음, ← 는 띄우기 전 화면으로
 function step(d){if(isMsg(slides[idx])){go(d>0?nextMain(home,1):home);return;}go(nextMain(idx,d));}
@@ -507,7 +508,7 @@ function renderQ(){const q=QA.list.find(x=>x.id===QA.cur),lab=document.getElemen
   const s=slides[idx];if(s&&s.dataset.qa){tx.parentNode.animate([{opacity:0,transform:'translateY(30px)',filter:'blur(12px)'},{opacity:1,transform:'none',filter:'none'}],{duration:600,easing:'cubic-bezier(.2,.7,.2,1)'});}}
 function fitQ(){const tx=document.getElementById('q-text'),box=tx.parentNode;let f=120;tx.style.fontSize=f+'px';while(f>56&&tx.scrollHeight>box.clientHeight){f-=4;tx.style.fontSize=f+'px';}}
 function qStep(d){const L=QA.list;if(!L.length)return;let i=L.findIndex(x=>x.id===QA.cur);i=Math.max(0,Math.min(L.length-1,i<0?0:i+d));QA.cur=L[i].id;SCHED.saveQ(QA);renderQ();}
-SCHED.onCmd(c=>{if(!c)return;if(c.go){const n=byNo(c.go);if(n>=0)go(n);}if(c.black!=null)document.getElementById('black').classList.toggle('on',!!c.black);});
+SCHED.onCmd(c=>{if(!c)return;if(c.go){const n=byNo(c.go);if(n>=0)go(n);}if(c.nav)step(c.nav);if(c.speed&&window.CtrlPanel)CtrlPanel.setSpeed(c.speed);if(c.black!=null)document.getElementById('black').classList.toggle('on',!!c.black);});
 // ── HUD ──
 function hud(){const e=document.getElementById('hud');if(!e.classList.contains('on'))return;
   const nx=SCHED.next(SC),cu=SCHED.current(SC);let sch='<div class="sch">지금 '+SCHED.fmt(SCHED.nowMin())+(cu?' · 진행 중: '+(cu.tag||cu.label):'');
@@ -530,7 +531,7 @@ addEventListener('keydown',e=>{const k=e.key;
   else if(k==='Home')go(0);else if(k==='End')go(slides.length-1);
   else if(k==='f'||k==='F'){if(document.fullscreenElement)document.exitFullscreen();else document.documentElement.requestFullscreen();}
   else if(k==='b'||k==='B'||k==='.'){document.getElementById('black').classList.toggle('on');}
-  else if(k==='o'||k==='O'||k==='?'){document.getElementById('hud').classList.toggle('on');hud();}
+  else if(k==='o'||k==='O'||k==='?'){CtrlPanel.toggle();}
   else if(k==='a'||k==='A'){auto=!auto;toast('대기화면 자동순환 '+(auto?'켜짐':'꺼짐'));const n=idx;idx=-1;slides[n].classList.remove('on');go(n);}
   else if(k==='+'||k==='='||k==='-'||k==='_'){const s=slides[idx];if(s.dataset.break){const d=(k==='+'||k==='=')?1:-1;SC.hist=(SC.hist||[]).slice(-49);SC.hist.push(JSON.stringify(SC.items));
       const i=SC.items.findIndex(x=>x.id===s.dataset.break);SCHED.item(SC,s.dataset.break).end+=d;SC.items.forEach((x,j)=>{if(j>i){x.start+=d;if(!x.fixE)x.end+=d;}});SCHED.save(SC);applySched();toast('재개 '+SCHED.fmt(SCHED.item(SC,s.dataset.break).end)+' (이후 순서 함께 이동)');}}
@@ -538,6 +539,26 @@ addEventListener('keydown',e=>{const k=e.key;
 });
 let it;const wake=()=>{document.body.classList.remove('idle');clearTimeout(it);it=setTimeout(()=>document.body.classList.add('idle'),2500);};addEventListener('mousemove',wake);wake();
 applySched();renderQ();
+// ── 컨트롤 패널 (P) ──
+const black=()=>document.getElementById('black');
+const nm=s=>s.dataset.title.replace(/&amp;/g,'&').replace(s.dataset.no+' ','');
+CtrlPanel.mount({title:'메인 스크린',key:'scr-main',placeholder:'예: 4-5, 9-s1',
+  prev:()=>step(-1),next:()=>step(1),go:i=>go(i),
+  goNo:t=>{const n=byNo('M'+t.trim().toUpperCase().replace(/^M/,''));if(n<0)return false;go(n);return true;},
+  list:()=>slides.map((s,i)=>({no:s.dataset.no,label:nm(s),cur:i===idx,msg:isMsg(s)})),
+  status:()=>{const s=slides[idx];let nx=nextMain(isMsg(s)?home:idx,1);nx=nx!==idx?slides[nx]:null;
+    const sub=(isMsg(s)?'상황 메시지 · → 누르면 원래 순서로 · ':'')+(nx?'다음: '+nx.dataset.no+' '+nm(nx):'마지막 화면');
+    return {title:s.dataset.no+'  '+nm(s),sub,prog:autoLen?Math.min(1,(performance.now()-autoT0)/autoLen):null};},
+  setSpeed:v=>{SPD=v;window.FSSPD=v;},
+  toggles:[{label:'전체화면',key:'F',click:()=>{if(document.fullscreenElement)document.exitFullscreen();else document.documentElement.requestFullscreen();},on:()=>!!document.fullscreenElement},
+    {label:'블랙아웃',key:'B',click:()=>black().classList.toggle('on'),on:()=>black().classList.contains('on')},
+    {label:'대기 자동순환',key:'A',click:()=>{auto=!auto;const n=idx;idx=-1;slides[n].classList.remove('on');go(n);},on:()=>auto},
+    {label:'운영 입력 열기',click:()=>open('control.html','scr-control')}],
+  extra:()=>{const nx=SCHED.next(SC),cu=SCHED.current(SC);let h='진행 '+(cu?(cu.tag||cu.label):'—');
+    if(nx){const d=nx.start-nx.ps;h+=' · 다음 '+(nx.tag||nx.label)+' '+SCHED.fmt(nx.start)+(d?' <b style="color:'+(d>0?'#FF8A7A':'#7FD6A0')+'">('+(d>0?'+':'')+d+'분)</b>':'');}
+    SCHED.warnings(SC).forEach(w=>h+='<br><span style="color:#FF8A7A">⚠ '+w+'</span>');return h+'<br>오프라인: '+(window.OFFLINE_STATE||'-');},
+  foot:'P 패널 열기/닫기 · → ← 이동(상황 메시지 건너뜀) · 번호+Enter 바로가기 · F 전체화면 · B 블랙아웃 · A 자동순환 · 휴식 화면 +/− 재개 1분 · 배속은 화면 전환 · 글자 애니메이션 · 배경 · 대기 자동 넘김에 적용'});
+document.addEventListener('offline-state',()=>CtrlPanel.draw());
 window.SCR={go,initBG,byNo,count:slides.length};
 })();
 </script>
@@ -865,7 +886,7 @@ function draw(){
 const reduce=false;
 function loop(now){
   if(!manual){
-    if(!paused&&!reduce)phase+=(now-last)/1000/TOTAL();
+    if(!paused&&!reduce)phase+=(now-last)/1000/TOTAL()*(window.FSSPD||1);
     if(rec&&phase-rec.start>=1)rec.r.stop();
     if(!rec)phase%=1;
     draw();

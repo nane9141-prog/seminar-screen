@@ -289,6 +289,8 @@ body.idle{cursor:none}
 <div class="stack"><p class="name">박성용</p><p class="meta">IR큐더스, 본부장</p></div></div></div>
 </div>
 <div id="hud"></div>
+<div id="black" style="position:fixed;inset:0;background:#000;z-index:50;display:none"></div>
+<script src="../assets/panel.js"></script>
 <div hidden style="display:none!important"><button class="show" id="show" type="button">패널 보기</button>
 <div class="panel" id="panel">
   <h2>Data Stream <button class="x" id="hide" type="button">숨기기</button></h2>
@@ -369,7 +371,7 @@ const IN=2.8,OUT=2.4;let port=null; // {k,t0,tOut}
 const LV=14,xs=new Float32Array(NPT),ys=new Float32Array(NPT),ls=new Float32Array(NPT),fa=new Float32Array(NPT),lev=new Uint8Array(NPT),cnt=new Int32Array(LV+2),ord=new Int32Array(NPT);
 function drawPort(now){
   px.clearRect(0,0,1920,1080);
-  if(port){const d=PD[port.k],t=(now-port.t0)/1000,tr=port.tOut!=null?(now-port.tOut)/1000:-1,to=tr<0?-1:Math.max(0,tr-WOB);
+  if(port){const d=PD[port.k],t=(now-port.t0)/1000*(port.sp||1),tr=port.tOut!=null?(now-port.tOut)/1000*(port.sp||1):-1,to=tr<0?-1:Math.max(0,tr-WOB);
     const wb=tr<0?0:Math.sin(Math.PI*Math.min(1,tr/WOB))*(tr<WOB?1:0); // 퇴장 직전 1.5초: 점·선이 조금 더 출렁임(느리게)
     if(tr>WOB+OUT+.3){port=null;}else{
     const gx=to<0?1:Math.pow(Math.max(0,1-to/1.7),1.4);
@@ -439,7 +441,7 @@ const STEPS=[
  {n:'타이틀',ov:'ov-title',dim:.42,dur:11.7},
  {n:'서비스 소개 영상 (assets/service-intro.mp4 넣으면 재생)',ov:'ov-svc',dim:0,dur:30,video:'vSvc'},
  {n:'Data Stream',ov:null,dim:1,dur:10}];
-let idx=-1,t1=null,t2=null,t3=null,run=true,vEnd=null;
+let idx=-1,t1=null,t2=null,t3=null,run=true,vEnd=null,SPD=1,stepT0=0,stepLen=0;
 /* 첫 장면 영상: 실제 길이에 맞추고, 파일이 없으면 이 장면을 건너뜀. 다른 장면으로 가면 멈춤 */
 STEPS.forEach(s=>{if(!s.video)return;const v=document.getElementById(s.video);v.addEventListener('loadedmetadata',()=>{if(isFinite(v.duration)&&!T('vid'))s.dur=Math.round(v.duration*10)/10;hud();});v.addEventListener('error',()=>{s.skip=true;if(STEPS[idx]===s)go(idx+1);});v.addEventListener('ended',()=>{if(vEnd&&STEPS[idx]===s)vEnd();});
   // 영상 끝 3.2초 전(별 하늘이 어두워지기 시작할 때)부터 배경 Data Stream과 교차 전환
@@ -454,22 +456,40 @@ function go(n){n=(n+STEPS.length)%STEPS.length;clearTimeout(t1);clearTimeout(t2)
   cv.style.transitionDelay=prev.video?'0s':(s.dim>(prev.dim||1))?(prev.port!=null?'1.4s':'.6s'):'0s';cv.style.transition=prev.video?'opacity 3.2s cubic-bezier(.4,0,.6,1)':'';cv.style.opacity=s.dim;
   const fs=document.getElementById('fsObj');if(fs&&fs.contentWindow)fs.contentWindow.postMessage(s.ov==='ov-titleB'?'play':'pause','*');
   if(s.video&&s.skip){idx=n;return go(n+1);}
-  const show=()=>{if(s.ov){const el=document.getElementById(s.ov);el.classList.remove('b');el.classList.add('on');}if(s.video){const v=document.getElementById(s.video);v.currentTime=0;v.play().catch(()=>{});}if(s.port!=null)port={k:s.port,t0:performance.now(),tOut:null};
-    if(s.swap)t3=setTimeout(()=>document.getElementById(s.ov).classList.add('b'),s.swap*1000);};
-  if(s.ov)t2=setTimeout(show,(s.port!=null&&port)?4000:(prev.ov?900:300));  // 앞 장면이 빠져나간 뒤 등장
+  const show=()=>{if(s.ov){const el=document.getElementById(s.ov);el.classList.remove('b');el.classList.add('on');}if(s.video){const v=document.getElementById(s.video);v.currentTime=0;v.playbackRate=SPD;v.play().catch(()=>{});}if(s.port!=null)port={k:s.port,t0:performance.now(),tOut:null,sp:SPD};
+    if(s.swap)t3=setTimeout(()=>document.getElementById(s.ov).classList.add('b'),s.swap*1000/SPD);};
+  if(s.ov)t2=setTimeout(show,((s.port!=null&&port)?4000:(prev.ov?900:300))/SPD);  // 앞 장면이 빠져나간 뒤 등장
   const fin=()=>{clearTimeout(t1);vEnd=null;if(s.ov){document.getElementById(s.ov).classList.remove('on');if(port&&port.tOut==null)port.tOut=performance.now();}
-    t1=setTimeout(()=>go(idx+1),s.video?0:s.ov?(s.port!=null?300:1500):0);};
-  if(run){if(s.video&&!T('vid')){vEnd=fin;t1=setTimeout(fin,(s.dur+3)*1000);}else t1=setTimeout(fin,s.dur*1000);}
-  hud();}
+    t1=setTimeout(()=>go(idx+1),(s.video?0:s.ov?(s.port!=null?300:1500):0)/SPD);};
+  stepT0=performance.now();stepLen=(s.video?s.dur-3.2:s.dur)*1000/SPD;
+  if(run){if(s.video&&!T('vid')){vEnd=fin;t1=setTimeout(fin,(s.dur+3)*1000/SPD);}else t1=setTimeout(fin,s.dur*1000/SPD);}
+  hud();if(window.CtrlPanel)CtrlPanel.draw();}
 function hud(){const e=document.getElementById('hud');if(!e.classList.contains('on'))return;
   e.innerHTML='<b>로비 시퀀스</b> · '+(run?'재생 중':'일시정지')+'<ol>'+STEPS.map((s,i)=>'<li class="'+(i===idx?'cur':'')+'" data-i="'+i+'">'+s.n+' ('+s.dur+'초)</li>').join('')+'</ol>→ ← 이동 · P 재생/정지 · F 전체화면 · O 닫기';}
 document.getElementById('hud').addEventListener('click',e=>{const li=e.target.closest('li');if(li)go(+li.dataset.i);});
 addEventListener('keydown',e=>{const k=e.key;
   if(k==='ArrowRight'||k==='PageDown')go(idx+1);else if(k==='ArrowLeft'||k==='PageUp')go(idx-1);
-  else if(k==='p'||k==='P'){run=!run;go(idx);}
+  else if(k===' '){e.preventDefault();run=!run;go(idx);}
   else if(k==='f'||k==='F'){if(document.fullscreenElement)document.exitFullscreen();else document.documentElement.requestFullscreen();}
-  else if(k==='o'||k==='O'||k==='?'){document.getElementById('hud').classList.toggle('on');hud();}});
+  else if(k==='o'||k==='O'||k==='?'){CtrlPanel.toggle();}
+  else if(k==='b'||k==='B'){const b=document.getElementById('black');b.style.display=b.style.display==='block'?'none':'block';}});
 let it;const wake=()=>{document.body.classList.remove('idle');clearTimeout(it);it=setTimeout(()=>document.body.classList.add('idle'),2500);};addEventListener('mousemove',wake);wake();
+// ── 컨트롤 패널 (P) ──
+const blk=()=>document.getElementById('black');
+const loopLen=()=>STEPS.reduce((a,s)=>a+(s.video&&s.skip?0:s.video?s.dur-3.2+.3:s.dur+(s.ov?(s.port!=null?.3:1.5):0)),0);
+CtrlPanel.mount({title:'로비 스크린',key:'lobby',placeholder:'예: 7',
+  prev:()=>go(idx-1),next:()=>go(idx+1),go:i=>go(i),restart:()=>go(0),
+  pause:()=>{run=!run;go(idx);},paused:()=>!run,
+  goNo:t=>{const n=parseInt(t,10);if(!(n>=1&&n<=STEPS.length))return false;go(n-1);return true;},
+  list:()=>STEPS.map((s,i)=>({no:i+1,label:s.n+(s.video&&s.skip?' — 파일 없음, 건너뜀':' · '+(Math.round(s.dur/SPD*10)/10)+'초'),cur:i===idx})),
+  status:()=>{const s=STEPS[idx]||{n:'-'},el=performance.now()-stepT0,rem=Math.max(0,(stepLen-el)/1000);let nx=(idx+1)%STEPS.length;if(STEPS[nx].video&&STEPS[nx].skip)nx=(nx+1)%STEPS.length;
+    return {title:(idx+1)+'  '+s.n,sub:(run?'남은 시간 '+rem.toFixed(1)+'초':'일시정지 — 이 장면에 머무는 중')+' · 다음: '+(nx+1)+' '+STEPS[nx].n,prog:run&&stepLen?Math.min(1,el/stepLen):null};},
+  setSpeed:v=>{SPD=v;if(window.DS&&DS.mul)DS.mul(v);document.querySelectorAll('video').forEach(x=>x.playbackRate=v);},
+  toggles:[{label:'전체화면',key:'F',click:()=>{if(document.fullscreenElement)document.exitFullscreen();else document.documentElement.requestFullscreen();},on:()=>!!document.fullscreenElement},
+    {label:'블랙아웃',key:'B',click:()=>{const b=blk();b.style.display=b.style.display==='block'?'none':'block';},on:()=>blk().style.display==='block'}],
+  extra:()=>'한 바퀴 '+Math.round(loopLen()/SPD)+'초'+(SPD!==1?' ('+SPD+'× 적용, 1× 기준 '+Math.round(loopLen())+'초)':'')+' · 오프라인: '+(window.OFFLINE_STATE||'-'),
+  foot:'P 패널 열기/닫기 · → ← 이동 · Space 일시정지/재생 · 번호 입력 후 Enter 바로가기 · F 전체화면 · B 블랙아웃 · 배속은 장면 길이 · 전환 · 배경 · 영상 · 연사 점 애니메이션에 모두 적용(장면 길이는 다음 장면부터)'});
+document.addEventListener('offline-state',()=>CtrlPanel.draw());
 window.LOBBY={go,start(){go(Math.max(0,(parseInt(location.hash.slice(1))||1)-1));}};
 })();
 </script>
@@ -664,7 +684,7 @@ addEventListener('resize',()=>{size();if(paused)draw();});size();
 const K=12; // 꼬리 샘플 수
 const LVL=new Uint8Array(MAXN),XS=new Float32Array(MAXN*(K+1)),YS=new Float32Array(MAXN*(K+1)),SZ=new Float32Array(MAXN),AL=new Float32Array(MAXN);
 let tNow=0,paused=false,manual=false;const LF={};
-window.DS={restart(t){hold=-1;tNow=t||0;last=performance.now();}};  // 로비: 인트로 영상이 끝나면 배경을 처음(모임)부터
+window.DS={restart(t){hold=-1;tNow=t||0;last=performance.now();},mul(m){if(DS.base==null)DS.base=S.speed;S.speed=DS.base*m;}};if(window.CtrlPanel&&CtrlPanel.speed()!==1)DS.mul(CtrlPanel.speed());  // 로비: 인트로 영상이 끝나면 배경을 처음(모임)부터
 function draw(){
   geom();
   const tint=TINTS[S.tint],[fr,fg,fb]=tint.fg,cx=W/2,cy=H/2;

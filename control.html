@@ -65,6 +65,9 @@ label{display:flex;gap:6px;align-items:center}
  </div>
  <div class="box">
   <h2>화면 전환 <span class="mut">현재 <b id="curno">-</b> · 점선 = 상황 메시지</span><span><button id="black">블랙아웃</button></span></h2>
+  <div class="bar" style="margin-top:0"><button id="nprev">◀ 이전</button><button id="nnext" class="pri">다음 ▶</button>
+   <input type="text" id="nno" placeholder="화면 번호 예: 4-5" style="width:130px"><button id="ngo">이동</button>
+   <span class="sp"></span><span class="mut">배속</span><span id="spd"></span></div>
   <div class="scr" id="scr"><span class="mut">메인 스크린을 열면 화면 목록이 표시됩니다.</span></div>
  </div>
 </div>
@@ -123,6 +126,9 @@ function drawScr(v){if(!v)return;lastState=v;$('curno').textContent=v.cur;let g=
     h+='<button class="'+(s.msg?'msg ':'')+(s.no===v.cur?'on':'')+'" data-go="'+s.no+'" title="'+s.title+'">'+s.title.replace('[상황] ','')+'</button>';});
   $('scr').innerHTML=h;}
 $('scr').addEventListener('click',e=>{const b=e.target.closest('[data-go]');if(b)SCHED.cmd({go:b.dataset.go});});
+$('nprev').onclick=()=>SCHED.cmd({nav:-1});$('nnext').onclick=()=>SCHED.cmd({nav:1});
+const ngo=()=>{let v=$('nno').value.trim().toUpperCase().replace(/^M/,'');if(!v)return;SCHED.cmd({go:'M'+v});$('nno').value='';};$('ngo').onclick=ngo;$('nno').onkeydown=e=>{if(e.key==='Enter')ngo();};
+[.5,.75,1,1.25,1.5,2].forEach(v=>{const b=document.createElement('button');b.textContent=v+'×';b.style.cssText='padding:4px 7px;margin-left:3px;font-size:12px';b.onclick=()=>{SCHED.cmd({speed:v});document.querySelectorAll('#spd button').forEach(x=>x.classList.toggle('on',x===b));};if(v===+(localStorage.getItem('scr-main-spd')||1))b.classList.add('on');$('spd').appendChild(b);});
 $('black').onclick=()=>{black=!black;$('black').classList.toggle('on',black);SCHED.cmd({black});};
 drawScr(SCHED.getState());
 // 질문
