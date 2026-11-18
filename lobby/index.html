@@ -332,8 +332,12 @@ const RS=new Float32Array(NPT);for(let i=0;i<NPT;i++){RD[i]=rnd();RA[i]=rnd();RB
 const sm=(a,b,x)=>{x=(x-a)/(b-a);x=x<0?0:x>1?1:x;return x*x*(3-2*x);};
 const BV=PD.map(d=>{let y0=1e9,y1=-1e9;for(let i=0;i<NPT;i++){if(d.L[i]<.05)continue;y0=Math.min(y0,d.Y[i]);y1=Math.max(y1,d.Y[i]);}
   const b=new Float32Array(NPT);for(let i=0;i<NPT;i++)b[i]=.62+.38*sm(.1,1.05,(d.Y[i]-y0)/(y1-y0));return b;});
-const KEEP=5,ED=PD.map((d,pk)=>{const bv=BV[pk];
-  const idx=[];for(let i=0;i<NPT;i+=KEEP)if(RS[i]<(1-.8*bv[i])*(1-.65*d.L[i]))idx.push(i);
+/* 밀도 고르게: 20px 칸마다 점 수를 세어 많은 칸(얼굴·셔츠)은 그만큼 덜 남김 → 전체가 하체처럼 듬성듬성 */
+const KEEP=5,KG=24,KT=1.6,KP=PD.map(d=>{const c=new Map(),k=i=>((d.X[i]/KG)|0)+','+((d.Y[i]/KG)|0);
+  for(let i=0;i<NPT;i+=KEEP)if(d.L[i]>.03){const q=k(i);c.set(q,(c.get(q)||0)+1);}
+  const f=new Uint8Array(NPT);for(let i=0;i<NPT;i+=KEEP)f[i]=d.L[i]>.03&&RS[i]<KT/(c.get(k(i))||1)?1:0;return f;});
+const ED=PD.map((d,pk)=>{const bv=BV[pk],kp=KP[pk];
+  const idx=[];for(let i=0;i<NPT;i+=KEEP)if(kp[i])idx.push(i);
   const G=56,cells=new Map(),key=(x,y)=>((x/G)|0)+','+((y/G)|0);
   idx.forEach(i=>{if(d.L[i]<.07)return;const k=key(d.X[i],d.Y[i]);(cells.get(k)||cells.set(k,[]).get(k)).push(i);});
   const A=[],B=[],seen=new Set();
@@ -375,7 +379,7 @@ function drawPort(now){
       xs[i]=x;ys[i]=y;ls[i]=(1-ee)*90*(e>0?1:0);
       const f=ee*ee*Math.pow(1-eo,1.6);fa[i]=f;
       const a=d.L[i]*(.05+.95*f)*(.88+.12*Math.sin(t*2.2+RP[i]))*(e<=0?0:Math.min(1,e*3))*(1-eo)*gx;
-      const bv=BV[port.k][i];if(RS[i]>(1-.8*bv)*(1-.65*d.L[i]))continue; // 얼굴은 전부, 몸은 아래로 갈수록 듬성듬성
+      const bv=BV[port.k][i];if(!KP[port.k][i])continue; // 얼굴은 전부, 몸은 아래로 갈수록 듬성듬성
       const l=Math.round(Math.min(1,a*1.15*(1+1.6*bv)+.12*bv*fa[i])*LV);lev[i]=l;cnt[l+1]++;ord[n++]=i;
     }
     // 선: 형태가 잡힌 뒤에만 옅게
