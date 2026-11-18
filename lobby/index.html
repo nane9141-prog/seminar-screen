@@ -18,7 +18,7 @@ body.idle{cursor:none}
 /* 오버레이: 나타났다 사라짐 */
 .ov{position:absolute;inset:0;opacity:0;transition:opacity 1.4s ease;display:flex;flex-direction:column;justify-content:center;padding:110px 120px}
 .ov.on{opacity:1}
-#ov-video{padding:0;background:#000}#ov-video video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+#ov-video{padding:0;background:#000;transition:opacity 3.2s cubic-bezier(.4,0,.6,1)}#ov-video video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 #ov-title{padding:225px 310px 215px}#ov-title svg{width:100%;height:100%;display:block;transition:opacity 1.8s ease}
 /* 타이틀 1 → 타이틀 2: 같은 자리에서 겹쳐 바뀐다(로고 줄은 그대로) */
 #ov-title .t2{position:absolute;left:310px;top:225px;width:1300px;height:640px;object-fit:contain;opacity:0;transition:opacity 1.8s ease}
@@ -425,23 +425,27 @@ const STEPS=[
  {n:'Session 2 · 권재열',ov:'ov-spk1',dim:.2,dur:T('spk')||12,port:1},
  {n:'Session 3 · Scott Oakland',ov:'ov-spk2',dim:.2,dur:T('spk')||12,port:2},
  {n:'Session 4 · 박성용',ov:'ov-spk3',dim:.2,dur:T('spk')||12,port:3}];
-let idx=-1,t1=null,t2=null,t3=null,run=true;
+let idx=-1,t1=null,t2=null,t3=null,run=true,vEnd=null;
 /* 첫 장면 영상: 실제 길이에 맞추고, 파일이 없으면 이 장면을 건너뜀. 다른 장면으로 가면 멈춤 */
-STEPS.forEach(s=>{if(!s.video)return;const v=document.getElementById(s.video);v.addEventListener('loadedmetadata',()=>{if(isFinite(v.duration)&&!T('vid'))s.dur=Math.round(v.duration*10)/10;hud();});v.addEventListener('error',()=>{s.skip=true;if(STEPS[idx]===s)go(idx+1);});if(T('vid'))s.dur=T('vid');});
+STEPS.forEach(s=>{if(!s.video)return;const v=document.getElementById(s.video);v.addEventListener('loadedmetadata',()=>{if(isFinite(v.duration)&&!T('vid'))s.dur=Math.round(v.duration*10)/10;hud();});v.addEventListener('error',()=>{s.skip=true;if(STEPS[idx]===s)go(idx+1);});v.addEventListener('ended',()=>{if(vEnd&&STEPS[idx]===s)vEnd();});
+  // 영상 끝 3.2초 전(별 하늘이 어두워지기 시작할 때)부터 배경 Data Stream과 교차 전환
+  v.addEventListener('timeupdate',()=>{if(vEnd&&STEPS[idx]===s&&v.duration-v.currentTime<=3.2)vEnd();});if(T('vid'))s.dur=T('vid');});
 function go(n){n=(n+STEPS.length)%STEPS.length;clearTimeout(t1);clearTimeout(t2);clearTimeout(t3);
   const prev=STEPS[idx]||{};
   document.querySelectorAll('.ov.on').forEach(e=>e.classList.remove('on'));if(port&&port.tOut==null)port.tOut=performance.now();
-  STEPS.forEach(x=>{if(x.video&&x!==STEPS[n]){const v=document.getElementById(x.video);setTimeout(()=>v.pause(),1500);}});
+  STEPS.forEach(x=>{if(x.video&&x!==STEPS[n]){const v=document.getElementById(x.video);setTimeout(()=>{if(STEPS[idx].video!==v.id)v.pause();},3600);}});
   idx=n;const s=STEPS[n],cv=document.getElementById('c');
   // 배경을 다시 밝힐 때는 앞 장면(글자·점)이 거의 사라진 뒤 천천히 — 연사에서 넘어갈 때 더 늦게
-  cv.style.transitionDelay=(s.dim>(prev.dim||1))?(prev.port!=null?'1.4s':'.6s'):'0s';cv.style.opacity=s.dim;
+  if(prev.video&&!s.video&&window.DS)DS.restart(3.5);  // 영상(별 → 암전) 다음은 배경 루프 처음부터 이어서
+  cv.style.transitionDelay=prev.video?'0s':(s.dim>(prev.dim||1))?(prev.port!=null?'1.4s':'.6s'):'0s';cv.style.transition=prev.video?'opacity 3.2s cubic-bezier(.4,0,.6,1)':'';cv.style.opacity=s.dim;
   const fs=document.getElementById('fsObj');if(fs&&fs.contentWindow)fs.contentWindow.postMessage(s.ov==='ov-titleB'?'play':'pause','*');
   if(s.video&&s.skip){idx=n;return go(n+1);}
   const show=()=>{if(s.ov){const el=document.getElementById(s.ov);el.classList.remove('b');el.classList.add('on');}if(s.video){const v=document.getElementById(s.video);v.currentTime=0;v.play().catch(()=>{});}if(s.port!=null)port={k:s.port,t0:performance.now(),tOut:null};
     if(s.swap)t3=setTimeout(()=>document.getElementById(s.ov).classList.add('b'),s.swap*1000);};
   if(s.ov)t2=setTimeout(show,(s.port!=null&&port)?3500:(prev.ov?900:300));  // 앞 장면이 빠져나간 뒤 등장
-  if(run)t1=setTimeout(()=>{if(s.ov){document.getElementById(s.ov).classList.remove('on');if(port&&port.tOut==null)port.tOut=performance.now();}
-    t1=setTimeout(()=>go(idx+1),s.ov?(s.port!=null?300:1500):0);},s.dur*1000);
+  const fin=()=>{clearTimeout(t1);vEnd=null;if(s.ov){document.getElementById(s.ov).classList.remove('on');if(port&&port.tOut==null)port.tOut=performance.now();}
+    t1=setTimeout(()=>go(idx+1),s.video?0:s.ov?(s.port!=null?300:1500):0);};
+  if(run){if(s.video&&!T('vid')){vEnd=fin;t1=setTimeout(fin,(s.dur+3)*1000);}else t1=setTimeout(fin,s.dur*1000);}
   hud();}
 function hud(){const e=document.getElementById('hud');if(!e.classList.contains('on'))return;
   e.innerHTML='<b>로비 시퀀스</b> · '+(run?'재생 중':'일시정지')+'<ol>'+STEPS.map((s,i)=>'<li class="'+(i===idx?'cur':'')+'" data-i="'+i+'">'+s.n+' ('+s.dur+'초)</li>').join('')+'</ol>→ ← 이동 · P 재생/정지 · F 전체화면 · O 닫기';}
@@ -646,6 +650,7 @@ addEventListener('resize',()=>{size();if(paused)draw();});size();
 const K=12; // 꼬리 샘플 수
 const LVL=new Uint8Array(MAXN),XS=new Float32Array(MAXN*(K+1)),YS=new Float32Array(MAXN*(K+1)),SZ=new Float32Array(MAXN),AL=new Float32Array(MAXN);
 let tNow=0,paused=false,manual=false;const LF={};
+window.DS={restart(t){hold=-1;tNow=t||0;last=performance.now();}};  // 로비: 인트로 영상이 끝나면 배경을 처음(모임)부터
 function draw(){
   geom();
   const tint=TINTS[S.tint],[fr,fg,fb]=tint.fg,cx=W/2,cy=H/2;
