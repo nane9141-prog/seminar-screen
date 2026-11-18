@@ -18,6 +18,7 @@ body.idle{cursor:none}
 /* 오버레이: 나타났다 사라짐 */
 .ov{position:absolute;inset:0;opacity:0;transition:opacity 1.4s ease;display:flex;flex-direction:column;justify-content:center;padding:110px 120px}
 .ov.on{opacity:1}
+#ov-video{padding:0;background:#000}#ov-video video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 #ov-title{padding:225px 310px 215px}#ov-title svg{width:100%;height:100%;display:block;transition:opacity 1.8s ease}
 /* 타이틀 1 → 타이틀 2: 같은 자리에서 겹쳐 바뀐다(로고 줄은 그대로) */
 #ov-title .t2{position:absolute;left:310px;top:225px;width:1300px;height:640px;object-fit:contain;opacity:0;transition:opacity 1.8s ease}
@@ -52,6 +53,7 @@ body.idle{cursor:none}
 <div class="stage" id="scr">
 <canvas id="c"></canvas>
 <canvas id="pc"></canvas>
+<div class="ov" id="ov-video"><video id="vMood" src="../assets/yeouido-mood.mp4" muted playsinline preload="auto"></video></div>
 <div class="ov" id="ov-title"><svg id="svg2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 243.16 118.66">
   <g>
     <path d="M10.47,9.76c-.87-.35-1.67-.8-2.4-1.34-.73-.54-1.31-1.16-1.75-1.85-.36.68-.93,1.35-1.69,2-.77.66-1.65,1.21-2.64,1.67l-1.38-1.58c.67-.29,1.27-.64,1.82-1.04.55-.4,1.01-.84,1.4-1.32.39-.48.69-.99.91-1.53.22-.54.33-1.1.33-1.67v-.16H1.58v-1.89h9.36v1.89h-3.48v.16c0,.53.11,1.05.33,1.54.22.49.51.95.88,1.38.37.43.81.82,1.32,1.16s1.06.62,1.64.86l-1.17,1.71ZM15.51,16.51H3.88v-5.75h2.37v3.86h9.27v1.89ZM15.15,12.22h-2.33v-6.23h-2.69v-1.93h2.69V.42h2.33v11.8Z" style="fill: #fff;"/>
@@ -411,6 +413,7 @@ requestAnimationFrame(drawPort);
 /* ---- 시퀀스 ---- */
 const T=k=>parseFloat(qp.get(k)||0);
 const STEPS=[
+ {n:'여의도 무드 영상',ov:'ov-video',dim:0,dur:45.6,video:'vMood'},
  {n:'Data Stream',ov:null,dim:1,dur:T('idle')||7},
  {n:'타이틀 → 타이틀 2',ov:'ov-title',dim:.42,dur:T('title')||14,swap:6},
  {n:'Data Stream',ov:null,dim:1,dur:4},
@@ -423,14 +426,18 @@ const STEPS=[
  {n:'Session 3 · Scott Oakland',ov:'ov-spk2',dim:.2,dur:T('spk')||12,port:2},
  {n:'Session 4 · 박성용',ov:'ov-spk3',dim:.2,dur:T('spk')||12,port:3}];
 let idx=-1,t1=null,t2=null,t3=null,run=true;
+/* 첫 장면 영상: 실제 길이에 맞추고, 파일이 없으면 이 장면을 건너뜀. 다른 장면으로 가면 멈춤 */
+STEPS.forEach(s=>{if(!s.video)return;const v=document.getElementById(s.video);v.addEventListener('loadedmetadata',()=>{if(isFinite(v.duration)&&!T('vid'))s.dur=Math.round(v.duration*10)/10;hud();});v.addEventListener('error',()=>{s.skip=true;if(STEPS[idx]===s)go(idx+1);});if(T('vid'))s.dur=T('vid');});
 function go(n){n=(n+STEPS.length)%STEPS.length;clearTimeout(t1);clearTimeout(t2);clearTimeout(t3);
   const prev=STEPS[idx]||{};
   document.querySelectorAll('.ov.on').forEach(e=>e.classList.remove('on'));if(port&&port.tOut==null)port.tOut=performance.now();
+  STEPS.forEach(x=>{if(x.video&&x!==STEPS[n]){const v=document.getElementById(x.video);setTimeout(()=>v.pause(),1500);}});
   idx=n;const s=STEPS[n],cv=document.getElementById('c');
   // 배경을 다시 밝힐 때는 앞 장면(글자·점)이 거의 사라진 뒤 천천히 — 연사에서 넘어갈 때 더 늦게
   cv.style.transitionDelay=(s.dim>(prev.dim||1))?(prev.port!=null?'1.4s':'.6s'):'0s';cv.style.opacity=s.dim;
   const fs=document.getElementById('fsObj');if(fs&&fs.contentWindow)fs.contentWindow.postMessage(s.ov==='ov-titleB'?'play':'pause','*');
-  const show=()=>{if(s.ov){const el=document.getElementById(s.ov);el.classList.remove('b');el.classList.add('on');}if(s.port!=null)port={k:s.port,t0:performance.now(),tOut:null};
+  if(s.video&&s.skip){idx=n;return go(n+1);}
+  const show=()=>{if(s.ov){const el=document.getElementById(s.ov);el.classList.remove('b');el.classList.add('on');}if(s.video){const v=document.getElementById(s.video);v.currentTime=0;v.play().catch(()=>{});}if(s.port!=null)port={k:s.port,t0:performance.now(),tOut:null};
     if(s.swap)t3=setTimeout(()=>document.getElementById(s.ov).classList.add('b'),s.swap*1000);};
   if(s.ov)t2=setTimeout(show,(s.port!=null&&port)?3500:(prev.ov?900:300));  // 앞 장면이 빠져나간 뒤 등장
   if(run)t1=setTimeout(()=>{if(s.ov){document.getElementById(s.ov).classList.remove('on');if(port&&port.tOut==null)port.tOut=performance.now();}
