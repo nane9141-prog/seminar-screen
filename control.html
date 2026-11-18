@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>운영 입력 — 전자주주총회 플랫폼 시연 설명회</title>
+<style>
+@font-face{font-family:"Pretendard Variable";src:url(assets/PretendardVariable.woff2) format("woff2");font-weight:45 920}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#0B1120;color:#E6ECF5;font:14px/1.5 "Pretendard Variable","Malgun Gothic",sans-serif;padding:16px 20px 40px}
+h1{font-size:18px;font-weight:700;display:flex;gap:16px;align-items:baseline}
+h1 small{font-size:13px;font-weight:500;color:#8793A6}
+h2{font-size:15px;font-weight:700;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;gap:8px}
+.wrap{display:grid;grid-template-columns:minmax(560px,1.25fr) minmax(460px,1fr);gap:16px;margin-top:12px}
+.box{background:#111A2E;border:1px solid #22314F;border-radius:10px;padding:14px}
+.box+.box{margin-top:16px}
+button{font:inherit;font-weight:600;background:#1C2A45;color:#E6ECF5;border:1px solid #2E4370;border-radius:7px;padding:5px 11px;cursor:pointer;white-space:nowrap}
+button:hover{background:#25385C}button.pri{background:#2E8BFF;border-color:#2E8BFF;color:#fff}button.warn{background:#5A2424;border-color:#8A3A3A}
+button.on{outline:2px solid #FFB84D}
+input[type=text],textarea,select{font:inherit;background:#0B1120;color:#E6ECF5;border:1px solid #2E4370;border-radius:6px;padding:4px 7px}
+input.tm{width:66px;text-align:center;font-variant-numeric:tabular-nums}textarea{width:100%;resize:vertical}
+table{width:100%;border-collapse:collapse}
+th,td{padding:5px 6px;border-bottom:1px solid #1C2A40;text-align:left;vertical-align:middle}
+th{font-size:12px;color:#8793A6;font-weight:600}
+tr.sel{background:#1A2A48}tr.now td:first-child{box-shadow:inset 3px 0 #FFB84D}
+td.pl{color:#8793A6;font-variant-numeric:tabular-nums}.d{font-variant-numeric:tabular-nums;font-weight:600}
+.late{color:#FF8A7A}.early{color:#7FD6A0}.mut{color:#8793A6}
+.bar{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:10px 0}
+.bar .sp{flex:1}
+#warn{color:#FFB0A3;margin-top:6px}
+.scr{display:flex;flex-wrap:wrap;gap:5px}
+.scr button{font-weight:500;padding:4px 8px;font-size:13px}
+.scr button.msg{border-style:dashed}
+.scr .grp{width:100%;font-size:12px;color:#8793A6;margin-top:6px}
+.ql{max-height:430px;overflow:auto;margin-top:8px}
+.ql .q{display:grid;grid-template-columns:70px 1fr auto;gap:8px;padding:7px 6px;border-bottom:1px solid #1C2A40;align-items:start}
+.ql .q.cur{background:#1A2A48;box-shadow:inset 3px 0 #FFB84D}
+.ql .tag{font-size:12px;font-weight:700;color:#4C9DFF}.ql .tag.live{color:#7FD6A0}
+.ql .t{white-space:pre-wrap}.ql .w{font-size:12px;color:#8793A6}
+.ql .act{display:flex;gap:4px}
+.row{display:flex;gap:6px;align-items:center;margin-top:8px}
+.row input[type=text]{flex:1;min-width:0}
+label{display:flex;gap:6px;align-items:center}
+#clock{font-variant-numeric:tabular-nums;font-size:22px;font-weight:700;color:#FFB84D}
+</style></head>
+<body>
+<h1>운영 입력 <small>메인 스크린(index.html)과 같은 PC · 같은 브라우저에서 열어 주세요. 입력 즉시 반영됩니다.</small><span style="flex:1"></span><span id="clock">--:--</span></h1>
+<div class="wrap">
+<div>
+ <div class="box">
+  <h2>진행 시간 관리 <span class="mut" id="nowinfo"></span></h2>
+  <table><thead><tr><th>순서</th><th>예정</th><th>시작</th><th>종료</th><th>차이</th></tr></thead><tbody id="tb"></tbody></table>
+  <div class="bar">
+   <span class="mut">선택 순서:</span><b id="selname">-</b>
+   <button class="pri" id="endnow">지금 종료</button>
+   <button data-sh="-5">−5분</button><button data-sh="-1">−1분</button><button data-sh="1">+1분</button><button data-sh="5">+5분</button>
+   <span class="mut">(선택 순서부터 뒤 전체 이동 · 종료 시각을 직접 고치면 바로 다음 순서 시작도 함께 바뀜)</span>
+  </div>
+  <div class="bar">
+   <button id="undo">되돌리기</button><button class="warn" id="reset">전체 초기화</button>
+   <span class="sp"></span>
+   <label><input type="checkbox" id="progadj"> 프로그램 화면(M1-3 · M3-2)에도 조정 시각 표시</label>
+  </div>
+  <div id="warn"></div>
+  <div class="row"><input type="text" id="notice" placeholder="일정 변경 공지(M0-3) 문구 — 비우면 자동 문구"><button id="sendnotice">M0-3 송출</button></div>
+ </div>
+ <div class="box">
+  <h2>화면 전환 <span class="mut">현재 <b id="curno">-</b> · 점선 = 상황 메시지</span><span><button id="black">블랙아웃</button></span></h2>
+  <div class="scr" id="scr"><span class="mut">메인 스크린을 열면 화면 목록이 표시됩니다.</span></div>
+ </div>
+</div>
+<div>
+ <div class="box">
+  <h2>질문 <span><button id="toq" class="pri">질문 화면(M10-2)으로</button></span></h2>
+  <div class="row"><select id="qtype"><option value="live">현장</option><option value="pre">사전</option></select>
+   <input type="text" id="qtext" placeholder="질문 내용 (Enter로 추가)"><input type="text" id="qwho" placeholder="답변 연사" style="flex:0 0 110px"><button id="qadd">추가</button></div>
+  <details style="margin-top:8px"><summary class="mut" style="cursor:pointer">사전 질문 여러 개 붙여넣기 (한 줄에 하나, 연사는 "질문 | 연사")</summary>
+   <textarea id="qbulk" rows="5" style="margin-top:6px"></textarea><div class="row"><button id="qbulkadd">사전 질문으로 추가</button></div></details>
+  <div class="bar"><button id="qprev">◀ 이전</button><button id="qnext" class="pri">다음 ▶</button><button id="qclear">화면 비우기</button><span class="sp"></span><button class="warn" id="qdelall">전체 삭제</button></div>
+  <div class="ql" id="ql"></div>
+ </div>
+</div>
+</div>
+<script src="assets/sched.js"></script>
+<script>
+const $=id=>document.getElementById(id),F=SCHED.fmt;
+let S=SCHED.load(),Q=SCHED.loadQ(),sel=null;
+SCHED.onSched(v=>{S=v||SCHED.load();draw();});
+SCHED.onQ(v=>{Q=v||{list:[],cur:null};drawQ();});
+SCHED.onState(v=>drawScr(v));
+function save(push){if(push!==false){S.hist=(S.hist||[]).slice(-49);}SCHED.save(S);draw();}
+function snap(){S.hist=(S.hist||[]).slice(-49);S.hist.push(JSON.stringify(S.items));}
+const toM=v=>{v=(v||'').trim().replace(/[.\s]/,':');if(/^\d{3,4}$/.test(v))v=v.slice(0,-2)+':'+v.slice(-2);const m=v.match(/^(\d{1,2}):(\d{2})$/);if(!m||+m[1]>23||+m[2]>59)return null;return +m[1]*60+ +m[2];};
+function draw(){const n=SCHED.nowMin(),cu=SCHED.current(S);if(!sel)sel=(cu||SCHED.next(S)||S.items[0]).id;
+  $('tb').innerHTML=S.items.map(x=>{const d=x.start-x.ps,de=x.end-x.pe;
+    return '<tr data-id="'+x.id+'" class="'+(x.id===sel?'sel ':'')+(cu&&cu.id===x.id?'now':'')+'"><td>'+(x.tag?'<b>'+x.tag+'</b> ':'')+(x.tag?x.who:x.label)+(x.fixE?' <span class="mut">(종료 고정)</span>':'')+'</td>'+
+    '<td class="pl">'+F(x.ps)+'~'+F(x.pe)+'</td><td><input type="text" class="tm" maxlength="5" data-k="start" value="'+F(x.start)+'"></td><td><input type="text" class="tm" maxlength="5" data-k="end" value="'+F(x.end)+'"></td>'+
+    '<td class="d '+(d>0?'late':d<0?'early':'mut')+'">'+(d?(d>0?'+':'')+d+'분':'—')+'</td></tr>';}).join('');
+  const s=SCHED.item(S,sel);$('selname').textContent=s?(s.tag||s.label):'-';
+  $('progadj').checked=!!S.progAdj;if(document.activeElement!==$('notice'))$('notice').value=S.notice||'';
+  $('warn').innerHTML=SCHED.warnings(S).map(w=>'⚠ '+w).join('<br>');
+  const nx=SCHED.next(S);$('nowinfo').innerHTML=(cu?'진행 중: '+(cu.tag||cu.label):'')+(nx?' · 다음: '+(nx.tag||nx.label)+' '+F(nx.start):'');}
+$('tb').addEventListener('click',e=>{const tr=e.target.closest('tr');if(!tr||e.target.tagName==='INPUT')return;sel=tr.dataset.id;draw();});
+$('tb').addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.classList.contains('tm'))e.target.blur();});
+$('tb').addEventListener('change',e=>{const inp=e.target;if(inp.tagName!=='INPUT')return;const id=inp.closest('tr').dataset.id,v=toM(inp.value);if(v==null){flash('시각은 14:45 형식으로 입력해 주세요');draw();return;}snap();const x=SCHED.item(S,id),i=S.items.indexOf(x),nx=S.items[i+1];if(inp.dataset.k==='end'&&nx&&nx.start===x.end)nx.start=v;x[inp.dataset.k]=v;sel=id;save();});
+$('endnow').onclick=()=>{const x=SCHED.item(S,sel);if(!x)return;snap();const d=SCHED.endNow(S,sel);save();
+  const i=S.items.findIndex(y=>y.id===sel);if(S.items[i+1])sel=S.items[i+1].id;draw();flash((x.tag||x.label)+' 종료 '+F(x.end)+' · 이후 '+(d>0?'+':'')+d+'분');};
+document.querySelectorAll('[data-sh]').forEach(b=>b.onclick=()=>{snap();SCHED.shiftFrom(S,sel,+b.dataset.sh,true);save();});
+$('undo').onclick=()=>{const h=(S.hist||[]).pop();if(!h)return flash('되돌릴 내용이 없습니다');S.items=JSON.parse(h);save();};
+$('reset').onclick=()=>{if(!confirm('진행표를 사이트 시간표로 되돌릴까요?'))return;snap();S.items=SCHED.defItems();save();};
+$('progadj').onchange=e=>{S.progAdj=e.target.checked;save();};
+$('notice').onchange=e=>{S.notice=e.target.value.trim();save();};
+$('sendnotice').onclick=()=>{S.notice=$('notice').value.trim();save();SCHED.cmd({go:'M0-3'});};
+let lastState=null,black=false;
+function drawScr(v){if(!v)return;lastState=v;$('curno').textContent=v.cur;let g='',h='';
+  v.slides.forEach(s=>{const st=s.no.split('-')[0];if(st!==g){g=st;h+='<div class="grp">'+(st==='M0'?'상시 · 비상':'단계 '+st.slice(1))+'</div>';}
+    h+='<button class="'+(s.msg?'msg ':'')+(s.no===v.cur?'on':'')+'" data-go="'+s.no+'" title="'+s.title+'">'+s.title.replace('[상황] ','')+'</button>';});
+  $('scr').innerHTML=h;}
+$('scr').addEventListener('click',e=>{const b=e.target.closest('[data-go]');if(b)SCHED.cmd({go:b.dataset.go});});
+$('black').onclick=()=>{black=!black;$('black').classList.toggle('on',black);SCHED.cmd({black});};
+drawScr(SCHED.getState());
+// 질문
+function nextN(t){return Q.list.filter(x=>x.type===t).reduce((m,x)=>Math.max(m,x.n),0)+1;}
+function saveQ(){SCHED.saveQ(Q);drawQ();}
+function addQ(type,text,who){text=text.trim();if(!text)return;Q.list.push({id:'q'+Date.now().toString(36)+Math.random().toString(36).slice(2,5),type,n:nextN(type),text,who:(who||'').trim()});}
+function sortQ(){Q.list.sort((a,b)=>(a.type===b.type?0:a.type==='pre'?-1:1)||a.n-b.n);}
+$('qadd').onclick=()=>{addQ($('qtype').value,$('qtext').value,$('qwho').value);$('qtext').value='';$('qwho').value='';sortQ();saveQ();$('qtext').focus();};
+$('qtext').onkeydown=e=>{if(e.key==='Enter')$('qadd').click();};
+$('qbulkadd').onclick=()=>{$('qbulk').value.split('\n').forEach(l=>{const [t,w]=l.split('|');addQ('pre',t||'',w);});$('qbulk').value='';sortQ();saveQ();};
+function qStep(d){const L=Q.list;if(!L.length)return;let i=L.findIndex(x=>x.id===Q.cur);i=Math.max(0,Math.min(L.length-1,i<0?0:i+d));Q.cur=L[i].id;saveQ();}
+$('qprev').onclick=()=>qStep(-1);$('qnext').onclick=()=>qStep(1);
+$('qclear').onclick=()=>{Q.cur=null;saveQ();};
+$('qdelall').onclick=()=>{if(confirm('질문을 모두 삭제할까요?')){Q={list:[],cur:null};saveQ();}};
+$('toq').onclick=()=>SCHED.cmd({go:'M10-2'});
+function esc(s){return s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
+function drawQ(){const L=Q.list;$('ql').innerHTML=L.length?L.map((q,i)=>'<div class="q'+(q.id===Q.cur?' cur':'')+'" data-id="'+q.id+'"><div class="tag '+q.type+'">'+(q.type==='pre'?'사전':'현장')+' Q'+String(q.n).padStart(2,'0')+'</div>'+
+  '<div><div class="t">'+esc(q.text)+'</div>'+(q.who?'<div class="w">답변 '+esc(q.who)+'</div>':'')+'</div>'+
+  '<div class="act"><button data-a="show" class="'+(q.id===Q.cur?'pri':'')+'">송출</button><button data-a="up">↑</button><button data-a="down">↓</button><button data-a="edit">수정</button><button data-a="del">삭제</button></div></div>').join(''):'<p class="mut" style="padding:8px">등록된 질문이 없습니다.</p>';}
+$('ql').addEventListener('click',e=>{const b=e.target.closest('button[data-a]');if(!b)return;const id=b.closest('.q').dataset.id,i=Q.list.findIndex(x=>x.id===id),q=Q.list[i];
+  if(b.dataset.a==='show'){Q.cur=id;}
+  else if(b.dataset.a==='up'&&i>0){Q.list.splice(i-1,0,Q.list.splice(i,1)[0]);}
+  else if(b.dataset.a==='down'&&i<Q.list.length-1){Q.list.splice(i+1,0,Q.list.splice(i,1)[0]);}
+  else if(b.dataset.a==='edit'){const t=prompt('질문 내용',q.text);if(t==null)return;const w=prompt('답변 연사 (비우면 표시 안 함)',q.who||'');q.text=t.trim()||q.text;q.who=(w||'').trim();}
+  else if(b.dataset.a==='del'){if(!confirm('이 질문을 삭제할까요?'))return;Q.list.splice(i,1);if(Q.cur===id)Q.cur=null;}
+  saveQ();});
+let ft;function flash(t){$('warn').innerHTML='<span style="color:#7FD6A0">'+t+'</span>'+($('warn').innerHTML?'<br>'+$('warn').innerHTML:'');clearTimeout(ft);ft=setTimeout(draw,3000);}
+setInterval(()=>{$('clock').textContent=F(SCHED.nowMin())+':'+String(Math.floor(SCHED.nowSec()%60)).padStart(2,'0');},500);
+setInterval(draw,30000);
+draw();drawQ();
+</script>
+</body></html>
