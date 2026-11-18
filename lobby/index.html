@@ -331,7 +331,7 @@ const RS=new Float32Array(NPT);for(let i=0;i<NPT;i++){RD[i]=rnd();RA[i]=rnd();RB
 /* 얼굴은 원래 점 형태, 몸은 아래로 갈수록 점이 듬성듬성 커지고 선도 길어짐 */
 const sm=(a,b,x)=>{x=(x-a)/(b-a);x=x<0?0:x>1?1:x;return x*x*(3-2*x);};
 const BV=PD.map(d=>{let y0=1e9,y1=-1e9;for(let i=0;i<NPT;i++){if(d.L[i]<.05)continue;y0=Math.min(y0,d.Y[i]);y1=Math.max(y1,d.Y[i]);}
-  const b=new Float32Array(NPT);for(let i=0;i<NPT;i++)b[i]=sm(.34,.46,(d.Y[i]-y0)/(y1-y0))*(.35+.65*sm(.4,1,(d.Y[i]-y0)/(y1-y0)));return b;});
+  const b=new Float32Array(NPT);for(let i=0;i<NPT;i++)b[i]=sm(.3,1.05,(d.Y[i]-y0)/(y1-y0));return b;});
 const KEEP=5,ED=PD.map((d,pk)=>{const bv=BV[pk];
   const idx=[];for(let i=0;i<NPT;i+=KEEP)if(bv[i]>.02&&RS[i]<1-.8*bv[i])idx.push(i);
   const G=56,cells=new Map(),key=(x,y)=>((x/G)|0)+','+((y/G)|0);
@@ -371,7 +371,7 @@ function drawPort(now){
     // 선: 형태가 잡힌 뒤에만 옅게
     const E=ED[port.k];px.lineWidth=.9;
     for(const band of [.35,.7,1]){px.beginPath();let any=false;
-      for(let k=0;k<E.A.length;k++){const a=E.A[k],b=E.B[k],w=Math.pow(Math.min(fa[a],fa[b]),2)*Math.min(1,.45+1.1*Math.min(d.L[a],d.L[b]));
+      for(let k=0;k<E.A.length;k++){const a=E.A[k],b=E.B[k],w=Math.pow(Math.min(fa[a],fa[b]),2)*Math.min(1,.45+1.1*Math.min(d.L[a],d.L[b]))*sm(0,.3,Math.min(BV[port.k][a],BV[port.k][b]));
         if(w<.04||w>band||w<=band-.35)continue;const ddx=xs[a]-xs[b],ddy=ys[a]-ys[b];if(ddx*ddx+ddy*ddy>3600)continue;any=true;px.moveTo(xs[a],ys[a]);px.lineTo(xs[b],ys[b]);}
       if(any){px.strokeStyle='rgba(214,226,246,'+(band*.5).toFixed(3)+')';px.stroke();}}
     // 꼬리: 들어오는 동안 지나온 자리(오른쪽)로 짧은 선이 따라옴
