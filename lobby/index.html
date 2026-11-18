@@ -355,7 +355,7 @@ const PHOTO=['speaker1-1','speaker2','speaker-scott','speaker3-1'].map(n=>{const
     let gr=g.createLinearGradient(0,0,0,BOX.h);gr.addColorStop(0,'rgba(0,0,0,1)');gr.addColorStop(.42,'rgba(0,0,0,1)');gr.addColorStop(.88,'rgba(0,0,0,0)');g.fillStyle=gr;g.fillRect(0,0,BOX.w,BOX.h);
     gr=g.createLinearGradient(0,0,BOX.w,0);gr.addColorStop(0,'rgba(0,0,0,0)');gr.addColorStop(.12,'rgba(0,0,0,1)');gr.addColorStop(.88,'rgba(0,0,0,1)');gr.addColorStop(1,'rgba(0,0,0,0)');g.fillStyle=gr;g.fillRect(0,0,BOX.w,BOX.h);};
   im.src='../assets/'+n+'.webp';return c;});
-const PH_A=.62,PH_R=0,PT0=1.3,WOB=1; // 사진 먼저(진하게) → 점·선이 생기며 사진은 옅게 남음 / 퇴장 전 1초 흔들림
+const PH_A=.62,PH_R=0,PT0=2.7,WOB=1; // 사진 먼저(진하게) → 점·선이 생기며 사진은 옅게 남음 / 퇴장 전 1초 흔들림
 const IN=2.8,OUT=2.4;let port=null; // {k,t0,tOut}
 const LV=14,xs=new Float32Array(NPT),ys=new Float32Array(NPT),ls=new Float32Array(NPT),fa=new Float32Array(NPT),lev=new Uint8Array(NPT),cnt=new Int32Array(LV+2),ord=new Int32Array(NPT);
 function drawPort(now){
@@ -378,6 +378,10 @@ function drawPort(now){
       let x=sx+(d.X[i]-sx)*ee,y=sy+(d.Y[i]-sy)*ee;
       if(eo>0){const r=eq*(18+RA[i]*110);x+=Math.cos(RP[i])*r-eq*70;y+=Math.sin(RP[i])*r*.7;}
       const am=.9+3.2*wb;x+=Math.sin(t*1.1+RP[i])*am;y+=Math.cos(t*.9+RP[i]*1.3)*am*.8; // 형성 후 미세한 움직임
+      { // 부분 모션: 일부 점이 주기적으로 옆으로 떠났다 돌아옴(선이 따라 늘어나며 형태가 부분적으로 변함)
+        const r2=(RD[i]*7.13+RA[i]*3.7)%1,per=3.5+r2*4,u=((t-PT0-1.5+RP[i]*per/6.283)%per)/1.8;
+        if(r2<.3&&u>0&&u<1&&ee>=1){const k=Math.pow(Math.sin(Math.PI*u),2)*(1-eo),dd=18+RA[i]*46,an=RP[i]*3.1+Math.floor((t+RP[i]*per/6.283)/per)*2.4;
+          x+=Math.cos(an)*dd*k;y+=Math.sin(an)*dd*k*.8;}}
       xs[i]=x;ys[i]=y;ls[i]=0;
       const f=ee*ee*Math.pow(1-eo,1.6);fa[i]=f;
       const a=d.L[i]*(.05+.95*f)*(.88+.12*Math.sin(t*2.2+RP[i]))*(e<=0?0:Math.min(1,e*3))*(1-eo)*gx;
