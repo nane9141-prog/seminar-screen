@@ -871,4 +871,11 @@ requestAnimationFrame(loop);
 }
 </script>
 <script>LOBBY.start();</script>
+<script>/* 온라인 주소로 열면 오프라인 캐시 등록 (sw.js) */
+(function(){const st=t=>{window.OFFLINE_STATE=t;document.dispatchEvent(new CustomEvent('offline-state',{detail:t}));};
+if(!location.protocol.startsWith('http')){st('파일 실행 (오프라인)');return;}
+if(!('serviceWorker' in navigator)){st('오프라인 캐시 미지원 브라우저');return;}
+st('오프라인 저장 중…');
+navigator.serviceWorker.register('../sw.js').then(()=>navigator.serviceWorker.ready).then(()=>caches.keys()).then(k=>st(k.some(x=>x.startsWith('seminar-screen-'))?'오프라인 저장 완료':'오프라인 저장 중…')).catch(e=>st('오프라인 캐시 실패: '+e.message));
+})();</script>
 </body></html>

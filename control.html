@@ -43,7 +43,7 @@ label{display:flex;gap:6px;align-items:center}
 #clock{font-variant-numeric:tabular-nums;font-size:22px;font-weight:700;color:#FFB84D}
 </style></head>
 <body>
-<h1>운영 입력 <small>메인 스크린(index.html)과 같은 PC · 같은 브라우저에서 열어 주세요. 입력 즉시 반영됩니다.</small><span style="flex:1"></span><span id="clock">--:--</span></h1>
+<h1>운영 입력 <small>메인 스크린(index.html)과 같은 PC · 같은 브라우저에서 열어 주세요. 입력 즉시 반영됩니다.</small><span style="flex:1"></span><span id="offst" class="mut" style="font-size:13px"></span><span id="clock">--:--</span></h1>
 <div class="wrap">
 <div>
  <div class="box">
@@ -81,6 +81,13 @@ label{display:flex;gap:6px;align-items:center}
 </div>
 </div>
 <script src="assets/sched.js"></script>
+<script>/* 온라인 주소로 열면 오프라인 캐시 등록 (sw.js) */
+(function(){const st=t=>{window.OFFLINE_STATE=t;document.dispatchEvent(new CustomEvent('offline-state',{detail:t}));};
+if(!location.protocol.startsWith('http')){st('파일 실행 (오프라인)');return;}
+if(!('serviceWorker' in navigator)){st('오프라인 캐시 미지원 브라우저');return;}
+st('오프라인 저장 중…');
+navigator.serviceWorker.register('sw.js').then(()=>navigator.serviceWorker.ready).then(()=>caches.keys()).then(k=>st(k.some(x=>x.startsWith('seminar-screen-'))?'오프라인 저장 완료':'오프라인 저장 중…')).catch(e=>st('오프라인 캐시 실패: '+e.message));
+})();</script>
 <script>
 const $=id=>document.getElementById(id),F=SCHED.fmt;
 let S=SCHED.load(),Q=SCHED.loadQ(),sel=null;
@@ -146,5 +153,6 @@ let ft;function flash(t){$('warn').innerHTML='<span style="color:#7FD6A0">'+t+'<
 setInterval(()=>{$('clock').textContent=F(SCHED.nowMin())+':'+String(Math.floor(SCHED.nowSec()%60)).padStart(2,'0');},500);
 setInterval(draw,30000);
 draw();drawQ();
+const ofs=()=>{$('offst').textContent=window.OFFLINE_STATE||'';$('offst').style.color=/완료|파일/.test(window.OFFLINE_STATE||'')?'#7FD6A0':'#FFB84D';};document.addEventListener('offline-state',ofs);ofs();
 </script>
 </body></html>

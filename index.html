@@ -514,7 +514,8 @@ function hud(){const e=document.getElementById('hud');if(!e.classList.contains('
   if(nx){const d=nx.start-nx.ps;sch+='<br>다음: '+(nx.tag||nx.label)+' '+SCHED.fmt(nx.start)+(d?' <span class="'+(d>0?'late':'early')+'">('+(d>0?'+':'')+d+'분)</span>':' (예정대로)');}
   SCHED.warnings(SC).forEach(w=>sch+='<br><span class="late">⚠ '+w+'</span>');sch+='</div>';
   e.innerHTML='<b>화면 목록</b> (클릭, 또는 화면 번호 입력 예: 4-5 Enter, 1-s1 Enter)<ol>'+slides.map((s,i)=>'<li class="'+(i===idx?'cur':'')+'" data-i="'+i+'">'+s.dataset.title+'</li>').join('')+'</ol>'+sch+
-  '<br><b>조작</b><br>→ ← Space PageDown PageUp : 이동 (상황 메시지는 건너뜀) · Home End : 처음/끝<br>질문 화면(M10-2)에서 ← → : 이전 · 다음 질문, PageUp/PageDown : 화면 이동<br>F 전체화면 · B 블랙아웃 · A 대기화면 자동순환('+(auto?'켜짐':'꺼짐')+')<br>휴식 화면에서 + − : 재개 시각과 이후 순서 1분 조정 · [ ] 배경 품질('+window.FSQ.toFixed(2)+') · O 이 창 닫기<br>운영 입력: control.html (질문 · 진행 시간 · 화면 전환)';}
+  '<br><b>조작</b><br>→ ← Space PageDown PageUp : 이동 (상황 메시지는 건너뜀) · Home End : 처음/끝<br>질문 화면(M10-2)에서 ← → : 이전 · 다음 질문, PageUp/PageDown : 화면 이동<br>F 전체화면 · B 블랙아웃 · A 대기화면 자동순환('+(auto?'켜짐':'꺼짐')+')<br>휴식 화면에서 + − : 재개 시각과 이후 순서 1분 조정 · [ ] 배경 품질('+window.FSQ.toFixed(2)+') · O 이 창 닫기<br>운영 입력: control.html (질문 · 진행 시간 · 화면 전환)<br>오프라인: '+(window.OFFLINE_STATE||'-');}
+document.addEventListener('offline-state',e=>{hud();if(/완료/.test(e.detail))toast('오프라인 저장 완료');});
 document.getElementById('hud').addEventListener('click',e=>{const li=e.target.closest('li');if(li)go(+li.dataset.i);});
 setInterval(hud,15000);
 addEventListener('keydown',e=>{const k=e.key;
@@ -1010,4 +1011,12 @@ window.renderAt=(p,m)=>{manual=true;if(m)S.mode=m;phase=p;draw();};
 })();
 </script>
 <script>SCR.initBG();SCR.go(Math.max(0,SCR.byNo(decodeURIComponent(location.hash.slice(1)))));</script>
+<script>/* 온라인 주소로 열면 오프라인 캐시 등록 (sw.js) */
+(function(){const st=t=>{window.OFFLINE_STATE=t;document.dispatchEvent(new CustomEvent('offline-state',{detail:t}));};
+if(!location.protocol.startsWith('http')){st('파일 실행 (오프라인)');return;}
+if(!('serviceWorker' in navigator)){st('오프라인 캐시 미지원 브라우저');return;}
+st('오프라인 저장 중…');
+navigator.serviceWorker.register('sw.js').then(()=>navigator.serviceWorker.ready).then(()=>caches.keys()).then(k=>st(k.some(x=>x.startsWith('seminar-screen-'))?'오프라인 저장 완료':'오프라인 저장 중…')).catch(e=>st('오프라인 캐시 실패: '+e.message));
+})();</script>
+
 </body></html>
