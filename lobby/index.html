@@ -364,7 +364,7 @@ const PHOTO=['speaker1-1','speaker2','speaker-scott','speaker3-1'].map(n=>{const
     let gr=g.createLinearGradient(0,0,0,BOX.h);gr.addColorStop(0,'rgba(0,0,0,1)');gr.addColorStop(.42,'rgba(0,0,0,1)');gr.addColorStop(.88,'rgba(0,0,0,0)');g.fillStyle=gr;g.fillRect(0,0,BOX.w,BOX.h);
     gr=g.createLinearGradient(0,0,BOX.w,0);gr.addColorStop(0,'rgba(0,0,0,0)');gr.addColorStop(.12,'rgba(0,0,0,1)');gr.addColorStop(.88,'rgba(0,0,0,1)');gr.addColorStop(1,'rgba(0,0,0,0)');g.fillStyle=gr;g.fillRect(0,0,BOX.w,BOX.h);};
   im.src='../assets/'+n+'.webp';return c;});
-const PH_A=.62,PH_R=0,PT0=2.7,WOB=1.5; // 사진 먼저(진하게) → 점·선이 생기며 사진은 옅게 남음 / 퇴장 전 1.5초 흔들림
+const PH_A=.62,PH_R=0,PT0=4.7,WOB=1.5;  // 사진 0.7초 페이드 인 후 4초 유지 // 사진 먼저(진하게) → 점·선이 생기며 사진은 옅게 남음 / 퇴장 전 1.5초 흔들림
 const IN=2.8,OUT=2.4;let port=null; // {k,t0,tOut}
 const LV=14,xs=new Float32Array(NPT),ys=new Float32Array(NPT),ls=new Float32Array(NPT),fa=new Float32Array(NPT),lev=new Uint8Array(NPT),cnt=new Int32Array(LV+2),ord=new Int32Array(NPT);
 function drawPort(now){
@@ -420,6 +420,7 @@ requestAnimationFrame(drawPort);
 /* ---- 시퀀스 ---- */
 const T=k=>parseFloat(qp.get(k)||0);
 const HOLD=T('hold')||2.5;  // 연사 점·선 완성 상태 유지(초)
+const FORM=4.7+1.35;  // 등장 후 점·선 완성까지: 사진 0.7초 + 유지 4초 + 형성 1.35초
 const STEPS=[
  {n:'여의도 무드 영상',ov:'ov-video',dim:0,dur:45.6,video:'vMood',restartDS:1},
  {n:'Data Stream',ov:null,dim:1,dur:15},
@@ -427,11 +428,11 @@ const STEPS=[
  {n:'Data Stream',ov:null,dim:1,dur:10},
  {n:'타임테이블',ov:'ov-tt',dim:.2,dur:T('tt')||11.7},
  {n:'Data Stream',ov:null,dim:1,dur:10},
- // 연사: 점·선 완성(등장 후 4.05초) 뒤 HOLD초 유지하고 퇴장. 첫 연사는 0.3초, 2~4번째는 앞 연사가 흩어진 뒤(4초) 등장
- {n:'Session 1 · 김승준',ov:'ov-spk0',dim:.2,dur:0.3+4.05+HOLD,port:0},
- {n:'Session 2 · 권재열',ov:'ov-spk1',dim:.2,dur:4+4.05+HOLD,port:1},
- {n:'Session 3 · Scott Oakland',ov:'ov-spk2',dim:.2,dur:4+4.05+HOLD,port:2},
- {n:'Session 4 · 박성용',ov:'ov-spk3',dim:.2,dur:4+4.05+HOLD,port:3},
+ // 연사: 점·선 완성(등장 후 6.05초) 뒤 HOLD초 유지하고 퇴장. 첫 연사는 0.3초, 2~4번째는 앞 연사가 흩어진 뒤(4초) 등장
+ {n:'Session 1 · 김승준',ov:'ov-spk0',dim:.2,dur:0.3+FORM+HOLD,port:0},
+ {n:'Session 2 · 권재열',ov:'ov-spk1',dim:.2,dur:4+FORM+HOLD,port:1},
+ {n:'Session 3 · Scott Oakland',ov:'ov-spk2',dim:.2,dur:4+FORM+HOLD,port:2},
+ {n:'Session 4 · 박성용',ov:'ov-spk3',dim:.2,dur:4+FORM+HOLD,port:3},
  {n:'Data Stream',ov:null,dim:1,dur:10},
  {n:'타이틀 B',ov:'ov-titleB',dim:.35,dur:T('tb')||10},
  {n:'Data Stream',ov:null,dim:1,dur:10},
