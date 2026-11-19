@@ -35,10 +35,10 @@ body.idle{cursor:none}
 @font-face{font-family:"LexendDeca";src:url(../assets/LexendDeca-Light.woff2) format("woff2");font-weight:300}
 @font-face{font-family:"KakaoSmallSansL";src:url(../assets/KakaoSmallSans-Light.woff2) format("woff2");font-weight:300}
 #ov-title{padding:0}
-#ov-title p,#ov-title h1{position:absolute;margin:0;color:#fff;white-space:nowrap}#ov-title i{font-style:normal}  /* 원본 커닝(자간) 그대로 */
+#ov-title p,#ov-title h1{position:absolute;margin:0;color:#fff;white-space:nowrap}#ov-title i{font-style:normal}  /* 원본 커닝(자간) 그대로. 타이틀 · 타이틀 2 · 로고는 원본의 90% (첫 줄 기준선 · 로고 왼쪽 위 고정) */
 .tt-h{left:189.2px;transition:opacity 1.8s ease}
-.tt1{font:700 108.1px/146.2px "KakaoBigSans";top:calc(276.5px - var(--b1))}
-.tt2{font:300 98.56px/118.3px "LexendDeca";top:calc(252.4px - var(--b2));opacity:0}
+.tt1{font:700 97.3px/131.6px "KakaoBigSans";top:calc(276.5px - var(--b1))}
+.tt2{font:300 88.7px/106.5px "LexendDeca";top:calc(252.4px - var(--b2));opacity:0}
 #ov-title.b .tt1{opacity:0}#ov-title.b .tt2{opacity:1}
 .tt-sub{left:1470.0px;font:300 35.0px/47.7px "LexendDeca";top:calc(211.0px - var(--b3))}
 .tt-date{left:1470.0px;font:300 36.4px/1 "LexendDeca";top:calc(712.2px - var(--b4))}
@@ -46,9 +46,9 @@ body.idle{cursor:none}
 .tt-lab{font:300 21.2px/1 "KakaoSmallSansL";color:#fcfdfd!important}
 .tt-venue{left:1470.0px;top:calc(753.5px - var(--b5))}
 .tt-lab{left:185.9px}
-#ov-title{--b1:118px;--b2:96px;--b3:36px;--b4:31px;--b5:19px;  /* 글자 상자 위 → 첫 줄 기준선 거리(폰트 측정값) */
-  --b6:19px;--l1:calc(699.4px - var(--b6));--l2:calc(864.3px - var(--b6))}
-.tt-logos{position:absolute;left:182.7px;top:731.5px;width:734.0px}
+#ov-title{--b1:106.2px;--b2:86.4px;--b3:36px;--b4:31px;--b5:19px;  /* 글자 상자 위 → 첫 줄 기준선 거리(폰트 측정값) */
+  --b6:19px;--l1:calc(699.4px - var(--b6));--l2:calc(851.0px - var(--b6))}
+.tt-logos{position:absolute;left:182.7px;top:731.5px;width:660.6px}  /* 90% */
 #ov-titleB{padding:0}#ov-titleB .tbw{position:absolute;inset:0}
 #ov-titleB .tbk{position:absolute;margin:0;color:#fff;white-space:nowrap;left:150px;font:700 51.65px/63.2px "KakaoBigSans";top:calc(523.1px - var(--bk))}  /* 카카오 큰글씨 Bold */
 #ov-titleB .tbe{position:absolute;right:150px;top:523.5px;height:32.6px;width:auto}  /* IR KUDOS 로고 워드마크(오른쪽 끝 정렬) */
