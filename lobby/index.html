@@ -24,6 +24,10 @@ body.idle{cursor:none}
 .mt i{font-style:normal}
 #ov-video.on .mt1{animation:mtx 4.5s ease-in-out 1s both}
 #ov-video.on .mt2{animation:mtx 4.5s ease-in-out 6.5s both}
+#ov-msg{padding:0}
+.mt.ko{font-family:"KakaoSmallSansL","LexendDeca",sans-serif;letter-spacing:.02em}
+#ov-msg.on .mt1{animation:mtx 4.5s ease-in-out 2.5s both}
+#ov-msg.on .mt2{animation:mtx 4.5s ease-in-out 8s both}
 @keyframes mtx{0%{opacity:0}33.3%{opacity:1}66.7%{opacity:1}100%{opacity:0}}
 #ov-video,#ov-svc{padding:0;background:#000;transition:opacity 3.2s cubic-bezier(.4,0,.6,1)}#ov-video video,#ov-svc video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 @font-face{font-family:"KakaoBigSans";src:url(../assets/KakaoBigSans-Regular.woff2) format("woff2");font-weight:400}
@@ -82,6 +86,9 @@ body.idle{cursor:none}
 <p class="mt mt1"><i style="letter-spacing:0">K</i>o<i style="letter-spacing:.03em">r</i>ea Sha<i style="letter-spacing:.03em">r</i>eho<i style="letter-spacing:.04em">l</i>ders’ Meeting Online Se<i style="letter-spacing:.1em">r</i>vice</p>
 <p class="mt mt2">Li<i style="letter-spacing:.04em">v</i>e Demo Briefing · 2026.11.30</p></div>
 <div class="ov" id="ov-svc"><video id="vSvc" src="../assets/service-intro.mp4" muted playsinline preload="auto"></video></div>
+<div class="ov" id="ov-msg"><!-- 서비스 소개 영상 뒤 배경 위 문구 2종 (영상 앞 글씨와 같은 방식) -->
+<p class="mt mt1 ko">장소의 제약 없는 주주 참여</p>
+<p class="mt mt2 ko">온라인으로 확장된 주주총회 서비스</p></div>
 <div class="ov" id="ov-title">
 <!-- 타이틀 · 타이틀 2 — screen-title text.svg(302×169.85 대지)를 1920×1080 좌표로 옮긴 HTML. 문구는 여기서 바로 고칩니다 -->
 <h1 class="tt-h tt1">전자주주총회 플랫폼<br>시연 설명회</h1>
@@ -270,7 +277,7 @@ const STEPS=[
  {n:'타이틀 B',ov:'ov-titleB',dim:.35,dur:T('tb')||30},
  {n:'Data Stream',ov:null,dim:1,dur:60},
  {n:'서비스 소개 영상 (KOSMOS 48초)',ov:'ov-svc',dim:0,dur:48,video:'vSvc'},
- {n:'Data Stream',ov:null,dim:1,dur:60}];
+ {n:'Data Stream + 문구 2종',ov:'ov-msg',dim:1,dur:60}];
 let idx=-1,t1=null,t2=null,t3=null,run=true,vEnd=null,SPD=1,stepT0=0,stepLen=0;
 /* 첫 장면 영상: 실제 길이에 맞추고, 파일이 없으면 이 장면을 건너뜀. 다른 장면으로 가면 멈춤 */
 STEPS.forEach(s=>{if(!s.video)return;const v=document.getElementById(s.video);v.addEventListener('loadedmetadata',()=>{if(isFinite(v.duration)&&!T('vid'))s.dur=Math.round(v.duration*10)/10;hud();});v.addEventListener('error',()=>{s.skip=true;if(STEPS[idx]===s)go(idx+1);});v.addEventListener('ended',()=>{if(vEnd&&STEPS[idx]===s)vEnd();});
