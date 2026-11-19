@@ -63,11 +63,12 @@ function draw(st){
   $('oqc-all').textContent=K.length;$('oqc-pick').textContent=P.length;$('oqc-new').textContent=N.length;$('oqc-hide').textContent=H.length;
   $('oqk-all').textContent=L.length;$('oqk-pre').textContent=L.filter(x=>x.kind==='pre').length;$('oqk-live').textContent=L.filter(x=>x.kind==='live').length;
   const mn=document.getElementById('mtabn');if(mn)mn.textContent=L.filter(x=>x.status==='new').length||'';
-  document.querySelectorAll('#oqtabs [data-tab]').forEach(b=>b.classList.toggle('pri',b.dataset.tab===tab));
-  document.querySelectorAll('#oqkind [data-kind]').forEach(b=>b.classList.toggle('pri',b.dataset.kind===kind));
+  document.querySelectorAll('#oqtabs [data-tab]').forEach(b=>b.classList.toggle('sel',b.dataset.tab===tab));
+  document.querySelectorAll('#oqkind [data-kind]').forEach(b=>b.classList.toggle('sel',b.dataset.kind===kind));
   // 현재 송출
   const c=L.find(x=>x.id===cur);
-  $('oqcur').innerHTML=c?'<b class="tag '+c.kind+'">'+lab(c)+'</b> '+esc(c.body)+'<div class="w">'+esc(c.company)+' '+esc(c.name)+' · '+SL[c.session]+(c.who?' · 답변 '+esc(c.who):'')+(st&&st.updated_by?' · 송출 '+esc(String(st.updated_by).replace(DOMAIN,''))+' '+tm(st.updated_at):'')+'</div>':'<span class="mut">화면에 표시 중인 질문이 없습니다.</span>';
+  $('oqair').classList.toggle('empty',!c);
+  $('oqcur').innerHTML=c?lab(c)+' · '+esc(c.body)+'<div class="w">'+esc(c.company)+' '+esc(c.name)+' · '+SL[c.session]+(c.who?' · 답변 '+esc(c.who):'')+(st&&st.updated_by?' · 송출 '+esc(String(st.updated_by).replace(DOMAIN,''))+' '+tm(st.updated_at):'')+'</div>':'화면에 표시 중인 질문이 없습니다. 선택 목록에서 송출하거나 다음 ▶을 누르세요.';
   let list=tab==='all'?K:tab==='pick'?P:tab==='new'?N:H;
   if(ses)list=list.filter(x=>x.session===ses||(ses==='s4'&&x.session==='demo'));
   const act=q=>(tab==='all'?q.status==='picked':tab==='pick')
@@ -76,7 +77,7 @@ function draw(st){
     :'<button data-a="unhide">되돌리기</button><button data-a="del" class="warn">삭제</button>';
   $('oql').innerHTML=list.length?list.map(q=>'<div class="q'+(q.id===cur?' cur':'')+'" data-id="'+q.id+'"><div class="tag '+q.kind+'">'+lab(q)+'<div class="w">'+SL[q.session]+'</div></div>'+
     '<div><div class="t">'+(tab==='all'?'<span class="st '+q.status+'">'+({new:'접수',picked:'선택',hidden:'숨김'})[q.status]+'</span>':'')+esc(q.body)+'</div><div class="w">'+esc(q.company)+' '+esc(q.name)+' · '+tm(q.created_at)+(q.who?' · 답변 '+esc(q.who):'')+(q.picked_by&&q.status==='picked'?' · 선택 '+esc(q.picked_by):'')+(q.shown_at?' · <span style="color:#FFB84D">송출됨 '+tm(q.shown_at)+'</span>':'')+'</div></div>'+
-    '<div class="act">'+act(q)+'</div></div>').join(''):'<p class="mut" style="padding:8px">'+(kind==='pre'&&!K.length?'사전 질의가 없습니다. 사전 신청 때 받은 질문이 있으면 "사전 질문 가져오기"로 불러옵니다.':tab==='all'?'질문이 없습니다.':tab==='pick'?'선택한 질문이 없습니다. "접수" 탭에서 고르세요.':tab==='new'?'새 질문이 없습니다.':'숨긴 질문이 없습니다.')+'</p>';
+    '<div class="act">'+act(q)+'</div></div>').join(''):'<p class="mut empty">'+(kind==='pre'&&!K.length?'사전 질의가 없습니다. 사전 신청 때 받은 질문이 있으면 "사전 질문 가져오기"로 불러옵니다.':tab==='all'?'질문이 없습니다.':tab==='pick'?'선택한 질문이 없습니다. "접수" 탭에서 고르세요.':tab==='new'?'새 질문이 없습니다.':'숨긴 질문이 없습니다.')+'</p>';
 }
 async function upd(id,patch){const {error}=await sb.from('live_questions').update(patch).eq('id',id);if(error)msg(error.message,true);sig='';poll();}
 async function show(id){const {error}=await sb.rpc('admin_qa_show',{p_id:id,p_by:by()});if(error)msg(error.message,true);sig='';poll();}
@@ -108,5 +109,5 @@ $('oqreset').onclick=async()=>{const k=prompt('테스트 질문 초기화 — �
   if(!confirm((k==='all'?'모든':'현장')+' 질문을 삭제합니다. 되돌릴 수 없습니다. 계속할까요?'))return;
   const {data,error}=await sb.rpc('admin_qa_reset',{p_kind:k});if(error)return msg(error.message,true);msg(data+'건 삭제');sig='';poll();};
 
-window.QAOnline={start:init,stop:()=>clearInterval(timer)};
+window.QAOnline={start:init,stop:()=>clearInterval(timer),step:d=>{if(me)step(d);}};
 })();
