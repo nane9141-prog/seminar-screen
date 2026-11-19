@@ -511,9 +511,10 @@ let bt=performance.now();
 function bgTick(now){const f=1-Math.exp(-Math.min(.25,((now||bt)-bt)/1000)*3.2);bt=now||bt;cur.forEach((o,i)=>{const t=tgt[i];['x','y','r'].forEach(k=>{const d=t[k]-o[k];if(Math.abs(d)>1e-4)o[k]+=d*f;else o[k]=t[k];});});
   if(window.FS)FS.objs(cur.map(o=>({x:o.x,y:o.y,r:Math.max(o.r,.001),on:o.r>.004})));requestAnimationFrame(bgTick);}
 /* 배경 Data Stream: 화면 종류별 밝기 · 형태 중심 위치. A 타이틀류 · B 본문 · C 기본 화면(외부 소스 전환) */
-const BGDIM={A:1,B:1,C:1},BGOX={A:.5,B:.5,C:.5};  // 로비와 같이: 밝기 그대로(어둡게 하지 않음), 형태는 모든 화면 가운데 고정
+const BGDIM={A:1,B:1,C:1},BGOX={A:.5,B:.5,C:.5};  // 형태는 모든 화면 가운데 고정
+const OVDIM={title:.42,body:.2};  // 로비 기준: 글(오버레이)이 있으면 배경을 낮춤 — 타이틀류 42% · 본문 · 연사 20% (로비 타이틀 .42 · 타임테이블 · 연사 .2)
 const dsPost=m=>{const f=document.getElementById('c');if(f&&f.contentWindow)f.contentWindow.postMessage(m,'*');};
-function bgSet(s){const f=document.getElementById('c'),k=s.dataset.bg,lay=s.dataset.lay;let d=BGDIM[k]??1,ox=.5;
+function bgSet(s){const f=document.getElementById('c'),k=s.dataset.bg,lay=s.dataset.lay;let d=BGDIM[k]??1,ox=.5;if(k!=='N'){d=(lay==='center'||lay==='en')?OVDIM.title:OVDIM.body;}
   f.style.opacity=k==='N'?0:d;dsPost({ds:'ox',v:ox});}
 document.getElementById('c').addEventListener('load',()=>{dsPost({ds:'q',v:window.FSQ});if(SPD!==1)dsPost({ds:'mul',v:SPD});try{const o=JSON.parse(localStorage.getItem('scr-ds')||'null');if(o)dsPost(Object.assign({ds:'set'},o));}catch(e){}const s=slides[idx];if(s)bgSet(s);});
 function progScroll(s){document.querySelectorAll('.pin').forEach(x=>{if(x._a){x._a.cancel();x._a=null;}});
