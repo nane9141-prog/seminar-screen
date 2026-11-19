@@ -46,10 +46,9 @@ body.idle{cursor:none}
   --b6:19px;--l1:calc(699.4px - var(--b6));--l2:calc(864.3px - var(--b6))}
 .tt-logos{position:absolute;left:182.7px;top:731.5px;width:734.0px}
 #ov-titleB{padding:0}#ov-titleB .tbw{position:absolute;inset:0}
-#ov-titleB .tbk,#ov-titleB .tbe{position:absolute;margin:0;color:#fff;font-family:"Pretendard Variable","Pretendard",sans-serif;white-space:nowrap}
-#ov-titleB .tbk{left:149px;font-weight:700;font-size:53.8px;line-height:63.4px;top:calc(522.2px - var(--bk))}
-#ov-titleB .tbe{right:calc(150px - .045em);font-weight:600;font-size:45.3px;line-height:1;letter-spacing:.045em;top:calc(556.2px - var(--be))}  /* IR KUDOS: 원본 Bold → SemiBold */
-#ov-titleB{--bk:50px;--be:38px}  /* 글자 상자 위 → 첫 줄 기준선 거리(폰트 측정값) */
+#ov-titleB .tbk{position:absolute;margin:0;color:#fff;white-space:nowrap;left:150px;font:700 51.65px/63.2px "KakaoBigSans";top:calc(523.1px - var(--bk))}  /* 카카오 큰글씨 Bold */
+#ov-titleB .tbe{position:absolute;right:150px;top:523.5px;height:32.6px;width:auto}  /* IR KUDOS 로고 워드마크(오른쪽 끝 정렬) */
+#ov-titleB{--bk:53px}  /* 글자 상자 위 → 첫 줄 기준선(폰트 측정값) */
 /* 가운데 구체 자리(원본 SVG 기준 중심 967,541 · 반지름 367px)에 Four States 오브젝트를 겹친다. 검은 바탕은 screen 합성으로 투명 */
 #fsObj{position:absolute;left:267px;top:1px;width:1400px;height:1080px;border:0;mix-blend-mode:screen;pointer-events:none;background:#000}
 #ov-titleB.on .tbw{animation:tbz 14s cubic-bezier(.2,.6,.3,1) both}@keyframes tbz{from{transform:scale(.97)}to{transform:scale(1)}}
@@ -95,7 +94,7 @@ body.idle{cursor:none}
 <img class="tt-logos" src="../assets/title-logos.svg" alt="주최 IR KUDOS · KISM 한국주주총회연구소 / 파트너 KIM &amp; CHANG · Proxymity · STREAMING KOREA">
 </div>
 <div class="ov" id="ov-titleB"><div class="tbw"><!-- 타이틀 B 좌우 글씨: screen-title-b-text.svg(70% 축소본) 위치 그대로 코드로 -->
-<p class="tbk">전자주주총회<br>플랫폼</p><p class="tbe">IR KUDOS</p><iframe id="fsObj" src="../assets/four-states.html" title="" tabindex="-1"></iframe></div></div>
+<p class="tbk">전자주주총회<br>플랫폼</p><img class="tbe" src="../assets/irk-wordmark-white.svg" alt="IR KUDOS"><iframe id="fsObj" src="../assets/four-states.html" title="" tabindex="-1"></iframe></div></div>
 <div class="ov" id="ov-tt"><h2 class="head">행사 프로그램</h2><div class="rows">
 <div class="prow"><p class="ptime">13:00</p><p class="ptxt">개회</p><p class="pwho"></p></div>
 <div class="prow"><p class="ptime">13:10</p><p class="ptxt">축사 · 한국주주총회연구소 출범식</p><p class="pwho"></p></div>
