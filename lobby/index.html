@@ -130,10 +130,10 @@ body.idle{cursor:none}
   <h3>전체</h3>
   <div class="row"><label for="trans">전환 시간</label><input id="trans" type="range" min="0.8" max="8" step="0.1" value="4"><span class="v"></span></div>
   <div class="row"><label for="ep">전환 이징</label><input id="ep" type="range" min="1" max="8" step="0.1" value="4.5"><span class="v"></span></div>
-  <div class="row"><label for="speed">전체 속도</label><input id="speed" type="range" min="0" max="2" step="0.01" value="0.38"><span class="v"></span></div>
+  <div class="row"><label for="speed">전체 속도</label><input id="speed" type="range" min="0" max="2" step="0.01" value="0.6"><span class="v"></span></div>
   <div class="row"><label for="count">점 개수</label><input id="count" type="range" min="600" max="8000" step="100" value="1600"><span class="v"></span></div>
   <div class="row"><label for="trail">꼬리 길이</label><input id="trail" type="range" min="0" max="2.5" step="0.01" value="1"><span class="v"></span></div>
-  <div class="row"><label for="size">점 크기</label><input id="size" type="range" min="0.3" max="2.5" step="0.01" value="1"><span class="v"></span></div>
+  <div class="row"><label for="size">점 크기</label><input id="size" type="range" min="0.3" max="2.5" step="0.01" value="0.9"><span class="v"></span></div>
   <div class="row"><label for="scale">형태 크기</label><input id="scale" type="range" min="0.4" max="1.6" step="0.01" value="1"><span class="v"></span></div>
   <div class="row"><label for="bright">밝기</label><input id="bright" type="range" min="0.3" max="2" step="0.01" value="1"><span class="v"></span></div>
   <h3>컬러</h3>
@@ -319,8 +319,8 @@ document.addEventListener('offline-state',()=>CtrlPanel.draw());
 window.LOBBY={go,start(){go(Math.max(0,(parseInt(location.hash.slice(1))||1)-1));}};
 })();
 </script>
-<script>/* Data Stream (원본 아티팩트 스크립트, 캔버스 크기만 고정) */
-
+<script>
+/* Data Stream (원본 아티팩트 스크립트, 캔버스 크기만 고정) */
 {
 const $=id=>document.getElementById(id);
 const cv=$('c'),ctx=cv.getContext('2d',{alpha:false});
@@ -342,19 +342,23 @@ const SCN=[
   {k:'orbit', name:'타원 흐름',dur:8, tail:.9, form:1,fl:'타원 높이'},
   {k:'radial',name:'방사',    dur:8, tail:.7, form:1,fl:'방사 길이'},
   {k:'ring',  name:'링',      dur:8, tail:.8, form:1,fl:'링 두께'},
+  {k:'well',  name:'중력 우물',dur:10,tail:.1, form:1,fl:'우물 깊이'},
+  {k:'tunnel',name:'웨이브 터널',dur:16,tail:.12,form:1,fl:'말림'},
   {k:'sphere',name:'구체',    dur:10,tail:1.1,form:1,fl:'구 두께'}];
 // 장면별 공통 조절값: mv 움직임 속도, size 점 크기, scale 형태 크기, bright 밝기 (모두 1이 기본)
-SCN.forEach(s=>{s.mv=1;s.size=1;s.scale=1;s.bright=1;});
+SCN.forEach(s=>{s.mv=1;s.size=1;s.scale=1;s.bright=1;s.boost=s.k==='tunnel'||s.k==='well';}); // boost: 촘촘한 격자 장면은 점을 자동으로 늘림
 // 장면별 기본값 조정
+SCN.forEach(s=>{s.dur=s.k==='gather'?20:10;}); // 길이: 모임 20초, 나머지 10초
 Object.assign(SCN.find(s=>s.k==='stream'),{tail:.4,size:.46,scale:.72,bright:.32,form:.64});
 Object.assign(SCN.find(s=>s.k==='sphere'),{tail:.74,size:.8,scale:.7,bright:.9,form:.86});
-Object.assign(SCN.find(s=>s.k==='net'),{tail:.22,size:.9,scale:.82,bright:.54,form:.46});
+Object.assign(SCN.find(s=>s.k==='net'),{tail:.1,size:.8,scale:.82,bright:1,form:.3});
 Object.assign(SCN.find(s=>s.k==='ring'),{tail:.56,size:1.26,scale:.9,bright:.75,form:.76});
 Object.assign(SCN.find(s=>s.k==='meridian'),{scale:.8});
 Object.assign(SCN.find(s=>s.k==='radial'),{scale:.85});
+Object.assign(SCN.find(s=>s.k==='converge'),{size:1.8,form:0,scale:1.1,bright:.6,tail:.8});
 Object.assign(SCN.find(s=>s.k==='orbit'),{scale:.46,tail:.42,size:1.5,form:.8,bright:.22});
 Object.assign(SCN.find(s=>s.k==='vortex'),{tail:.66,size:1,scale:.84,bright:.78,form:1.6});
-SCN.forEach((s,i)=>{s.on=s.k!=='sphere';s.o0=i;}); // on: 재생 여부, o0: 처음 순서
+SCN.forEach((s,i)=>{s.on=s.k!=='sphere'&&s.k!=='vortex';s.o0=i;}); // on: 재생 여부, o0: 처음 순서
 const SCN0=SCN.map(s=>({...s})); // 초기화용 장면별 기본값
 let START=[],LOOP_S=0,ACT=[];
 function relayout(){
@@ -403,7 +407,13 @@ const ORL=ORB.map(e=>Math.PI*(3*(e[0]+e[2])-Math.sqrt((3*e[0]+e[2])*(e[0]+3*e[2]
 P.forEach(q=>{let u=q.ln*ORT,e=0;while(e<7&&u>ORL[e%4]){u-=ORL[e%4];e++;}q.oe=e;});
 // KISM 엠블럼(두 조각) — 가운데 원 안에 흰색으로
 const KISM=new Path2D('M38.67 0 16.89 0 0 20.9 0 35.79 4.79 41.72 20.05 22.95 38.67 0Z M5.99 43.21 16.89 56.69 38.67 56.69 16.87 29.83 5.99 43.21Z');
+const KISM_D='M38.67 0 16.89 0 0 20.9 0 35.79 4.79 41.72 20.05 22.95 38.67 0Z M5.99 43.21 16.89 56.69 38.67 56.69 16.87 29.83 5.99 43.21Z';
 const ORC=.37; // 가운데 원 반지름
+// 가운데 원 테두리 점·선 패턴: 둘레를 n칸으로 나눠 칸마다 선 하나 + 빈칸 가운데 점 하나
+function ringPat(R,PX,t){const n=18,P=TAU*R/n,d=P*.55;
+  return{lw:Math.max(1.6,2*PX),dw:Math.max(3,3.4*PX),dash:[d,P-d],dot:[.001,P-.001],dotShift:d+(P-d)/2,off:-t*14*PX,P};}
+/* 웨이브 터널: 규칙적인 점 격자가 말려 들어가는 관(파도 속) 표면을 이룸. 카메라는 관 안쪽, 격자가 앞으로 흘러옴 */
+const TUN_C=110,TUN_R=80,TUN_N=TUN_C*TUN_R;
 const NP=[];for(let i=0;i<NODES;i++){const z=1-2*(i+.5)/NODES,r=Math.sqrt(1-z*z),a=i*2.39996;const j=.12;NP.push([r*Math.cos(a)+gauss()*j,z+gauss()*j,r*Math.sin(a)+gauss()*j].map(v=>v*.92));}
 const knn=(pts,k)=>{const E=[];pts.forEach((p,i)=>{pts.map((q,j)=>[j,Math.hypot(p[0]-q[0],p[1]-q[1],p[2]-q[2])]).filter(x=>x[0]!==i).sort((a,b)=>a[1]-b[1]).slice(0,k).forEach(([j])=>{if(!E.some(e=>(e[0]===i&&e[1]===j)||(e[0]===j&&e[1]===i)))E.push([i,j]);});});return E;};
 const EDGES=knn(NP,3);
@@ -452,6 +462,21 @@ function modePos0(m,q,i,t0,o){
     const d=RD[(q.ln*NLR)|0],u=((q.su+t*q.lv*.06)%1+1)%1,r=u*d[3]*f*1.3*sc;
     let p=rotX(rotY([d[0]*r,d[1]*r,d[2]*r],TAU*t/60),.2);
     o[2]=.7;o[3]=Math.pow(Math.sin(Math.PI*Math.min(1,u*1.15)),.6)*.9+.1*(u<.05?1:0);proj(p,o);return;}
+  case 'well':{ // 중력 우물: 비스듬히 내려다보는 점 격자 평면 가운데가 깊게 꺼지고, 테두리가 솟고, 둘레로 물결이 퍼져 나감
+    const WC=130,WR=(MAXN/WC)|0,c=i%WC,rw=((i/WC)|0)%WR;
+    const x=(c/(WC-1)-.5)*13,z=.3+Math.pow(rw/(WR-1),1.15)*9,r=Math.hypot(x,(z-3.6)*1.05)/sc;
+    const y=(-1.7*f*Math.exp(-Math.pow(r/1.55,2))*(1+.04*Math.sin(t*.7))+.2*Math.exp(-Math.pow((r-1.95)/.3,2))
+      +.07*Math.sin(r*3.6-t*1.4)*Math.exp(-r*.2)*Math.min(1,r/1.6))*sc;
+    const a=.4,Y=y-1.25,yc=Y*Math.cos(a)+z*Math.sin(a),zc=-Y*Math.sin(a)+z*Math.cos(a);
+    if(zc<.25){o[0]=0;o[1]=-9;o[2]=0;o[3]=0;return;}
+    const F=1.3,k=F/zc;o[0]=x*k;o[1]=yc*k+.36;
+    o[2]=Math.min(2.8,.5+1.3*k);o[3]=Math.min(1,(9.3-z)/2.4)*Math.min(1,zc*1.5)*(.7+.3*Math.min(1,k*1.5));return;}
+  case 'tunnel':{
+    const c=i%TUN_C,rw=((i/TUN_C)|0)%TUN_R,v=((rw/TUN_R-t*.035)%1+1)%1,d=.25+v*7.5;
+    const th=.45+c/TUN_C*TAU*.84+1.5*f*Math.pow(v,.9)+.08*Math.sin(t*.3),r=1.75*Math.pow(1-.8*v,1.1)*sc;
+    const cx0=(.95*Math.pow(v,.6)-.1)*sc,cy0=(.05*v)*sc,x=cx0+Math.cos(th)*r,y=cy0+Math.sin(th)*r*.92,k=1.6/d;
+    o[0]=x*k+.35*sc;o[1]=y*k;o[2]=Math.min(2.4,.55+1.1*k);
+    o[3]=Math.min(1,v*9)*Math.min(1,(1-v)*2.2)*(.55+.45*Math.min(1,k));return;}
   case 'orbit':{ // 타원 흐름: 위·아래 타원을 따라 점이 돌고, 바깥 점선 타원은 점선 구간에서만 밝음
     const e=q.oe,E=ORB[e%4],up=e<4?1:-1,dir=(e%2?1:-1)*up,k=HH*.98*sc;
     const a=q.th+dir*TAU*t*q.lv/(22+e%4*7),br2=1+.04*Math.sin(t*.5+e);
@@ -516,7 +541,7 @@ function draw(){
   const tint=TINTS[S.tint],[fr,fg,fb]=tint.fg,cx=W/2,cy=H/2;
   ctx.globalCompositeOperation='source-over';ctx.fillStyle=tint.bg;ctx.fillRect(0,0,W,H);
   const s0=seg(tNow);
-  LF.tail=0;const TI=-1,wT=0,N0=S.count|0,N=N0;
+  LF.tail=0;const TI=-1,wT=SCN.reduce((a,x,m)=>a+(x.boost?weight(s0,m):0),0),N0=S.count|0,N=Math.max(N0,Math.round(MAXN*Math.min(1,wT))); // 웨이브 터널은 촘촘한 격자가 필요해 점을 자동으로 늘림
   // 꼬리 길이: 장면 비중에 따라 부드럽게
   let tail=0;SCN.forEach((s,m)=>tail+=s.tail*weight(s0,m));tail*=S.trail;
   if(S.grid){ctx.fillStyle=`rgba(${fr},${fg},${fb},.16)`;const g=Math.round(54*PX),z=Math.max(1,Math.round(2*PX));for(let y=(H/2)%g;y<H;y+=g)for(let x=(W/2)%g;x<W;x+=g)ctx.fillRect(x-z/2,y-z/2,z,z);}
@@ -580,7 +605,11 @@ function draw(){
   if(wO>.01){const sc=S.scale*SCN[OI].scale,R=ORC*HH*.98*sc*U*(.85+.15*wO);
     ctx.globalCompositeOperation='source-over';ctx.globalAlpha=wO;
     ctx.fillStyle=tint.bg;ctx.beginPath();ctx.arc(cx,cy,R,0,TAU);ctx.fill();
-    ctx.lineWidth=Math.max(1,1.4*PX);ctx.strokeStyle=`rgba(${fr},${fg},${fb},.9)`;ctx.stroke();
+    // 테두리: 짧은 선과 점이 번갈아 이어지는 점·선 패턴, 천천히 회전
+    const RG=ringPat(R,PX,tNow);ctx.strokeStyle=`rgba(${fr},${fg},${fb},.9)`;
+    ctx.lineCap='butt';ctx.lineWidth=RG.lw;ctx.setLineDash(RG.dash);ctx.lineDashOffset=RG.off;ctx.stroke();
+    ctx.lineCap='round';ctx.lineWidth=RG.dw;ctx.setLineDash(RG.dot);ctx.lineDashOffset=RG.off-RG.dotShift;ctx.stroke();
+    ctx.setLineDash([]);ctx.lineDashOffset=0;ctx.lineCap='round';
     const h=R*.62,k2=h/56.69;ctx.save();ctx.translate(cx-38.67*k2/2,cy-h/2);ctx.scale(k2,k2);ctx.fillStyle=`rgb(${fr},${fg},${fb})`;ctx.fill(KISM);ctx.restore();
     ctx.globalAlpha=1;LF.orb={R,h};}else LF.orb=null;
   // 패널 진행 표시
@@ -697,6 +726,8 @@ function toSVG(){
   for(let i=0;i<N;i++){if(AL[i]<.01)continue;const q=P[i],r=SZ[i]*S.size*1.15*PX,a=Math.min(1,AL[i]*br*(.8+.2*Math.sin(tw2*3+q.tw)));
     const key=Math.round(a*20);if(!key)continue;(bins.get(key)||bins.set(key,[]).get(key)).push(r<1.6?(z=>`<rect x="${f(X(i,0)-z/2)}" y="${f(Y(i,0)-z/2)}" width="${f(z)}" height="${f(z)}"/>`)(Math.max(1,r*1.3)):`<circle cx="${f(X(i,0))}" cy="${f(Y(i,0))}" r="${f(r)}"/>`);}
   o.push('<g id="dots">');[...bins.keys()].sort((a,b)=>a-b).forEach(k=>o.push(`<g fill="${col}" fill-opacity="${k/20}">${bins.get(k).join('')}</g>`));o.push('</g>');
+  if(LF.orb){const {R,h}=LF.orb,k2=h/56.69,a=Math.min(1,Math.pow(weight(s0,SCN.findIndex(x=>x.k==='orbit')),2));
+    const RG=ringPat(R,PX,tNow);o.push(`<g id="center" opacity="${f(a*100)/100}" style="mix-blend-mode:normal"><circle cx="${f(cx)}" cy="${f(cy)}" r="${f(R)}" fill="${tint.bg}"/><circle cx="${f(cx)}" cy="${f(cy)}" r="${f(R)}" fill="none" stroke="${col}" stroke-opacity=".9" stroke-width="${f(RG.lw)}" stroke-dasharray="${f(RG.dash[0])} ${f(RG.dash[1])}" stroke-dashoffset="${f(RG.off)}" transform="rotate(0 ${f(cx)} ${f(cy)})"/><circle cx="${f(cx)}" cy="${f(cy)}" r="${f(R)}" fill="none" stroke="${col}" stroke-opacity=".9" stroke-linecap="round" stroke-width="${f(RG.dw)}" stroke-dasharray="0.001 ${f(RG.P-.001)}" stroke-dashoffset="${f(RG.off-RG.dotShift)}"/><path transform="matrix(${f(k2*1e3)/1e3} 0 0 ${f(k2*1e3)/1e3} ${f(cx-38.67*k2/2)} ${f(cy-h/2)})" fill="${col}" d="${KISM_D}"/></g>`);}
   o.push('</g></svg>');
   return o.join('\n');
 }
