@@ -206,6 +206,15 @@ body.idle{cursor:none}
 .slide[data-no=M1-4] .card-t{margin-top:16px;font:700 63px/1.45 "KakaoBig",sans-serif;letter-spacing:0;color:#F2F5FA}
 .slide[data-no=M1-4] .card-b{margin-top:12px;font:300 48px/1.5 "KakaoSmall",sans-serif;color:#9AA3AF}
 .slide[data-no=M1-4] .card-t.tbd,.slide[data-no=M1-4] .card-b.tbd{color:#FFB84D}
+
+/* 프로그램 시작 파트(M4-1 축사 및 출범식 · M5-1 · M7-1 · M9-2): 아래에서 떠오르는 그라데이션, 파랑 ↔ #21af6b */
+@property --glow{syntax:"<color>";inherits:false;initial-value:#1f5fff}
+.slide[data-glow]::before{content:"";position:absolute;left:-10%;right:-10%;bottom:0;height:100%;pointer-events:none;opacity:0;
+  background:radial-gradient(60% 75% at 50% 112%,var(--glow) 0%,color-mix(in srgb,var(--glow) 55%,transparent) 32%,transparent 72%);
+  transform:translateY(35%)}
+.slide.on[data-glow]::before{animation:glowIn 2.6s cubic-bezier(.2,.7,.2,1) .2s both,glowHue 9s ease-in-out 1.2s infinite alternate}
+@keyframes glowIn{from{opacity:0;transform:translateY(35%)}to{opacity:.95;transform:none}}
+@keyframes glowHue{0%{--glow:#1f5fff}50%{--glow:#1a8fd6}100%{--glow:#21af6b}}
 </style></head>
 <body>
 <div class="stage" id="scr" data-foot="full">
@@ -262,7 +271,7 @@ body.idle{cursor:none}
 <h2 class="head fu" style="--i:0">안내 말씀</h2>
 <div class="notes tight" data-stagger style="--i:1"><div class="note"><p class="num">1</p><p class="lead">휴대폰은 무음으로 설정해 주세요.</p></div><div class="note"><p class="num">2</p><p class="lead">휴식은 14:25, 15:40 두 차례 15분씩 있습니다.</p></div><div class="note"><p class="num">3</p><p class="lead">현장 질의는 명찰 뒷면의 QR코드로 남겨 주세요. 사전 질문과 함께 질의응답 시간(17:30)에 답변 드립니다.</p></div><div class="note"><p class="num">4</p><p class="lead">설명회는 현장 참석으로만 진행되며, 온라인 생중계 · 다시보기와 발표자료는 제공되지 않습니다.</p></div><div class="note"><p class="num">5</p><p class="lead">원활한 진행을 위해 영상 촬영은 삼가 주시기 바랍니다.</p></div><div class="note"><p class="num">6</p><p class="lead">행사 종료 후 설문 참여 안내를 이메일로 보내드립니다.</p></div></div>
 </section>
-<section class="slide" id="m4_1" data-no="M4-1" data-title="M4-1 파트 타이틀 · 축사 및 출범식" data-bg="A" data-foot="full" data-tr="zoom" data-lay="center">
+<section class="slide" id="m4_1" data-no="M4-1" data-title="M4-1 파트 타이틀 · 축사 및 출범식" data-bg="A" data-foot="full" data-tr="zoom" data-glow="1" data-lay="center">
 <p class="eyebrow fu" style="--i:0">OPENING</p>
 <h1 class="title-m" data-words style="--i:1">축사 및 출범식</h1>
 <p class="lead w2600 fu" style="--i:2">전자주주총회 플랫폼 설명회 개회에 각계의 응원과 한국주주총회연구소 공식 출범을 알립니다.</p>
@@ -289,7 +298,7 @@ body.idle{cursor:none}
 <p class="lead fu" style="--i:2">한국주주총회연구소의 공식 출범을 알립니다.</p>
 <p class="meta fu" style="--i:3">권재열 한국주주총회연구소장, 경희대 법학전문대학원 교수</p>
 </section>
-<section class="slide" id="m5_1" data-no="M5-1" data-title="M5-1 파트 타이틀 · 의무화가 바꾸는 주주총회" data-bg="A" data-foot="full" data-tr="zoom" data-lay="center">
+<section class="slide" id="m5_1" data-no="M5-1" data-title="M5-1 파트 타이틀 · 의무화가 바꾸는 주주총회" data-bg="A" data-foot="full" data-tr="zoom" data-glow="1" data-lay="center">
 <p class="eyebrow fu" style="--i:0">PART 1</p>
 <h1 class="title-m" data-words style="--i:1">의무화가 바꾸는 주주총회</h1>
 <p class="lead w2600 fu" style="--i:2">상법 개정과 전자주주총회 의무화를 법률 · 학계 관점에서 다룹니다.</p>
@@ -332,7 +341,7 @@ body.idle{cursor:none}
 <h1 class="title-m" data-words style="--i:1">곧 Session 3이 시작됩니다</h1>
 <p class="lead fu" style="--i:2">자리로 돌아와 주세요.</p>
 </section>
-<section class="slide" id="m7_1" data-no="M7-1" data-title="M7-1 파트 타이틀 · 전자주주총회 및 의결권 행사의 미래" data-bg="A" data-foot="full" data-tr="zoom" data-lay="center">
+<section class="slide" id="m7_1" data-no="M7-1" data-title="M7-1 파트 타이틀 · 전자주주총회 및 의결권 행사의 미래" data-bg="A" data-foot="full" data-tr="zoom" data-glow="1" data-lay="center">
 <p class="eyebrow fu" style="--i:0">PART 2</p>
 <h1 class="title-m" data-words style="--i:1">전자주주총회 및<br>의결권 행사의 미래</h1>
 <p class="lead w2600 fu" style="--i:2">글로벌 의결권 플랫폼의 시각과 IR큐더스의 통합 솔루션으로 전자주주총회 도입 · 운영 방안을 살펴봅니다.</p>
@@ -375,7 +384,7 @@ body.idle{cursor:none}
 <h1 class="title-m" data-words style="--i:1">곧 모의 전자주주총회 시연이 시작됩니다</h1>
 <p class="lead fu" style="--i:2">자리로 돌아와 주세요. 입장 시 설치하신 <span class="tbd">[참여 앱]</span>으로 모의 표결에 참여하실 수 있습니다.</p>
 </section>
-<section class="slide" id="m9_2" data-no="M9-2" data-title="M9-2 시연 타이틀" data-bg="B" data-foot="full" data-tr="zoom" data-lay="split">
+<section class="slide" id="m9_2" data-no="M9-2" data-title="M9-2 시연 타이틀" data-bg="B" data-foot="full" data-tr="zoom" data-glow="1" data-lay="split">
 <p class="eyebrow fu" style="--i:0">PART 3 · DEMO</p>
 <h1 class="title-m" data-words style="--i:1">모의 전자주주총회 시연</h1>
 <p class="lead fu" style="--i:2">준비부터 집계까지, 전자주총 전 과정을 그대로<br>모의 회사 · 주주 · 의안으로 주주총회 전 과정을 진행합니다.</p>
