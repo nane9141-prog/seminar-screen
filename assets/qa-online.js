@@ -61,10 +61,9 @@ function draw(st){
   const K=kind?L.filter(x=>x.kind===kind):L;
   const P=picked().filter(x=>!kind||x.kind===kind),N=K.filter(x=>x.status==='new'),H=K.filter(x=>x.status==='hidden');
   $('oqc-all').textContent=K.length;$('oqc-pick').textContent=P.length;$('oqc-new').textContent=N.length;$('oqc-hide').textContent=H.length;
-  $('oqk-all').textContent=L.length;$('oqk-pre').textContent=L.filter(x=>x.kind==='pre').length;$('oqk-live').textContent=L.filter(x=>x.kind==='live').length;
+  const ko=$('oqkind').options;ko[0].text='사전 + 현장 ('+L.length+')';ko[1].text='사전 질의 ('+L.filter(x=>x.kind==='pre').length+')';ko[2].text='현장 질의 ('+L.filter(x=>x.kind==='live').length+')';$('oqkind').value=kind;
   const mn=document.getElementById('mtabn');if(mn)mn.textContent=L.filter(x=>x.status==='new').length||'';
   document.querySelectorAll('#oqtabs [data-tab]').forEach(b=>b.classList.toggle('sel',b.dataset.tab===tab));
-  document.querySelectorAll('#oqkind [data-kind]').forEach(b=>b.classList.toggle('sel',b.dataset.kind===kind));
   // 현재 송출
   const c=L.find(x=>x.id===cur);
   $('oqair').classList.toggle('empty',!c);
@@ -99,7 +98,7 @@ function step(d){const P=picked();if(!P.length)return msg('선택한 질문이 �
 $('oqprev').onclick=()=>step(-1);$('oqnext').onclick=()=>step(1);
 $('oqclear').onclick=()=>show(null);
 document.querySelectorAll('#oqtabs [data-tab]').forEach(b=>b.onclick=()=>{tab=b.dataset.tab;localStorage.setItem('qa-tab',tab);sig='';draw();poll();});
-document.querySelectorAll('#oqkind [data-kind]').forEach(b=>b.onclick=()=>{kind=b.dataset.kind;localStorage.setItem('qa-kind',kind);sig='';draw();poll();});
+$('oqkind').onchange=e=>{kind=e.target.value;localStorage.setItem('qa-kind',kind);sig='';draw();poll();};
 $('oqses').onchange=e=>{ses=e.target.value;sig='';draw();};
 $('oqimport').onclick=async()=>{const {data,error}=await sb.rpc('admin_import_pre_questions');if(error)return msg(error.message,true);msg('사전 질문 '+data+'건을 접수 목록에 추가했습니다');sig='';poll();};
 $('oqadd').onclick=async()=>{const body=prompt('질문 내용 (종이 질문지 등)');if(!body||!body.trim())return;const company=prompt('회사','')||'-';const name=prompt('이름','')||'-';

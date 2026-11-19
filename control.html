@@ -47,7 +47,7 @@ body[data-m=ops] #colQa,body[data-m=qa] #colOps{display:none}
 body[data-m] .wrap{grid-template-columns:minmax(0,1fr)}
 body>h1,body>.mtab,body>.wrap{max-width:1200px;margin-left:auto;margin-right:auto}
 #colOps table th:nth-child(2){width:150px}#colOps table th:nth-child(3),#colOps table th:nth-child(4){width:110px}#colOps table th:nth-child(5){width:90px}
-body[data-m=qa] .ql{max-height:calc(100vh - 470px);min-height:220px}
+body[data-m=qa] .ql{max-height:calc(100vh - 560px);min-height:180px}
 .ql .st{display:inline-block;font-size:11px;font-weight:700;padding:0 5px;border-radius:4px;margin-right:4px;background:#1C2A45;color:#8793A6}
 .ql .st.picked{background:#173a2a;color:#7FD6A0}.ql .st.hidden{background:#3a1d1d;color:#FF8A7A}
 .row{display:flex;gap:6px;align-items:center;margin-top:8px}
@@ -88,6 +88,24 @@ details.adm summary::before{content:"▸ ";}details.adm[open] summary::before{co
 details.adm .bar{margin:8px 0 0}
 .hint{font-size:12px;color:#8793A6}
 .kbd{display:inline-block;border:1px solid #2E4370;border-radius:4px;padding:0 5px;font-size:11px;color:#8793A6;margin-left:4px}
+/* 질의 관리 간격 */
+.oq-acct{margin-top:14px;padding-bottom:14px;border-bottom:1px solid #22314F}
+.oq-sec{margin-top:16px}
+.oq-sec .air{margin-top:0}
+.oq-ctl{margin:10px 0 0}
+.oq-list{margin-top:24px}
+.oq-head{display:flex;align-items:flex-end;gap:12px;border-bottom:1px solid #22314F}
+.subtab{display:flex;gap:2px}
+.subtab button{background:none;border:0;border-bottom:2px solid transparent;border-radius:0;color:#8793A6;padding:8px 12px;font-weight:600}
+.subtab button:hover{background:none;color:#E6ECF5}
+.subtab button:focus{outline:0}.subtab button:focus-visible{outline:2px solid #4C9DFF;outline-offset:-2px;border-radius:4px}
+.subtab button.sel{color:#E6ECF5;border-bottom-color:#4C9DFF}
+.subtab b{display:inline-block;min-width:18px;margin-left:4px;padding:0 5px;border-radius:9px;background:#1C2A45;font-size:12px;line-height:18px;text-align:center}
+.subtab button.sel b{background:#1F6FE0;color:#fff}
+.oq-flt{margin-left:auto;display:flex;gap:6px;padding-bottom:6px}
+.oq-flt select{height:32px}
+.oq-list .ql{margin-top:4px}
+.oq-foot{margin:12px 0 0}
 #clock{font-variant-numeric:tabular-nums;font-size:22px;font-weight:700;color:#FFB84D}
 </style></head>
 <body>
@@ -129,14 +147,21 @@ details.adm .bar{margin:8px 0 0}
    <div id="oqoff" hidden class="mut" style="padding:8px">인터넷에 연결되지 않아 온라인 질문을 불러올 수 없습니다. "직접 입력"으로 바꿔 진행하세요.</div>
    <form id="oqlogin" hidden class="row" style="flex-wrap:wrap"><span class="mut" style="width:100%">관리자 페이지 계정으로 로그인하세요.</span><input type="text" id="oqid" placeholder="아이디 (seminar01)" autocomplete="username"><input type="password" id="oqpw" placeholder="비밀번호" autocomplete="current-password" style="flex:1;min-width:0;font:inherit;background:#0B1120;color:#E6ECF5;border:1px solid #2E4370;border-radius:6px;padding:4px 7px"><button class="pri" type="submit">로그인</button><span id="oqlerr" class="late" style="width:100%"></span></form>
    <div id="oqmain" hidden>
-    <div class="row" style="margin-top:0"><span class="mut">계정</span><b id="oqme"></b><span class="mut">노트북 이름</span><input type="text" id="oqst" placeholder="예: A" style="flex:0 0 70px"><span class="hint">선택 · 송출 기록에 표시</span><span class="sp" style="flex:1"></span><span id="oqnet" class="mut" style="font-size:12px"></span><button id="oqout">로그아웃</button></div>
-    <div class="air empty" id="oqair"><span class="air__lb">송출 중</span><div class="air__q" id="oqcur"></div></div>
-    <div class="bar"><button id="oqprev">◀ 이전</button><button id="oqnext" class="pri">다음 ▶</button><button id="oqclear">화면 비우기</button><span class="hint">키보드 <span class="kbd">←</span><span class="kbd">→</span></span><span class="sp"></span><span id="oqmsg"></span></div>
-    <div class="bar" style="margin-top:0"><span class="mut">구분</span><span class="seg" id="oqkind"><button data-kind="">전체 <b id="oqk-all">0</b></button><button data-kind="pre">사전 질의 <b id="oqk-pre">0</b></button><button data-kind="live">현장 질의 <b id="oqk-live">0</b></button></span><span class="sp"></span><button id="oqimport">사전 질문 가져오기</button><button id="oqadd">+ 직접 추가</button></div>
-    <div class="bar" style="margin-top:0"><span class="mut">상태</span><span class="seg" id="oqtabs"><button data-tab="all">전체 <b id="oqc-all">0</b></button><button data-tab="pick">선택 목록 <b id="oqc-pick">0</b></button><button data-tab="new">접수 <b id="oqc-new">0</b></button><button data-tab="hide">숨김 <b id="oqc-hide">0</b></button></span>
-     <select id="oqses"><option value="">전체 세션</option><option value="all">전체 · 공통</option><option value="s1">Session 1</option><option value="s2">Session 2</option><option value="s3">Session 3</option><option value="s4">Session 4 · 시연</option></select></div>
-    <div class="ql" id="oql"></div>
-    <details class="adm"><summary>관리</summary><div class="bar"><button class="warn" id="oqreset">테스트 질문 초기화</button><span class="hint">행사 전 리허설 질문 삭제용</span></div></details>
+    <div class="row oq-acct"><span class="mut">계정</span><b id="oqme"></b><span class="mut">노트북 이름</span><input type="text" id="oqst" placeholder="예: A" style="flex:0 0 70px"><span class="hint">선택 · 송출 기록에 표시</span><span class="sp" style="flex:1"></span><span id="oqnet" class="mut" style="font-size:12px"></span><button id="oqout">로그아웃</button></div>
+    <section class="oq-sec">
+     <div class="air empty" id="oqair"><span class="air__lb">송출 중</span><div class="air__q" id="oqcur"></div></div>
+     <div class="bar oq-ctl"><button id="oqprev">◀ 이전</button><button id="oqnext" class="pri">다음 ▶</button><button id="oqclear">화면 비우기</button><span class="hint">키보드 <span class="kbd">←</span><span class="kbd">→</span></span><span class="sp"></span><span id="oqmsg"></span></div>
+    </section>
+    <section class="oq-sec oq-list">
+     <div class="oq-head">
+      <nav class="subtab" id="oqtabs"><button data-tab="pick">선택 목록 <b id="oqc-pick">0</b></button><button data-tab="new">접수 <b id="oqc-new">0</b></button><button data-tab="hide">숨김 <b id="oqc-hide">0</b></button><button data-tab="all">전체 <b id="oqc-all">0</b></button></nav>
+      <div class="oq-flt"><select id="oqkind" aria-label="구분"><option value="">사전 + 현장</option><option value="pre">사전 질의</option><option value="live">현장 질의</option></select>
+       <select id="oqses" aria-label="세션"><option value="">모든 세션</option><option value="all">전체 · 공통</option><option value="s1">Session 1</option><option value="s2">Session 2</option><option value="s3">Session 3</option><option value="s4">Session 4 · 시연</option></select></div>
+     </div>
+     <div class="ql" id="oql"></div>
+     <div class="bar oq-foot"><button id="oqimport">사전 질문 가져오기</button><button id="oqadd">+ 직접 추가</button><span class="sp"></span></div>
+    </section>
+    <details class="adm" style="margin-top:16px"><summary>관리</summary><div class="bar"><button class="warn" id="oqreset">테스트 질문 초기화</button><span class="hint">행사 전 리허설 질문 삭제용</span></div></details>
    </div>
   </div>
   <div id="qlocal">
