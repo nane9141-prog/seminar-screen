@@ -43,7 +43,7 @@ td.pl{color:#8793A6;font-variant-numeric:tabular-nums}.d{font-variant-numeric:ta
 .mtab button.on{outline:0;color:#E6ECF5;border-bottom-color:#4C9DFF}
 .mtab b{display:inline-block;min-width:20px;padding:0 6px;margin-left:4px;border-radius:10px;background:#1F6FE0;color:#fff;font-size:12px;line-height:18px}
 .mtab b:empty{display:none}
-body[data-m=ops] #colQa,body[data-m=qa] #colOps{display:none}
+body:not([data-m=qa]) #colQa,body:not([data-m=ops]) #colOps,body:not([data-m=att]) #colAtt{display:none}
 body[data-m] .wrap{grid-template-columns:minmax(0,1fr)}
 body>h1,body>.mtab,body>.wrap{max-width:1200px;margin-left:auto;margin-right:auto}
 #colOps table th:nth-child(2){width:150px}#colOps table th:nth-child(3),#colOps table th:nth-child(4){width:110px}#colOps table th:nth-child(5){width:90px}
@@ -108,11 +108,42 @@ details.adm .bar{margin:8px 0 0}
 .offbn{display:flex;align-items:center;gap:8px;margin-top:14px;padding:10px 12px;border-radius:8px;background:#3a2a10;border:1px solid #6b4c1a;color:#FFD08A;font-weight:600}
 .offbn .sp{flex:1}
 .oq-tools{margin:0 0 8px}
+/* 참석자 관리 */
+.atstat{display:flex;gap:28px;align-items:center}
+.atstat>div{display:flex;align-items:baseline;gap:8px}
+.atstat b{font-size:22px;font-variant-numeric:tabular-nums}
+.atstat small{color:#8793A6;font-size:12px}
+.atq{width:100%;margin-top:14px;font:inherit;font-size:17px;background:#0B1120;color:#E6ECF5;border:1px solid #2E4370;border-radius:8px;padding:11px 14px}
+.atq:focus{outline:0;border-color:#4C9DFF}
+.atcard{margin-top:12px;display:grid;grid-template-columns:1fr auto auto;gap:24px;align-items:center;border:2px solid #4C9DFF;border-radius:10px;padding:14px 18px;background:#0F1F3A}
+.atcard.none{display:block;border-color:#8A3A3A;background:#2a1414}.atcard.none .big{color:#FF8A7A}
+.atcard.empty{display:block;border:1px dashed #2E4370;background:#0B1120;padding:14px 18px}
+.atcard .big{font-size:24px;font-weight:700;margin-top:2px}.atcard .big small{font-size:14px;font-weight:500;color:#8793A6;margin-left:6px}
+.atcard .nt{margin-top:4px;color:#FFD08A;font-size:13px}
+.atcard .st{text-align:right}
+.atcard .seatv{font-size:34px;font-weight:800;color:#FFB84D;line-height:1.2;font-variant-numeric:tabular-nums}
+.atcard .seatv.none{font-size:18px;color:#8793A6;font-weight:600}
+.attw{max-height:calc(100vh - 470px);min-height:200px;overflow:auto;margin-top:4px}
+table.att thead th{position:sticky;top:0;background:#111A2E;z-index:1}
+table.att td{padding:6px}
+table.att tbody tr{cursor:pointer}
+table.att tbody tr:hover{background:#15213A}
+table.att tbody tr.sel{background:#1A2A48;box-shadow:inset 3px 0 #4C9DFF}
+table.att .nm{font-size:15px}
+table.att .mut{font-size:12px}
+table.att .tn{font-variant-numeric:tabular-nums}
+table.att input.seat{width:110px;font-weight:700;color:#FFB84D}
+table.att input.note{width:100%;min-width:140px}
+table.att .empty{text-align:center;padding:32px 8px}
+.pill{display:inline-block;font-size:11px;font-weight:700;padding:1px 6px;border-radius:4px}
+.pill.ok{background:#173a2a;color:#7FD6A0}.pill.wait{background:#3a2a10;color:#FFB84D}
+button.arr{font-weight:600;color:#8793A6;background:none}
+button.arr.on{background:#173a2a;border-color:#2c6b4c;color:#7FD6A0}
 #clock{font-variant-numeric:tabular-nums;font-size:22px;font-weight:700;color:#FFB84D}
 </style></head>
 <body>
 <h1>운영 입력 <small id="hint">메인 스크린(index.html)과 같은 PC · 같은 브라우저에서 열어 주세요. 입력 즉시 반영됩니다.</small><span style="flex:1"></span><span id="offst" class="mut" style="font-size:13px"></span><span id="clock">--:--</span></h1>
-<nav class="mtab" id="mtab"><button data-m="ops">운영 관리</button><button data-m="qa">질의 관리 <b id="mtabn"></b></button></nav>
+<nav class="mtab" id="mtab"><button data-m="ops">운영 관리</button><button data-m="qa">질의 관리 <b id="mtabn"></b></button><button data-m="att">참석자 관리</button></nav>
 <div class="wrap">
 <div id="colOps">
  <div class="box">
@@ -139,6 +170,22 @@ details.adm .bar{margin:8px 0 0}
    <input type="text" id="nno" placeholder="화면 번호 예: 4-5" style="width:130px"><button id="ngo">이동</button>
    <span class="sp"></span><span class="mut">배속</span><span id="spd"></span></div>
   <div class="scr" id="scr"><span class="mut">메인 스크린을 열면 화면 목록이 표시됩니다.</span></div>
+ </div>
+</div>
+<div id="colAtt">
+ <div class="box">
+  <h2>참석자 관리 <span class="mut" style="font-weight:500;font-size:13px">사전 신청 확인 · 좌석 배치 · 현장 안내</span></h2>
+  <form id="atlogin" hidden class="row" style="flex-wrap:wrap"><span class="mut" style="width:100%">관리자 페이지 계정으로 로그인하세요. (질의 관리와 같은 계정)</span><input type="text" id="atid" placeholder="아이디 (seminar01)" autocomplete="username" style="flex:0 0 200px"><input type="password" id="atpw" placeholder="비밀번호" autocomplete="current-password" style="flex:0 0 200px;font:inherit;background:#0B1120;color:#E6ECF5;border:1px solid #2E4370;border-radius:6px;padding:4px 7px"><button class="pri" type="submit">로그인</button><span id="atlerr" class="late" style="width:100%"></span></form>
+  <div id="atmain" hidden>
+   <div class="atstat"><div><span class="mut">신청</span><b id="atc-all">0</b><small>확정 <span id="atc-conf">0</span> · 대기 <span id="atc-pend">0</span></small></div><div><span class="mut">좌석 지정</span><b id="atc-seat">0</b><small>미지정 <span id="atc-noseat">0</span></small></div><div><span class="mut">도착</span><b id="atc-arr">0</b></div><span class="sp"></span><span id="atnet" class="mut" style="font-size:12px"></span><button id="atreload">새로고침</button></div>
+   <input type="search" id="atq" class="atq" placeholder="이름 · 회사 · 전화 끝 4자리 · 좌석으로 검색" autocomplete="off">
+   <div class="atcard empty" id="atcard"></div>
+   <div class="oq-head" style="margin-top:20px"><nav class="subtab" id="atflt"><button data-f="all">전체</button><button data-f="noseat">좌석 미지정</button><button data-f="notarr">미도착</button><button data-f="arr">도착</button></nav><div class="oq-flt"><span class="mut" id="atcnt"></span><span id="atmsg"></span></div></div>
+   <div class="attw"><table class="att"><thead><tr><th>회사</th><th>이름</th><th>전화</th><th>신청</th><th>좌석</th><th>메모</th><th>도착</th></tr></thead><tbody id="attb"></tbody></table></div>
+   <details class="adm" style="margin-top:16px"><summary>좌석 일괄 입력 · 내보내기</summary>
+    <div class="bar"><span class="mut">회사 전체 좌석</span><input type="text" id="atbulkco" list="atcos" placeholder="회사명" style="width:180px"><datalist id="atcos"></datalist><input type="text" id="atbulkseat" placeholder="좌석 (예: A-3 테이블)" style="width:160px"><button id="atbulkgo">적용</button><span class="hint">같은 회사 신청자 모두에게 같은 좌석</span><span class="sp"></span><button id="atcsv">좌석 배치 CSV 내보내기</button></div>
+   </details>
+  </div>
  </div>
 </div>
 <div id="colQa">
@@ -260,12 +307,12 @@ setInterval(draw,30000);
 draw();drawQ();
 const ofs=()=>{$('offst').textContent=window.OFFLINE_STATE||'';$('offst').style.color=/완료|파일/.test(window.OFFLINE_STATE||'')?'#7FD6A0':'#FFB84D';};document.addEventListener('offline-state',ofs);ofs();
 // 메뉴 탭: 운영 관리 / 질의 관리
-const HINT={ops:'메인 스크린(index.html)과 같은 PC · 같은 브라우저에서 열어 주세요. 입력 즉시 반영됩니다.',qa:'운영자 노트북 어디서나 사용 · 관리자 계정으로 로그인 · 송출하면 메인 스크린에 2초 안에 표시됩니다.',qaLocal:'직접 입력은 메인 스크린과 같은 PC · 같은 브라우저에서만 반영됩니다.'};
-function hint(){const m=document.body.dataset.m;$('hint').textContent=m==='qa'?(SCHED.getSrc()==='local'?HINT.qaLocal:HINT.qa):HINT.ops;}
+const HINT={att:'사전 신청자 확인 · 좌석은 미리 입력해 두면 현장에서 검색으로 바로 안내할 수 있습니다. 운영자 노트북 어디서나 사용.',ops:'메인 스크린(index.html)과 같은 PC · 같은 브라우저에서 열어 주세요. 입력 즉시 반영됩니다.',qa:'운영자 노트북 어디서나 사용 · 관리자 계정으로 로그인 · 송출하면 메인 스크린에 2초 안에 표시됩니다.',qaLocal:'직접 입력은 메인 스크린과 같은 PC · 같은 브라우저에서만 반영됩니다.'};
+function hint(){const m=document.body.dataset.m;$('hint').textContent=m==='qa'?(SCHED.getSrc()==='local'?HINT.qaLocal:HINT.qa):m==='att'?HINT.att:HINT.ops;}
 document.addEventListener('keydown',e=>{if(document.body.dataset.m!=='qa'||/INPUT|TEXTAREA|SELECT/.test(e.target.tagName)||e.target.isContentEditable)return;
   if(e.key!=='ArrowRight'&&e.key!=='ArrowLeft')return;e.preventDefault();const d=e.key==='ArrowRight'?1:-1;
   if(SCHED.getSrc()==='online'){if(window.QAOnline&&QAOnline.step)QAOnline.step(d);}else qStep(d);});
-function setM(m){document.body.dataset.m=m;localStorage.setItem('ctl-menu',m);document.querySelectorAll('#mtab [data-m]').forEach(b=>b.classList.toggle('on',b.dataset.m===m));if(window.SCHED)hint();}
+function setM(m){document.body.dataset.m=m;localStorage.setItem('ctl-menu',m);document.querySelectorAll('#mtab [data-m]').forEach(b=>b.classList.toggle('on',b.dataset.m===m));if(window.SCHED)hint();if(m==='att'&&window.Attendees)Attendees.show();if(m==='att')setTimeout(()=>{const q=document.getElementById('atq');if(q&&!q.closest('[hidden]'))q.focus();},50);}
 document.querySelectorAll('#mtab [data-m]').forEach(b=>b.onclick=()=>setM(b.dataset.m));
 setM(localStorage.getItem('ctl-menu')||'ops');
 // 질문 소스 (온라인 / 직접 입력) — 같은 PC의 메인 스크린도 따라 바뀜
@@ -276,5 +323,6 @@ document.addEventListener('click',e=>{const b=e.target.closest('[data-src]');if(
 SCHED.onSrc(drawSrc);
 </script>
 <script src="assets/qa-online.js"></script>
-<script>drawSrc();</script>
+<script src="assets/attendees.js"></script>
+<script>drawSrc();if(document.body.dataset.m==="att")Attendees.show();</script>
 </body></html>

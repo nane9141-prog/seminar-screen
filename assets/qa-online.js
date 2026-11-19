@@ -27,6 +27,7 @@ async function init(){
   $('oqlogin').hidden=true;$('oqmain').hidden=false;$('oqoff').hidden=true;
   sb.rpc('admin_import_pre_questions').then(r=>{if(r.data>0)msg('사전 질의 '+r.data+'건을 불러왔습니다');});
   poll();clearInterval(timer);timer=setInterval(poll,2000);
+  window.dispatchEvent(new CustomEvent('qa-auth',{detail:{me}}));
 }
 function showLogin(m){clearInterval(timer);$('oqlogin').hidden=false;$('oqmain').hidden=true;$('oqoff').hidden=true;$('oqlerr').textContent=m||'';}
 $('oqlogin').addEventListener('submit',async e=>{e.preventDefault();if(!libOk())return;
@@ -35,7 +36,7 @@ $('oqlogin').addEventListener('submit',async e=>{e.preventDefault();if(!libOk())
   const {error}=await sb.auth.signInWithPassword({email:id.includes('@')?id:id+DOMAIN,password:$('oqpw').value});
   if(error){$('oqlerr').textContent='아이디 또는 비밀번호를 확인해 주세요.';return;}
   $('oqpw').value='';init();});
-$('oqout').onclick=async()=>{clearInterval(timer);await sb.auth.signOut();showLogin();};
+$('oqout').onclick=async()=>{clearInterval(timer);await sb.auth.signOut();me=null;showLogin();window.dispatchEvent(new CustomEvent('qa-auth',{detail:{me:null}}));};
 $('oqst').onchange=e=>{localStorage.setItem('qa-station',e.target.value.trim());};
 
 async function poll(){
@@ -108,5 +109,8 @@ $('oqreset').onclick=async()=>{const k=prompt('테스트 질문 초기화 — �
   if(!confirm((k==='all'?'모든':'현장')+' 질문을 삭제합니다. 되돌릴 수 없습니다. 계속할까요?'))return;
   const {data,error}=await sb.rpc('admin_qa_reset',{p_kind:k});if(error)return msg(error.message,true);msg(data+'건 삭제');sig='';poll();};
 
-window.QAOnline={start:init,stop:()=>clearInterval(timer),step:d=>{if(me)step(d);}};
+window.QAOnline={client:()=>me?sb:null,who:by,
+  login:async(id,pw)=>{if(!libOk())return '인터넷 연결을 확인해 주세요.';sb=sb||supabase.createClient(URL_,KEY,{auth:{persistSession:true,autoRefreshToken:true,storageKey:'qa-online-auth'}});
+    const {error}=await sb.auth.signInWithPassword({email:id.includes('@')?id:id+DOMAIN,password:pw});if(error)return '아이디 또는 비밀번호를 확인해 주세요.';await init();return me?'':'운영자 권한이 없는 계정입니다.';},
+  start:init,stop:()=>clearInterval(timer),step:d=>{if(me)step(d);}};
 })();
