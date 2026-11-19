@@ -180,7 +180,7 @@ const PHOTO=['speaker1-1','speaker2','speaker-scott','speaker3-1'].map(n=>{const
   im.src='../assets/'+n+'.webp';return c;});
 const PH_A=.62,PH_IN=.7,OUT=1.4;  // 사진 밝기 · 등장 페이드 · 퇴장 페이드(초)
 /* 공전 궤도: 기울기가 다른 타원 3개에 점 13개. 타원 아래쪽 반이 인물 앞, 위쪽 반이 뒤 */
-const OC={x:BOX.x+BOX.w*.5,y:BOX.y+BOX.h*.40};
+const OC={x:BOX.x+BOX.w*.5,y:BOX.y+BOX.h*.54};  // 공전 중심: 가슴 아래 높이(이전 .40 → .54, 약 137px 아래)
 const RINGS=[{tilt:-.30,R:300,k:.30,per:20},{tilt:.20,R:268,k:.36,per:16},{tilt:.52,R:236,k:.26,per:24}];
 const ORB=[];{let sd=11;const rnd=()=>{sd=(sd*1664525+1013904223)>>>0;return sd/4294967296;};
   [5,4,4].forEach((n,r)=>{for(let j=0;j<n;j++)ORB.push({r,ph:j/n*Math.PI*2+rnd()*.9,dr:(rnd()-.5)*26,sz:1.6+rnd()*1.4});});}
