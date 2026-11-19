@@ -72,7 +72,7 @@ body.clean.hover .show{display:block}
   <div class="row"><label for="count">점 개수</label><input id="count" type="range" min="600" max="8000" step="100" value="1600"><span class="v"></span></div>
   <div class="row"><label for="trail">꼬리 길이</label><input id="trail" type="range" min="0" max="2.5" step="0.01" value="1"><span class="v"></span></div>
   <div class="row"><label for="size">점 크기</label><input id="size" type="range" min="0.3" max="2.5" step="0.01" value="0.9"><span class="v"></span></div>
-  <div class="row"><label for="scale">형태 크기</label><input id="scale" type="range" min="0.4" max="1.6" step="0.01" value="1"><span class="v"></span></div>
+  <div class="row"><label for="scale">형태 크기</label><input id="scale" type="range" min="0.4" max="2.5" step="0.01" value="1"><span class="v"></span></div>
   <div class="row"><label for="bright">밝기</label><input id="bright" type="range" min="0.3" max="2" step="0.01" value="1"><span class="v"></span></div>
   <h3>컬러</h3>
   <div class="tints" id="tints"></div>
@@ -87,7 +87,7 @@ body.clean.hover .show{display:block}
   <p class="hint" id="hint">장면을 누르면 그 장면으로 넘어갑니다. 한 루프 길이는 장면 길이의 합(속도 1 기준)이고, H 키로 패널을 숨깁니다.</p>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/webm-muxer@5.0.3/build/webm-muxer.js"></script>
-<script>(()=>{const q=new URLSearchParams(location.search);for(const k of ["bright","size","speed","trail","count"]){const v=q.get(k),el=document.getElementById(k);if(v!=null&&el)el.value=v;}})();</script>
+<script>(()=>{const q=new URLSearchParams(location.search);for(const k of ["bright","size","scale","speed","trail","count"]){const v=q.get(k),el=document.getElementById(k);if(v!=null&&el)el.value=v;}})();</script>
 <script>
 /* 배경용 크기 · 중심(주소 값) */
 const BQ=new URLSearchParams(location.search),BGW=+BQ.get('w')||4200,BGH=+BQ.get('h')||1600;window.DSQ=+BQ.get('q')||.6;
