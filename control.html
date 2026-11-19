@@ -105,7 +105,9 @@ details.adm .bar{margin:8px 0 0}
 .oq-flt{margin-left:auto;display:flex;gap:6px;padding-bottom:6px}
 .oq-flt select{height:32px}
 .oq-list .ql{margin-top:4px}
-.oq-foot{margin:12px 0 0}
+.offbn{display:flex;align-items:center;gap:8px;margin-top:14px;padding:10px 12px;border-radius:8px;background:#3a2a10;border:1px solid #6b4c1a;color:#FFD08A;font-weight:600}
+.offbn .sp{flex:1}
+.oq-tools{margin:0 0 8px}
 #clock{font-variant-numeric:tabular-nums;font-size:22px;font-weight:700;color:#FFB84D}
 </style></head>
 <body>
@@ -142,9 +144,8 @@ details.adm .bar{margin:8px 0 0}
 <div id="colQa">
  <div class="box">
   <h2>질의 관리 <span><button id="toq" title="메인 스크린이 열린 송출 PC에서만 동작합니다">메인 스크린을 질문 화면(M10-2)으로</button></span></h2>
-  <div class="bar" style="margin-top:0"><span class="seg" id="qsrc"><button data-src="online">온라인 (QR 접수)</button><button data-src="local">직접 입력 (오프라인)</button></span><span class="sp"></span><span class="mut" id="qsrcinfo"></span></div>
   <div id="qonline">
-   <div id="oqoff" hidden class="mut" style="padding:8px">인터넷에 연결되지 않아 온라인 질문을 불러올 수 없습니다. "직접 입력"으로 바꿔 진행하세요.</div>
+   <div id="oqoff" hidden class="mut" style="padding:8px">인터넷에 연결되지 않아 온라인 질문을 불러올 수 없습니다. <button data-src="local">오프라인 직접 입력으로 전환</button></div>
    <form id="oqlogin" hidden class="row" style="flex-wrap:wrap"><span class="mut" style="width:100%">관리자 페이지 계정으로 로그인하세요.</span><input type="text" id="oqid" placeholder="아이디 (seminar01)" autocomplete="username"><input type="password" id="oqpw" placeholder="비밀번호" autocomplete="current-password" style="flex:1;min-width:0;font:inherit;background:#0B1120;color:#E6ECF5;border:1px solid #2E4370;border-radius:6px;padding:4px 7px"><button class="pri" type="submit">로그인</button><span id="oqlerr" class="late" style="width:100%"></span></form>
    <div id="oqmain" hidden>
     <div class="row oq-acct"><span class="mut">계정</span><b id="oqme"></b><span class="mut">노트북 이름</span><input type="text" id="oqst" placeholder="예: A" style="flex:0 0 70px"><span class="hint">선택 · 송출 기록에 표시</span><span class="sp" style="flex:1"></span><span id="oqnet" class="mut" style="font-size:12px"></span><button id="oqout">로그아웃</button></div>
@@ -153,18 +154,19 @@ details.adm .bar{margin:8px 0 0}
      <div class="bar oq-ctl"><button id="oqprev">◀ 이전</button><button id="oqnext" class="pri">다음 ▶</button><button id="oqclear">화면 비우기</button><span class="hint">키보드 <span class="kbd">←</span><span class="kbd">→</span></span><span class="sp"></span><span id="oqmsg"></span></div>
     </section>
     <section class="oq-sec oq-list">
+     <div class="bar oq-tools"><button id="oqadd" class="pri">+ 직접 추가</button><button id="oqimport">사전 질문 가져오기</button></div>
      <div class="oq-head">
       <nav class="subtab" id="oqtabs"><button data-tab="pick">선택 목록 <b id="oqc-pick">0</b></button><button data-tab="new">접수 <b id="oqc-new">0</b></button><button data-tab="hide">숨김 <b id="oqc-hide">0</b></button><button data-tab="all">전체 <b id="oqc-all">0</b></button></nav>
       <div class="oq-flt"><select id="oqkind" aria-label="구분"><option value="">사전 + 현장</option><option value="pre">사전 질의</option><option value="live">현장 질의</option></select>
        <select id="oqses" aria-label="세션"><option value="">모든 세션</option><option value="all">전체 · 공통</option><option value="s1">Session 1</option><option value="s2">Session 2</option><option value="s3">Session 3</option><option value="s4">Session 4 · 시연</option></select></div>
      </div>
      <div class="ql" id="oql"></div>
-     <div class="bar oq-foot"><button id="oqimport">사전 질문 가져오기</button><button id="oqadd">+ 직접 추가</button><span class="sp"></span></div>
     </section>
-    <details class="adm" style="margin-top:16px"><summary>관리</summary><div class="bar"><button class="warn" id="oqreset">테스트 질문 초기화</button><span class="hint">행사 전 리허설 질문 삭제용</span></div></details>
+    <details class="adm" style="margin-top:16px"><summary>관리</summary><div class="bar"><button class="warn" id="oqreset">테스트 질문 초기화</button><span class="hint">행사 전 리허설 질문 삭제용</span></div><div class="bar"><button data-src="local">오프라인 직접 입력으로 전환</button><span class="hint">통신 장애 시 송출 PC에서만 사용</span></div></details>
    </div>
   </div>
   <div id="qlocal">
+  <div class="offbn">오프라인 직접 입력 모드 — 메인 스크린과 같은 PC에서만 반영됩니다.<span class="sp"></span><button data-src="online">온라인으로 돌아가기</button></div>
   <div class="row"><select id="qtype"><option value="live">현장</option><option value="pre">사전</option></select>
    <input type="text" id="qtext" placeholder="질문 내용 (Enter로 추가)"><input type="text" id="qwho" placeholder="답변 연사" style="flex:0 0 110px"><button id="qadd">추가</button></div>
   <details style="margin-top:8px"><summary class="mut" style="cursor:pointer">사전 질문 여러 개 붙여넣기 (한 줄에 하나, 연사는 "질문 | 연사")</summary>
@@ -267,11 +269,10 @@ function setM(m){document.body.dataset.m=m;localStorage.setItem('ctl-menu',m);do
 document.querySelectorAll('#mtab [data-m]').forEach(b=>b.onclick=()=>setM(b.dataset.m));
 setM(localStorage.getItem('ctl-menu')||'ops');
 // 질문 소스 (온라인 / 직접 입력) — 같은 PC의 메인 스크린도 따라 바뀜
-function drawSrc(){const v=SCHED.getSrc();document.querySelectorAll('#qsrc [data-src]').forEach(b=>b.classList.toggle('sel',b.dataset.src===v));
+function drawSrc(){const v=SCHED.getSrc();
   $('qonline').hidden=v!=='online';$('qlocal').hidden=v!=='local';
-  $('qsrcinfo').textContent=v==='online'?'메인 스크린은 송출된 온라인 질문을 표시':'메인 스크린은 아래 직접 입력 목록을 표시';
   if(v==='online'&&window.QAOnline)QAOnline.start();else if(window.QAOnline)QAOnline.stop();hint();}
-document.querySelectorAll('#qsrc [data-src]').forEach(b=>b.onclick=()=>{SCHED.saveSrc(b.dataset.src);drawSrc();});
+document.addEventListener('click',e=>{const b=e.target.closest('[data-src]');if(!b)return;if(b.dataset.src==='local'&&!confirm('오프라인 직접 입력 모드로 바꿀까요? 이 PC의 메인 스크린이 직접 입력 목록을 표시합니다.'))return;SCHED.saveSrc(b.dataset.src);drawSrc();});
 SCHED.onSrc(drawSrc);
 </script>
 <script src="assets/qa-online.js"></script>
