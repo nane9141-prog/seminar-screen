@@ -11,7 +11,7 @@ body.idle{cursor:none}
 .stage{position:absolute;left:0;top:0;width:4200px;height:1600px;transform-origin:0 0;background:#000003;overflow:hidden;color:#F2F5FA;font-family:"Pretendard Variable","Malgun Gothic","Apple SD Gothic Neo",sans-serif;word-break:keep-all}
 #c{position:absolute;left:0;top:0;width:4200px;height:1600px;display:block;transition:opacity .6s ease}
 .stage.nobg #c{opacity:0}
-.slide{position:absolute;inset:0;padding:160px 200px 230px;display:flex;flex-direction:column;justify-content:center;gap:54px;opacity:0;visibility:hidden}
+.slide{position:absolute;inset:0;padding:160px 600px 230px;display:flex;flex-direction:column;justify-content:center;gap:54px;opacity:0;visibility:hidden}
 .slide.on{opacity:1;visibility:visible}
 .slide.leave{visibility:visible;pointer-events:none}
 /* 화면 전환 — data-tr. 위계: zoom(장 전환: 개회 · 파트 · 시연 · 폐회) · blur(장 안 이동, 기본) · xfade(대기 순환) · fade(상황 메시지 · 영상)
@@ -57,9 +57,9 @@ body.idle{cursor:none}
 .name-xl{font-size:200px;font-weight:700;line-height:1.12;letter-spacing:-3px}
 .tbd{color:#FFB84D}.center{text-align:center}
 .rule{width:144px;height:6px;background:#2E8BFF}
-.col{width:2700px;display:flex;flex-direction:column;gap:48px}
+.col{width:2050px;display:flex;flex-direction:column;gap:48px}
 .stack{display:flex;flex-direction:column;gap:18px}
-.photo{position:absolute;right:200px;top:190px;height:1220px;width:912px;object-fit:cover;border-radius:44px}
+.photo{position:absolute;right:600px;top:190px;height:1220px;width:912px;object-fit:cover;border-radius:44px}
 .rows{display:flex;flex-direction:column;width:2400px}
 .prow{display:flex;gap:84px;align-items:baseline;padding:34px 0;border-top:3px solid #1C2A40}
 .ptime{width:250px;font-size:60px;font-weight:600;color:#4C9DFF;font-variant-numeric:tabular-nums}
@@ -69,8 +69,8 @@ body.idle{cursor:none}
 .card-k{font-size:54px;font-weight:600;color:#4C9DFF}
 .card-t{font-size:66px;font-weight:700;line-height:1.3}
 .card-b{font-size:58px;font-weight:500;line-height:1.5;color:#C7D0DD}
-.next{width:2300px;display:flex;flex-direction:column;gap:20px;padding:56px 68px;border:3px solid #1E3355;border-radius:44px;background:rgba(10,19,34,.82)}
-.timer{position:absolute;right:200px;top:50%;transform:translateY(-58%);text-align:right}
+.next{width:1650px;display:flex;flex-direction:column;gap:20px;padding:56px 68px;border:3px solid #1E3355;border-radius:44px;background:rgba(10,19,34,.82)}
+.timer{position:absolute;right:600px;top:50%;transform:translateY(-58%);text-align:right}
 .timer-k{font-size:54px;font-weight:600;color:#4C9DFF}
 .timer-v{font-size:420px;font-weight:700;line-height:1.05;letter-spacing:-6px;font-variant-numeric:tabular-nums}
 .qr{width:460px;height:460px;display:flex;align-items:center;justify-content:center;border:4px dashed #FFB84D;border-radius:36px;flex:none}
@@ -80,7 +80,7 @@ body.idle{cursor:none}
 .num{width:84px;font-size:60px;font-weight:700;color:#4C9DFF}
 .ksmp{width:620px;height:120px;object-fit:contain;object-position:left}
 #introv{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;background:#000;display:none}
-#footer{position:absolute;left:200px;right:200px;bottom:96px;height:64px;display:flex;justify-content:space-between;align-items:center;transition:opacity .6s ease}
+#footer{position:absolute;left:600px;right:600px;bottom:96px;height:64px;display:flex;justify-content:space-between;align-items:center;transition:opacity .6s ease}
 #footer img{height:64px}#footer p{font-size:42px;font-weight:500;color:#8793A6}
 .stage[data-foot="none"] #footer{opacity:0}.stage[data-foot="logo"] #footer p{opacity:0}
 #black{position:absolute;inset:0;background:#000;opacity:0;pointer-events:none;transition:opacity .4s}
@@ -90,9 +90,10 @@ body.idle{cursor:none}
 #toast{position:fixed;right:16px;bottom:16px;background:rgba(8,12,30,.9);color:#e9eefc;font:13px "Malgun Gothic",sans-serif;padding:6px 10px;border-radius:8px;opacity:0;transition:opacity .3s;z-index:9}
 #toast.on{opacity:1}
 
-.w2600{max-width:2600px}
+.w2600{max-width:2450px}
 .pcols{display:flex;gap:110px}
-.pcols .rows{width:1845px}
+.pcols .rows{width:1745px}
+.slide:has(.pcols){padding-left:300px;padding-right:300px}  /* 2단 프로그램 표만 좌우 300px */
 .pcols .prow{gap:30px;padding:22px 0;align-items:baseline}
 .pcols .ptime{width:170px;font-size:58px;flex:none}
 .ptag{width:250px;flex:none;font-size:52px;font-weight:600;color:#4C9DFF}
@@ -101,7 +102,7 @@ body.idle{cursor:none}
 .prow.brk .ptxt{color:#8793A6}
 .prow.adj .ptime{color:#FFB84D}
 .notes.tight{gap:26px}.notes.tight .lead{font-size:58px}
-.grid2{display:grid;grid-template-columns:1fr 1fr;gap:34px 140px;width:3500px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:34px 120px;width:3000px}
 .case{display:flex;gap:40px;align-items:baseline;padding:30px 0;border-top:3px solid #1C2A40}
 .case .lead{font-size:60px;color:#F2F5FA}
 .kism{height:150px;width:auto;align-self:flex-start}
@@ -112,7 +113,7 @@ body.idle{cursor:none}
 .t-soon,.t-soon-i{display:none}
 .soon .t-normal,.soon .t-normal-i{display:none}.soon .t-soon{display:block}.soon .t-soon-i{display:inline}
 .soon .t-soon .title-m{color:#FFB84D}
-.qbox{width:3800px;height:760px;display:flex;align-items:center}
+.qbox{width:3000px;height:760px;display:flex;align-items:center}
 .qtext{font-size:120px;font-weight:700;line-height:1.3;letter-spacing:-1.5px}
 #q-lab .qn{color:#F2F5FA;margin-left:24px}
 .nrows{width:2600px}.nrows .ptxt{flex:1}.nrows .pwho{width:auto}
@@ -426,7 +427,7 @@ if(qp.get('lite'))stage.classList.add('lite');
 window.FSQ=parseFloat(qp.get('q')||localStorage.getItem('scr-q')||'0.75');
 function fit(){const s=Math.min(innerWidth/4200,innerHeight/1600);stage.style.transform='translate('+((innerWidth-4200*s)/2)+'px,'+((innerHeight-1600*s)/2)+'px) scale('+s+')';}
 addEventListener('resize',fit);fit();
-const LAY={A:[{x:.27,y:.02,r:.46},{x:.01,y:0,r:0},{x:.33,y:.29,r:0},{x:.335,y:-.19,r:0}],
+const LAY={A:[{x:.37,y:.02,r:.40},{x:.01,y:0,r:0},{x:.33,y:.29,r:0},{x:.335,y:-.19,r:0}],
  B:[{x:.27,y:0,r:0},{x:.01,y:0,r:0},{x:.33,y:.29,r:0},{x:.335,y:-.19,r:0}],
  C:[{x:-.36,y:-.14,r:.22},{x:.0,y:.02,r:.27},{x:.36,y:.2,r:.19},{x:.21,y:-.13,r:.19}]};
 LAY.N=LAY.B;
