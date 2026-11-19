@@ -319,7 +319,7 @@ body.idle{cursor:none}
 <p><b>김승준</b>김앤장 법률사무소, 변호사</p><p><b>권재열</b>한국주주총회연구소장, 경희대 법학전문대학원 교수</p>
 <p><b>Scott Oakland</b>Proxymity, Head of APAC</p><p><b>박성용</b>IR큐더스, 본부장</p></div>
 </section>
-<section class="slide" id="m10_2" data-no="M10-2" data-title="M10-2 질문 화면 (control.html 입력)" data-bg="B" data-foot="full" data-qa="1" data-tr="blur">
+<section class="slide" id="m10_2" data-no="M10-2" data-title="M10-2 질문 화면 (control.html 송출)" data-bg="B" data-foot="full" data-qa="1" data-tr="blur">
 <p class="eyebrow" id="q-lab">Q&amp;A</p>
 <div class="qbox"><p class="qtext" id="q-text">질문을 준비하고 있습니다.</p></div>
 <p class="meta" id="q-who"></p>
@@ -421,12 +421,20 @@ function renderNotice(){const n=SCHED.nowMin(),up=SC.items.filter(x=>x.end>n&&x.
   document.getElementById('n-text').textContent=SC.notice||(moved?'진행 상황에 따라 이후 순서가 조정되었습니다.':'이후 순서를 안내해 드립니다.');
   document.getElementById('n-rows').innerHTML=up.map(x=>'<div class="prow'+(x.start!==x.ps?' adj':'')+'"><p class="ptime">'+SCHED.fmt(x.start)+'</p><p class="ptxt">'+(x.tag?x.tag+' · ':'')+x.label+'</p><p class="pwho">'+(x.who||'')+'</p></div>').join('');}
 // ── 질문 화면 ──
-let QA=SCHED.loadQ();
-SCHED.onQ(v=>{QA=v||{list:[],cur:null};renderQ();});
-function renderQ(){const q=QA.list.find(x=>x.id===QA.cur),lab=document.getElementById('q-lab'),tx=document.getElementById('q-text'),who=document.getElementById('q-who');
+let QA=SCHED.loadQ(),QSRC=SCHED.getSrc(),OQ=null,oqKey='';
+SCHED.onQ(v=>{QA=v||{list:[],cur:null};if(QSRC==='local')renderQ();});
+SCHED.onSrc(v=>{QSRC=v||'local';renderQ();pollOQ();});
+// 온라인 질문: control(운영자 노트북)에서 송출한 질문을 2초마다 확인. 끊기면 마지막 질문 유지.
+const OQ_SL={all:'',s1:'Session 1',s2:'Session 2',s3:'Session 3',s4:'Session 4',demo:'플랫폼 시연'};
+async function pollOQ(){if(QSRC!=='online'||!location.protocol.startsWith('http'))return;
+  try{const r=await fetch('https://zrhtqpzgubaqzsdaxhvt.supabase.co/rest/v1/rpc/qa_current',{method:'POST',headers:{apikey:'sb_publishable_JwET6KLGmdYBkOIIttgOOQ_HEpCKLar','Content-Type':'application/json'},body:'{}',cache:'no-store'});
+    if(!r.ok)return;const d=await r.json(),k=JSON.stringify(d);if(k===oqKey)return;oqKey=k;
+    OQ=d&&d.id?{type:d.kind,n:d.n,text:d.body,who:d.who,meta:[(d.company+' '+d.name).trim(),OQ_SL[d.session]].filter(Boolean).join('　·　')}:null;renderQ();}catch(e){}}
+setInterval(pollOQ,2000);pollOQ();
+function renderQ(){const q=QSRC==='online'?OQ:QA.list.find(x=>x.id===QA.cur),lab=document.getElementById('q-lab'),tx=document.getElementById('q-text'),who=document.getElementById('q-who');
   if(!q){lab.textContent='Q&A';tx.textContent='질문을 준비하고 있습니다.';who.textContent='';fitQ();return;}
   lab.innerHTML=(q.type==='pre'?'사전 질문':'현장 질문')+'<span class="qn">Q'+String(q.n).padStart(2,'0')+'</span>';
-  tx.textContent=q.text;who.textContent=q.who?'답변　'+q.who:'';fitQ();
+  tx.textContent=q.text;who.textContent=[q.meta,q.who?'답변　'+q.who:''].filter(Boolean).join('　·　');fitQ();
   const s=slides[idx];if(s&&s.dataset.qa){tx.parentNode.animate([{opacity:0,transform:'translateY(30px)',filter:'blur(12px)'},{opacity:1,transform:'none',filter:'none'}],{duration:600,easing:'cubic-bezier(.2,.7,.2,1)'});}}
 function fitQ(){const tx=document.getElementById('q-text'),box=tx.parentNode;let f=120;tx.style.fontSize=f+'px';while(f>56&&tx.scrollHeight>box.clientHeight){f-=4;tx.style.fontSize=f+'px';}}
 function qStep(d){const L=QA.list;if(!L.length)return;let i=L.findIndex(x=>x.id===QA.cur);i=Math.max(0,Math.min(L.length-1,i<0?0:i+d));QA.cur=L[i].id;SCHED.saveQ(QA);renderQ();}
@@ -447,7 +455,7 @@ addEventListener('keydown',e=>{const k=e.key;
   if(k==='Escape'&&numbuf){numbuf='';toast('취소');return;}
   numbuf='';
   const qa=slides[idx]&&slides[idx].dataset.qa;
-  if(qa&&(k==='ArrowRight'||k==='ArrowLeft')){e.preventDefault();qStep(k==='ArrowRight'?1:-1);return;}
+  if(qa&&(k==='ArrowRight'||k==='ArrowLeft')){e.preventDefault();if(QSRC==='online'){toast('온라인 질문 — control에서 넘겨 주세요');return;}qStep(k==='ArrowRight'?1:-1);return;}
   if(k==='ArrowRight'||k==='PageDown'||k===' '||k==='ArrowDown'){e.preventDefault();step(1);}
   else if(k==='ArrowLeft'||k==='PageUp'||k==='ArrowUp'){e.preventDefault();step(-1);}
   else if(k==='Home')go(0);else if(k==='End')go(slides.length-1);

@@ -45,5 +45,6 @@ window.SCHED={DEF,toM,fmt,nowSec,nowMin,load,save:s=>put('scr-sched',s),onSched:
   item,shiftFrom,endNow,current,next,warnings,defItems,
   loadQ:()=>get('scr-qa',{list:[],cur:null}),saveQ:q=>put('scr-qa',q),onQ:cb=>on('scr-qa',cb),
   cmd:c=>put('scr-cmd',{...c,t:Date.now()}),onCmd:cb=>on('scr-cmd',cb),
+  getSrc:()=>get('scr-qsrc',location.protocol.startsWith('http')?'online':'local'),saveSrc:v=>put('scr-qsrc',v),onSrc:cb=>on('scr-qsrc',cb),
   pub:st=>put('scr-state',st),getState:()=>get('scr-state',null),onState:cb=>on('scr-state',cb)};
 })();
