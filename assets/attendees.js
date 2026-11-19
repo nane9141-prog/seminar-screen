@@ -31,14 +31,14 @@ const last4=p=>String(p||'').replace(/\D/g,'').slice(-4);
 function match(x){if(!q)return true;const n=norm(q),d=q.replace(/\D/g,'');
   return norm(x.name).includes(n)||norm(x.company_name).includes(n)||(d.length>=3&&String(x.phone||'').replace(/\D/g,'').includes(d))||norm((S[x.id]||{}).seat).includes(n);}
 function draw(){
-  const conf=R.filter(x=>x.status==='confirmed'),seat=R.filter(x=>(S[x.id]||{}).seat),arr=R.filter(x=>x.attended);
+  const conf=R.filter(x=>x.status==='confirmed'),seat=R.filter(x=>(S[x.id]||{}).seat),arr=conf.filter(x=>x.attended);
   $('atc-all').textContent=R.length;$('atc-conf').textContent=conf.length;$('atc-pend').textContent=R.length-conf.length;
   $('atc-seat').textContent=seat.length;$('atc-noseat').textContent=R.length-seat.length;$('atc-arr').textContent=arr.length;
   document.querySelectorAll('#atflt [data-f]').forEach(b=>b.classList.toggle('sel',b.dataset.f===flt));
   let L=R.filter(match);
   if(flt==='noseat')L=L.filter(x=>!(S[x.id]||{}).seat);
-  if(flt==='arr')L=L.filter(x=>x.attended);
-  if(flt==='notarr')L=L.filter(x=>!x.attended);
+  if(flt==='arr')L=L.filter(x=>x.status==='confirmed'&&x.attended);
+  if(flt==='notarr')L=L.filter(x=>x.status==='confirmed'&&!x.attended);
   $('atcnt').textContent=L.length+'명';
   const cos=[...new Set(R.map(x=>x.company_name))];if($('atcos').childElementCount!==cos.length)$('atcos').innerHTML=cos.map(c=>'<option value="'+esc(c)+'">').join('');
   const ae=document.activeElement,keep=ae&&ae.dataset&&ae.dataset.k?ae.dataset.k+':'+ae.closest('tr').dataset.id:null;
@@ -48,7 +48,7 @@ function draw(){
     '<td>'+(x.status==='confirmed'?'<span class="pill ok">확정</span>':'<span class="pill wait">대기</span>')+'</td>'+
     '<td><input type="text" class="seat" data-k="seat" value="'+esc(a.seat||'')+'" placeholder="좌석" maxlength="20"></td>'+
     '<td><input type="text" class="note" data-k="note" value="'+esc(a.note||'')+'" placeholder="메모" maxlength="100"></td>'+
-    '<td><button data-a="arr" class="'+(x.attended?'arr on':'arr')+'">'+(x.attended?'도착 '+(x.attended_at?new Date(x.attended_at).toTimeString().slice(0,5):''):'미도착')+'</button></td></tr>';}).join('')
+    '<td>'+(x.status==='confirmed'?'<button data-a="arr" class="'+(x.attended?'arr on':'arr')+'">'+(x.attended?'참석 '+(x.attended_at?new Date(x.attended_at).toTimeString().slice(0,5):''):'미확인')+'</button>':'<span class="mut" title="관리자 페이지에서 확정하면 참석 체크할 수 있습니다">확정 후 가능</span>')+'</td></tr>';}).join('')
     :'<tr><td colspan="7" class="mut empty">'+(q?'"'+esc(q)+'"에 해당하는 신청자가 없습니다. 사전 신청하지 않은 분입니다 — 현장 등록 데스크로 안내하세요.':'목록이 비어 있습니다.')+'</td></tr>';
   if(keep){const [k,id]=keep.split(':');const el=document.querySelector('#attb tr[data-id="'+id+'"] [data-k="'+k+'"]');if(el){el.focus();const v=el.value;el.setSelectionRange(v.length,v.length);}}
   card();
@@ -61,13 +61,13 @@ function card(){
   el.className='atcard';
   el.innerHTML='<div><div class="mut">'+esc(x.company_name)+(x.status!=='confirmed'?' · <span style="color:#FFB84D">신청 대기</span>':' · 사전 신청 확정')+'</div><div class="big">'+esc(x.name)+' <small>'+esc([x.dept,x.title].filter(Boolean).join(' · '))+'</small></div>'+(a.note?'<div class="nt">'+esc(a.note)+'</div>':'')+'</div>'+
     '<div class="st"><div class="mut">좌석</div><div class="seatv'+(a.seat?'':' none')+'">'+(a.seat?esc(a.seat):'미지정')+'</div></div>'+
-    '<div><button data-a="arr" data-id="'+x.id+'" class="'+(x.attended?'arr on':'arr pri')+'">'+(x.attended?'도착 처리됨':'도착 처리')+'</button></div>';
+    (x.status==='confirmed'?'<div><button data-a="arr" data-id="'+x.id+'" class="'+(x.attended?'arr on':'arr pri')+'">'+(x.attended?'현장 참석 체크됨':'현장 참석 체크')+'</button></div>':'<div class="mut" style="max-width:180px;font-size:12px">신청 대기 상태입니다. 관리자 페이지에서 확정한 뒤 참석 체크하세요.</div>');
 }
 async function saveSeat(id,patch){const c=sb();if(!c)return;const a=Object.assign({reg_id:id,seat:(S[id]||{}).seat||null,note:(S[id]||{}).note||null},patch,{updated_by:QAOnline.who(),updated_at:new Date().toISOString()});
   const {error}=await c.from('seat_assign').upsert(a);if(error)return msg(error.message,true);S[id]=a;msg('저장했습니다');draw();}
-async function toggleArr(id){const c=sb(),x=R.find(r=>r.id===id);if(!c||!x)return;
+async function toggleArr(id){const c=sb(),x=R.find(r=>r.id===id);if(!c||!x)return;if(x.status!=='confirmed')return msg('확정된 신청자만 참석 체크할 수 있습니다',true);
   const {error}=await c.from('registrations').update({attended:!x.attended}).eq('id',id);if(error)return msg(error.message,true);
-  x.attended=!x.attended;x.attended_at=x.attended?new Date().toISOString():null;msg(x.attended?x.name+' 도착':'도착 취소');draw();}
+  x.attended=!x.attended;x.attended_at=x.attended?new Date().toISOString():null;msg(x.attended?x.name+'님 현장 참석 체크 (관리자 페이지에도 반영)':x.name+'님 참석 체크 해제');draw();}
 
 $('attb').addEventListener('change',e=>{const k=e.target.dataset.k;if(!k)return;const id=e.target.closest('tr').dataset.id;saveSeat(id,{[k]:e.target.value.trim()||null});});
 $('attb').addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.dataset.k){e.preventDefault();e.target.blur();}});
@@ -83,7 +83,7 @@ $('atbulkgo').onclick=async()=>{const co=$('atbulkco').value.trim(),seat=$('atbu
   const empty=L.filter(x=>!(S[x.id]||{}).seat);const tgt=empty.length===L.length?L:(confirm(co+' '+L.length+'명 중 '+(L.length-empty.length)+'명은 이미 좌석이 있습니다. 모두 "'+seat+'"(으)로 바꿀까요? (취소 = 빈 사람만)')?L:empty);
   const c=sb();const rows=tgt.map(x=>({reg_id:x.id,seat,note:(S[x.id]||{}).note||null,updated_by:QAOnline.who(),updated_at:new Date().toISOString()}));
   const {error}=await c.from('seat_assign').upsert(rows);if(error)return msg(error.message,true);rows.forEach(r=>S[r.reg_id]=r);msg(co+' '+rows.length+'명 좌석 '+seat);$('atbulkseat').value='';draw();};
-$('atcsv').onclick=()=>{const head=['회사','이름','부서','직함','상태','좌석','메모','도착'];
+$('atcsv').onclick=()=>{const head=['회사','이름','부서','직함','상태','좌석','메모','현장 참석'];
   const rows=R.map(x=>{const a=S[x.id]||{};return [x.company_name,x.name,x.dept||'',x.title||'',x.status==='confirmed'?'확정':'대기',a.seat||'',a.note||'',x.attended?'Y':''];});
   const csv='﻿'+[head].concat(rows).map(r=>r.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(',')).join('\r\n');
   const u=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));const a=document.createElement('a');a.href=u;a.download='좌석배치_'+new Date().toISOString().slice(0,10)+'.csv';a.click();setTimeout(()=>URL.revokeObjectURL(u),1000);};
