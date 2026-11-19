@@ -18,6 +18,12 @@ body.idle{cursor:none}
 /* 오버레이: 나타났다 사라짐 */
 .ov{position:absolute;inset:0;opacity:0;transition:opacity 1.4s ease;display:flex;flex-direction:column;justify-content:center;padding:110px 120px}
 .ov.on{opacity:1}
+.mt{position:absolute;left:0;right:0;top:50%;margin:0;transform:translateY(-50%);text-align:center;color:#fff;
+  font:300 38.15px/1 "LexendDeca";letter-spacing:.05em;white-space:nowrap;opacity:0;pointer-events:none}
+.mt i{font-style:normal}
+#ov-video.on .mt1{animation:mtx 4.5s ease-in-out 1s both}
+#ov-video.on .mt2{animation:mtx 4.5s ease-in-out 6.5s both}
+@keyframes mtx{0%{opacity:0}33.3%{opacity:1}66.7%{opacity:1}100%{opacity:0}}
 #ov-video,#ov-svc{padding:0;background:#000;transition:opacity 3.2s cubic-bezier(.4,0,.6,1)}#ov-video video,#ov-svc video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 @font-face{font-family:"KakaoBigSans";src:url(../assets/KakaoBigSans-Regular.woff2) format("woff2");font-weight:400}
 @font-face{font-family:"KakaoBigSans";src:url(../assets/KakaoBigSans-Bold.woff2) format("woff2");font-weight:700}
@@ -68,7 +74,10 @@ body.idle{cursor:none}
 <div class="stage" id="scr">
 <canvas id="c"></canvas>
 <canvas id="pc"></canvas>
-<div class="ov" id="ov-video"><video id="vMood" src="../assets/yeouido-mood.mp4" muted playsinline preload="auto"></video></div>
+<div class="ov" id="ov-video"><video id="vMood" src="../assets/yeouido-mood.mp4" muted playsinline preload="auto"></video>
+<!-- 영상 처음 글씨 2종 (movie-text.svg 기준): 화면 가운데, 1.5초 나타남 → 1.5초 유지 → 1.5초 사라짐, 1초 뒤 두 번째 -->
+<p class="mt mt1"><i style="letter-spacing:0">K</i>o<i style="letter-spacing:.03em">r</i>ea Sha<i style="letter-spacing:.03em">r</i>eho<i style="letter-spacing:.04em">l</i>ders’ Meeting Online Se<i style="letter-spacing:.1em">r</i>vice</p>
+<p class="mt mt2">Li<i style="letter-spacing:.04em">v</i>e Demo Briefing · 2026.11.30</p></div>
 <div class="ov" id="ov-svc"><video id="vSvc" src="../assets/service-intro.mp4" muted playsinline preload="auto"></video></div>
 <div class="ov" id="ov-title">
 <!-- 타이틀 · 타이틀 2 — screen-title text.svg(302×169.85 대지)를 1920×1080 좌표로 옮긴 HTML. 문구는 여기서 바로 고칩니다 -->
