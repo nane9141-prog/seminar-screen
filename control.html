@@ -37,6 +37,17 @@ td.pl{color:#8793A6;font-variant-numeric:tabular-nums}.d{font-variant-numeric:ta
 .ql .tag{font-size:12px;font-weight:700;color:#4C9DFF}.ql .tag.live{color:#7FD6A0}
 .ql .t{white-space:pre-wrap}.ql .w{font-size:12px;color:#8793A6}
 .ql .act{display:flex;gap:4px}
+.mtab{display:flex;gap:4px;margin-top:12px;border-bottom:1px solid #22314F}
+.mtab button{background:none;border:0;border-bottom:2px solid transparent;border-radius:0;padding:8px 16px;font-size:15px;color:#8793A6}
+.mtab button:hover{background:none;color:#E6ECF5}
+.mtab button.on{outline:0;color:#E6ECF5;border-bottom-color:#2E8BFF}
+.mtab b{display:inline-block;min-width:20px;padding:0 6px;margin-left:4px;border-radius:10px;background:#2E8BFF;color:#fff;font-size:12px;line-height:18px}
+.mtab b:empty{display:none}
+body[data-m=ops] #colQa,body[data-m=qa] #colOps{display:none}
+body[data-m] .wrap{grid-template-columns:minmax(0,1fr);max-width:1200px}
+body[data-m=qa] .ql{max-height:calc(100vh - 420px);min-height:320px}
+.ql .st{display:inline-block;font-size:11px;font-weight:700;padding:0 5px;border-radius:4px;margin-right:4px;background:#1C2A45;color:#8793A6}
+.ql .st.picked{background:#173a2a;color:#7FD6A0}.ql .st.hidden{background:#3a1d1d;color:#FF8A7A}
 .row{display:flex;gap:6px;align-items:center;margin-top:8px}
 .row input[type=text]{flex:1;min-width:0}
 label{display:flex;gap:6px;align-items:center}
@@ -48,8 +59,9 @@ label{display:flex;gap:6px;align-items:center}
 </style></head>
 <body>
 <h1>운영 입력 <small>메인 스크린(index.html)과 같은 PC · 같은 브라우저에서 열어 주세요. 입력 즉시 반영됩니다.</small><span style="flex:1"></span><span id="offst" class="mut" style="font-size:13px"></span><span id="clock">--:--</span></h1>
+<nav class="mtab" id="mtab"><button data-m="ops">운영 관리</button><button data-m="qa">질의 관리 <b id="mtabn"></b></button></nav>
 <div class="wrap">
-<div>
+<div id="colOps">
  <div class="box">
   <h2>진행 시간 관리 <span class="mut" id="nowinfo"></span></h2>
   <table><thead><tr><th>순서</th><th>예정</th><th>시작</th><th>종료</th><th>차이</th></tr></thead><tbody id="tb"></tbody></table>
@@ -75,9 +87,9 @@ label{display:flex;gap:6px;align-items:center}
   <div class="scr" id="scr"><span class="mut">메인 스크린을 열면 화면 목록이 표시됩니다.</span></div>
  </div>
 </div>
-<div>
+<div id="colQa">
  <div class="box">
-  <h2>질문 <span><button id="toq" class="pri">질문 화면(M10-2)으로</button></span></h2>
+  <h2>질의 관리 <span><button id="toq" class="pri">질문 화면(M10-2)으로</button></span></h2>
   <div class="bar" style="margin-top:0" id="qsrc"><button data-src="online">온라인 (QR 접수)</button><button data-src="local">직접 입력 (오프라인)</button><span class="sp"></span><span class="mut" id="qsrcinfo"></span></div>
   <div id="qonline">
    <div id="oqoff" hidden class="mut" style="padding:8px">인터넷에 연결되지 않아 온라인 질문을 불러올 수 없습니다. "직접 입력"으로 바꿔 진행하세요.</div>
@@ -86,7 +98,8 @@ label{display:flex;gap:6px;align-items:center}
     <div class="row" style="margin-top:0"><span class="mut">계정</span><b id="oqme"></b><span class="mut">노트북 이름</span><input type="text" id="oqst" placeholder="예: A" style="flex:0 0 70px"><span class="sp" style="flex:1"></span><span id="oqnet" class="mut" style="font-size:12px"></span><button id="oqout">로그아웃</button></div>
     <div class="oqcur" id="oqcur"></div>
     <div class="bar"><button id="oqprev">◀ 이전</button><button id="oqnext" class="pri">다음 ▶</button><button id="oqclear">화면 비우기</button><span class="sp"></span><span id="oqmsg"></span></div>
-    <div class="bar" id="oqtabs" style="margin-top:0"><button data-tab="pick">선택 목록 <b id="oqc-pick">0</b></button><button data-tab="new">접수 <b id="oqc-new">0</b></button><button data-tab="hide">숨김 <b id="oqc-hide">0</b></button>
+    <div class="bar" id="oqkind" style="margin-top:0"><span class="mut">구분</span><button data-kind="">전체 <b id="oqk-all">0</b></button><button data-kind="pre">사전 질의 <b id="oqk-pre">0</b></button><button data-kind="live">현장 질의 <b id="oqk-live">0</b></button></div>
+    <div class="bar" id="oqtabs" style="margin-top:0"><span class="mut">상태</span><button data-tab="all">전체 <b id="oqc-all">0</b></button><button data-tab="pick">선택 목록 <b id="oqc-pick">0</b></button><button data-tab="new">접수 <b id="oqc-new">0</b></button><button data-tab="hide">숨김 <b id="oqc-hide">0</b></button>
      <select id="oqses"><option value="">전체 세션</option><option value="all">전체 · 공통</option><option value="s1">Session 1</option><option value="s2">Session 2</option><option value="s3">Session 3</option><option value="s4">Session 4 · 시연</option></select></div>
     <div class="ql" id="oql"></div>
     <div class="bar"><button id="oqimport">사전 질문 가져오기</button><button id="oqadd">+ 직접 추가</button><span class="sp"></span><button class="warn" id="oqreset">테스트 질문 초기화</button></div>
@@ -181,6 +194,10 @@ setInterval(()=>{$('clock').textContent=F(SCHED.nowMin())+':'+String(Math.floor(
 setInterval(draw,30000);
 draw();drawQ();
 const ofs=()=>{$('offst').textContent=window.OFFLINE_STATE||'';$('offst').style.color=/완료|파일/.test(window.OFFLINE_STATE||'')?'#7FD6A0':'#FFB84D';};document.addEventListener('offline-state',ofs);ofs();
+// 메뉴 탭: 운영 관리 / 질의 관리
+function setM(m){document.body.dataset.m=m;localStorage.setItem('ctl-menu',m);document.querySelectorAll('#mtab [data-m]').forEach(b=>b.classList.toggle('on',b.dataset.m===m));}
+document.querySelectorAll('#mtab [data-m]').forEach(b=>b.onclick=()=>setM(b.dataset.m));
+setM(localStorage.getItem('ctl-menu')||'ops');
 // 질문 소스 (온라인 / 직접 입력) — 같은 PC의 메인 스크린도 따라 바뀜
 function drawSrc(){const v=SCHED.getSrc();document.querySelectorAll('#qsrc [data-src]').forEach(b=>b.classList.toggle('pri',b.dataset.src===v));
   $('qonline').hidden=v!=='online';$('qlocal').hidden=v!=='local';
