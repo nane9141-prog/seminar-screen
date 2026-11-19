@@ -18,6 +18,7 @@ body.idle{cursor:none}
 /* 오버레이: 나타났다 사라짐 */
 .ov{position:absolute;inset:0;opacity:0;transition:opacity 1.4s ease;display:flex;flex-direction:column;justify-content:center;padding:110px 120px}
 .ov.on{opacity:1}
+.ov.spk:not(.on){transition:opacity 1.8s ease 1.4s}  /* 연사 글씨: 점·선이 흔들린 뒤 흩어지며 어두워질 때 함께 사라짐 */
 .mt{position:absolute;left:0;right:0;top:50%;margin:0;transform:translateY(-50%);text-align:center;color:#fff;
   font:300 26.7px/1 "LexendDeca";letter-spacing:.05em;white-space:nowrap;opacity:0;pointer-events:none}  /* 원본 38.15px의 70% */
 .mt i{font-style:normal}
