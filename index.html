@@ -449,7 +449,7 @@ const stage=document.getElementById('scr'),slides=[...document.querySelectorAll(
 const qp=new URLSearchParams(location.search);
 if(qp.get('lite'))stage.classList.add('lite');
 /* ---- 연사 초상(로비 lobby/index.html 와 같은 코드): 원본 사진이 나타나고, 인물 중심을 13개 점이 공전(점끼리 가까우면 선으로 이어짐). 사진 · 점 · 선 · 글씨가 함께 나타나고 함께 사라짐 ---- */
-const BOX={x:940,y:50,w:732,h:980};  // 사진 자리(이전 x 1080 → 140px 왼쪽)
+const BOX={x:867,y:-20,w:878,h:1176};  // 사진 자리: 1.2배 확대(가운데 x 1306 유지, 머리 위치 유지)
 const sm=(a,b,x)=>{x=(x-a)/(b-a);x=x<0?0:x>1?1:x;return x*x*(3-2*x);};
 const pc=document.getElementById('pcv'),px=pc.getContext('2d');pc.width=4200;pc.height=1600;
 const K=1600/1080,OXS=2772-(940+366)*K;  // 로비 좌표(1920×1080)를 메인(4200×1600)으로: 높이 기준 확대, 사진 가운데를 가로 66% 지점에
@@ -459,7 +459,7 @@ const PHOTO={};[...document.querySelectorAll('.slide[data-spk]')].map(s=>s.datas
     let gr=g.createLinearGradient(0,0,0,BOX.h);gr.addColorStop(0,'rgba(0,0,0,1)');gr.addColorStop(.42,'rgba(0,0,0,1)');gr.addColorStop(.88,'rgba(0,0,0,0)');g.fillStyle=gr;g.fillRect(0,0,BOX.w,BOX.h);
     gr=g.createLinearGradient(0,0,BOX.w,0);gr.addColorStop(0,'rgba(0,0,0,0)');gr.addColorStop(.12,'rgba(0,0,0,1)');gr.addColorStop(.88,'rgba(0,0,0,1)');gr.addColorStop(1,'rgba(0,0,0,0)');g.fillStyle=gr;g.fillRect(0,0,BOX.w,BOX.h);};
   im.src='assets/'+n+'.webp';PHOTO[n]=c;});
-const PH_A=.62,PH_IN=.7,OUT=1.4;  // 사진 밝기 · 등장 페이드 · 퇴장 페이드(초)
+const PH_A=.9,PH_IN=.7,OUT=1.4;  // 사진 밝기 · 등장 페이드 · 퇴장 페이드(초)
 /* 공전 궤도: 기울기가 다른 타원 3개에 점 13개. 타원 아래쪽 반이 인물 앞, 위쪽 반이 뒤 */
 const OC={x:BOX.x+BOX.w*.5,y:BOX.y+BOX.h*.54};  // 공전 중심: 가슴 아래 높이(이전 .40 → .54, 약 137px 아래)
 const RINGS=[{tilt:-.30,R:300,k:.30,per:20},{tilt:.20,R:268,k:.36,per:16},{tilt:.52,R:236,k:.26,per:24}];
