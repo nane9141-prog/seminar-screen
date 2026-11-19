@@ -139,6 +139,11 @@ table.att .empty{text-align:center;padding:32px 8px}
 .pill.ok{background:#173a2a;color:#7FD6A0}.pill.wait{background:#3a2a10;color:#FFB84D}
 button.arr{font-weight:600;color:#8793A6;background:none}
 button.arr.on{background:#173a2a;border-color:#2c6b4c;color:#7FD6A0}
+.foldt{background:none;border:0;padding:0;font-size:15px;font-weight:700;color:#E6ECF5;display:inline-flex;align-items:center;gap:8px}
+.foldt:hover{background:none;color:#fff}
+.foldt::before{content:"";width:7px;height:7px;border-right:2px solid #8793A6;border-bottom:2px solid #8793A6;transform:rotate(-45deg);transition:transform .15s}
+.foldt[aria-expanded=true]::before{transform:rotate(45deg)}
+.fold:not(.open) h2{margin-bottom:0}
 #clock{font-variant-numeric:tabular-nums;font-size:22px;font-weight:700;color:#FFB84D}
 </style></head>
 <body>
@@ -164,12 +169,14 @@ button.arr.on{background:#173a2a;border-color:#2c6b4c;color:#7FD6A0}
   <div class="row"><input type="text" id="notice" placeholder="일정 변경 공지(M0-3) 문구 — 비우면 자동 문구"><button id="sendnotice">M0-3 송출</button></div>
   <details class="adm"><summary>관리</summary><div class="bar"><button class="warn" id="reset">진행 시간 전체 초기화</button><span class="hint">예정 시각으로 되돌립니다.</span></div></details>
  </div>
- <div class="box">
-  <h2>화면 전환 <span class="mut">현재 <b id="curno">-</b> · 점선 = 상황 메시지</span><span><button id="toq2">질문 화면(M10-2)</button> <button id="black">블랙아웃</button></span></h2>
+ <div class="box fold" id="scrbox">
+  <h2><button type="button" class="foldt" id="scrfold" aria-expanded="false" aria-controls="scrbody">화면 전환</button> <span class="mut">현재 <b id="curno">-</b> · 점선 = 상황 메시지</span><span><button id="toq2">질문 화면(M10-2)</button> <button id="black">블랙아웃</button></span></h2>
+  <div id="scrbody" hidden>
   <div class="bar" style="margin-top:0"><button id="nprev">◀ 이전</button><button id="nnext" class="pri">다음 ▶</button>
    <input type="text" id="nno" placeholder="화면 번호 예: 4-5" style="width:130px"><button id="ngo">이동</button>
    <span class="sp"></span><span class="mut">배속</span><span id="spd"></span></div>
   <div class="scr" id="scr"><span class="mut">메인 스크린을 열면 화면 목록이 표시됩니다.</span></div>
+  </div>
  </div>
 </div>
 <div id="colAtt">
@@ -306,6 +313,9 @@ setInterval(()=>{$('clock').textContent=F(SCHED.nowMin())+':'+String(Math.floor(
 setInterval(draw,30000);
 draw();drawQ();
 const ofs=()=>{$('offst').textContent=window.OFFLINE_STATE||'';$('offst').style.color=/완료|파일/.test(window.OFFLINE_STATE||'')?'#7FD6A0':'#FFB84D';};document.addEventListener('offline-state',ofs);ofs();
+// 화면 전환 접기 (기본 접힘)
+function scrFold(o){$('scrbody').hidden=!o;$('scrbox').classList.toggle('open',o);$('scrfold').setAttribute('aria-expanded',o);localStorage.setItem('ctl-scrfold',o?'1':'0');}
+$('scrfold').onclick=()=>scrFold($('scrbody').hidden);scrFold(localStorage.getItem('ctl-scrfold')==='1');
 // 메뉴 탭: 운영 관리 / 질의 관리
 const HINT={att:'사전 신청자 확인 · 좌석은 미리 입력해 두면 현장에서 검색으로 바로 안내할 수 있습니다. 운영자 노트북 어디서나 사용.',ops:'메인 스크린(index.html)과 같은 PC · 같은 브라우저에서 열어 주세요. 입력 즉시 반영됩니다.',qa:'운영자 노트북 어디서나 사용 · 관리자 계정으로 로그인 · 송출하면 메인 스크린에 2초 안에 표시됩니다.',qaLocal:'직접 입력은 메인 스크린과 같은 PC · 같은 브라우저에서만 반영됩니다.'};
 function hint(){const m=document.body.dataset.m;$('hint').textContent=m==='qa'?(SCHED.getSrc()==='local'?HINT.qaLocal:HINT.qa):m==='att'?HINT.att:HINT.ops;}
