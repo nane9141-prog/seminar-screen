@@ -238,11 +238,23 @@ body.idle{cursor:none}
 /* 파트 타이틀(M4-1 · M5-1 · M7-1 · M9-1): 흰 글씨가 왼쪽부터 파랑 → 초록 그라데이션으로 채워지고 그대로 유지 */
 @property --fx{syntax:"<length>";inherits:true;initial-value:0px}
 .slide[data-fill] h1[data-words]{position:relative;--tw:1000px;--fx:calc(var(--tw)*-1.15)}
-.slide[data-fill] h1[data-words] .w{background:linear-gradient(90deg,#2E8BFF 0,#21af6b 46.5%,#fff 53.5%,#fff 100%);background-size:calc(var(--tw)*2.15) 100%;background-repeat:no-repeat;background-position:calc(var(--fx) - var(--wl,0px)) 0;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent}
+.slide[data-fill] h1[data-words] .w{background:linear-gradient(90deg,#5bade1 0,#00ab84 46.5%,#fff 53.5%,#fff 100%);background-size:calc(var(--tw)*2.15) 100%;background-repeat:no-repeat;background-position:calc(var(--fx) - var(--wl,0px)) 0;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent}
 .slide.on[data-fill] h1[data-words]{animation:fillIn 1.2s cubic-bezier(.45,0,.25,1) 1.5s both}
 @keyframes fillIn{from{--fx:calc(var(--tw)*-1.15)}to{--fx:0px}}
 /* 축사(M4-2 · M4-3): 연사 소개와 같은 레이아웃. 이름이 제목 자리 */
 .slide[data-spk] .talk{min-height:0}
+
+/* slide layout.svg 5번(M4-1): 영문 눈썹 Lexend Light 흰색 */
+.slide[data-no=M4-1]{padding-bottom:380px}  /* svg처럼 가운데보다 조금 위 */
+.slide[data-lay=center] .en-eb{font:300 77.6px/1.2 "Lexend",sans-serif;color:#fff;letter-spacing:0;margin-bottom:96px}
+/* slide layout.svg 6번(축사 · 연사): 왼쪽 604px 눈썹 열(Lexend Light #80cde5), 1022px부터 이름 · 소속. 사진은 오른쪽 캔버스 */
+.slide[data-spk]{padding:0}
+.slide[data-spk] .cg{position:absolute;left:604px;top:0;bottom:0;width:1700px;display:grid;grid-template-columns:418px minmax(0,1fr);align-content:center;align-items:start}
+.cg-e{margin:0;padding-top:14px;font:300 63.5px/85px "Lexend",sans-serif;color:#80cde5;letter-spacing:0}
+.cg-t{margin:0 0 56px;font:400 77.6px/1.45 "KakaoSmall",sans-serif;color:#E6EBF2;letter-spacing:-.02em}
+.cg-n{margin:0;font:700 183.4px/1.15 "KakaoBig",sans-serif;color:#fff;letter-spacing:0;white-space:nowrap}
+.cg-n.ko{letter-spacing:.28em}
+.cg-r{margin:34px 0 0;font:400 77.6px/120px "KakaoSmall",sans-serif;color:#fff;letter-spacing:0}
 </style></head>
 <body>
 <div class="stage" id="scr" data-foot="full">
@@ -286,32 +298,21 @@ body.idle{cursor:none}
 <p class="lead tbd center vph">[인트로 영상 — assets/intro.mp4 를 넣으면 이 화면에서 재생됩니다]</p>
 </section>
 <section class="slide" id="m3_1" data-no="M3-1" data-title="M3-1 개회 타이틀" data-bg="A" data-foot="logo" data-tr="zoom" data-lay="center">
-<h1 class="title" data-words style="--i:1">전자주주총회 플랫폼 시연 설명회</h1>
-<p class="cmeta fu" style="--i:2"><span class="lx">2026.11.30</span><i class="dot"></i><span class="ko">IR KUDOS</span></p>
+<h1 class="title-m" data-words style="--i:1">전자주주총회 플랫폼 시연 설명회를<br>시작합니다.</h1>
 </section>
 <section class="slide" id="m3_2" data-no="M3-2" data-title="M3-2 행사 안내 · 안내 말씀" data-bg="B" data-foot="full" data-lay="split">
 <h2 class="head fu" style="--i:0">안내 말씀</h2>
 <div class="ncard fu" style="--i:1"><div class="nlist" data-stagger style="--i:1"><div class="nr"><p class="nn">01</p><p class="nt">휴대폰은 무음으로 설정해 주세요.</p></div><div class="nr"><p class="nn">02</p><p class="nt">휴식은 14:25, 15:40 두 차례 15분씩 있습니다.</p></div><div class="nr"><p class="nn">03</p><p class="nt">현장 질의는 명찰 뒷면의 QR코드로 남겨 주세요. 사전 질문과 함께 질의응답 시간(17:30)에 답변 드립니다.</p></div><div class="nr"><p class="nn">04</p><p class="nt">설명회는 현장 참석으로만 진행되며, 온라인 생중계 · 다시보기와 발표자료는 제공되지 않습니다.</p></div><div class="nr"><p class="nn">05</p><p class="nt">원활한 진행을 위해 영상 촬영은 삼가 주시기 바랍니다.</p></div><div class="nr"><p class="nn">06</p><p class="nt">행사 종료 후 설문 참여 안내를 이메일로 보내드립니다.</p></div></div></div>
 </section>
 <section class="slide" id="m4_1" data-no="M4-1" data-title="M4-1 파트 타이틀 · 축사 및 출범식" data-bg="A" data-foot="logo" data-tr="zoom" data-glow="1" data-fill="1" data-lay="center">
-<h1 class="title" data-words style="--i:1">축사 및 출범식</h1>
-<p class="cmeta fu" style="--i:2"><span class="lx">2026.11.30</span><i class="dot"></i><span class="ko">IR KUDOS</span></p>
+<p class="eyebrow en-eb fu" style="--i:0">Opening Remarks</p>
+<h1 class="title-m" data-words style="--i:1">축사 및 출범식</h1>
 </section>
 <section class="slide" id="m4_2" data-no="M4-2" data-title="M4-2 축사 · 김광록" data-bg="B" data-foot="full" data-spk="cong1">
-<div class="col">
-<p class="eyebrow fu" style="--i:0">축사</p>
-<h2 class="talk" data-words style="--i:1">김광록</h2>
-<div class="rule fu" style="--i:2"></div>
-<div class="stack fu" style="--i:2"><p class="meta">한국기업법학회 회장, 충북대 법학전문대학원 교수</p></div>
-</div>
+<div class="cg"><p class="cg-e fu" style="--i:0">Opening<br>Remarks</p><div class="cg-b"><h2 class="cg-n ko" data-words style="--i:1">김광록</h2><p class="cg-r fu" style="--i:2">한국기업법학회 회장,<br>충북대 법학전문대학원 교수</p></div></div>
 </section>
 <section class="slide" id="m4_3" data-no="M4-3" data-title="M4-3 축사 · 정우용" data-bg="B" data-foot="full" data-spk="cong2">
-<div class="col">
-<p class="eyebrow fu" style="--i:0">축사</p>
-<h2 class="talk" data-words style="--i:1">정우용</h2>
-<div class="rule fu" style="--i:2"></div>
-<div class="stack fu" style="--i:2"><p class="meta">한국상장회사협의회, 전 정책부회장</p></div>
-</div>
+<div class="cg"><p class="cg-e fu" style="--i:0">Opening<br>Remarks</p><div class="cg-b"><h2 class="cg-n ko" data-words style="--i:1">정우용</h2><p class="cg-r fu" style="--i:2">한국상장회사협의회,<br>전 정책부회장</p></div></div>
 </section>
 <section class="slide" id="m4_4" data-no="M4-4" data-title="M4-4 출범식 인트로 영상 (18초)" data-bg="N" data-foot="none" data-video="v-kism" data-tr="fade">
 <video id="v-kism" class="vid" src="assets/kism-intro.mp4" playsinline preload="auto"></video>
@@ -330,23 +331,13 @@ body.idle{cursor:none}
 <p class="meta fu" style="--i:3">Session 1 · Session 2</p>
 </section>
 <section class="slide" id="m5_2" data-no="M5-2" data-title="M5-2 Session 1 연사 소개 · 김승준" data-bg="B" data-foot="full" data-spk="speaker1-1">
-<div class="col">
-<p class="eyebrow fu" style="--i:0">Session 1</p>
-<h2 class="talk" data-words style="--i:1">전자주주총회 제도 도입 및<br>진행 관련 주요 실무 쟁점</h2>
-<div class="rule fu" style="--i:2"></div>
-<div class="stack fu" style="--i:2"><p class="name">김승준</p><p class="meta">김앤장 법률사무소, 변호사</p></div>
-</div>
+<div class="cg"><p class="cg-e fu" style="--i:0">Session<br>1</p><div class="cg-b"><p class="cg-t fu" style="--i:0">전자주주총회 제도 도입 및<br>진행 관련 주요 실무 쟁점</p><h2 class="cg-n ko" data-words style="--i:1">김승준</h2><p class="cg-r fu" style="--i:2">김앤장 법률사무소,<br>변호사</p></div></div>
 </section>
 <section class="slide" id="m5_3" data-no="M5-3" data-title="M5-3 Session 1 발표자료 — 외부 소스" data-bg="C" data-foot="full" data-ext="1">
 
 </section>
 <section class="slide" id="m5_4" data-no="M5-4" data-title="M5-4 Session 2 연사 소개 · 권재열" data-bg="B" data-foot="full" data-spk="speaker2">
-<div class="col">
-<p class="eyebrow fu" style="--i:0">Session 2</p>
-<h2 class="talk" data-words style="--i:1">상법 개정과 전자주총이 몰고 올<br>기업 경영의 지각변동</h2>
-<div class="rule fu" style="--i:2"></div>
-<div class="stack fu" style="--i:2"><p class="name">권재열</p><p class="meta">한국주주총회연구소장, 경희대 법학전문대학원 교수</p></div>
-</div>
+<div class="cg"><p class="cg-e fu" style="--i:0">Session<br>2</p><div class="cg-b"><p class="cg-t fu" style="--i:0">상법 개정과 전자주총이 몰고 올<br>기업 경영의 지각변동</p><h2 class="cg-n ko" data-words style="--i:1">권재열</h2><p class="cg-r fu" style="--i:2">한국주주총회연구소장,<br>경희대 법학전문대학원 교수</p></div></div>
 </section>
 <section class="slide" id="m5_5" data-no="M5-5" data-title="M5-5 Session 2 발표자료 — 외부 소스" data-bg="C" data-foot="full" data-ext="1">
 
@@ -371,23 +362,13 @@ body.idle{cursor:none}
 <p class="meta fu" style="--i:3">Session 3 · Session 4</p>
 </section>
 <section class="slide" id="m7_2" data-no="M7-2" data-title="M7-2 Session 3 연사 소개 · Scott Oakland" data-bg="B" data-foot="full" data-spk="speaker-scott">
-<div class="col">
-<p class="eyebrow fu" style="--i:0">Session 3</p>
-<h2 class="talk" data-words style="--i:1">Proxymity, 글로벌 의결권 행사<br>인프라의 혁신과 미래</h2>
-<div class="rule fu" style="--i:2"></div>
-<div class="stack fu" style="--i:2"><p class="name">Scott Oakland</p><p class="meta">Proxymity, Head of APAC</p></div>
-</div>
+<div class="cg"><p class="cg-e fu" style="--i:0">Session<br>3</p><div class="cg-b"><p class="cg-t fu" style="--i:0">Proxymity, 글로벌 의결권 행사<br>인프라의 혁신과 미래</p><h2 class="cg-n" data-words style="--i:1">Scott Oakland</h2><p class="cg-r fu" style="--i:2">Proxymity,<br>Head of APAC</p></div></div>
 </section>
 <section class="slide" id="m7_3" data-no="M7-3" data-title="M7-3 Session 3 발표자료 — 외부 소스" data-bg="C" data-foot="full" data-ext="1">
 
 </section>
 <section class="slide" id="m7_4" data-no="M7-4" data-title="M7-4 Session 4 연사 소개 · 박성용" data-bg="B" data-foot="full" data-spk="speaker3-1">
-<div class="col">
-<p class="eyebrow fu" style="--i:0">Session 4</p>
-<h2 class="talk" data-words style="--i:1">전자주주총회 도입 · 운영 방안 및<br>통합 솔루션 소개</h2>
-<div class="rule fu" style="--i:2"></div>
-<div class="stack fu" style="--i:2"><p class="name">박성용</p><p class="meta">IR큐더스, 본부장</p></div>
-</div>
+<div class="cg"><p class="cg-e fu" style="--i:0">Session<br>4</p><div class="cg-b"><p class="cg-t fu" style="--i:0">전자주주총회 도입 · 운영 방안 및<br>통합 솔루션 소개</p><h2 class="cg-n ko" data-words style="--i:1">박성용</h2><p class="cg-r fu" style="--i:2">IR큐더스,<br>본부장</p></div></div>
 </section>
 <section class="slide" id="m7_5" data-no="M7-5" data-title="M7-5 Session 4 발표자료 — 외부 소스" data-bg="C" data-foot="full" data-ext="1">
 
