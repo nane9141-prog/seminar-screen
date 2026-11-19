@@ -165,7 +165,7 @@ function fit(){const s=Math.min(innerWidth/1920,innerHeight/1080);stage.style.tr
 addEventListener('resize',fit);fit();
 document.querySelectorAll('#ov-tt .prow').forEach((r,i)=>r.style.setProperty('--w',i));
 /* ---- 연사 초상: 원본 사진이 나타나고, 인물 중심을 13개 점이 공전(점끼리 가까우면 선으로 이어짐). 사진 · 점 · 선 · 글씨가 함께 나타나고 함께 사라짐 ---- */
-const BOX={x:1074,y:10,w:790,h:1058};  // 사진 자리: 이전(878×1176)의 90%, 가운데 x 1469 유지
+const BOX={x:1096,y:30,w:746,h:1000};  // 사진 자리: 이전(878×1176)의 85%, 가운데 x 1469 유지
 const sm=(a,b,x)=>{x=(x-a)/(b-a);x=x<0?0:x>1?1:x;return x*x*(3-2*x);};
 const pc=document.getElementById('pc'),px=pc.getContext('2d');pc.width=1920;pc.height=1080;
 /* 원본 사진(아래 · 좌우 끝은 그라데이션으로 사라짐) */
