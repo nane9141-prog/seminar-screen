@@ -227,6 +227,13 @@ body.idle{cursor:none}
 .slide[data-spk] .stack{gap:16px}
 .slide[data-spk] .name{font-size:60px;line-height:1.2}
 .slide[data-spk] .meta{font-size:42px;font-weight:400;line-height:1.45;color:#B4BDC9}
+
+/* 안내 말씀(M3-3): 행사 프로그램 · 이용 안내와 같은 카드(.pin .pc) — 번호 열(Lexend 파랑) + 문장, 줄 구분선, 둘째 줄은 문장 첫 글자에 맞춤 */
+.stage .ncard{zoom:.9;background:rgba(27,31,38,.86);border-radius:48px;padding:40px 96px;margin-top:70px}
+.ncard .nr{display:grid;grid-template-columns:120px minmax(0,1fr);gap:24px;align-items:baseline;padding:50px 0;border-bottom:3px solid rgba(255,255,255,.14)}
+.ncard .nr:last-child{border-bottom:0}
+.ncard .nn{margin:0;font:300 52px/1 "Lexend",sans-serif;color:#5EA2FF;font-variant-numeric:tabular-nums;letter-spacing:.02em}
+.ncard .nt{margin:0;font:400 56px/1.5 "KakaoSmall",sans-serif;color:#E6EBF2;letter-spacing:0;word-break:keep-all}
 </style></head>
 <body>
 <div class="stage" id="scr" data-foot="full">
@@ -276,7 +283,7 @@ body.idle{cursor:none}
 </section>
 <section class="slide" id="m3_3" data-no="M3-3" data-title="M3-3 행사 안내 · 안내 말씀" data-bg="B" data-foot="full" data-lay="split">
 <h2 class="head fu" style="--i:0">안내 말씀</h2>
-<div class="notes tight" data-stagger style="--i:1"><div class="note"><p class="num">1</p><p class="lead">휴대폰은 무음으로 설정해 주세요.</p></div><div class="note"><p class="num">2</p><p class="lead">휴식은 14:25, 15:40 두 차례 15분씩 있습니다.</p></div><div class="note"><p class="num">3</p><p class="lead">현장 질의는 명찰 뒷면의 QR코드로 남겨 주세요. 사전 질문과 함께 질의응답 시간(17:30)에 답변 드립니다.</p></div><div class="note"><p class="num">4</p><p class="lead">설명회는 현장 참석으로만 진행되며, 온라인 생중계 · 다시보기와 발표자료는 제공되지 않습니다.</p></div><div class="note"><p class="num">5</p><p class="lead">원활한 진행을 위해 영상 촬영은 삼가 주시기 바랍니다.</p></div><div class="note"><p class="num">6</p><p class="lead">행사 종료 후 설문 참여 안내를 이메일로 보내드립니다.</p></div></div>
+<div class="ncard fu" style="--i:1"><div class="nlist" data-stagger style="--i:1"><div class="nr"><p class="nn">01</p><p class="nt">휴대폰은 무음으로 설정해 주세요.</p></div><div class="nr"><p class="nn">02</p><p class="nt">휴식은 14:25, 15:40 두 차례 15분씩 있습니다.</p></div><div class="nr"><p class="nn">03</p><p class="nt">현장 질의는 명찰 뒷면의 QR코드로 남겨 주세요. 사전 질문과 함께 질의응답 시간(17:30)에 답변 드립니다.</p></div><div class="nr"><p class="nn">04</p><p class="nt">설명회는 현장 참석으로만 진행되며, 온라인 생중계 · 다시보기와 발표자료는 제공되지 않습니다.</p></div><div class="nr"><p class="nn">05</p><p class="nt">원활한 진행을 위해 영상 촬영은 삼가 주시기 바랍니다.</p></div><div class="nr"><p class="nn">06</p><p class="nt">행사 종료 후 설문 참여 안내를 이메일로 보내드립니다.</p></div></div></div>
 </section>
 <section class="slide" id="m4_1" data-no="M4-1" data-title="M4-1 파트 타이틀 · 축사 및 출범식" data-bg="A" data-foot="full" data-tr="zoom" data-glow="1" data-lay="center">
 <p class="eyebrow fu" style="--i:0">OPENING</p>
