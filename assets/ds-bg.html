@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Data Stream</title>
+<style>
+/* VOICE: 키노트 오프닝처럼 고요하고 정밀하게. 검은 무대, 흰 점과 선만.
+   IDEA: 데이터가 흩어진 점 → 흐름 → 구체 → 연결망 → 소용돌이 → 링으로 스스로 계산하며 모양을 바꿈.
+   PICTURE: 전체 화면 캔버스. 각 점은 지난 위치를 따라 가는 꼬리를 그려 '움직임 자체'가 선이 됨.
+   COLOUR/TYPE: 흑백 기본, 아이스·틸 틴트 선택. IBM Plex Sans KR + JetBrains Mono.
+   LAYOUT: 풀블리드 캔버스, 우상단 유리 패널(폰에선 하단 시트), H로 숨김. */
+:root{--ink:#000;--fg:#eef1f4;--muted:#8e979f;--panel:rgba(10,12,14,.8);--line:rgba(220,230,240,.16);--track:rgba(220,230,240,.07);--accent:#e9eef2;
+  --font:"IBM Plex Sans KR",system-ui,-apple-system,"Malgun Gothic",sans-serif;--mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;color-scheme:dark}
+html,body{height:100%;margin:0}
+body{background:var(--ink);color:var(--fg);font-family:var(--font);overflow:hidden}
+#c{position:fixed;inset:0;width:100%;height:100%;display:block}
+.panel{position:fixed;top:16px;right:16px;width:288px;max-height:calc(100% - 32px);overflow:auto;box-sizing:border-box;font-size:12px;line-height:1.4;
+  background:var(--panel);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid var(--line);border-radius:12px;padding:14px}
+.panel h2{margin:0 0 6px;font-size:13px;font-weight:600;display:flex;justify-content:space-between;align-items:center;gap:8px}
+.panel h3{margin:14px 0 6px;font-size:11px;font-weight:600;color:var(--muted)}
+.row{display:grid;grid-template-columns:78px 1fr 40px;align-items:center;gap:8px;margin:6px 0}
+.row .v{text-align:right;color:var(--muted);font:11px var(--mono);font-variant-numeric:tabular-nums}
+.row input[type=range]{width:100%;min-width:0;accent-color:var(--accent)}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:4px}
+.steps button{position:relative;overflow:hidden;font:inherit;color:var(--muted);background:var(--track);border:1px solid transparent;border-radius:7px;padding:7px 4px;cursor:pointer}
+.steps button[aria-pressed="true"]{color:var(--fg);border-color:var(--line)}
+.steps b{position:absolute;left:0;bottom:0;height:2px;background:var(--fg);width:0}
+.tints{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.tints button{height:30px;border-radius:7px;border:2px solid transparent;cursor:pointer;font:11px var(--font);color:#000}
+.tints button[aria-pressed="true"]{border-color:var(--fg)}
+.tog{display:flex;align-items:center;gap:8px;margin:8px 0 2px;cursor:pointer}
+.tog input{accent-color:var(--accent);width:15px;height:15px;margin:0}
+.btns{display:flex;gap:6px;margin-top:14px;flex-wrap:wrap}
+.btns button,.x{font:inherit;color:var(--fg);background:none;border:1px solid var(--line);border-radius:7px;padding:6px 9px;cursor:pointer}
+.btns button.primary{background:var(--fg);border-color:var(--fg);color:#000}
+.btns button:disabled{opacity:.6;cursor:progress}
+.x{padding:2px 8px}
+button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.order{margin-top:8px}.order summary{cursor:pointer;color:var(--muted);font-size:11px;padding:4px 0}
+.order ol{list-style:none;margin:4px 0 0;padding:0;display:grid;gap:3px}
+.order li{display:grid;grid-template-columns:18px 1fr 26px 26px;align-items:center;gap:6px;background:var(--track);border-radius:7px;padding:3px 4px 3px 8px}
+.order li.off span{color:var(--muted);text-decoration:line-through}
+.order input{accent-color:var(--accent);margin:0;width:14px;height:14px}
+.order button{font:12px var(--font);color:var(--fg);background:none;border:1px solid var(--line);border-radius:6px;height:24px;cursor:pointer;padding:0}
+.order button:disabled{opacity:.3;cursor:default}
+.steps button.off{opacity:.35}
+.hint{margin-top:10px;color:var(--muted);font-size:11px}
+body.clean .panel{display:none}
+.show{position:fixed;top:16px;right:16px;font:12px var(--font);color:var(--fg);background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:6px 10px;cursor:pointer;display:none}
+body.clean.hover .show{display:block}
+@media (max-width:560px){.panel{top:auto;bottom:12px;left:12px;right:12px;width:auto;max-height:50%}}
+.panel,.show{display:none!important}body{cursor:none}
+</style>
+</head>
+<body>
+<canvas id="c" role="img" aria-label="흩어진 데이터 점들이 모임, 자오선 구, 흐름, 수렴, 소용돌이, 연결망, 타원 흐름, 방사, 링, 중력 우물, 웨이브 터널로 차례로 모양을 바꾸는 파티클 모션"></canvas>
+<button class="show" id="show" type="button">패널 보기</button>
+<div class="panel" id="panel">
+  <h2>Data Stream <button class="x" id="hide" type="button">숨기기</button></h2>
+  <h3>장면</h3>
+  <div class="steps" id="steps"></div>
+  <details class="order"><summary>장면 순서 · 켜기/끄기</summary><ol id="order"></ol></details>
+  <label class="tog"><input type="checkbox" id="auto" checked> 자동 진행 (끝나면 처음으로)</label>
+  <h3>장면별 모션</h3>
+  <div class="steps" id="ed"></div>
+  <div id="edrows"></div>
+  <h3>전체</h3>
+  <div class="row"><label for="trans">전환 시간</label><input id="trans" type="range" min="0.8" max="8" step="0.1" value="4"><span class="v"></span></div>
+  <div class="row"><label for="ep">전환 이징</label><input id="ep" type="range" min="1" max="8" step="0.1" value="4.5"><span class="v"></span></div>
+  <div class="row"><label for="speed">전체 속도</label><input id="speed" type="range" min="0" max="2" step="0.01" value="0.6"><span class="v"></span></div>
+  <div class="row"><label for="count">점 개수</label><input id="count" type="range" min="600" max="8000" step="100" value="1600"><span class="v"></span></div>
+  <div class="row"><label for="trail">꼬리 길이</label><input id="trail" type="range" min="0" max="2.5" step="0.01" value="1"><span class="v"></span></div>
+  <div class="row"><label for="size">점 크기</label><input id="size" type="range" min="0.3" max="2.5" step="0.01" value="0.9"><span class="v"></span></div>
+  <div class="row"><label for="scale">형태 크기</label><input id="scale" type="range" min="0.4" max="1.6" step="0.01" value="1"><span class="v"></span></div>
+  <div class="row"><label for="bright">밝기</label><input id="bright" type="range" min="0.3" max="2" step="0.01" value="1"><span class="v"></span></div>
+  <h3>컬러</h3>
+  <div class="tints" id="tints"></div>
+  <label class="tog"><input type="checkbox" id="grid"> 배경 그리드 점</label>
+  <div class="btns">
+    <button type="button" id="pause">일시정지</button>
+    <button type="button" id="reset" title="모든 설정을 처음 값으로 되돌리고 처음부터 재생">초기화</button>
+    <button type="button" id="png" hidden>PNG 저장</button>
+    <button type="button" id="svg" hidden title="지금 화면을 점·꼬리·선 벡터로 저장">SVG 저장</button>
+    <button type="button" id="rec8" class="primary" hidden title="7680×2926 · 30fps · VP9 WebM, 1루프">8K 21:8 녹화</button>
+  </div>
+  <p class="hint" id="hint">장면을 누르면 그 장면으로 넘어갑니다. 한 루프 길이는 장면 길이의 합(속도 1 기준)이고, H 키로 패널을 숨깁니다.</p>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/webm-muxer@5.0.3/build/webm-muxer.js"></script>
+<script>
+/* 배경용 크기 · 중심(주소 값) */
+const BQ=new URLSearchParams(location.search),BGW=+BQ.get('w')||4200,BGH=+BQ.get('h')||1600;window.DSQ=+BQ.get('q')||.6;
+const BOX={x:+BQ.get('ox')||.5,y:+BQ.get('oy')||.5,tx:+BQ.get('ox')||.5};
+
+
+{
+const $=id=>document.getElementById(id);
+const cv=$('c'),ctx=cv.getContext('2d',{alpha:false});
+const TAU=Math.PI*2;
+const clamp01=x=>x<0?0:x>1?1:x;
+// 장면 전환 이징: 강도 p(3=기본 큐빅, 클수록 출발·도착이 더 느리고 부드러움)
+const easeP=(t,p)=>t<.5?Math.pow(2,p-1)*Math.pow(t,p):1-Math.pow(-2*t+2,p)/2;
+const ease=t=>easeP(t,3);
+
+/* ---------- 장면 ---------- */
+// dur: 초(속도 1 기준, 패널에서 조절), tail: 꼬리 길이(초)
+const SCN=[
+  {k:'gather',name:'모임',    dur:18,tail:.06,form:1,fl:'모이기 전 퍼짐'},
+  {k:'meridian',name:'자오선 구',dur:9,tail:1.5,form:1,fl:'선 퍼짐'},
+  {k:'stream',name:'흐름',    dur:7, tail:.9, form:1,fl:'흐름 폭'},
+  {k:'converge',name:'수렴',  dur:8, tail:1.3, form:1,fl:'모임 폭'},
+  {k:'vortex',name:'소용돌이',dur:10,tail:1.0,form:1,fl:'나선 감김'},
+  {k:'net',   name:'연결망',  dur:8, tail:.35,form:1,fl:'연결선 밝기'},
+  {k:'orbit', name:'타원 흐름',dur:8, tail:.9, form:1,fl:'타원 높이'},
+  {k:'gather',name:'모임 2',  dur:18,tail:.06,form:1,fl:'모이기 전 퍼짐'},
+  {k:'radial',name:'방사',    dur:8, tail:.7, form:1,fl:'방사 길이'},
+  {k:'ring',  name:'링',      dur:8, tail:.8, form:1,fl:'링 두께'},
+  {k:'well',  name:'중력 우물',dur:10,tail:.1, form:1,fl:'우물 깊이'},
+  {k:'tunnel',name:'웨이브 터널',dur:16,tail:.12,form:1,fl:'말림'},
+  {k:'sphere',name:'구체',    dur:10,tail:1.1,form:1,fl:'구 두께'}];
+// 장면별 공통 조절값: mv 움직임 속도, size 점 크기, scale 형태 크기, bright 밝기 (모두 1이 기본)
+SCN.forEach(s=>{s.mv=1;s.size=1;s.scale=1;s.bright=1;s.boost=s.k==='tunnel'||s.k==='well';}); // boost: 촘촘한 격자 장면은 점을 자동으로 늘림
+// 장면별 기본값 조정
+SCN.forEach(s=>{s.dur=s.k==='gather'?20:10;}); // 길이: 모임 20초, 나머지 10초
+Object.assign(SCN.find(s=>s.k==='stream'),{tail:.4,size:.46,scale:.72,bright:.32,form:.64});
+Object.assign(SCN.find(s=>s.k==='sphere'),{tail:.74,size:.8,scale:.7,bright:.9,form:.86});
+Object.assign(SCN.find(s=>s.k==='net'),{tail:.1,size:.8,scale:.82,bright:1,form:.3});
+Object.assign(SCN.find(s=>s.k==='ring'),{tail:.56,size:1.26,scale:.9,bright:.75,form:.76});
+Object.assign(SCN.find(s=>s.k==='meridian'),{scale:.8});
+Object.assign(SCN.find(s=>s.k==='radial'),{scale:.85});
+Object.assign(SCN.find(s=>s.k==='converge'),{size:1.8,form:0,scale:1.1,bright:.6,tail:.8});
+Object.assign(SCN.find(s=>s.k==='orbit'),{scale:.46,tail:.42,size:1.5,form:.8,bright:.22});
+Object.assign(SCN.find(s=>s.k==='vortex'),{tail:.66,size:1,scale:.84,bright:.78,form:1.6});
+SCN.forEach((s,i)=>{s.on=s.k!=='sphere'&&s.k!=='vortex';s.o0=i;}); // on: 재생 여부, o0: 처음 순서
+const SCN0=SCN.map(s=>({...s})); // 초기화용 장면별 기본값
+let START=[],LOOP_S=0,ACT=[];
+function relayout(){
+  ACT=SCN.map((s,i)=>i).filter(i=>SCN[i].on);if(!ACT.length){SCN[0].on=true;ACT=[0];}
+  START=SCN.map(()=>-1);LOOP_S=0;ACT.forEach(i=>{START[i]=LOOP_S;LOOP_S+=SCN[i].dur;});
+}
+relayout();
+const TINTS=[{n:'화이트',fg:[255,255,255],bg:'#000000'},{n:'아이스',fg:[196,226,255],bg:'#01050b'},{n:'틸',fg:[150,240,228],bg:'#011a22'}];
+
+const S={speed:1,count:1600,trail:1,size:1,scale:1,bright:1,trans:4,ep:4.5,tint:0,grid:false,auto:true};
+
+/* ---------- 입자별 고정 난수 ---------- */
+const MAXN=12000,NODES=56,GL=260;
+function rng(seed){return()=>{seed|=0;seed=seed+0x6D2B79F5|0;let t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+const R=rng(20261116),gauss=()=>{let u=0,v=0;while(!u)u=R();v=R();return Math.sqrt(-2*Math.log(u))*Math.cos(TAU*v);};
+const P=[];
+for(let i=0;i<MAXN;i++){
+  let ax=[gauss(),gauss(),gauss()],l=Math.hypot(...ax);ax=ax.map(v=>v/l);
+  let t=Math.abs(ax[0])<.9?[1,0,0]:[0,1,0];
+  let e1=[ax[1]*t[2]-ax[2]*t[1],ax[2]*t[0]-ax[0]*t[2],ax[0]*t[1]-ax[1]*t[0]];l=Math.hypot(...e1);e1=e1.map(v=>v/l);
+  const e2=[ax[1]*e1[2]-ax[2]*e1[1],ax[2]*e1[0]-ax[0]*e1[2],ax[0]*e1[1]-ax[1]*e1[0]];
+  const big=R()<.03;
+  // 모임: 구 모양 성단의 기본 좌표(반지름 약 1). 처음엔 이 좌표를 크게 키운 넓은 공간에 흩어져 있음
+  let g=[gauss(),gauss(),gauss()];const gl=Math.hypot(...g),gr=Math.pow(R(),.55)*.95;g=g.map(v=>v/gl*gr);
+  P.push({
+    g,gs:big?2.2+R()*1.6:.55+Math.pow(R(),3)*1.3,ga:big?1:.3+R()*.7,gp:R()*TAU,gw:.2+R()*.25,
+    su:R(),sy:gauss()*.28,sv:(5+(R()*7|0)),
+    e1,e2,th:R()*TAU,w:(R()<.5?-1:1)*(2+(R()*3|0)),rr:.94+gauss()*.035,
+    node:(R()*NODES)|0,no:[gauss()*.035,gauss()*.035,gauss()*.035],
+    vu:Math.pow(R(),.75),arm:(R()*2|0),vj:gauss(),vr:1+(R()*2|0),
+    rg:gauss(),rt:R()*TAU,rw:2+(R()*2|0),
+    d:R(),tw:R()*TAU});
+}
+// Four States 장면(자오선 구·수렴·방사)용 선 배정: 점마다 선 하나를 골라 그 선을 따라 흐름
+const R2=rng(4242),NLM=40,NLC=36,NLR=90,RD=[];
+for(let i=0;i<NLR;i++){let d=[gauss(),gauss(),gauss()];const l=Math.hypot(...d);RD.push([d[0]/l,d[1]/l,d[2]/l,.5+.55*R2()]);}
+const CV=[];for(let i=0;i<NLC;i++){ // 수렴 호: 출발 방향 d와, d에 수직인 휨 방향 e(모두 같은 쪽으로 감기도록)
+  const z=1-2*(i+.5)/NLC,rr=Math.sqrt(1-z*z),a=i*2.39996,d=[rr*Math.cos(a),z,rr*Math.sin(a)];
+  let e=[d[1]*0-d[2]*1,d[2]*0-d[0]*0,d[0]*1-d[1]*0];let l=Math.hypot(...e);if(l<.2){e=[1,0,0];l=1;}e=e.map(v=>v/l);
+  CV.push([...d,...e]);}
+P.forEach(q=>{q.ln=R2();q.lj=R2()-.5;q.lv=.6+.8*R2();});
+/* 타원 흐름: 가운데 원을 사이에 두고 위·아래로 겹친 타원들(바깥 하나는 점선). 값은 화면 높이 절반(=1) 기준
+   [가로 반지름, 중심 높이, 세로 반지름, 점선 여부] — 위쪽 타원, 아래쪽은 위아래 대칭 */
+const ORB=[[.77,.65,.25,0],[1.27,.72,.46,0],[1.75,.85,.7,0],[2.24,1.2,1.2,1]];
+const ORL=ORB.map(e=>Math.PI*(3*(e[0]+e[2])-Math.sqrt((3*e[0]+e[2])*(e[0]+3*e[2])))),ORT=ORL.reduce((a,b)=>a+b,0)*2;
+const ORING=.16; // 점의 16%는 가운데 원 테두리(링 장면처럼 점이 흐르는 얇은 띠)
+P.forEach(q=>{if(q.ln>1-ORING){q.oe=8;return;}let u=q.ln/(1-ORING)*ORT,e=0;while(e<7&&u>ORL[e%4]){u-=ORL[e%4];e++;}q.oe=e;});
+// KISM 엠블럼(두 조각) — 가운데 원 안에 흰색으로
+const KISM=new Path2D('M38.67 0 16.89 0 0 20.9 0 35.79 4.79 41.72 20.05 22.95 38.67 0Z M5.99 43.21 16.89 56.69 38.67 56.69 16.87 29.83 5.99 43.21Z');
+const KISM_D='M38.67 0 16.89 0 0 20.9 0 35.79 4.79 41.72 20.05 22.95 38.67 0Z M5.99 43.21 16.89 56.69 38.67 56.69 16.87 29.83 5.99 43.21Z';
+const ORC=.37; // 가운데 원 반지름
+// 가운데 원 테두리 점·선 패턴: 둘레를 n칸으로 나눠 칸마다 선 하나 + 빈칸 가운데 점 하나
+function ringPat(R,PX,t){const n=18,P=TAU*R/n,d=P*.55;
+  return{lw:Math.max(1.6,2*PX),dw:Math.max(3,3.4*PX),dash:[d,P-d],dot:[.001,P-.001],dotShift:d+(P-d)/2,off:-t*14*PX,P};}
+/* 웨이브 터널: 규칙적인 점 격자가 말려 들어가는 관(파도 속) 표면을 이룸. 카메라는 관 안쪽, 격자가 앞으로 흘러옴 */
+const TUN_C=110,TUN_R=80,TUN_N=TUN_C*TUN_R;
+const NP=[];for(let i=0;i<NODES;i++){const z=1-2*(i+.5)/NODES,r=Math.sqrt(1-z*z),a=i*2.39996;const j=.12;NP.push([r*Math.cos(a)+gauss()*j,z+gauss()*j,r*Math.sin(a)+gauss()*j].map(v=>v*.92));}
+const knn=(pts,k)=>{const E=[];pts.forEach((p,i)=>{pts.map((q,j)=>[j,Math.hypot(p[0]-q[0],p[1]-q[1],p[2]-q[2])]).filter(x=>x[0]!==i).sort((a,b)=>a[1]-b[1]).slice(0,k).forEach(([j])=>{if(!E.some(e=>(e[0]===i&&e[1]===j)||(e[0]===j&&e[1]===i)))E.push([i,j]);});});return E;};
+const EDGES=knn(NP,3);
+// 모임 장면의 옅은 연결선: 성단 안 일부 점끼리 가까운 2개
+const GEDGES=knn(P.slice(0,GL).map(q=>q.g),2);
+
+/* ---------- 장면별 위치 (t: 초 단위 절대 시간) ---------- */
+const rotY=(p,a)=>{const c=Math.cos(a),s=Math.sin(a);return[p[0]*c+p[2]*s,p[1],-p[0]*s+p[2]*c];};
+const rotX=(p,a)=>{const c=Math.cos(a),s=Math.sin(a);return[p[0],p[1]*c-p[2]*s,p[1]*s+p[2]*c];};
+let HW=2,HH=1;
+const out=[0,0,0,0]; // x,y,size,alpha
+function proj(p,o){const k=3.2/(3.2-p[2]);o[0]=p[0]*k;o[1]=p[1]*k;o[2]*=k;o[3]*=.45+.55*clamp01((p[2]+1)/2);}
+const CAM=3.4;
+function modePos(m,q,i,t,o){modePos0(m,q,i,t,o);const s=SCN[m];o[2]*=s.size;o[3]*=s.bright;}
+function modePos0(m,q,i,t0,o){
+  const s=SCN[m],sc=S.scale*s.scale,t=t0*s.mv,f=s.form;
+  switch(s.k){
+  case 'gather':{ // 모임: 카메라를 둘러싼 넓은 공간의 점들이 아주 천천히 한 성단으로 모여듦
+    const x=clamp01((t0-Math.max(0,START[m]))/(s.dur*.96)),gp=.5-.5*Math.cos(Math.PI*x);
+    const sp=1+13*f*Math.pow(1-gp,2.2);
+    let p=[q.g[0]*sp+.03*Math.sin(t*q.gw+q.gp),q.g[1]*sp+.03*Math.cos(t*q.gw*1.3+q.gp),q.g[2]*sp];
+    p=p.map(v=>v*sc);p=rotX(rotY(p,TAU*t/60),.18);
+    const d=CAM-p[2];
+    if(d<.25){o[0]=p[0]*6;o[1]=p[1]*6;o[2]=0;o[3]=0;return;}
+    const k=CAM/d;o[0]=p[0]*k;o[1]=p[1]*k;
+    o[2]=Math.min(7,q.gs*k*.9);
+    // 가까이 지나는 점은 크고 부드럽게, 먼 점은 작고 옅게
+    o[3]=q.ga*Math.min(1,.25+.55*k)*clamp01((d-.25)/.8)*(k>3?.65:1);return;}
+  case 'stream':{ // 흐름: 왼쪽에서 오른쪽으로 흐르는 데이터 줄기
+    const u=(((q.su+t*q.sv*.03)%1)+1)%1;o[0]=-HW*1.25+u*HW*2.5;o[1]=q.sy*sc*f+.05*Math.sin(u*7+q.gp);o[2]=.8;o[3]=.55+.45*q.ga;return;}
+  case 'sphere':{ // 구체: 각자 다른 대원을 따라 도는 궤도
+    const a=q.th+TAU*t*q.w/28,c=Math.cos(a),s=Math.sin(a),r=(.94+(q.rr-.94)*f)*sc;
+    let p=[(q.e1[0]*c+q.e2[0]*s)*r,(q.e1[1]*c+q.e2[1]*s)*r,(q.e1[2]*c+q.e2[2]*s)*r];
+    p=rotX(rotY(p,TAU*t/36),.25);o[2]=.8;o[3]=.85;proj(p,o);return;}
+  case 'meridian':{ // 자오선 구 (Four States 구체): 자오선 대원들을 따라 점이 흐름
+    const li=(q.ln*NLM)|0,ph=li/NLM*Math.PI+q.lj*.018*f,th=TAU*(((q.su+t*q.lv*.02)%1+1)%1);
+    let p=[Math.sin(th)*Math.cos(ph),Math.cos(th),Math.sin(th)*Math.sin(ph)].map(v=>v*.95*sc);
+    p=rotY(p,TAU*t/50);{const c=Math.cos(-.42),s2=Math.sin(-.42);p=[p[0]*c-p[1]*s2,p[0]*s2+p[1]*c,p[2]];}p=rotX(p,.12);
+    o[2]=.8;o[3]=.85;proj(p,o);return;}
+  case 'converge':{ // 수렴: 구 표면 곳곳에서 출발한 호들이 휘어지며 가운데 한 점으로 모여듦
+    const c=CV[(q.ln*NLC)|0],u=((q.su+t*q.lv*.03)%1+1)%1,e=Math.pow(u,1.35),r=(1-e)*.95*sc,bd=Math.sin(Math.PI*(1-e))*.32*f*sc*(1-e*.4);
+    let p=[c[0]*r+c[3]*bd,c[1]*r+c[4]*bd,c[2]*r+c[5]*bd];
+    p=rotX(rotY(p,TAU*t/55),.18);
+    o[2]=.75;o[3]=.3+.7*u;proj(p,o);return;}
+  case 'radial':{ // 방사 (Four States): 중심에서 뻗는 광선을 따라 점이 바깥으로 흘러 나감
+    const d=RD[(q.ln*NLR)|0],u=((q.su+t*q.lv*.06)%1+1)%1,r=u*d[3]*f*1.3*sc;
+    let p=rotX(rotY([d[0]*r,d[1]*r,d[2]*r],TAU*t/60),.2);
+    o[2]=.7;o[3]=Math.pow(Math.sin(Math.PI*Math.min(1,u*1.15)),.6)*.9+.1*(u<.05?1:0);proj(p,o);return;}
+  case 'well':{ // 중력 우물: 비스듬히 내려다보는 점 격자 평면 가운데가 깊게 꺼지고, 테두리가 솟고, 둘레로 물결이 퍼져 나감
+    const WC=130,WR=(MAXN/WC)|0,c=i%WC,rw=((i/WC)|0)%WR;
+    const x=(c/(WC-1)-.5)*13,z=.3+Math.pow(rw/(WR-1),1.15)*9,r=Math.hypot(x,(z-3.6)*1.05)/sc;
+    const y=(-1.7*f*Math.exp(-Math.pow(r/1.55,2))*(1+.04*Math.sin(t*.7))+.2*Math.exp(-Math.pow((r-1.95)/.3,2))
+      +.07*Math.sin(r*3.6-t*1.4)*Math.exp(-r*.2)*Math.min(1,r/1.6))*sc;
+    const a=.4,Y=y-1.25,yc=Y*Math.cos(a)+z*Math.sin(a),zc=-Y*Math.sin(a)+z*Math.cos(a);
+    if(zc<.25){o[0]=0;o[1]=-9;o[2]=0;o[3]=0;return;}
+    const F=1.3,k=F/zc;o[0]=x*k;o[1]=yc*k+.36;
+    o[2]=Math.min(2.8,.5+1.3*k);o[3]=Math.min(1,(9.3-z)/2.4)*Math.min(1,zc*1.5)*(.7+.3*Math.min(1,k*1.5));return;}
+  case 'tunnel':{
+    const c=i%TUN_C,rw=((i/TUN_C)|0)%TUN_R,v=((rw/TUN_R-t*.035)%1+1)%1,d=.25+v*7.5;
+    const th=.45+c/TUN_C*TAU*.84+1.5*f*Math.pow(v,.9)+.08*Math.sin(t*.3),r=1.75*Math.pow(1-.8*v,1.1)*sc;
+    const cx0=(.95*Math.pow(v,.6)-.1)*sc,cy0=(.05*v)*sc,x=cx0+Math.cos(th)*r,y=cy0+Math.sin(th)*r*.92,k=1.6/d;
+    o[0]=x*k+.35*sc;o[1]=y*k;o[2]=Math.min(2.4,.55+1.1*k);
+    o[3]=Math.min(1,v*9)*Math.min(1,(1-v)*2.2)*(.55+.45*Math.min(1,k));return;}
+  case 'orbit':{ // 타원 흐름: 위·아래 타원을 따라 점이 돌고, 바깥 점선 타원은 점선 구간에서만 밝음
+    if(q.oe===8){ // 가운데 원 테두리: 링 장면처럼 원을 따라 흐르는 얇은 점 띠
+      const r=ORC*HH*.98*sc*(1.035+q.rg*.012),a=q.rt+TAU*t*q.rw/30*(q.rg<0?1.3:1);
+      o[0]=Math.cos(a)*r;o[1]=Math.sin(a)*r;o[2]=.75;o[3]=.55+.45*Math.exp(-q.rg*q.rg);return;}
+    const e=q.oe,E=ORB[e%4],up=e<4?1:-1,dir=(e%2?1:-1)*up,k=HH*.98*sc;
+    const a=q.th+dir*TAU*t*q.lv/(22+e%4*7),br2=1+.04*Math.sin(t*.5+e);
+    o[0]=Math.cos(a)*E[0]*k*br2;o[1]=up*(E[1]*f+Math.sin(a)*E[2]*f)*k;
+    o[2]=E[3]?.7:.85;o[3]=E[3]?(Math.sin(a*110)>.2?.85:0):.8;return;}
+  case 'net':{ // 연결망
+    const n=i<NODES?i:q.node,b=NP[n];
+    let p=i<NODES?[b[0],b[1],b[2]]:[b[0]+q.no[0],b[1]+q.no[1],b[2]+q.no[2]];
+    p=p.map(v=>v*sc);p=rotX(rotY(p,TAU*t/30),.3);
+    o[2]=i<NODES?2.4+2*((i*7)%5)/5:.6;o[3]=i<NODES?1:.32;proj(p,o);return;}
+  case 'vortex':{ // 소용돌이
+    const r=(.1+1.05*q.vu)*sc,a=q.arm*Math.PI+2.6*f*Math.log(r/sc+.08)+q.vj*.2/(q.vu+.5)-TAU*t*q.vr/26;
+    let p=[Math.cos(a)*r,Math.sin(a)*r,0];p=rotX(p,.95);p=rotY(p,.2);
+    o[2]=.8+.6*(1-q.vu);o[3]=.75+.25*(1-q.vu);proj(p,o);return;}
+  default:{ // 링
+    const r=(.66+q.rg*.055*f)*sc,a=q.rt+TAU*t*q.rw/30*(q.rg<0?1.4:1);
+    o[0]=Math.cos(a)*r;o[1]=Math.sin(a)*r;o[2]=.7;o[3]=.5+.5*Math.exp(-q.rg*q.rg);return;}
+  }
+}
+/* 시간 → 장면. 각 장면으로의 전환은 그 장면 시작부에서, 단 처음(모임)으로의 전환만 루프 끝(링의 마지막)에서 일어남
+   → 루프가 넓게 흩어진 점들로 시작하고, 끝과 처음이 끊김 없이 이어짐 */
+let hold=-1;
+const DLY=()=>S.trans*.7, WIN=()=>S.trans+DLY();
+function seg(t){
+  if(hold>=0)return{from:hold,to:hold,tl:1e9,tf:t,tt:t,k:hold,loc:1e9};
+  t=((t%LOOP_S)+LOOP_S)%LOOP_S;let p=ACT.length-1;while(p>0&&START[ACT[p]]>t)p--;const k=ACT[p];
+  const loc=t-START[k],w=Math.min(WIN(),SCN[k].dur*.95),last=ACT.length-1;
+  if(p>0&&loc<w)return{from:ACT[p-1],to:k,tl:loc,tf:t,tt:t,k,loc};
+  if(p===last&&last>0&&loc>SCN[k].dur-w)return{from:k,to:ACT[0],tl:loc-(SCN[k].dur-w),tf:t,tt:t-LOOP_S,k,loc};
+  return{from:k,to:k,tl:1e9,tf:t,tt:t,k,loc};
+}
+const A=[0,0,0,0],B=[0,0,0,0];
+function posAt(i,sg,o){
+  const q=P[i];
+  if(sg.from===sg.to){modePos(sg.to,q,i,sg.tt,o);return;}
+  const e=easeP(clamp01((sg.tl-q.d*DLY())/S.trans),S.ep);
+  if(e<=0){modePos(sg.from,q,i,sg.tf,o);return;}
+  if(e>=1){modePos(sg.to,q,i,sg.tt,o);return;}
+  modePos(sg.from,q,i,sg.tf,A);modePos(sg.to,q,i,sg.tt,B);
+  const bend=Math.sin(Math.PI*e)*.12*(q.d-.4);
+  o[0]=A[0]+(B[0]-A[0])*e-bend*(B[1]-A[1]);o[1]=A[1]+(B[1]-A[1])*e+bend*(B[0]-A[0]);
+  o[2]=A[2]+(B[2]-A[2])*e;o[3]=A[3]+(B[3]-A[3])*e;
+}
+// 장면 m의 전체 비중(0..1): 선 그리기·꼬리 길이에 사용
+function weight(sg,m){
+  if(sg.from===sg.to)return sg.to===m?1:0;
+  const E=easeP(clamp01(sg.tl/WIN()),Math.max(2,S.ep*.8));
+  return(sg.from===m?1-E:0)+(sg.to===m?E:0);
+}
+
+/* ---------- 그리기 ---------- */
+let W=0,H=0,U=1,PX=1;
+function size(){const q=window.DSQ||1;cv.width=Math.round(BGW*q);cv.height=Math.round(BGH*q);}
+function geom(){W=cv.width;H=cv.height;U=Math.min(W,H*1.15)*.36;PX=H/1080;HW=W/2/U;HH=H/2/U;}
+addEventListener('resize',()=>{size();if(paused)draw();});size();
+const K=12; // 꼬리 샘플 수
+const LVL=new Uint8Array(MAXN),XS=new Float32Array(MAXN*(K+1)),YS=new Float32Array(MAXN*(K+1)),SZ=new Float32Array(MAXN),AL=new Float32Array(MAXN);
+let tNow=0,paused=false,manual=false;const LF={};
+/* 메인 스크린 배경용: 크기 · 중심 · 속도를 주소 값과 부모 창 메시지로 제어 */
+(function oxTick(){BOX.x+=(BOX.tx-BOX.x)*.04;requestAnimationFrame(oxTick);})();
+window.DS={restart(t){hold=-1;tNow=t||0;last=performance.now();},mul(m){if(DS.base==null)DS.base=S.speed;S.speed=DS.base*m;}};
+addEventListener('message',e=>{const d=e.data||{};if(d.ds==='mul')DS.mul(+d.v||1);else if(d.ds==='restart')DS.restart(+d.t||0);
+  else if(d.ds==='q'){window.DSQ=+d.v||.6;size();}else if(d.ds==='ox'){BOX.tx=+d.v;}});
+function draw(){
+  geom();
+  const tint=TINTS[S.tint],[fr,fg,fb]=tint.fg,cx=W*BOX.x,cy=H*BOX.y;
+  ctx.globalCompositeOperation='source-over';ctx.fillStyle=tint.bg;ctx.fillRect(0,0,W,H);
+  const s0=seg(tNow);
+  LF.tail=0;const TI=-1,wT=SCN.reduce((a,x,m)=>a+(x.boost?weight(s0,m):0),0),N0=S.count|0,N=Math.max(N0,Math.round(MAXN*Math.min(1,wT))); // 웨이브 터널은 촘촘한 격자가 필요해 점을 자동으로 늘림
+  // 꼬리 길이: 장면 비중에 따라 부드럽게
+  let tail=0;SCN.forEach((s,m)=>tail+=s.tail*weight(s0,m));tail*=S.trail;
+  if(S.grid){ctx.fillStyle=`rgba(${fr},${fg},${fb},.16)`;const g=Math.round(54*PX),z=Math.max(1,Math.round(2*PX));for(let y=(H/2)%g;y<H;y+=g)for(let x=(W/2)%g;x<W;x+=g)ctx.fillRect(x-z/2,y-z/2,z,z);}
+  const Kn=tail<=0?0:tail<.4?5:K;LF.Kn=Kn;const segs=[];for(let j=0;j<=Kn;j++)segs.push(seg(tNow-tail*j/Math.max(1,Kn)));
+  for(let i=0;i<N;i++){
+    for(let j=0;j<=Kn;j++){
+      if(j>0&&tail<=0){XS[i*(K+1)+j]=XS[i*(K+1)];YS[i*(K+1)+j]=YS[i*(K+1)];continue;}
+      posAt(i,segs[j],out);XS[i*(K+1)+j]=cx+out[0]*U;YS[i*(K+1)+j]=cy-out[1]*U;
+      if(j===0){SZ[i]=out[2];AL[i]=i<N0?out[3]:out[3]*wT;}
+    }
+  }
+  Object.assign(LF,{N,tail,s0,wT,TI});
+  ctx.globalCompositeOperation='lighter';ctx.lineCap='round';
+  const jump=U*.35,br=S.bright;
+  // 꼬리: 머리에서 멀수록 옅게. 투명도 단계별로 한 번에 그림
+  if(tail>0){
+    ctx.lineWidth=Math.max(1,.9*PX*S.size);
+    for(let j=0;j<Kn;j++){
+      const fade=Math.pow(1-j/Kn,1.6);
+      for(const band of [0,1]){
+        ctx.beginPath();
+        for(let i=0;i<N;i++){
+          if(AL[i]<.03||(AL[i]>.7)!==(band===1))continue;
+          const b=i*(K+1)+j,x0=XS[b],y0=YS[b],x1=XS[b+1],y1=YS[b+1];
+          if(Math.abs(x1-x0)+Math.abs(y1-y0)>jump)continue;
+          ctx.moveTo(x0,y0);ctx.lineTo(x1,y1);
+        }
+        ctx.strokeStyle=`rgba(${fr},${fg},${fb},${Math.min(1,(band?.5:.26)*fade*br)})`;ctx.stroke();
+      }
+    }
+  }
+  // 연결망 선
+  // 모임 장면의 옅은 연결선
+  const wG=SCN.reduce((a,x,m)=>a+(x.k==='gather'?weight(s0,m):0),0);
+  if(wG>0){
+    ctx.lineWidth=Math.max(1,.8*PX);ctx.strokeStyle=`rgba(${fr},${fg},${fb},${.16*wG*br})`;ctx.beginPath();
+    for(const [a,b] of GEDGES){if(AL[a]<.05||AL[b]<.05)continue;const xa=XS[a*(K+1)],ya=YS[a*(K+1)],xb=XS[b*(K+1)],yb=YS[b*(K+1)];if(Math.abs(xa-xb)+Math.abs(ya-yb)>U*.32)continue;ctx.moveTo(xa,ya);ctx.lineTo(xb,yb);}ctx.stroke();
+  }
+  const NI=SCN.findIndex(x=>x.k==='net'),wNet=Math.pow(weight(s0,NI),2)*SCN[NI].form;
+  if(wNet>0){
+    ctx.lineWidth=Math.max(1,1.1*PX);ctx.strokeStyle=`rgba(${fr},${fg},${fb},${Math.min(1,.55*wNet*br)})`;ctx.beginPath();
+    for(const [a,b] of EDGES){ctx.moveTo(XS[a*(K+1)],YS[a*(K+1)]);ctx.lineTo(XS[b*(K+1)],YS[b*(K+1)]);}ctx.stroke();
+  }
+  // 머리 점
+  // 투명도를 32단계로 묶어 단계마다 한 번에 채움(점마다 색을 바꾸면 느림)
+  const tw=tNow*.45,LV=32;
+  for(let i=0;i<N;i++){
+    if(AL[i]<.01){LVL[i]=0;continue;}
+    const a=Math.min(1,AL[i]*br*(.8+.2*Math.sin(tw*3+P[i].tw)));LVL[i]=Math.round(a*LV);
+  }
+  for(let l=1;l<=LV;l++){
+    ctx.fillStyle=`rgba(${fr},${fg},${fb},${l/LV})`;ctx.beginPath();let any=false;
+    for(let i=0;i<N;i++){if(LVL[i]!==l)continue;any=true;
+      const r=SZ[i]*S.size*1.15*PX,x=XS[i*(K+1)],y=YS[i*(K+1)];
+      if(r<1.6){const z=Math.max(1,r*1.3);ctx.rect(x-z/2,y-z/2,z,z);}else{ctx.moveTo(x+r,y);ctx.arc(x,y,r,0,TAU);}
+    }
+    if(any)ctx.fill();
+  }
+  // 타원 흐름: 가운데 검은 원 + 흰 테두리 + 흰 엠블럼 (장면 비중에 따라 나타남)
+  const OI=SCN.findIndex(x=>x.k==='orbit'),wO=OI<0?0:Math.pow(weight(s0,OI),2);
+  if(wO>.01){const sc=S.scale*SCN[OI].scale,R=ORC*HH*.98*sc*U*(.85+.15*wO);
+    ctx.globalCompositeOperation='source-over';ctx.globalAlpha=wO;
+    ctx.fillStyle=tint.bg;ctx.beginPath();ctx.arc(cx,cy,R*.985,0,TAU);ctx.fill();
+    const h=R*.62,k2=h/56.69;ctx.save();ctx.translate(cx-38.67*k2/2,cy-h/2);ctx.scale(k2,k2);ctx.fillStyle=`rgb(${fr},${fg},${fb})`;ctx.fill(KISM);ctx.restore();
+    ctx.globalAlpha=1;LF.orb={R,h};}else LF.orb=null;
+  // 패널 진행 표시
+  [...$('steps').children].forEach((el,k)=>{el.setAttribute('aria-pressed',k===s0.k);el.querySelector('b').style.width=(k===s0.k?Math.min(100,s0.loc/SCN[k].dur*100):0)+'%';});
+}
+
+/* ---------- 루프 ---------- */
+let last=performance.now();
+function loop(now){
+  const dt=Math.min(.1,(now-last)/1000);last=now;
+  if(!paused&&!manual){
+    if(hold>=0)tNow+=dt*S.speed;  // 한 장면에 머무는 동안은 시간만 흐름
+    else{const before=seg(tNow).k;tNow=(tNow+dt*S.speed)%LOOP_S;
+      if(!S.auto&&seg(tNow).k!==before){hold=before;tNow=START[before]+SCN[before].dur;}}
+  }
+  if(!manual)draw();
+  requestAnimationFrame(loop);
+}
+
+/* ---------- UI ---------- */
+function buildSteps(){$('steps').innerHTML=SCN.map((s,k)=>`<button type="button" data-k="${k}" class="${s.on?'':'off'}">${s.name}<b></b></button>`).join('');}
+buildSteps();
+$('steps').addEventListener('click',e=>{const b=e.target.closest('button');if(!b||START[+b.dataset.k]<0)return;hold=-1;tNow=START[+b.dataset.k];if(paused)draw();});
+$('tints').innerHTML=TINTS.map((t,i)=>`<button type="button" data-i="${i}" style="background:rgb(${t.fg})" aria-pressed="${i===0}">${t.n}</button>`).join('');
+$('tints').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;S.tint=+b.dataset.i;[...$('tints').children].forEach(x=>x.setAttribute('aria-pressed',x===b));if(paused)draw();});
+const NUM=['speed','count','trail','size','scale','bright'];
+function syncUI(){NUM.forEach(k=>{S[k]=parseFloat($(k).value);$(k).parentNode.querySelector('.v').textContent=k==='count'?S[k]:S[k].toFixed(2);});S.auto=$('auto').checked;if(S.auto&&hold>=0){tNow=START[ACT[(ACT.indexOf(hold)+1)%ACT.length]]||0;hold=-1;}S.trans=parseFloat($('trans').value);S.ep=parseFloat($('ep').value);$('ep').parentNode.querySelector('.v').textContent=S.ep<=1.05?'선형':S.ep.toFixed(1);$('trans').parentNode.querySelector('.v').textContent=S.trans.toFixed(1)+'s';S.grid=$('grid').checked;}
+NUM.forEach(k=>$(k).addEventListener('input',()=>{syncUI();if(paused)draw();}));
+['auto','grid'].forEach(k=>$(k).addEventListener('change',()=>{syncUI();if(paused)draw();}));
+['trans','ep'].forEach(k=>$(k).addEventListener('input',()=>{syncUI();if(paused)draw();}));
+// 장면별 모션 편집: 위 칩에서 장면을 고르면 그 장면으로 이동하고, 아래 값은 그 장면에만 적용
+let ek=0;
+const ED=[['dur','길이',3,40,.5,v=>v.toFixed(1)+'s'],['mv','움직임 속도',0,3,.01],['tail','꼬리 길이',0,3,.01],['size','점 크기',.2,3,.01],['scale','형태 크기',.3,2,.01],['bright','밝기',0,2.5,.01],['form','',0,2.5,.01]];
+function buildEd(){$('ed').innerHTML=SCN.map((s,k)=>`<button type="button" data-k="${k}">${s.name}</button>`).join('');}
+buildEd();
+function edRender(){
+  const s=SCN[ek];[...$('ed').children].forEach((b,k)=>b.setAttribute('aria-pressed',k===ek));
+  $('edrows').innerHTML=ED.map(([key,lab,mn,mx,st,fm])=>`<div class="row"><label for="e_${key}">${lab||s.fl}</label><input id="e_${key}" data-key="${key}" type="range" min="${mn}" max="${mx}" step="${st}" value="${s[key]}"><span class="v">${(fm||(v=>v.toFixed(2)))(s[key])}</span></div>`).join('');
+}
+$('ed').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;ek=+b.dataset.k;edRender();if(START[ek]>=0){hold=-1;tNow=START[ek]+Math.min(WIN(),SCN[ek].dur*.5);}if(paused)draw();});
+$('edrows').addEventListener('input',e=>{
+  const key=e.target.dataset.key;if(!key)return;const v=+e.target.value,f=ED.find(x=>x[0]===key)[5];
+  e.target.parentNode.querySelector('.v').textContent=(f||(x=>x.toFixed(2)))(v);
+  if(key==='dur'){const cur=seg(tNow),off=hold<0?tNow-START[cur.k]:0;SCN[ek].dur=v;relayout();if(hold<0&&START[cur.k]>=0)tNow=START[cur.k]+Math.min(off,SCN[cur.k].dur-.01);}
+  else SCN[ek][key]=v;
+  if(paused)draw();});
+edRender();
+/* 장면 순서·켜기/끄기: 목록에서 순서를 바꾸면 재생 순서가 바뀌고, 체크를 끄면 그 장면은 건너뜀 */
+function buildOrder(){
+  $('order').innerHTML=SCN.map((s,k)=>`<li class="${s.on?'':'off'}"><input type="checkbox" data-k="${k}" ${s.on?'checked':''} aria-label="${s.name} 켜기"><span>${s.name}</span><button type="button" data-up="${k}" ${k===0?'disabled':''} aria-label="${s.name} 위로">▲</button><button type="button" data-dn="${k}" ${k===SCN.length-1?'disabled':''} aria-label="${s.name} 아래로">▼</button></li>`).join('');
+}
+function afterOrder(curObj,edObj){
+  relayout();buildSteps();buildEd();buildOrder();
+  ek=Math.max(0,SCN.indexOf(edObj));edRender();
+  const ci=SCN.indexOf(curObj);hold=-1;tNow=START[ci]>=0?START[ci]+Math.min(WIN(),SCN[ci].dur*.5):0;
+  if(paused)draw();
+}
+$('order').addEventListener('change',e=>{const k=e.target.dataset.k;if(k==null)return;const cur=SCN[seg(tNow).k],ed=SCN[ek];
+  SCN[+k].on=e.target.checked;if(!SCN.some(s=>s.on)){SCN[+k].on=true;e.target.checked=true;}afterOrder(cur,ed);});
+$('order').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;const cur=SCN[seg(tNow).k],ed=SCN[ek];
+  const k=+(b.dataset.up??b.dataset.dn),j=b.dataset.up!=null?k-1:k+1;if(j<0||j>=SCN.length)return;
+  [SCN[k],SCN[j]]=[SCN[j],SCN[k]];afterOrder(cur,ed);
+  const nb=$('order').querySelector(`[data-${b.dataset.up!=null?'up':'dn'}="${j}"]`);if(nb&&!nb.disabled)nb.focus();});
+buildOrder();
+// 초기화용 기본값: 패널 슬라이더·체크박스의 처음 값과 컬러
+const UI0=[...document.querySelectorAll('.panel input')].filter(el=>el.id&&!el.id.startsWith('e_')).map(el=>[el,el.type==='checkbox'?el.checked:el.value]);
+function resetAll(){
+  UI0.forEach(([el,v])=>{if(el.type==='checkbox')el.checked=v;else el.value=v;});
+  SCN.sort((a,b)=>a.o0-b.o0);SCN.forEach((s,k)=>Object.assign(s,SCN0[k]));relayout();buildSteps();buildEd();buildOrder();
+  S.tint=0;[...$('tints').children].forEach((x,i)=>x.setAttribute('aria-pressed',i===0));
+  hold=-1;tNow=0;ek=0;edRender();syncUI();
+  if(paused){paused=false;$('pause').textContent='일시정지';}
+}
+$('reset').onclick=resetAll;
+syncUI();
+$('pause').onclick=()=>{paused=!paused;$('pause').textContent=paused?'재생':'일시정지';};
+const setClean=on=>document.body.classList.toggle('clean',on);
+$('hide').onclick=()=>setClean(true);$('show').onclick=()=>setClean(false);
+void(e=>{if(e.target.closest('input'))return;if(e.key==='h'||e.key==='H')setClean(!document.body.classList.contains('clean'));if(e.key===' '){e.preventDefault();$('pause').click();}});
+addEventListener('mousemove',e=>document.body.classList.toggle('hover',e.clientY<80&&e.clientX>innerWidth-220));
+
+/* ---------- 저장 ---------- */
+let dl=null;
+(async()=>{try{dl=window.claude&&await window.claude.use('downloads');}catch(e){dl=null;}
+  if(dl){$('png').hidden=false;$('svg').hidden=false;if('VideoEncoder' in window)$('rec8').hidden=false;}})();
+async function saveFile(filename,blob){try{await dl.save({filename,data:blob});}catch(e){if(e&&e.code!=='declined')$('hint').textContent='파일을 저장하지 못했습니다.';}}
+$('png').onclick=()=>{draw();cv.toBlob(b=>saveFile('data-stream-'+cv.width+'x'+cv.height+'.png',b),'image/png');};
+
+/* SVG 저장: 지금 프레임을 그대로 벡터로. 머리 점=원, 꼬리·연결선=선(path), 텍스트 장면의 옅은 글자 면=윤곽 패스.
+   겹침 밝기는 mix-blend-mode:plus-lighter(브라우저 기준). 좌표는 현재 캔버스 픽셀 */
+function toSVG(){
+  draw();
+  const f=v=>Math.round(v*10)/10,tint=TINTS[S.tint],[fr,fg,fb]=tint.fg,col=`rgb(${fr},${fg},${fb})`,{N,tail,s0,wT,TI}=LF,cx=W/2,cy=H/2,br=S.bright,o=[];
+  o.push(`<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">`,`<title>Data Stream — ${SCN[s0.k].name}</title>`,`<rect width="${W}" height="${H}" fill="${tint.bg}"/>`);
+  if(S.grid){const g=Math.round(54*PX),z=Math.max(1,Math.round(2*PX));let d='';for(let y=(H/2)%g;y<H;y+=g)for(let x=(W/2)%g;x<W;x+=g)d+=`M${f(x-z/2)} ${f(y-z/2)}h${z}v${z}h-${z}z`;o.push(`<path d="${d}" fill="${col}" fill-opacity=".16"/>`);}
+  o.push(`<g style="mix-blend-mode:plus-lighter;isolation:isolate" stroke-linecap="round">`);
+  const line=(d,a,w)=>{if(d)o.push(`<path d="${d}" fill="none" stroke="${col}" stroke-opacity="${f(Math.min(1,a)*1000)/1000}" stroke-width="${f(w)}"/>`);};
+  const jump=U*.35,X=(i,j)=>XS[i*(K+1)+j],Y=(i,j)=>YS[i*(K+1)+j];
+  if(tail>0){
+    o.push('<g id="tails">');
+    for(let j=0;j<LF.Kn;j++){const fade=Math.pow(1-j/LF.Kn,1.6);
+      for(const band of [0,1]){let d='';
+        for(let i=0;i<N;i++){if(AL[i]<.03||(AL[i]>.7)!==(band===1))continue;const x0=X(i,j),y0=Y(i,j),x1=X(i,j+1),y1=Y(i,j+1);
+          if(Math.abs(x1-x0)+Math.abs(y1-y0)>jump)continue;if(Math.abs(x1-x0)+Math.abs(y1-y0)<.05)continue;d+=`M${f(x0)} ${f(y0)}L${f(x1)} ${f(y1)}`;}
+        line(d,(band?.5:.26)*fade*br,Math.max(1,.9*PX*S.size));}}
+    o.push('</g>');
+  }
+  const wG=SCN.reduce((a,x,m)=>a+(x.k==='gather'?weight(s0,m):0),0);
+  if(wG>0){let d='';for(const [a,b] of GEDGES){if(AL[a]<.05||AL[b]<.05)continue;if(Math.abs(X(a,0)-X(b,0))+Math.abs(Y(a,0)-Y(b,0))>U*.32)continue;d+=`M${f(X(a,0))} ${f(Y(a,0))}L${f(X(b,0))} ${f(Y(b,0))}`;}line(d,.16*wG*br,Math.max(1,.8*PX));}
+  const NI=SCN.findIndex(x=>x.k==='net'),wNet=Math.pow(weight(s0,NI),2)*SCN[NI].form;
+  if(wNet>0){let d='';for(const [a,b] of EDGES)d+=`M${f(X(a,0))} ${f(Y(a,0))}L${f(X(b,0))} ${f(Y(b,0))}`;line(d,.55*wNet*br,Math.max(1,1.1*PX));}
+  // 머리 점(작은 점은 화면과 같게 정사각형, 큰 점은 원): 투명도 단계(0.05 단위)별로 묶어 파일을 가볍게
+  const tw2=tNow*.45,bins=new Map();
+  for(let i=0;i<N;i++){if(AL[i]<.01)continue;const q=P[i],r=SZ[i]*S.size*1.15*PX,a=Math.min(1,AL[i]*br*(.8+.2*Math.sin(tw2*3+q.tw)));
+    const key=Math.round(a*20);if(!key)continue;(bins.get(key)||bins.set(key,[]).get(key)).push(r<1.6?(z=>`<rect x="${f(X(i,0)-z/2)}" y="${f(Y(i,0)-z/2)}" width="${f(z)}" height="${f(z)}"/>`)(Math.max(1,r*1.3)):`<circle cx="${f(X(i,0))}" cy="${f(Y(i,0))}" r="${f(r)}"/>`);}
+  o.push('<g id="dots">');[...bins.keys()].sort((a,b)=>a-b).forEach(k=>o.push(`<g fill="${col}" fill-opacity="${k/20}">${bins.get(k).join('')}</g>`));o.push('</g>');
+  if(LF.orb){const {R,h}=LF.orb,k2=h/56.69,a=Math.min(1,Math.pow(weight(s0,SCN.findIndex(x=>x.k==='orbit')),2));
+    const RG=ringPat(R,PX,tNow);o.push(`<g id="center" opacity="${f(a*100)/100}" style="mix-blend-mode:normal"><circle cx="${f(cx)}" cy="${f(cy)}" r="${f(R*.985)}" fill="${tint.bg}"/><path transform="matrix(${f(k2*1e3)/1e3} 0 0 ${f(k2*1e3)/1e3} ${f(cx-38.67*k2/2)} ${f(cy-h/2)})" fill="${col}" d="${KISM_D}"/></g>`);}
+  o.push('</g></svg>');
+  return o.join('\n');
+}
+$('svg').onclick=()=>{const name=SCN[seg(tNow).k].k;saveFile('data-stream-'+name+'-'+cv.width+'x'+cv.height+'.svg',new Blob([toSVG()],{type:'image/svg+xml'}));};
+window.toSVG=toSVG;
+
+/* 8K 21:8 녹화: 한 프레임씩 그려 WebCodecs(VP9)로 인코딩 → WebM. 위치가 시간의 함수라 정확히 1루프 */
+const REC8=window.REC8={w:7680,h:2926,fps:30,q:8};
+async function rec8k(){
+  const btn=$('rec8'),say=t=>{$('hint').textContent=t;};
+  if(!window.WebMMuxer){say('녹화 모듈을 불러오지 못했습니다. 페이지를 새로고침해 주세요.');return;}
+  const dur=LOOP_S/(S.speed||1);if(!(S.speed>0)){say('속도를 0보다 크게 설정한 뒤 녹화하세요.');return;}
+  const sizes=[[REC8.w,REC8.h],[5120,1950],[3840,1462]];
+  let cfg=null,Wd=0,Hd=0;
+  outer:for(const [w,h] of sizes)for(const c of ['vp09.00.61.08','vp09.00.60.08','vp09.00.51.08'])for(const qm of [true,false]){
+    const t={codec:c,width:w,height:h,framerate:REC8.fps,latencyMode:'quality'};
+    if(qm)t.bitrateMode='quantizer';else{t.bitrateMode='variable';t.bitrate=w>=7000?200e6:100e6;}
+    try{const r=await VideoEncoder.isConfigSupported(t);if(r.supported){cfg=t;Wd=w;Hd=h;break outer;}}catch(e){}}
+  if(!cfg){say('이 기기에서는 이 해상도의 영상 인코딩을 지원하지 않습니다.');return;}
+  if(Wd!==REC8.w)say('이 기기의 한도로 '+Wd+'×'+Hd+'(21:8)로 저장합니다.');
+  const muxer=new WebMMuxer.Muxer({target:new WebMMuxer.ArrayBufferTarget(),video:{codec:'V_VP9',width:Wd,height:Hd,frameRate:REC8.fps}});
+  let err=null;const enc=new VideoEncoder({output:(c,m)=>muxer.addVideoChunk(c,m),error:e=>{err=e;}});
+  enc.configure(cfg);
+  const W0=cv.width,H0=cv.height,t0=tNow,auto0=S.auto;const hold0=hold;hold=-1;manual=true;S.auto=true;btn.disabled=true;
+  try{
+    cv.width=Wd;cv.height=Hd;
+    const N=Math.round(dur*REC8.fps);
+    for(let i=0;i<N;i++){
+      if(err)throw err;
+      tNow=i/N*LOOP_S;draw();
+      const fr=new VideoFrame(cv,{timestamp:Math.round(i*1e6/REC8.fps),duration:Math.round(1e6/REC8.fps)});
+      enc.encode(fr,cfg.bitrateMode==='quantizer'?{keyFrame:i%60===0,vp9:{quantizer:REC8.q}}:{keyFrame:i%60===0});fr.close();
+      while(enc.encodeQueueSize>2)await new Promise(r=>setTimeout(r,4));
+      if(i%3===0){btn.textContent='렌더 중 '+Math.round(i/N*100)+'%';await new Promise(r=>setTimeout(r,0));}
+    }
+    await enc.flush();if(err)throw err;muxer.finalize();
+    await saveFile('data-stream-'+Wd+'x'+Hd+'.webm',new Blob([muxer.target.buffer],{type:'video/webm'}));
+  }catch(e){say('녹화하지 못했습니다: '+((e&&e.message)||e));}
+  finally{try{enc.close();}catch(e){}cv.width=W0;cv.height=H0;tNow=t0;S.auto=auto0;hold=hold0;manual=false;btn.disabled=false;btn.textContent='8K 21:8 녹화';}
+}
+$('rec8').onclick=rec8k;
+window.renderAt=t=>{manual=true;tNow=t;draw();};
+requestAnimationFrame(loop);
+}
+</script>
+</body>
+</html>
