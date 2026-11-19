@@ -45,7 +45,10 @@ body.idle{cursor:none}
   --b6:19px;--l1:calc(699.4px - var(--b6));--l2:calc(864.3px - var(--b6))}
 .tt-logos{position:absolute;left:182.7px;top:731.5px;width:734.0px}
 #ov-titleB{padding:0}#ov-titleB .tbw{position:absolute;inset:0}
-#ov-titleB img{position:absolute;left:150px;top:120px;width:1620px;height:840px;object-fit:contain;display:block}
+#ov-titleB .tbk,#ov-titleB .tbe{position:absolute;margin:0;color:#fff;font-family:"Pretendard Variable","Pretendard",sans-serif;white-space:nowrap}
+#ov-titleB .tbk{left:149px;font-weight:700;font-size:53.8px;line-height:63.4px;top:calc(522.2px - var(--bk))}
+#ov-titleB .tbe{right:calc(150px - .045em);font-weight:600;font-size:45.3px;line-height:1;letter-spacing:.045em;top:calc(556.2px - var(--be))}  /* IR KUDOS: 원본 Bold → SemiBold */
+#ov-titleB{--bk:50px;--be:38px}  /* 글자 상자 위 → 첫 줄 기준선 거리(폰트 측정값) */
 /* 가운데 구체 자리(원본 SVG 기준 중심 967,541 · 반지름 367px)에 Four States 오브젝트를 겹친다. 검은 바탕은 screen 합성으로 투명 */
 #fsObj{position:absolute;left:267px;top:1px;width:1400px;height:1080px;border:0;mix-blend-mode:screen;pointer-events:none;background:#000}
 #ov-titleB.on .tbw{animation:tbz 14s cubic-bezier(.2,.6,.3,1) both}@keyframes tbz{from{transform:scale(.97)}to{transform:scale(1)}}
@@ -90,7 +93,8 @@ body.idle{cursor:none}
 <p class="tt-lab" style="top:var(--l2)">파트너</p>
 <img class="tt-logos" src="../assets/title-logos.svg" alt="주최 IR KUDOS · KISM 한국주주총회연구소 / 파트너 KIM &amp; CHANG · Proxymity · STREAMING KOREA">
 </div>
-<div class="ov" id="ov-titleB"><div class="tbw"><img src="../assets/screen-title-b-text.svg" alt=""><iframe id="fsObj" src="../assets/four-states.html" title="" tabindex="-1"></iframe></div></div>
+<div class="ov" id="ov-titleB"><div class="tbw"><!-- 타이틀 B 좌우 글씨: screen-title-b-text.svg(70% 축소본) 위치 그대로 코드로 -->
+<p class="tbk">전자주주총회<br>플랫폼</p><p class="tbe">IR KUDOS</p><iframe id="fsObj" src="../assets/four-states.html" title="" tabindex="-1"></iframe></div></div>
 <div class="ov" id="ov-tt"><h2 class="head">행사 프로그램</h2><div class="rows">
 <div class="prow"><p class="ptime">13:00</p><p class="ptxt">개회</p><p class="pwho"></p></div>
 <div class="prow"><p class="ptime">13:10</p><p class="ptxt">축사 · 한국주주총회연구소 출범식</p><p class="pwho"></p></div>
@@ -192,7 +196,7 @@ const PHOTO=['speaker1-1','speaker2','speaker-scott','speaker3-1'].map(n=>{const
     let gr=g.createLinearGradient(0,0,0,BOX.h);gr.addColorStop(0,'rgba(0,0,0,1)');gr.addColorStop(.42,'rgba(0,0,0,1)');gr.addColorStop(.88,'rgba(0,0,0,0)');g.fillStyle=gr;g.fillRect(0,0,BOX.w,BOX.h);
     gr=g.createLinearGradient(0,0,BOX.w,0);gr.addColorStop(0,'rgba(0,0,0,0)');gr.addColorStop(.12,'rgba(0,0,0,1)');gr.addColorStop(.88,'rgba(0,0,0,1)');gr.addColorStop(1,'rgba(0,0,0,0)');g.fillStyle=gr;g.fillRect(0,0,BOX.w,BOX.h);};
   im.src='../assets/'+n+'.webp';return c;});
-const PH_A=.62,PH_R=0,PT0=4.7,WOB=1.5;  // 사진 0.7초 페이드 인 후 4초 유지 // 사진 먼저(진하게) → 점·선이 생기며 사진은 옅게 남음 / 퇴장 전 1.5초 흔들림
+const PH_A=.62,PH_R=0,PT0=6.2,WOB=1.5;  // 사진 0.7초 페이드 인 후 5.5초 유지 // 사진 먼저(진하게) → 점·선이 생기며 사진은 옅게 남음 / 퇴장 전 1.5초 흔들림
 const IN=2.8,OUT=2.4;let port=null; // {k,t0,tOut}
 const LV=14,xs=new Float32Array(NPT),ys=new Float32Array(NPT),ls=new Float32Array(NPT),fa=new Float32Array(NPT),lev=new Uint8Array(NPT),cnt=new Int32Array(LV+2),ord=new Int32Array(NPT);
 function drawPort(now){
@@ -247,8 +251,8 @@ function drawPort(now){
 requestAnimationFrame(drawPort);
 /* ---- 시퀀스 ---- */
 const T=k=>parseFloat(qp.get(k)||0);
-const HOLD=T('hold')||1;  // 연사 점·선 완성 상태 유지(초)
-const FORM=4.7+1.35;  // 등장 후 점·선 완성까지: 사진 0.7초 + 유지 4초 + 형성 1.35초
+const HOLD=T('hold')||0.3;  // 연사 점·선 완성 상태 유지(초)
+const FORM=6.2+1.35;  // 등장 후 점·선 완성까지: 사진 0.7초 + 유지 5.5초 + 형성 1.35초
 const STEPS=[
  {n:'여의도 무드 영상',ov:'ov-video',dim:0,dur:45.6,video:'vMood',restartDS:1},
  {n:'Data Stream',ov:null,dim:1,dur:15},
@@ -256,7 +260,7 @@ const STEPS=[
  {n:'Data Stream',ov:null,dim:1,dur:10},
  {n:'타임테이블',ov:'ov-tt',dim:.2,dur:T('tt')||11.7},
  {n:'Data Stream',ov:null,dim:1,dur:10},
- // 연사: 점·선 완성(등장 후 6.05초) 뒤 HOLD초 유지하고 퇴장. 첫 연사는 0.3초, 2~4번째는 앞 연사가 흩어진 뒤(4초) 등장
+ // 연사: 점·선 완성(등장 후 7.55초) 뒤 HOLD초 유지하고 퇴장. 첫 연사는 0.3초, 2~4번째는 앞 연사가 흩어진 뒤(4초) 등장
  {n:'Session 1 · 김승준',ov:'ov-spk0',dim:.2,dur:0.3+FORM+HOLD,port:0},
  {n:'Session 2 · 권재열',ov:'ov-spk1',dim:.2,dur:4+FORM+HOLD,port:1},
  {n:'Session 3 · Scott Oakland',ov:'ov-spk2',dim:.2,dur:4+FORM+HOLD,port:2},
