@@ -52,9 +52,13 @@ td.pl{color:var(--fg-3);font-variant-numeric:tabular-nums}.d{font-variant-numeri
 .bar .sp{flex:1}
 #warn{color:var(--bad);margin-top:6px}
 .scr{display:flex;flex-wrap:wrap;gap:6px}
+.dsr label{display:inline-flex;align-items:center;gap:8px;font-size:13px;color:var(--fg-2)}.dsr input[type=range]{width:180px;accent-color:var(--blue-2)}.dsr b{font-weight:600;min-width:34px;font-variant-numeric:tabular-nums;color:var(--fg)}
 .scr button{font-weight:600;min-height:30px;padding:0 10px;font-size:12px;border-radius:7px}
 .scr button.msg{background:none;border:1px dashed #3a3a3a;color:var(--fg-2)}
 .scr .grp{width:100%;font-size:12px;color:var(--fg-3);margin-top:8px}
+.scr .grp b{font-weight:500;color:var(--fg-2);margin-left:8px}
+.scr button .dl{font-style:normal;font-weight:500;color:var(--fg-3);margin-left:6px;font-variant-numeric:tabular-nums}
+.scr button.on .dl{color:inherit;opacity:.75}
 .ql{max-height:430px;overflow:auto;margin-top:8px}
 .ql .q{display:grid;grid-template-columns:96px 1fr auto;gap:10px;padding:10px 8px;border-bottom:1px solid var(--line);align-items:start}
 .ql .q:hover{background:#1f1f1f}
@@ -203,6 +207,7 @@ button.arr.on{box-shadow:none;background:#1f6b46;color:#fff}button.arr.on:hover{
   <div class="bar" style="margin-top:0"><button id="nprev">◀ 이전</button><button id="nnext" class="pri">다음 ▶</button>
    <input type="text" id="nno" placeholder="화면 번호 예: 4-5" style="width:130px"><button id="ngo">이동</button>
    <span class="sp"></span><span class="mut">배속</span><span id="spd"></span></div>
+  <div class="bar dsr" style="margin-top:0"><span class="mut">배경 Data Stream</span><label>형태 크기 <input type="range" id="dsscale" min="0.8" max="2.5" step="0.05" value="1.5"><b id="dsscalev">1.50</b></label><label>점 크기 <input type="range" id="dssize" min="0.5" max="2.5" step="0.05" value="1.25"><b id="dssizev">1.25</b></label><button id="dsreset">기본값</button></div>
   <div class="scr" id="scr"><span class="mut">메인 스크린을 열면 화면 목록이 표시됩니다.</span></div>
   </div>
  </div>
@@ -302,13 +307,19 @@ $('notice').onchange=e=>{S.notice=e.target.value.trim();save();};
 $('sendnotice').onclick=()=>{S.notice=$('notice').value.trim();save();SCHED.cmd({go:'M0-3'});};
 let lastState=null,black=false;
 function drawScr(v){if(!v)return;lastState=v;$('curno').textContent=v.cur;let g='',h='';
-  v.slides.forEach(s=>{const st=s.no.split('-')[0];if(st!==g){g=st;h+='<div class="grp">'+(st==='M0'?'상시 · 비상':'단계 '+st.slice(1))+'</div>';}
-    h+='<button class="'+(s.msg?'msg ':'')+(s.no===v.cur?'on':'')+'" data-go="'+s.no+'" title="'+s.title+'">'+s.title.replace('[상황] ','')+'</button>';});
+  const dl=s=>s.auto?s.auto+'초':s.vid?'영상 '+s.vid+'초':'',loop={};v.slides.forEach(s=>{if(s.auto){const st=s.no.split('-')[0];loop[st]=(loop[st]||0)+s.auto;}});
+  v.slides.forEach(s=>{const st=s.no.split('-')[0];if(st!==g){g=st;h+='<div class="grp">'+(st==='M0'?'상시 · 비상':'단계 '+st.slice(1))+(loop[st]?'<b>자동순환 한 바퀴 '+loop[st]+'초</b>':'')+'</div>';}
+    const d=dl(s);h+='<button class="'+(s.msg?'msg ':'')+(s.no===v.cur?'on':'')+'" data-go="'+s.no+'" title="'+s.title+(d?' · '+d:'')+'">'+s.title.replace('[상황] ','')+(d?'<i class="dl">'+d+'</i>':'')+'</button>';});
   $('scr').innerHTML=h;}
 $('scr').addEventListener('click',e=>{const b=e.target.closest('[data-go]');if(b)SCHED.cmd({go:b.dataset.go});});
 $('nprev').onclick=()=>SCHED.cmd({nav:-1});$('nnext').onclick=()=>SCHED.cmd({nav:1});
 const ngo=()=>{let v=$('nno').value.trim().toUpperCase().replace(/^M/,'');if(!v)return;SCHED.cmd({go:'M'+v});$('nno').value='';};$('ngo').onclick=ngo;$('nno').onkeydown=e=>{if(e.key==='Enter')ngo();};
 [.5,.75,1,1.25,1.5,2].forEach(v=>{const b=document.createElement('button');b.textContent=v+'×';b.style.cssText='padding:4px 7px;margin-left:3px;font-size:12px';b.onclick=()=>{SCHED.cmd({speed:v});document.querySelectorAll('#spd button').forEach(x=>x.classList.toggle('on',x===b));};if(v===+(localStorage.getItem('scr-main-spd')||1))b.classList.add('on');$('spd').appendChild(b);});
+{const DSD={scale:1.5,size:1.25};let ds={...DSD};try{Object.assign(ds,JSON.parse(localStorage.getItem('scr-main-ds')||'{}'));}catch(e){}
+ const dsUI=()=>{['scale','size'].forEach(k=>{$('ds'+k).value=ds[k];$('ds'+k+'v').textContent=(+ds[k]).toFixed(2);});};dsUI();
+ const dsSend=k=>{try{localStorage.setItem('scr-main-ds',JSON.stringify(ds));}catch(e){}SCHED.cmd({dsset:k?{[k]:ds[k]}:{...ds}});};
+ ['scale','size'].forEach(k=>$('ds'+k).addEventListener('input',e=>{ds[k]=+e.target.value;dsUI();dsSend(k);}));
+ $('dsreset').onclick=()=>{ds={...DSD};dsUI();dsSend();};}
 $('black').onclick=()=>{black=!black;$('black').classList.toggle('on',black);SCHED.cmd({black});};
 drawScr(SCHED.getState());
 // 질문

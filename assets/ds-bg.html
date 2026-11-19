@@ -316,7 +316,7 @@ let tNow=0,paused=false,manual=false;const LF={};
 /* 메인 스크린 배경용: 크기 · 중심 · 속도를 주소 값과 부모 창 메시지로 제어 */
 (function oxTick(){BOX.x+=(BOX.tx-BOX.x)*.04;requestAnimationFrame(oxTick);})();
 window.DS={restart(t){hold=-1;tNow=t||0;last=performance.now();},mul(m){if(DS.base==null)DS.base=S.speed;S.speed=DS.base*m;}};
-addEventListener('message',e=>{const d=e.data||{};if(d.ds==='mul')DS.mul(+d.v||1);else if(d.ds==='restart')DS.restart(+d.t||0);
+addEventListener('message',e=>{const d=e.data||{};if(d.ds==='set'){['scale','size'].forEach(k=>{if(d[k]!=null&&document.getElementById(k))document.getElementById(k).value=d[k];});syncUI();}else if(d.ds==='mul')DS.mul(+d.v||1);else if(d.ds==='restart')DS.restart(+d.t||0);
   else if(d.ds==='q'){window.DSQ=+d.v||.6;size();}else if(d.ds==='ox'){BOX.tx=+d.v;}});
 function draw(){
   geom();

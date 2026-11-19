@@ -227,12 +227,20 @@ body.idle{cursor:none}
 .slide[data-spk] .stack{gap:16px}
 .slide[data-spk] .name{font-size:60px;line-height:1.2}
 .slide[data-spk] .meta{font-size:42px;font-weight:400;line-height:1.45;color:#B4BDC9}
+
+/* 대기 타이틀: 글자 위로 파랑 → 초록 그라데이션이 1초 동안 지나감(등장 뒤 1.6초, 이후 6초마다) */
+@property --sx{syntax:"<length>";inherits:true;initial-value:0px}
+.slide[data-sweep] .title{position:relative;--tw:1000px}
+.slide[data-sweep] .title .w{background:linear-gradient(90deg,#fff 0,#fff 42%,#2E8BFF 47%,#21af6b 53%,#fff 58%,#fff 100%);background-size:calc(var(--tw)*3) 100%;background-repeat:no-repeat;background-position:calc(var(--sx) - var(--wl,0px)) 0;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent}
+.slide[data-sweep] .title{--sx:calc(var(--tw)*-1.8)}
+.slide.on[data-sweep] .title{animation:sweep 6s linear 1.6s infinite}
+@keyframes sweep{0%{--sx:calc(var(--tw)*-1.8)}16.667%{--sx:calc(var(--tw)*-.2)}100%{--sx:calc(var(--tw)*-.2)}}
 </style></head>
 <body>
 <div class="stage" id="scr" data-foot="full">
 <iframe id="c" src="assets/ds-bg.html?w=4200&amp;h=1600&amp;ox=.66&amp;bright=1.6&amp;size=1.25&amp;scale=1.5" tabindex="-1" title="" aria-hidden="true"></iframe>
 <canvas id="pcv"></canvas>
-<section class="slide" id="m1_1" data-no="M1-1" data-title="M1-1 대기 · 타이틀" data-bg="A" data-foot="logo" data-group="standby" data-auto="12" data-tr="xfade" data-lay="center">
+<section class="slide" id="m1_1" data-no="M1-1" data-title="M1-1 대기 · 타이틀" data-bg="A" data-foot="logo" data-group="standby" data-auto="12" data-tr="xfade" data-sweep data-lay="center">
 <h1 class="title" data-words style="--i:1">전자주주총회 플랫폼 시연 설명회</h1>
 <p class="cmeta fu" style="--i:2"><span class="lx">2026.11.30</span><i class="dot"></i><span class="ko">IR KUDOS</span></p>
 </section>
@@ -523,7 +531,7 @@ const dsPost=m=>{const f=document.getElementById('c');if(f&&f.contentWindow)f.co
 function bgSet(s){const f=document.getElementById('c'),k=s.dataset.bg,lay=s.dataset.lay;let d=BGDIM[k]??.3,ox=BGOX[k]??.66;
   if(lay==='center'||lay==='en'){d=.7;ox=.5;}else if(lay==='split'){d=.5;ox=.5;}
   f.style.opacity=k==='N'?0:d;dsPost({ds:'ox',v:ox});}
-document.getElementById('c').addEventListener('load',()=>{dsPost({ds:'q',v:window.FSQ});if(SPD!==1)dsPost({ds:'mul',v:SPD});const s=slides[idx];if(s)bgSet(s);});
+document.getElementById('c').addEventListener('load',()=>{dsPost({ds:'q',v:window.FSQ});if(SPD!==1)dsPost({ds:'mul',v:SPD});try{const o=JSON.parse(localStorage.getItem('scr-ds')||'null');if(o)dsPost(Object.assign({ds:'set'},o));}catch(e){}const s=slides[idx];if(s)bgSet(s);});
 function progScroll(s){document.querySelectorAll('.pin').forEach(x=>{if(x._a){x._a.cancel();x._a=null;}});
   const pin=s&&s.querySelector('.pin');if(!pin)return;const box=pin.parentNode,z=parseFloat(getComputedStyle(pin).zoom)||1,dist=(pin.offsetHeight*z-box.clientHeight)/z;if(dist<=0)return;  // zoom 보정
   const V=110,H=2,move=dist/V,back=1.2,T=H+move+H+back;
@@ -547,7 +555,7 @@ function go(n){n=Math.max(0,Math.min(slides.length-1,n));if(n===idx)return;
   if(s.dataset.no==='M0-3')renderNotice();
   clearTimeout(autoT);
   autoLen=0;if(s.dataset.auto&&auto){autoT0=performance.now();autoLen=+s.dataset.auto*1000/SPD;autoT=setTimeout(()=>{const g=s.dataset.group;let m=idx+1;if(!slides[m]||slides[m].dataset.group!==g){m=slides.findIndex(x=>x.dataset.group===g);}go(m);},autoLen);}
-  hud();if(window.CtrlPanel)CtrlPanel.draw();SCHED.pub({cur:s.dataset.no,slides:slides.map(x=>({no:x.dataset.no,title:x.dataset.title.replace(/&amp;/g,'&'),msg:isMsg(x)?1:0}))});
+  hud();if(window.CtrlPanel)CtrlPanel.draw();SCHED.pub({cur:s.dataset.no,slides:slides.map(x=>({no:x.dataset.no,title:x.dataset.title.replace(/&amp;/g,'&'),msg:isMsg(x)?1:0,auto:x.dataset.auto?+x.dataset.auto:0,vid:(v=>v&&isFinite(v.duration)?Math.round(v.duration):0)(x.querySelector('video'))}))});
 }
 // 상황 메시지(data-msg)는 순서 이동에서 건너뜀. 메시지에서 → 는 띄우기 전 화면의 다음, ← 는 띄우기 전 화면으로
 function step(d){if(isMsg(slides[idx])){go(d>0?nextMain(home,1):home);return;}go(nextMain(idx,d));}
@@ -556,6 +564,9 @@ document.querySelectorAll('[data-words]').forEach(el=>{let w=0;[...el.childNodes
   nd.textContent.split(/(\s+)/).forEach(t=>{if(!t)return;if(/^\s+$/.test(t)){f.appendChild(document.createTextNode(' '));return;}const sp=document.createElement('span');sp.className='w';sp.style.setProperty('--w',w++);sp.textContent=t;f.appendChild(sp);});
   el.replaceChild(f,nd);});});
 document.querySelectorAll('[data-stagger]').forEach(el=>[...el.children].forEach((c,i)=>c.style.setProperty('--w',i)));
+
+function sweepMeasure(){document.querySelectorAll('.slide[data-sweep] .title').forEach(h=>{h.style.setProperty('--tw',h.offsetWidth+'px');h.querySelectorAll('.w').forEach(w=>w.style.setProperty('--wl',w.offsetLeft+'px'));});}
+(document.fonts?document.fonts.ready:Promise.resolve()).then(sweepMeasure);addEventListener('resize',sweepMeasure);
 function counters(s){s.querySelectorAll('[data-count]').forEach(el=>{const to=parseFloat(el.dataset.count),dec=+(el.dataset.dec||0),pre=el.dataset.prefix||'',suf=el.dataset.suffix||'',t0=performance.now()+600,dur=1400;
   el.textContent=pre+(0).toFixed(dec)+suf;(function f(now){const p=Math.min(1,Math.max(0,(now-t0)/dur)),e=1-Math.pow(1-p,4);el.textContent=pre+(to*e).toFixed(dec)+suf;if(p<1&&s.classList.contains('on'))requestAnimationFrame(f);})(performance.now());});}
 // 영상: 파일이 있으면 재생, 끝나면 다음 화면
@@ -595,7 +606,7 @@ function renderQ(){const q=QSRC==='online'?OQ:QA.list.find(x=>x.id===QA.cur),lab
   const s=slides[idx];if(s&&s.dataset.qa){tx.parentNode.animate([{opacity:0,transform:'translateY(30px)',filter:'blur(12px)'},{opacity:1,transform:'none',filter:'none'}],{duration:600,easing:'cubic-bezier(.2,.7,.2,1)'});}}
 function fitQ(){const tx=document.getElementById('q-text'),box=tx.parentNode;let f=120;tx.style.fontSize=f+'px';while(f>56&&tx.scrollHeight>box.clientHeight){f-=4;tx.style.fontSize=f+'px';}}
 function qStep(d){const L=QA.list;if(!L.length)return;let i=L.findIndex(x=>x.id===QA.cur);i=Math.max(0,Math.min(L.length-1,i<0?0:i+d));QA.cur=L[i].id;SCHED.saveQ(QA);renderQ();}
-SCHED.onCmd(c=>{if(!c)return;if(c.go){const n=byNo(c.go);if(n>=0)go(n);}if(c.nav)step(c.nav);if(c.speed&&window.CtrlPanel)CtrlPanel.setSpeed(c.speed);if(c.black!=null)document.getElementById('black').classList.toggle('on',!!c.black);});
+SCHED.onCmd(c=>{if(!c)return;if(c.go){const n=byNo(c.go);if(n>=0)go(n);}if(c.nav)step(c.nav);if(c.speed&&window.CtrlPanel)CtrlPanel.setSpeed(c.speed);if(c.black!=null)document.getElementById('black').classList.toggle('on',!!c.black);if(c.dsset){let o={};try{o=JSON.parse(localStorage.getItem('scr-ds')||'{}')||{};}catch(e){}Object.assign(o,c.dsset);try{localStorage.setItem('scr-ds',JSON.stringify(o));}catch(e){}dsPost(Object.assign({ds:'set'},c.dsset));}});
 // ── HUD ──
 function hud(){const e=document.getElementById('hud');if(!e.classList.contains('on'))return;
   const nx=SCHED.next(SC),cu=SCHED.current(SC);let sch='<div class="sch">지금 '+SCHED.fmt(SCHED.nowMin())+(cu?' · 진행 중: '+(cu.tag||cu.label):'');
