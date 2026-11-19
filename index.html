@@ -228,13 +228,12 @@ body.idle{cursor:none}
 .slide[data-spk] .name{font-size:60px;line-height:1.2}
 .slide[data-spk] .meta{font-size:42px;font-weight:400;line-height:1.45;color:#B4BDC9}
 
-/* 대기 타이틀: 글자 위로 파랑 → 초록 그라데이션이 1초 동안 지나감(등장 뒤 1.6초, 이후 6초마다) */
+/* 대기 타이틀: 파랑 → 초록 그라데이션이 왼쪽부터 스윽 덮고(0.8초) 1초 유지 뒤 다시 흰색으로(0.8초). 등장 1.6초 뒤, 이후 6초마다 */
 @property --sx{syntax:"<length>";inherits:true;initial-value:0px}
-.slide[data-sweep] .title{position:relative;--tw:1000px}
-.slide[data-sweep] .title .w{background:linear-gradient(90deg,#fff 0,#fff 42%,#2E8BFF 47%,#21af6b 53%,#fff 58%,#fff 100%);background-size:calc(var(--tw)*3) 100%;background-repeat:no-repeat;background-position:calc(var(--sx) - var(--wl,0px)) 0;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent}
-.slide[data-sweep] .title{--sx:calc(var(--tw)*-1.8)}
-.slide.on[data-sweep] .title{animation:sweep 6s linear 1.6s infinite}
-@keyframes sweep{0%{--sx:calc(var(--tw)*-1.8)}16.667%{--sx:calc(var(--tw)*-.2)}100%{--sx:calc(var(--tw)*-.2)}}
+.slide[data-sweep] .title{position:relative;--tw:1000px;--sx:0px}
+.slide[data-sweep] .title .w{background:linear-gradient(90deg,#fff 0,#fff 30.3%,#2E8BFF 34.85%,#21af6b 65.15%,#fff 69.7%,#fff 100%);background-size:calc(var(--tw)*3.3) 100%;background-repeat:no-repeat;background-position:calc(var(--sx) - var(--wl,0px)) 0;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent}
+.slide.on[data-sweep] .title{animation:sweep 6s 1.6s infinite}
+@keyframes sweep{0%{--sx:calc(var(--tw)*-2.3);animation-timing-function:cubic-bezier(.45,0,.25,1)}13.33%{--sx:calc(var(--tw)*-1.15)}30%{--sx:calc(var(--tw)*-1.15);animation-timing-function:cubic-bezier(.45,0,.25,1)}43.33%{--sx:0px}100%{--sx:0px}}
 </style></head>
 <body>
 <div class="stage" id="scr" data-foot="full">
