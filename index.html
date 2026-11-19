@@ -234,6 +234,15 @@ body.idle{cursor:none}
 .ncard .nr:last-child{border-bottom:0}
 .ncard .nn{margin:0;font:300 52px/1 "Lexend",sans-serif;color:#5EA2FF;font-variant-numeric:tabular-nums;letter-spacing:.02em}
 .ncard .nt{margin:0;font:400 56px/1.5 "KakaoSmall",sans-serif;color:#E6EBF2;letter-spacing:0;word-break:keep-all}
+
+/* 파트 타이틀(M4-1 · M5-1 · M7-1 · M9-1): 흰 글씨가 왼쪽부터 파랑 → 초록 그라데이션으로 채워지고 그대로 유지 */
+@property --fx{syntax:"<length>";inherits:true;initial-value:0px}
+.slide[data-fill] h1[data-words]{position:relative;--tw:1000px;--fx:calc(var(--tw)*-1.15)}
+.slide[data-fill] h1[data-words] .w{background:linear-gradient(90deg,#2E8BFF 0,#21af6b 46.5%,#fff 53.5%,#fff 100%);background-size:calc(var(--tw)*2.15) 100%;background-repeat:no-repeat;background-position:calc(var(--fx) - var(--wl,0px)) 0;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent}
+.slide.on[data-fill] h1[data-words]{animation:fillIn 1.2s cubic-bezier(.45,0,.25,1) 1.5s both}
+@keyframes fillIn{from{--fx:calc(var(--tw)*-1.15)}to{--fx:0px}}
+/* 축사(M4-2 · M4-3): 연사 소개와 같은 레이아웃. 이름이 제목 자리 */
+.slide[data-spk] .talk{min-height:0}
 </style></head>
 <body>
 <div class="stage" id="scr" data-foot="full">
@@ -277,7 +286,6 @@ body.idle{cursor:none}
 <p class="lead tbd center vph">[인트로 영상 — assets/intro.mp4 를 넣으면 이 화면에서 재생됩니다]</p>
 </section>
 <section class="slide" id="m3_1" data-no="M3-1" data-title="M3-1 개회 타이틀" data-bg="A" data-foot="logo" data-tr="zoom" data-lay="center">
-<p class="eyebrow fu" style="--i:0">개회</p>
 <h1 class="title" data-words style="--i:1">전자주주총회 플랫폼 시연 설명회</h1>
 <p class="cmeta fu" style="--i:2"><span class="lx">2026.11.30</span><i class="dot"></i><span class="ko">IR KUDOS</span></p>
 </section>
@@ -285,22 +293,25 @@ body.idle{cursor:none}
 <h2 class="head fu" style="--i:0">안내 말씀</h2>
 <div class="ncard fu" style="--i:1"><div class="nlist" data-stagger style="--i:1"><div class="nr"><p class="nn">01</p><p class="nt">휴대폰은 무음으로 설정해 주세요.</p></div><div class="nr"><p class="nn">02</p><p class="nt">휴식은 14:25, 15:40 두 차례 15분씩 있습니다.</p></div><div class="nr"><p class="nn">03</p><p class="nt">현장 질의는 명찰 뒷면의 QR코드로 남겨 주세요. 사전 질문과 함께 질의응답 시간(17:30)에 답변 드립니다.</p></div><div class="nr"><p class="nn">04</p><p class="nt">설명회는 현장 참석으로만 진행되며, 온라인 생중계 · 다시보기와 발표자료는 제공되지 않습니다.</p></div><div class="nr"><p class="nn">05</p><p class="nt">원활한 진행을 위해 영상 촬영은 삼가 주시기 바랍니다.</p></div><div class="nr"><p class="nn">06</p><p class="nt">행사 종료 후 설문 참여 안내를 이메일로 보내드립니다.</p></div></div></div>
 </section>
-<section class="slide" id="m4_1" data-no="M4-1" data-title="M4-1 파트 타이틀 · 축사 및 출범식" data-bg="A" data-foot="full" data-tr="zoom" data-glow="1" data-lay="center">
-<p class="eyebrow fu" style="--i:0">OPENING</p>
-<h1 class="title-m" data-words style="--i:1">축사 및 출범식</h1>
-<p class="lead w2600 fu" style="--i:2">전자주주총회 플랫폼 설명회 개회에 각계의 응원과 한국주주총회연구소 공식 출범을 알립니다.</p>
+<section class="slide" id="m4_1" data-no="M4-1" data-title="M4-1 파트 타이틀 · 축사 및 출범식" data-bg="A" data-foot="logo" data-tr="zoom" data-glow="1" data-fill="1" data-lay="center">
+<h1 class="title" data-words style="--i:1">축사 및 출범식</h1>
+<p class="cmeta fu" style="--i:2"><span class="lx">2026.11.30</span><i class="dot"></i><span class="ko">IR KUDOS</span></p>
 </section>
-<section class="slide" id="m4_2" data-no="M4-2" data-title="M4-2 축사 · 김광록" data-bg="A" data-foot="full" >
+<section class="slide" id="m4_2" data-no="M4-2" data-title="M4-2 축사 · 김광록" data-bg="B" data-foot="full" data-spk="cong1">
+<div class="col">
 <p class="eyebrow fu" style="--i:0">축사</p>
-<h1 class="name-xl" data-words style="--i:1">김광록</h1>
+<h2 class="talk" data-words style="--i:1">김광록</h2>
 <div class="rule fu" style="--i:2"></div>
-<p class="lead fu" style="--i:2">한국기업법학회 회장, 충북대 법학전문대학원 교수</p>
+<div class="stack fu" style="--i:2"><p class="meta">한국기업법학회 회장, 충북대 법학전문대학원 교수</p></div>
+</div>
 </section>
-<section class="slide" id="m4_3" data-no="M4-3" data-title="M4-3 축사 · 정우용" data-bg="A" data-foot="full" >
+<section class="slide" id="m4_3" data-no="M4-3" data-title="M4-3 축사 · 정우용" data-bg="B" data-foot="full" data-spk="cong2">
+<div class="col">
 <p class="eyebrow fu" style="--i:0">축사</p>
-<h1 class="name-xl" data-words style="--i:1">정우용</h1>
+<h2 class="talk" data-words style="--i:1">정우용</h2>
 <div class="rule fu" style="--i:2"></div>
-<p class="lead fu" style="--i:2">한국상장회사협의회, 전 정책부회장</p>
+<div class="stack fu" style="--i:2"><p class="meta">한국상장회사협의회, 전 정책부회장</p></div>
+</div>
 </section>
 <section class="slide" id="m4_4" data-no="M4-4" data-title="M4-4 출범식 인트로 영상 (18초)" data-bg="N" data-foot="none" data-video="v-kism" data-tr="fade">
 <video id="v-kism" class="vid" src="assets/kism-intro.mp4" playsinline preload="auto"></video>
@@ -312,7 +323,7 @@ body.idle{cursor:none}
 <p class="lead fu" style="--i:2">한국주주총회연구소의 공식 출범을 알립니다.</p>
 <p class="meta fu" style="--i:3">권재열 한국주주총회연구소장, 경희대 법학전문대학원 교수</p>
 </section>
-<section class="slide" id="m5_1" data-no="M5-1" data-title="M5-1 파트 타이틀 · 의무화가 바꾸는 주주총회" data-bg="A" data-foot="full" data-tr="zoom" data-glow="1" data-lay="center">
+<section class="slide" id="m5_1" data-no="M5-1" data-title="M5-1 파트 타이틀 · 의무화가 바꾸는 주주총회" data-bg="A" data-foot="full" data-tr="zoom" data-glow="1" data-fill="1" data-lay="center">
 <p class="eyebrow fu" style="--i:0">PART 1</p>
 <h1 class="title-m" data-words style="--i:1">의무화가 바꾸는 주주총회</h1>
 <p class="lead w2600 fu" style="--i:2">상법 개정과 전자주주총회 의무화를 법률 · 학계 관점에서 다룹니다.</p>
@@ -353,7 +364,7 @@ body.idle{cursor:none}
 <h1 class="title-m" data-words style="--i:1">곧 Session 3이 시작됩니다</h1>
 <p class="lead fu" style="--i:2">자리로 돌아와 주세요.</p>
 </section>
-<section class="slide" id="m7_1" data-no="M7-1" data-title="M7-1 파트 타이틀 · 전자주주총회 및 의결권 행사의 미래" data-bg="A" data-foot="full" data-tr="zoom" data-glow="1" data-lay="center">
+<section class="slide" id="m7_1" data-no="M7-1" data-title="M7-1 파트 타이틀 · 전자주주총회 및 의결권 행사의 미래" data-bg="A" data-foot="full" data-tr="zoom" data-glow="1" data-fill="1" data-lay="center">
 <p class="eyebrow fu" style="--i:0">PART 2</p>
 <h1 class="title-m" data-words style="--i:1">전자주주총회 및<br>의결권 행사의 미래</h1>
 <p class="lead w2600 fu" style="--i:2">글로벌 의결권 플랫폼의 시각과 IR큐더스의 통합 솔루션으로 전자주주총회 도입 · 운영 방안을 살펴봅니다.</p>
@@ -394,7 +405,7 @@ body.idle{cursor:none}
 <h1 class="title-m" data-words style="--i:1">곧 모의 전자주주총회 시연이 시작됩니다</h1>
 <p class="lead fu" style="--i:2">자리로 돌아와 주세요. 입장 시 설치하신 <span class="tbd">[참여 앱]</span>으로 모의 표결에 참여하실 수 있습니다.</p>
 </section>
-<section class="slide" id="m9_1" data-no="M9-1" data-title="M9-1 시연 타이틀" data-bg="B" data-foot="full" data-tr="zoom" data-glow="1" data-lay="split">
+<section class="slide" id="m9_1" data-no="M9-1" data-title="M9-1 시연 타이틀" data-bg="B" data-foot="full" data-tr="zoom" data-glow="1" data-fill="1" data-lay="split">
 <p class="eyebrow fu" style="--i:0">PART 3 · DEMO</p>
 <h1 class="title-m" data-words style="--i:1">모의 전자주주총회 시연</h1>
 <p class="lead fu" style="--i:2">준비부터 집계까지, 전자주총 전 과정을 그대로<br>모의 회사 · 주주 · 의안으로 주주총회 전 과정을 진행합니다.</p>
@@ -557,6 +568,10 @@ document.querySelectorAll('[data-words]').forEach(el=>{let w=0;[...el.childNodes
   el.replaceChild(f,nd);});});
 document.querySelectorAll('[data-stagger]').forEach(el=>[...el.children].forEach((c,i)=>c.style.setProperty('--w',i)));
 
+
+function fillMeasure(){document.querySelectorAll('.slide[data-fill] h1[data-words]').forEach(h=>{const W=[...h.querySelectorAll('.w')];if(!W.length)return;
+  const L=Math.min(...W.map(w=>w.offsetLeft)),Rr=Math.max(...W.map(w=>w.offsetLeft+w.offsetWidth));h.style.setProperty('--tw',(Rr-L)+'px');W.forEach(w=>w.style.setProperty('--wl',(w.offsetLeft-L)+'px'));});}
+(document.fonts?document.fonts.ready:Promise.resolve()).then(fillMeasure);addEventListener('resize',fillMeasure);
 function counters(s){s.querySelectorAll('[data-count]').forEach(el=>{const to=parseFloat(el.dataset.count),dec=+(el.dataset.dec||0),pre=el.dataset.prefix||'',suf=el.dataset.suffix||'',t0=performance.now()+600,dur=1400;
   el.textContent=pre+(0).toFixed(dec)+suf;(function f(now){const p=Math.min(1,Math.max(0,(now-t0)/dur)),e=1-Math.pow(1-p,4);el.textContent=pre+(to*e).toFixed(dec)+suf;if(p<1&&s.classList.contains('on'))requestAnimationFrame(f);})(performance.now());});}
 // 영상: 파일이 있으면 재생, 끝나면 다음 화면
