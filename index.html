@@ -170,20 +170,25 @@ body.idle{cursor:none}
 .ptag{width:290px;white-space:nowrap;font-size:48px}  /* Lexend에서 'Session 3'이 꺾이지 않게 */
 .lay2 .lay2-r>.stack .meta{font-size:66px;white-space:nowrap}
 
-/* 행사 프로그램(M1-3 · M3-2): 한 줄 목록 11행 — 좌우 여백 416px, 시간 · 구분 · 순서 · 연사 한 줄 */
-.slide[data-prog]{padding:120px 416px;justify-content:center;gap:0}
-.phead{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:44px}
-.phead .head{font-size:110px;line-height:1.2}
-.phead .small{font-size:48px}
-.plist{display:flex;flex-direction:column;border-top:2px solid rgba(255,255,255,.28)}
-.plist .prow{display:grid;grid-template-columns:240px 300px minmax(0,1fr) 460px;align-items:baseline;gap:0;padding:15px 0;border-top:0;border-bottom:2px solid rgba(255,255,255,.1)}
-.plist .ptime{width:auto;font:300 60px/1.25 "Lexend",sans-serif;color:#5EA2FF;font-variant-numeric:tabular-nums}
-.plist .ptag{width:auto;font:400 50px/1.25 "Lexend",sans-serif;color:#5EA2FF;white-space:nowrap}
-.plist .ptxt{font:400 60px/1.25 "KakaoSmall",sans-serif;color:#F2F5FA;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.plist .pwho{width:auto;font:300 54px/1.25 "KakaoSmall",sans-serif;color:#B9C2CF;text-align:right;white-space:nowrap}
-.plist .prow.brk{padding:8px 0}
-.plist .prow.brk .ptime,.plist .prow.brk .ptxt{font-size:48px;color:#7E8794}
-.plist .prow.adj .ptime{color:#FFB84D}
+/* 행사 프로그램(M1-3 · M3-2): 2단 — 왼쪽 제목, 오른쪽 소개 사이트처럼 순서 묶음 박스 5개(시간 구간 · Session N. 세션명 · 연사) */
+.slide[data-prog]{padding:110px 360px 110px 416px}
+.slide[data-prog] .lay2{grid-template-columns:720px minmax(0,1fr)}
+.slide[data-prog] .lay2-l .head{font-size:150px;line-height:1.25;padding-right:40px}
+.slide[data-prog] .lay2-l .meta{margin-top:60px;font-size:48px;font-weight:300;color:#A9B2BF}
+.pgrp{display:flex;flex-direction:column;gap:14px;width:100%}
+.pbox{display:grid;grid-template-columns:400px minmax(0,1fr);gap:0 36px;align-items:center;background:rgba(27,31,38,.82);border-radius:28px;padding:18px 40px}
+.pbh{font:700 44px/1.3 "KakaoBig",sans-serif;color:#5EA2FF;letter-spacing:0}
+.pbr{display:flex;flex-direction:column}
+.pbr .prow{display:grid;grid-template-columns:330px minmax(0,1fr) 330px;align-items:baseline;gap:0 24px;padding:13px 0;border:0;border-bottom:2px solid rgba(255,255,255,.08)}
+.pbr .prow:last-child{border-bottom:0}
+.pbr .ptime{width:auto;font:300 46px/1.3 "Lexend",sans-serif;color:#B9C2CF;font-variant-numeric:tabular-nums;white-space:nowrap}
+.pbr .ptxt{font:400 50px/1.3 "KakaoSmall",sans-serif;color:#F2F5FA;white-space:nowrap}
+.pbr .ptxt .pb{font:400 46px/1 "Lexend",sans-serif;color:#5EA2FF;margin-right:16px}
+.pbr .pwho{width:auto;font:300 46px/1.3 "KakaoSmall",sans-serif;color:#B9C2CF;text-align:right;white-space:nowrap}
+.pbr .prow.minor{padding:8px 0}
+.pbr .prow.minor .ptxt{font-size:44px;color:#9AA3AF}
+.pbr .prow.minor .ptime{font-size:42px}
+.pbr .prow.adj .ptime{color:#FFB84D}
 </style></head>
 <body>
 <div class="stage" id="scr" data-foot="full">
@@ -197,9 +202,10 @@ body.idle{cursor:none}
 <p class="lead fu" style="--i:2">설명회는 13:00에 시작합니다.<br>등록 데스크에서 안내 받으신 좌석 번호로 가시면 테이블에 기업명이 기재된 명패를 확인하실 수 있습니다.</p>
 <p class="meta fu" style="--i:3">자리를 찾기 어려우시면 가까운 운영 스태프에게 말씀해 주세요.</p>
 </section>
-<section class="slide" id="m1_3" data-no="M1-3" data-title="M1-3 대기 · 프로그램" data-bg="B" data-foot="full" data-group="standby" data-auto="20" data-tr="xfade" data-prog="1">
-<div class="phead fu" style="--i:0"><h2 class="head">행사 프로그램</h2><p class="small">상기 프로그램 일정은 변동될 수 있습니다.</p></div>
-<div class="plist fu" data-stagger style="--i:1"><div class="prow" data-item="open"><p class="ptime">13:00</p><p class="ptag"></p><p class="ptxt">개회 및 행사 안내</p><p class="pwho"></p></div><div class="prow" data-item="cong"><p class="ptime">13:10</p><p class="ptag"></p><p class="ptxt">축사</p><p class="pwho">김광록 · 정우용</p></div><div class="prow" data-item="launch"><p class="ptime">13:20</p><p class="ptag"></p><p class="ptxt">한국주주총회연구소 출범식</p><p class="pwho">권재열</p></div><div class="prow" data-item="s1"><p class="ptime">13:25</p><p class="ptag">Session 1</p><p class="ptxt">전자주주총회 제도 도입 및 진행 관련 주요 실무 쟁점</p><p class="pwho">김승준</p></div><div class="prow" data-item="s2"><p class="ptime">13:55</p><p class="ptag">Session 2</p><p class="ptxt">상법 개정과 전자주총이 몰고 올 기업 경영의 지각변동</p><p class="pwho">권재열</p></div><div class="prow brk" data-item="brk1"><p class="ptime">14:25</p><p class="ptag"></p><p class="ptxt">휴식</p><p class="pwho"></p></div><div class="prow" data-item="s3"><p class="ptime">14:40</p><p class="ptag">Session 3</p><p class="ptxt">Proxymity, 글로벌 의결권 행사 인프라의 혁신과 미래</p><p class="pwho">Scott Oakland</p></div><div class="prow" data-item="s4"><p class="ptime">15:10</p><p class="ptag">Session 4</p><p class="ptxt">전자주주총회 도입 · 운영 방안 및 통합 솔루션 소개</p><p class="pwho">박성용</p></div><div class="prow brk" data-item="brk2"><p class="ptime">15:40</p><p class="ptag"></p><p class="ptxt">휴식</p><p class="pwho"></p></div><div class="prow" data-item="demo"><p class="ptime">15:55</p><p class="ptag"></p><p class="ptxt">모의 전자주주총회 시연</p><p class="pwho">박성용</p></div><div class="prow" data-item="qna"><p class="ptime">17:30</p><p class="ptag"></p><p class="ptxt">사전 질문 및 현장 질의응답</p><p class="pwho">전체 연사</p></div></div>
+<section class="slide" id="m1_3" data-no="M1-3" data-title="M1-3 대기 · 프로그램" data-bg="B" data-foot="full" data-group="standby" data-auto="20" data-tr="xfade" data-prog="1" data-lay="split">
+<h2 class="head fu" style="--i:0">행사<br>프로그램</h2>
+<div class="pgrp" data-stagger style="--i:1"><div class="pbox"><h3 class="pbh">등록 및 개회</h3><div class="pbr"><div class="prow minor" data-item="reg"><p class="ptime">12:30~13:00</p><p class="ptxt">등록 및 입장</p><p class="pwho"></p></div><div class="prow minor" data-item="open"><p class="ptime">13:00~13:10</p><p class="ptxt">개회 및 행사 안내</p><p class="pwho"></p></div></div></div><div class="pbox"><h3 class="pbh">축사 및 출범식</h3><div class="pbr"><div class="prow" data-item="cong"><p class="ptime">13:10~13:20</p><p class="ptxt">축사</p><p class="pwho">김광록 · 정우용</p></div><div class="prow" data-item="launch"><p class="ptime">13:20~13:25</p><p class="ptxt">한국주주총회연구소 출범식</p><p class="pwho">권재열</p></div></div></div><div class="pbox"><h3 class="pbh">의무화가 바꾸는 주주총회</h3><div class="pbr"><div class="prow" data-item="s1"><p class="ptime">13:25~13:55</p><p class="ptxt"><b class="pb">Session 1.</b>전자주주총회 제도 도입 및 진행 관련 주요 실무 쟁점</p><p class="pwho">김승준</p></div><div class="prow" data-item="s2"><p class="ptime">13:55~14:25</p><p class="ptxt"><b class="pb">Session 2.</b>상법 개정과 전자주총이 몰고 올 기업 경영의 지각변동</p><p class="pwho">권재열</p></div><div class="prow minor" data-item="brk1"><p class="ptime">14:25~14:40</p><p class="ptxt">휴식</p><p class="pwho"></p></div></div></div><div class="pbox"><h3 class="pbh">전자주주총회 및 의결권 행사의 미래</h3><div class="pbr"><div class="prow" data-item="s3"><p class="ptime">14:40~15:10</p><p class="ptxt"><b class="pb">Session 3.</b>Proxymity, 글로벌 의결권 행사 인프라의 혁신과 미래</p><p class="pwho">Scott Oakland</p></div><div class="prow" data-item="s4"><p class="ptime">15:10~15:40</p><p class="ptxt"><b class="pb">Session 4.</b>전자주주총회 도입 · 운영 방안 및 통합 솔루션 소개</p><p class="pwho">박성용</p></div><div class="prow minor" data-item="brk2"><p class="ptime">15:40~15:55</p><p class="ptxt">휴식</p><p class="pwho"></p></div></div></div><div class="pbox"><h3 class="pbh">전자주주총회 플랫폼 시연 / 질의응답</h3><div class="pbr"><div class="prow" data-item="demo"><p class="ptime">15:55~17:30</p><p class="ptxt">모의 전자주주총회 시연</p><p class="pwho">박성용</p></div><div class="prow" data-item="qna"><p class="ptime">17:30~18:00</p><p class="ptxt">사전 질문 및 현장 질의응답</p><p class="pwho">전체 연사</p></div></div></div></div>
+<p class="meta fu" style="--i:2">상기 프로그램 일정은<br>변동될 수 있습니다.</p>
 </section>
 <section class="slide" id="m1_4" data-no="M1-4" data-title="M1-4 대기 · 이용 안내" data-bg="B" data-foot="full" data-group="standby" data-auto="18" data-tr="xfade" data-lay="split">
 <h2 class="head fu" style="--i:0">이용 안내</h2>
@@ -228,9 +234,10 @@ body.idle{cursor:none}
 <h1 class="title" data-words style="--i:1">전자주주총회 플랫폼 시연 설명회</h1>
 <p class="cmeta fu" style="--i:2"><span class="lx">2026.11.30</span><i class="dot"></i><span class="ko">IR KUDOS</span></p>
 </section>
-<section class="slide" id="m3_2" data-no="M3-2" data-title="M3-2 행사 안내 · 프로그램" data-bg="B" data-foot="full" data-prog="1">
-<div class="phead fu" style="--i:0"><h2 class="head">행사 프로그램</h2><p class="small">상기 프로그램 일정은 변동될 수 있습니다.</p></div>
-<div class="plist fu" data-stagger style="--i:1"><div class="prow" data-item="open"><p class="ptime">13:00</p><p class="ptag"></p><p class="ptxt">개회 및 행사 안내</p><p class="pwho"></p></div><div class="prow" data-item="cong"><p class="ptime">13:10</p><p class="ptag"></p><p class="ptxt">축사</p><p class="pwho">김광록 · 정우용</p></div><div class="prow" data-item="launch"><p class="ptime">13:20</p><p class="ptag"></p><p class="ptxt">한국주주총회연구소 출범식</p><p class="pwho">권재열</p></div><div class="prow" data-item="s1"><p class="ptime">13:25</p><p class="ptag">Session 1</p><p class="ptxt">전자주주총회 제도 도입 및 진행 관련 주요 실무 쟁점</p><p class="pwho">김승준</p></div><div class="prow" data-item="s2"><p class="ptime">13:55</p><p class="ptag">Session 2</p><p class="ptxt">상법 개정과 전자주총이 몰고 올 기업 경영의 지각변동</p><p class="pwho">권재열</p></div><div class="prow brk" data-item="brk1"><p class="ptime">14:25</p><p class="ptag"></p><p class="ptxt">휴식</p><p class="pwho"></p></div><div class="prow" data-item="s3"><p class="ptime">14:40</p><p class="ptag">Session 3</p><p class="ptxt">Proxymity, 글로벌 의결권 행사 인프라의 혁신과 미래</p><p class="pwho">Scott Oakland</p></div><div class="prow" data-item="s4"><p class="ptime">15:10</p><p class="ptag">Session 4</p><p class="ptxt">전자주주총회 도입 · 운영 방안 및 통합 솔루션 소개</p><p class="pwho">박성용</p></div><div class="prow brk" data-item="brk2"><p class="ptime">15:40</p><p class="ptag"></p><p class="ptxt">휴식</p><p class="pwho"></p></div><div class="prow" data-item="demo"><p class="ptime">15:55</p><p class="ptag"></p><p class="ptxt">모의 전자주주총회 시연</p><p class="pwho">박성용</p></div><div class="prow" data-item="qna"><p class="ptime">17:30</p><p class="ptag"></p><p class="ptxt">사전 질문 및 현장 질의응답</p><p class="pwho">전체 연사</p></div></div>
+<section class="slide" id="m3_2" data-no="M3-2" data-title="M3-2 행사 안내 · 프로그램" data-bg="B" data-foot="full" data-prog="1" data-lay="split">
+<h2 class="head fu" style="--i:0">행사<br>프로그램</h2>
+<div class="pgrp" data-stagger style="--i:1"><div class="pbox"><h3 class="pbh">등록 및 개회</h3><div class="pbr"><div class="prow minor" data-item="reg"><p class="ptime">12:30~13:00</p><p class="ptxt">등록 및 입장</p><p class="pwho"></p></div><div class="prow minor" data-item="open"><p class="ptime">13:00~13:10</p><p class="ptxt">개회 및 행사 안내</p><p class="pwho"></p></div></div></div><div class="pbox"><h3 class="pbh">축사 및 출범식</h3><div class="pbr"><div class="prow" data-item="cong"><p class="ptime">13:10~13:20</p><p class="ptxt">축사</p><p class="pwho">김광록 · 정우용</p></div><div class="prow" data-item="launch"><p class="ptime">13:20~13:25</p><p class="ptxt">한국주주총회연구소 출범식</p><p class="pwho">권재열</p></div></div></div><div class="pbox"><h3 class="pbh">의무화가 바꾸는 주주총회</h3><div class="pbr"><div class="prow" data-item="s1"><p class="ptime">13:25~13:55</p><p class="ptxt"><b class="pb">Session 1.</b>전자주주총회 제도 도입 및 진행 관련 주요 실무 쟁점</p><p class="pwho">김승준</p></div><div class="prow" data-item="s2"><p class="ptime">13:55~14:25</p><p class="ptxt"><b class="pb">Session 2.</b>상법 개정과 전자주총이 몰고 올 기업 경영의 지각변동</p><p class="pwho">권재열</p></div><div class="prow minor" data-item="brk1"><p class="ptime">14:25~14:40</p><p class="ptxt">휴식</p><p class="pwho"></p></div></div></div><div class="pbox"><h3 class="pbh">전자주주총회 및 의결권 행사의 미래</h3><div class="pbr"><div class="prow" data-item="s3"><p class="ptime">14:40~15:10</p><p class="ptxt"><b class="pb">Session 3.</b>Proxymity, 글로벌 의결권 행사 인프라의 혁신과 미래</p><p class="pwho">Scott Oakland</p></div><div class="prow" data-item="s4"><p class="ptime">15:10~15:40</p><p class="ptxt"><b class="pb">Session 4.</b>전자주주총회 도입 · 운영 방안 및 통합 솔루션 소개</p><p class="pwho">박성용</p></div><div class="prow minor" data-item="brk2"><p class="ptime">15:40~15:55</p><p class="ptxt">휴식</p><p class="pwho"></p></div></div></div><div class="pbox"><h3 class="pbh">전자주주총회 플랫폼 시연 / 질의응답</h3><div class="pbr"><div class="prow" data-item="demo"><p class="ptime">15:55~17:30</p><p class="ptxt">모의 전자주주총회 시연</p><p class="pwho">박성용</p></div><div class="prow" data-item="qna"><p class="ptime">17:30~18:00</p><p class="ptxt">사전 질문 및 현장 질의응답</p><p class="pwho">전체 연사</p></div></div></div></div>
+<p class="meta fu" style="--i:2">상기 프로그램 일정은<br>변동될 수 있습니다.</p>
 </section>
 <section class="slide" id="m3_3" data-no="M3-3" data-title="M3-3 행사 안내 · 안내 말씀" data-bg="B" data-foot="full" data-lay="split">
 <h2 class="head fu" style="--i:0">안내 말씀</h2>
@@ -412,7 +419,7 @@ const stage=document.getElementById('scr'),slides=[...document.querySelectorAll(
 const qp=new URLSearchParams(location.search);
 if(qp.get('lite'))stage.classList.add('lite');
 slides.filter(s=>s.dataset.lay==='split').forEach(s=>{const sp=document.createElement('div'),L=document.createElement('div'),Rr=document.createElement('div');sp.className='lay2';L.className='lay2-l';Rr.className='lay2-r';
-  [...s.children].forEach(c=>{(!Rr.children.length&&c.matches('.eyebrow,h1,h2')?L:Rr).appendChild(c);});sp.append(L,Rr);s.append(sp);});
+  [...s.children].forEach(c=>{((!Rr.children.length&&c.matches('.eyebrow,h1,h2'))||(s.dataset.prog&&c.matches('.meta'))?L:Rr).appendChild(c);});sp.append(L,Rr);s.append(sp);});
 window.FSQ=parseFloat(qp.get('q')||localStorage.getItem('scr-q')||'0.75');
 function fit(){const s=Math.min(innerWidth/4200,innerHeight/1600);stage.style.transform='translate('+((innerWidth-4200*s)/2)+'px,'+((innerHeight-1600*s)/2)+'px) scale('+s+')';}
 addEventListener('resize',fit);fit();
@@ -469,7 +476,7 @@ let SC=SCHED.load();
 SCHED.onSched(v=>{SC=v||SCHED.load();applySched();});
 function applySched(){
   slides.forEach(s=>s.querySelectorAll('.prow[data-item]').forEach(r=>{const it=SCHED.item(SC,r.dataset.item);if(!it)return;
-    const adj=SC.progAdj&&it.start!==it.ps;r.querySelector('.ptime').textContent=SCHED.fmt(SC.progAdj?it.start:it.ps);r.classList.toggle('adj',adj);}));
+    const adj=SC.progAdj&&it.start!==it.ps;r.querySelector('.ptime').textContent=SC.progAdj?SCHED.fmt(it.start)+'~'+SCHED.fmt(it.end):SCHED.fmt(it.ps)+'~'+SCHED.fmt(it.pe);r.classList.toggle('adj',adj);}));
   tick();if(slides[idx]&&slides[idx].dataset.no==='M0-3')renderNotice();hud();}
 function tick(){const ns=SCHED.nowSec();slides.forEach(s=>{if(!s.dataset.break)return;const it=SCHED.item(SC,s.dataset.break);if(!it)return;
   let r=Math.round(it.end*60-ns);if(r<0)r=0;if(r>5400)r=(it.end-it.start)*60;
