@@ -13,6 +13,9 @@
   --ok:#5ed39a;--warn:#ffb74d;--bad:#ff7a7a;
   --font:"Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif}
 *{box-sizing:border-box;margin:0;padding:0}
+/* 탭을 바꿔도 위치 · 크기가 그대로: 스크롤바 자리를 항상 확보하고, 탭 본문 카드는 화면 높이만큼 채움 */
+html{overflow-y:scroll;scrollbar-gutter:stable}
+.wrap>div>.box:first-child{min-height:calc(100vh - 200px)}
 body{background:var(--bg);color:var(--fg);font:400 14px/1.5 var(--font);-webkit-font-smoothing:antialiased;word-break:keep-all}
 [hidden]{display:none!important}
 :focus-visible{outline:2px solid var(--blue);outline-offset:2px}
