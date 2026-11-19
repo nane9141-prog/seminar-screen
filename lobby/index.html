@@ -196,6 +196,7 @@ const PHOTO=['speaker1-1','speaker2','speaker-scott','speaker3-1'].map(n=>{const
     let gr=g.createLinearGradient(0,0,0,BOX.h);gr.addColorStop(0,'rgba(0,0,0,1)');gr.addColorStop(.42,'rgba(0,0,0,1)');gr.addColorStop(.88,'rgba(0,0,0,0)');g.fillStyle=gr;g.fillRect(0,0,BOX.w,BOX.h);
     gr=g.createLinearGradient(0,0,BOX.w,0);gr.addColorStop(0,'rgba(0,0,0,0)');gr.addColorStop(.12,'rgba(0,0,0,1)');gr.addColorStop(.88,'rgba(0,0,0,1)');gr.addColorStop(1,'rgba(0,0,0,0)');g.fillStyle=gr;g.fillRect(0,0,BOX.w,BOX.h);};
   im.src='../assets/'+n+'.webp';return c;});
+const PTB=.6;  // 연사 점 · 선 밝기 배율(1 = 이전 밝기)
 const PH_A=.62,PH_R=0,PT0=6.2,WOB=1.5;  // 사진 0.7초 페이드 인 후 5.5초 유지 // 사진 먼저(진하게) → 점·선이 생기며 사진은 옅게 남음 / 퇴장 전 1.5초 흔들림
 const IN=2.8,OUT=2.4;let port=null; // {k,t0,tOut}
 const LV=14,xs=new Float32Array(NPT),ys=new Float32Array(NPT),ls=new Float32Array(NPT),fa=new Float32Array(NPT),lev=new Uint8Array(NPT),cnt=new Int32Array(LV+2),ord=new Int32Array(NPT);
@@ -234,14 +235,14 @@ function drawPort(now){
     for(const band of [.35,.7,1]){px.beginPath();let any=false;
       for(let k=0;k<E.A.length;k++){const a=E.A[k],b=E.B[k],w=Math.pow(Math.min(fa[a],fa[b]),2)*Math.min(1,.45+1.1*Math.min(d.L[a],d.L[b]))*sm(0,.3,Math.min(BV[port.k][a],BV[port.k][b]));
         if(w<.04||w>band||w<=band-.35)continue;const ddx=xs[a]-xs[b],ddy=ys[a]-ys[b];if(ddx*ddx+ddy*ddy>3600)continue;any=true;px.moveTo(xs[a],ys[a]);px.lineTo(xs[b],ys[b]);}
-      if(any){px.strokeStyle='rgba(214,226,246,'+(band*.5).toFixed(3)+')';px.stroke();}}
+      if(any){px.strokeStyle='rgba(214,226,246,'+(band*.5*PTB).toFixed(3)+')';px.stroke();}}
     // 꼬리: 들어오는 동안 지나온 자리(오른쪽)로 짧은 선이 따라옴
     px.lineWidth=.8;px.beginPath();for(let q=0;q<n;q++){const i=ord[q],w=ls[i];if(w<2||fa[i]>.9)continue;px.moveTo(xs[i],ys[i]);px.lineTo(xs[i]+w,ys[i]+RB[i]*w*.04);}
-    px.strokeStyle='rgba(214,226,246,.10)';px.stroke();
+    px.strokeStyle='rgba(214,226,246,'+(.10*PTB).toFixed(3)+')';px.stroke();
     for(let l=1;l<=LV+1;l++)cnt[l]+=cnt[l-1];
     const pos=cnt.slice(),o2=new Int32Array(n);for(let q=0;q<n;q++){const i=ord[q];o2[pos[lev[i]]++]=i;}
     for(let l=1;l<=LV;l++){const a=cnt[l],b=cnt[l+1];if(a===b)continue;
-      px.fillStyle='rgba(232,239,252,'+(l/LV*.8).toFixed(3)+')';px.beginPath();
+      px.fillStyle='rgba(232,239,252,'+(l/LV*.8*PTB).toFixed(3)+')';px.beginPath();
       for(let q=a;q<b;q++){const i=o2[q],z=(1.3+d.L[i]*1.2)*(1+1.2*BV[port.k][i]);px.rect(xs[i]-z/2,ys[i]-z/2,z,z);}
       px.fill();
     }}
@@ -257,20 +258,19 @@ const STEPS=[
  {n:'여의도 무드 영상',ov:'ov-video',dim:0,dur:45.6,video:'vMood',restartDS:1},
  {n:'Data Stream',ov:null,dim:1,dur:15},
  {n:'타이틀 10초 → 타이틀 2 5초',ov:'ov-title',dim:.42,dur:18.5,swap:11.4},
- {n:'Data Stream',ov:null,dim:1,dur:10},
+ {n:'Data Stream',ov:null,dim:1,dur:60},
  {n:'타임테이블',ov:'ov-tt',dim:.2,dur:T('tt')||11.7},
- {n:'Data Stream',ov:null,dim:1,dur:10},
+ {n:'Data Stream',ov:null,dim:1,dur:30},
  // 연사: 점·선 완성(등장 후 7.55초) 뒤 HOLD초 유지하고 퇴장. 첫 연사는 0.3초, 2~4번째는 앞 연사가 흩어진 뒤(4초) 등장
  {n:'Session 1 · 김승준',ov:'ov-spk0',dim:.2,dur:0.3+FORM+HOLD,port:0},
  {n:'Session 2 · 권재열',ov:'ov-spk1',dim:.2,dur:4+FORM+HOLD,port:1},
  {n:'Session 3 · Scott Oakland',ov:'ov-spk2',dim:.2,dur:4+FORM+HOLD,port:2},
  {n:'Session 4 · 박성용',ov:'ov-spk3',dim:.2,dur:4+FORM+HOLD,port:3},
- {n:'Data Stream',ov:null,dim:1,dur:10},
- {n:'타이틀 B',ov:'ov-titleB',dim:.35,dur:T('tb')||10},
- {n:'Data Stream',ov:null,dim:1,dur:10},
- {n:'타이틀',ov:'ov-title',dim:.42,dur:11.7},
+ {n:'Data Stream',ov:null,dim:1,dur:20},
+ {n:'타이틀 B',ov:'ov-titleB',dim:.35,dur:T('tb')||30},
+ {n:'Data Stream',ov:null,dim:1,dur:60},
  {n:'서비스 소개 영상 (assets/service-intro.mp4 넣으면 재생)',ov:'ov-svc',dim:0,dur:30,video:'vSvc'},
- {n:'Data Stream',ov:null,dim:1,dur:10}];
+ {n:'Data Stream',ov:null,dim:1,dur:60}];
 let idx=-1,t1=null,t2=null,t3=null,run=true,vEnd=null,SPD=1,stepT0=0,stepLen=0;
 /* 첫 장면 영상: 실제 길이에 맞추고, 파일이 없으면 이 장면을 건너뜀. 다른 장면으로 가면 멈춤 */
 STEPS.forEach(s=>{if(!s.video)return;const v=document.getElementById(s.video);v.addEventListener('loadedmetadata',()=>{if(isFinite(v.duration)&&!T('vid'))s.dur=Math.round(v.duration*10)/10;hud();});v.addEventListener('error',()=>{s.skip=true;if(STEPS[idx]===s)go(idx+1);});v.addEventListener('ended',()=>{if(vEnd&&STEPS[idx]===s)vEnd();});
@@ -344,6 +344,7 @@ const SCN=[
   {k:'vortex',name:'소용돌이',dur:10,tail:1.0,form:1,fl:'나선 감김'},
   {k:'net',   name:'연결망',  dur:8, tail:.35,form:1,fl:'연결선 밝기'},
   {k:'orbit', name:'타원 흐름',dur:8, tail:.9, form:1,fl:'타원 높이'},
+  {k:'gather',name:'모임 2',  dur:18,tail:.06,form:1,fl:'모이기 전 퍼짐'},
   {k:'radial',name:'방사',    dur:8, tail:.7, form:1,fl:'방사 길이'},
   {k:'ring',  name:'링',      dur:8, tail:.8, form:1,fl:'링 두께'},
   {k:'well',  name:'중력 우물',dur:10,tail:.1, form:1,fl:'우물 깊이'},
@@ -408,7 +409,8 @@ P.forEach(q=>{q.ln=R2();q.lj=R2()-.5;q.lv=.6+.8*R2();});
    [가로 반지름, 중심 높이, 세로 반지름, 점선 여부] — 위쪽 타원, 아래쪽은 위아래 대칭 */
 const ORB=[[.77,.65,.25,0],[1.27,.72,.46,0],[1.75,.85,.7,0],[2.24,1.2,1.2,1]];
 const ORL=ORB.map(e=>Math.PI*(3*(e[0]+e[2])-Math.sqrt((3*e[0]+e[2])*(e[0]+3*e[2])))),ORT=ORL.reduce((a,b)=>a+b,0)*2;
-P.forEach(q=>{let u=q.ln*ORT,e=0;while(e<7&&u>ORL[e%4]){u-=ORL[e%4];e++;}q.oe=e;});
+const ORING=.16; // 점의 16%는 가운데 원 테두리(링 장면처럼 점이 흐르는 얇은 띠)
+P.forEach(q=>{if(q.ln>1-ORING){q.oe=8;return;}let u=q.ln/(1-ORING)*ORT,e=0;while(e<7&&u>ORL[e%4]){u-=ORL[e%4];e++;}q.oe=e;});
 // KISM 엠블럼(두 조각) — 가운데 원 안에 흰색으로
 const KISM=new Path2D('M38.67 0 16.89 0 0 20.9 0 35.79 4.79 41.72 20.05 22.95 38.67 0Z M5.99 43.21 16.89 56.69 38.67 56.69 16.87 29.83 5.99 43.21Z');
 const KISM_D='M38.67 0 16.89 0 0 20.9 0 35.79 4.79 41.72 20.05 22.95 38.67 0Z M5.99 43.21 16.89 56.69 38.67 56.69 16.87 29.83 5.99 43.21Z';
@@ -436,7 +438,7 @@ function modePos0(m,q,i,t0,o){
   const s=SCN[m],sc=S.scale*s.scale,t=t0*s.mv,f=s.form;
   switch(s.k){
   case 'gather':{ // 모임: 카메라를 둘러싼 넓은 공간의 점들이 아주 천천히 한 성단으로 모여듦
-    const x=clamp01(t0/(s.dur*.96)),gp=.5-.5*Math.cos(Math.PI*x);
+    const x=clamp01((t0-Math.max(0,START[m]))/(s.dur*.96)),gp=.5-.5*Math.cos(Math.PI*x);
     const sp=1+13*f*Math.pow(1-gp,2.2);
     let p=[q.g[0]*sp+.03*Math.sin(t*q.gw+q.gp),q.g[1]*sp+.03*Math.cos(t*q.gw*1.3+q.gp),q.g[2]*sp];
     p=p.map(v=>v*sc);p=rotX(rotY(p,TAU*t/60),.18);
@@ -482,6 +484,9 @@ function modePos0(m,q,i,t0,o){
     o[0]=x*k+.35*sc;o[1]=y*k;o[2]=Math.min(2.4,.55+1.1*k);
     o[3]=Math.min(1,v*9)*Math.min(1,(1-v)*2.2)*(.55+.45*Math.min(1,k));return;}
   case 'orbit':{ // 타원 흐름: 위·아래 타원을 따라 점이 돌고, 바깥 점선 타원은 점선 구간에서만 밝음
+    if(q.oe===8){ // 가운데 원 테두리: 링 장면처럼 원을 따라 흐르는 얇은 점 띠
+      const r=ORC*HH*.98*sc*(1.035+q.rg*.012),a=q.rt+TAU*t*q.rw/30*(q.rg<0?1.3:1);
+      o[0]=Math.cos(a)*r;o[1]=Math.sin(a)*r;o[2]=.75;o[3]=.55+.45*Math.exp(-q.rg*q.rg);return;}
     const e=q.oe,E=ORB[e%4],up=e<4?1:-1,dir=(e%2?1:-1)*up,k=HH*.98*sc;
     const a=q.th+dir*TAU*t*q.lv/(22+e%4*7),br2=1+.04*Math.sin(t*.5+e);
     o[0]=Math.cos(a)*E[0]*k*br2;o[1]=up*(E[1]*f+Math.sin(a)*E[2]*f)*k;
@@ -579,7 +584,7 @@ function draw(){
   }
   // 연결망 선
   // 모임 장면의 옅은 연결선
-  const wG=weight(s0,SCN.findIndex(x=>x.k==='gather'));
+  const wG=SCN.reduce((a,x,m)=>a+(x.k==='gather'?weight(s0,m):0),0);
   if(wG>0){
     ctx.lineWidth=Math.max(1,.8*PX);ctx.strokeStyle=`rgba(${fr},${fg},${fb},${.16*wG*br})`;ctx.beginPath();
     for(const [a,b] of GEDGES){if(AL[a]<.05||AL[b]<.05)continue;const xa=XS[a*(K+1)],ya=YS[a*(K+1)],xb=XS[b*(K+1)],yb=YS[b*(K+1)];if(Math.abs(xa-xb)+Math.abs(ya-yb)>U*.32)continue;ctx.moveTo(xa,ya);ctx.lineTo(xb,yb);}ctx.stroke();
@@ -608,12 +613,7 @@ function draw(){
   const OI=SCN.findIndex(x=>x.k==='orbit'),wO=OI<0?0:Math.pow(weight(s0,OI),2);
   if(wO>.01){const sc=S.scale*SCN[OI].scale,R=ORC*HH*.98*sc*U*(.85+.15*wO);
     ctx.globalCompositeOperation='source-over';ctx.globalAlpha=wO;
-    ctx.fillStyle=tint.bg;ctx.beginPath();ctx.arc(cx,cy,R,0,TAU);ctx.fill();
-    // 테두리: 짧은 선과 점이 번갈아 이어지는 점·선 패턴, 천천히 회전
-    const RG=ringPat(R,PX,tNow);ctx.strokeStyle=`rgba(${fr},${fg},${fb},.9)`;
-    ctx.lineCap='butt';ctx.lineWidth=RG.lw;ctx.setLineDash(RG.dash);ctx.lineDashOffset=RG.off;ctx.stroke();
-    ctx.lineCap='round';ctx.lineWidth=RG.dw;ctx.setLineDash(RG.dot);ctx.lineDashOffset=RG.off-RG.dotShift;ctx.stroke();
-    ctx.setLineDash([]);ctx.lineDashOffset=0;ctx.lineCap='round';
+    ctx.fillStyle=tint.bg;ctx.beginPath();ctx.arc(cx,cy,R*.985,0,TAU);ctx.fill();
     const h=R*.62,k2=h/56.69;ctx.save();ctx.translate(cx-38.67*k2/2,cy-h/2);ctx.scale(k2,k2);ctx.fillStyle=`rgb(${fr},${fg},${fb})`;ctx.fill(KISM);ctx.restore();
     ctx.globalAlpha=1;LF.orb={R,h};}else LF.orb=null;
   // 패널 진행 표시
@@ -721,7 +721,7 @@ function toSVG(){
         line(d,(band?.5:.26)*fade*br,Math.max(1,.9*PX*S.size));}}
     o.push('</g>');
   }
-  const wG=weight(s0,SCN.findIndex(x=>x.k==='gather'));
+  const wG=SCN.reduce((a,x,m)=>a+(x.k==='gather'?weight(s0,m):0),0);
   if(wG>0){let d='';for(const [a,b] of GEDGES){if(AL[a]<.05||AL[b]<.05)continue;if(Math.abs(X(a,0)-X(b,0))+Math.abs(Y(a,0)-Y(b,0))>U*.32)continue;d+=`M${f(X(a,0))} ${f(Y(a,0))}L${f(X(b,0))} ${f(Y(b,0))}`;}line(d,.16*wG*br,Math.max(1,.8*PX));}
   const NI=SCN.findIndex(x=>x.k==='net'),wNet=Math.pow(weight(s0,NI),2)*SCN[NI].form;
   if(wNet>0){let d='';for(const [a,b] of EDGES)d+=`M${f(X(a,0))} ${f(Y(a,0))}L${f(X(b,0))} ${f(Y(b,0))}`;line(d,.55*wNet*br,Math.max(1,1.1*PX));}
@@ -731,7 +731,7 @@ function toSVG(){
     const key=Math.round(a*20);if(!key)continue;(bins.get(key)||bins.set(key,[]).get(key)).push(r<1.6?(z=>`<rect x="${f(X(i,0)-z/2)}" y="${f(Y(i,0)-z/2)}" width="${f(z)}" height="${f(z)}"/>`)(Math.max(1,r*1.3)):`<circle cx="${f(X(i,0))}" cy="${f(Y(i,0))}" r="${f(r)}"/>`);}
   o.push('<g id="dots">');[...bins.keys()].sort((a,b)=>a-b).forEach(k=>o.push(`<g fill="${col}" fill-opacity="${k/20}">${bins.get(k).join('')}</g>`));o.push('</g>');
   if(LF.orb){const {R,h}=LF.orb,k2=h/56.69,a=Math.min(1,Math.pow(weight(s0,SCN.findIndex(x=>x.k==='orbit')),2));
-    const RG=ringPat(R,PX,tNow);o.push(`<g id="center" opacity="${f(a*100)/100}" style="mix-blend-mode:normal"><circle cx="${f(cx)}" cy="${f(cy)}" r="${f(R)}" fill="${tint.bg}"/><circle cx="${f(cx)}" cy="${f(cy)}" r="${f(R)}" fill="none" stroke="${col}" stroke-opacity=".9" stroke-width="${f(RG.lw)}" stroke-dasharray="${f(RG.dash[0])} ${f(RG.dash[1])}" stroke-dashoffset="${f(RG.off)}" transform="rotate(0 ${f(cx)} ${f(cy)})"/><circle cx="${f(cx)}" cy="${f(cy)}" r="${f(R)}" fill="none" stroke="${col}" stroke-opacity=".9" stroke-linecap="round" stroke-width="${f(RG.dw)}" stroke-dasharray="0.001 ${f(RG.P-.001)}" stroke-dashoffset="${f(RG.off-RG.dotShift)}"/><path transform="matrix(${f(k2*1e3)/1e3} 0 0 ${f(k2*1e3)/1e3} ${f(cx-38.67*k2/2)} ${f(cy-h/2)})" fill="${col}" d="${KISM_D}"/></g>`);}
+    const RG=ringPat(R,PX,tNow);o.push(`<g id="center" opacity="${f(a*100)/100}" style="mix-blend-mode:normal"><circle cx="${f(cx)}" cy="${f(cy)}" r="${f(R*.985)}" fill="${tint.bg}"/><path transform="matrix(${f(k2*1e3)/1e3} 0 0 ${f(k2*1e3)/1e3} ${f(cx-38.67*k2/2)} ${f(cy-h/2)})" fill="${col}" d="${KISM_D}"/></g>`);}
   o.push('</g></svg>');
   return o.join('\n');
 }
