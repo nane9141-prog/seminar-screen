@@ -173,7 +173,7 @@ body.idle{cursor:none}
 /* 행사 프로그램(M1-3 · M3-2): 2단 — 왼쪽 제목 · 설명, 오른쪽 소개 사이트 #program 레이아웃 그대로(약 ×3, 다크) + 자동 스크롤 */
 .slide[data-prog]{padding:110px 360px 110px 416px}
 .slide[data-prog] .lay2{grid-template-columns:1480px minmax(0,1fr);height:1380px;align-items:stretch}
-.slide[data-prog] .lay2-l{display:flex;flex-direction:column;justify-content:center}
+.slide[data-prog] .lay2-l{display:flex;flex-direction:column;justify-content:flex-start;padding-top:30px}  /* 왼쪽 글: 오른쪽 첫 카드 윗선에 맞춤 */
 .slide[data-prog] .lay2-l .lead{margin-top:70px;padding-right:120px;font-size:66px;line-height:1.5;color:#D5DCE6}
 .slide[data-prog] .lay2-l .meta{margin-top:60px;font-size:50px;font-weight:300;color:#A9B2BF}
 .pscroll{height:1380px;overflow:hidden;-webkit-mask-image:linear-gradient(180deg,transparent 0,#000 70px,#000 calc(100% - 110px),transparent);mask-image:linear-gradient(180deg,transparent 0,#000 70px,#000 calc(100% - 110px),transparent)}
