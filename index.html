@@ -238,7 +238,7 @@ body.idle{cursor:none}
 </style></head>
 <body>
 <div class="stage" id="scr" data-foot="full">
-<iframe id="c" src="assets/ds-bg.html?w=4200&amp;h=1600&amp;ox=.66&amp;bright=1.6&amp;size=1.25&amp;scale=1.5" tabindex="-1" title="" aria-hidden="true"></iframe>
+<iframe id="c" src="assets/ds-bg.html?w=4200&amp;h=1600&amp;ox=.5&amp;bright=1.6&amp;size=1.25&amp;scale=1.5" tabindex="-1" title="" aria-hidden="true"></iframe>
 <canvas id="pcv"></canvas>
 <section class="slide" id="m1_1" data-no="M1-1" data-title="M1-1 대기 · 타이틀" data-bg="A" data-foot="logo" data-group="standby" data-auto="12" data-tr="xfade" data-sweep data-lay="center">
 <h1 class="title" data-words style="--i:1">전자주주총회 플랫폼 시연 설명회</h1>
@@ -643,7 +643,7 @@ const nm=s=>s.dataset.title.replace(/&amp;/g,'&').replace(s.dataset.no+' ','');
 CtrlPanel.mount({title:'메인 스크린',key:'scr-main',placeholder:'예: 4-5, 9-s1',
   prev:()=>step(-1),next:()=>step(1),go:i=>go(i),
   goNo:t=>{const n=byNo('M'+t.trim().toUpperCase().replace(/^M/,''));if(n<0)return false;go(n);return true;},
-  list:()=>slides.map((s,i)=>({no:s.dataset.no,label:nm(s),cur:i===idx,msg:isMsg(s)})),
+  list:()=>slides.map((s,i)=>({no:s.dataset.no,label:nm(s),cur:i===idx,msg:isMsg(s),dur:s.dataset.auto?s.dataset.auto+'초':(v=>v&&isFinite(v.duration)?'영상 '+Math.round(v.duration)+'초':'')(s.querySelector('video'))})),
   status:()=>{const s=slides[idx];let nx=nextMain(isMsg(s)?home:idx,1);nx=nx!==idx?slides[nx]:null;
     const sub=(isMsg(s)?'상황 메시지 · → 누르면 원래 순서로 · ':'')+(nx?'다음: '+nx.dataset.no+' '+nm(nx):'마지막 화면');
     return {title:s.dataset.no+'  '+nm(s),sub,prog:autoLen?Math.min(1,(performance.now()-autoT0)/autoLen):null};},

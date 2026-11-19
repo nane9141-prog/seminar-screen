@@ -23,6 +23,7 @@ const css=`
 #cp .ls{overflow:auto;max-height:260px;border-top:1px solid rgba(120,150,200,.2);padding-top:6px;margin:0 -4px}
 #cp .ls div{padding:3px 8px;border-radius:6px;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 #cp .ls div:hover{background:#1A2A48}#cp .ls div.cur{background:#2E8BFF;color:#fff;font-weight:600}#cp .ls div.msg{color:#C7A66B}
+#cp .ls .du{float:right;margin-left:8px;color:#8793A6;font-size:.92em;font-variant-numeric:tabular-nums}#cp .ls div.cur .du{color:#dfe9ff}
 #cp .ls .no{display:inline-block;min-width:52px;color:#8793A6;font-variant-numeric:tabular-nums}#cp .ls div.cur .no{color:#dfe9ff}
 #cp .ft{color:#6F7C90;font-size:11.5px;padding:6px 12px 10px;border-top:1px solid rgba(120,150,200,.2)}
 #cp .ex{color:#A9B4C4;font-size:12px}
@@ -73,8 +74,8 @@ function draw(force){if(!el||!el.classList.contains('on'))return;const c=cfg,q=s
   el.querySelectorAll('.spd button').forEach(b=>b.classList.toggle('on',+b.dataset.v===SPD));
   el.querySelectorAll('.tg button').forEach(b=>{const t=c.toggles[+b.dataset.t];b.classList.toggle('on',!!(t.on&&t.on()));});
   q('.ex').innerHTML=c.extra?c.extra():'';q('.ex').style.display=q('.ex').innerHTML?'block':'none';
-  const L=c.list(),key=L.map(x=>x.label+x.cur).join('|');
-  if(key!==lastList||force){lastList=key;q('.ls').innerHTML=L.map((x,i)=>`<div data-i="${i}" class="${x.cur?'cur':''} ${x.msg?'msg':''}"><span class="no">${x.no}</span>${x.label}</div>`).join('');
+  const L=c.list(),key=L.map(x=>x.label+x.cur+(x.dur||'')).join('|');
+  if(key!==lastList||force){lastList=key;q('.ls').innerHTML=L.map((x,i)=>`<div data-i="${i}" class="${x.cur?'cur':''} ${x.msg?'msg':''}">${x.dur?`<span class="du">${x.dur}</span>`:''}<span class="no">${x.no}</span>${x.label}</div>`).join('');
     const cur=q('.ls .cur');if(cur)cur.scrollIntoView({block:'nearest'});}
 }
 window.CtrlPanel={mount,draw:()=>draw(),toggle,speed:()=>SPD,setSpeed};
