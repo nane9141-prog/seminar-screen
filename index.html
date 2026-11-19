@@ -192,6 +192,12 @@ body.idle{cursor:none}
 .pin .r__sp b{margin-right:18px;font-weight:400;color:#D5DCE6}
 .pin .r.minor .r__ti{font:400 54px/1.45 "KakaoSmall",sans-serif;color:#C7CED8}
 .pin .r.adj .r__t{color:#FFB84D}
+
+/* 글씨 조금 작게(×0.92) · 프로그램 카드 약간 작게(×0.9) — zoom: 글자 · 여백만 줄고 칸 폭은 그대로 */
+.stage .title,.stage .title-m,.stage .head,.stage .talk,.stage .name,.stage .name-xl,.stage .lead,.stage .meta,.stage .small,.stage .eyebrow,
+.stage .cmeta,.stage .en,.stage .ensub,.stage .card,.stage .panel,.stage .note,.stage .case,.stage .next,.stage .phead{zoom:.92}
+.stage .lay2-r>.lead,.stage .lay2-r>.meta{zoom:.92}
+.stage .pin{zoom:.9}
 </style></head>
 <body>
 <div class="stage" id="scr" data-foot="full">
@@ -444,7 +450,7 @@ function bgSet(s){const f=document.getElementById('c'),k=s.dataset.bg,lay=s.data
   f.style.opacity=k==='N'?0:d;dsPost({ds:'ox',v:ox});}
 document.getElementById('c').addEventListener('load',()=>{dsPost({ds:'q',v:window.FSQ});if(SPD!==1)dsPost({ds:'mul',v:SPD});const s=slides[idx];if(s)bgSet(s);});
 function progScroll(s){document.querySelectorAll('.pin').forEach(x=>{if(x._a){x._a.cancel();x._a=null;}});
-  const pin=s&&s.querySelector('.pin');if(!pin)return;const box=pin.parentNode,dist=pin.scrollHeight-box.clientHeight;if(dist<=0)return;
+  const pin=s&&s.querySelector('.pin');if(!pin)return;const box=pin.parentNode,z=parseFloat(getComputedStyle(pin).zoom)||1,dist=(pin.offsetHeight*z-box.clientHeight)/z;if(dist<=0)return;  // zoom 보정
   const V=110,H=2,move=dist/V,back=1.2,T=H+move+H+back;
   pin._a=pin.animate([{transform:'translateY(0)',offset:0},{transform:'translateY(0)',offset:H/T,easing:'linear'},{transform:`translateY(${-dist}px)`,offset:(H+move)/T},{transform:`translateY(${-dist}px)`,offset:(H+move+H)/T,easing:'cubic-bezier(.6,0,.2,1)'},{transform:'translateY(0)',offset:1}],{duration:T*1000,iterations:Infinity,delay:1200});}
 function initBG(){if(!window.FS)return;FS.mode(4);FS.resize();if(qp.get('bg'))FS.set('bgb',qp.get('bg'));if(qp.get('snap')){cur=(LAY[qp.get('snap')]||LAY.B).map(o=>({...o}));}requestAnimationFrame(bgTick);}
