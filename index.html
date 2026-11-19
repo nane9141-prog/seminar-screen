@@ -425,7 +425,7 @@ let QA=SCHED.loadQ(),QSRC=SCHED.getSrc(),OQ=null,oqKey='';
 SCHED.onQ(v=>{QA=v||{list:[],cur:null};if(QSRC==='local')renderQ();});
 SCHED.onSrc(v=>{QSRC=v||'local';renderQ();pollOQ();});
 // 온라인 질문: control(운영자 노트북)에서 송출한 질문을 2초마다 확인. 끊기면 마지막 질문 유지.
-const OQ_SL={all:'',s1:'Session 1',s2:'Session 2',s3:'Session 3',s4:'Session 4',demo:'플랫폼 시연'};
+const OQ_SL={all:'',s1:'Session 1',s2:'Session 2',s3:'Session 3',s4:'Session 4 · 플랫폼 시연',demo:'Session 4 · 플랫폼 시연'};
 async function pollOQ(){if(QSRC!=='online'||!location.protocol.startsWith('http'))return;
   try{const r=await fetch('https://zrhtqpzgubaqzsdaxhvt.supabase.co/rest/v1/rpc/qa_current',{method:'POST',headers:{apikey:'sb_publishable_JwET6KLGmdYBkOIIttgOOQ_HEpCKLar','Content-Type':'application/json'},body:'{}',cache:'no-store'});
     if(!r.ok)return;const d=await r.json(),k=JSON.stringify(d);if(k===oqKey)return;oqKey=k;

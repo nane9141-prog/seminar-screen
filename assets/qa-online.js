@@ -4,7 +4,7 @@
    송출한 질문은 메인 스크린 M10-2가 qa_current()로 받아 표시합니다. */
 (function(){
 const URL_='https://zrhtqpzgubaqzsdaxhvt.supabase.co',KEY='sb_publishable_JwET6KLGmdYBkOIIttgOOQ_HEpCKLar',DOMAIN='@ops.irkudos.co.kr';
-const SL={all:'전체',s1:'Session 1',s2:'Session 2',s3:'Session 3',s4:'Session 4',demo:'시연'};
+const SL={all:'전체',s1:'Session 1',s2:'Session 2',s3:'Session 3',s4:'Session 4 · 시연',demo:'Session 4 · 시연'};
 const $=id=>document.getElementById(id);
 const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const tm=d=>{if(!d)return'';const x=new Date(d);return String(x.getHours()).padStart(2,'0')+':'+String(x.getMinutes()).padStart(2,'0');};
@@ -64,7 +64,7 @@ function draw(st){
   const c=L.find(x=>x.id===cur);
   $('oqcur').innerHTML=c?'<b class="tag '+c.kind+'">'+lab(c)+'</b> '+esc(c.body)+'<div class="w">'+esc(c.company)+' '+esc(c.name)+' · '+SL[c.session]+(c.who?' · 답변 '+esc(c.who):'')+(st&&st.updated_by?' · 송출 '+esc(String(st.updated_by).replace(DOMAIN,''))+' '+tm(st.updated_at):'')+'</div>':'<span class="mut">화면에 표시 중인 질문이 없습니다.</span>';
   let list=tab==='pick'?P:tab==='new'?N:H;
-  if(ses)list=list.filter(x=>x.session===ses);
+  if(ses)list=list.filter(x=>x.session===ses||(ses==='s4'&&x.session==='demo'));
   const act=q=>tab==='pick'
     ?'<button data-a="show" class="'+(q.id===cur?'pri':'')+'">송출</button><button data-a="up">↑</button><button data-a="down">↓</button><button data-a="who">연사</button><button data-a="edit">수정</button><button data-a="unpick">빼기</button>'
     :tab==='new'?'<button data-a="pick" class="pri">선택</button><button data-a="edit">수정</button><button data-a="hide">숨김</button>'
