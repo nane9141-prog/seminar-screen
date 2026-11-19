@@ -87,6 +87,7 @@ body.clean.hover .show{display:block}
   <p class="hint" id="hint">장면을 누르면 그 장면으로 넘어갑니다. 한 루프 길이는 장면 길이의 합(속도 1 기준)이고, H 키로 패널을 숨깁니다.</p>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/webm-muxer@5.0.3/build/webm-muxer.js"></script>
+<script>(()=>{const q=new URLSearchParams(location.search);for(const k of ["bright","size","speed","trail","count"]){const v=q.get(k),el=document.getElementById(k);if(v!=null&&el)el.value=v;}})();</script>
 <script>
 /* 배경용 크기 · 중심(주소 값) */
 const BQ=new URLSearchParams(location.search),BGW=+BQ.get('w')||4200,BGH=+BQ.get('h')||1600;window.DSQ=+BQ.get('q')||.6;

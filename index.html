@@ -195,7 +195,7 @@ body.idle{cursor:none}
 </style></head>
 <body>
 <div class="stage" id="scr" data-foot="full">
-<iframe id="c" src="assets/ds-bg.html?w=4200&amp;h=1600&amp;ox=.66" tabindex="-1" title="" aria-hidden="true"></iframe>
+<iframe id="c" src="assets/ds-bg.html?w=4200&amp;h=1600&amp;ox=.66&amp;bright=1.6&amp;size=1.25" tabindex="-1" title="" aria-hidden="true"></iframe>
 <section class="slide" id="m1_1" data-no="M1-1" data-title="M1-1 대기 · 타이틀" data-bg="A" data-foot="logo" data-group="standby" data-auto="12" data-tr="xfade" data-lay="center">
 <h1 class="title" data-words style="--i:1">전자주주총회 플랫폼 시연 설명회</h1>
 <p class="cmeta fu" style="--i:2"><span class="lx">2026.11.30</span><i class="dot"></i><span class="ko">IR KUDOS</span></p>
@@ -437,10 +437,10 @@ let bt=performance.now();
 function bgTick(now){const f=1-Math.exp(-Math.min(.25,((now||bt)-bt)/1000)*3.2);bt=now||bt;cur.forEach((o,i)=>{const t=tgt[i];['x','y','r'].forEach(k=>{const d=t[k]-o[k];if(Math.abs(d)>1e-4)o[k]+=d*f;else o[k]=t[k];});});
   if(window.FS)FS.objs(cur.map(o=>({x:o.x,y:o.y,r:Math.max(o.r,.001),on:o.r>.004})));requestAnimationFrame(bgTick);}
 /* 배경 Data Stream: 화면 종류별 밝기 · 형태 중심 위치. A 타이틀류 · B 본문 · C 기본 화면(외부 소스 전환) */
-const BGDIM={A:.55,B:.3,C:1},BGOX={A:.66,B:.7,C:.5};
+const BGDIM={A:.75,B:.5,C:1},BGOX={A:.66,B:.7,C:.5};
 const dsPost=m=>{const f=document.getElementById('c');if(f&&f.contentWindow)f.contentWindow.postMessage(m,'*');};
 function bgSet(s){const f=document.getElementById('c'),k=s.dataset.bg,lay=s.dataset.lay;let d=BGDIM[k]??.3,ox=BGOX[k]??.66;
-  if(lay==='center'||lay==='en'){d=.45;ox=.5;}else if(lay==='split'){d=.3;ox=.5;}
+  if(lay==='center'||lay==='en'){d=.7;ox=.5;}else if(lay==='split'){d=.5;ox=.5;}
   f.style.opacity=k==='N'?0:d;dsPost({ds:'ox',v:ox});}
 document.getElementById('c').addEventListener('load',()=>{dsPost({ds:'q',v:window.FSQ});if(SPD!==1)dsPost({ds:'mul',v:SPD});const s=slides[idx];if(s)bgSet(s);});
 function progScroll(s){document.querySelectorAll('.pin').forEach(x=>{if(x._a){x._a.cancel();x._a=null;}});
