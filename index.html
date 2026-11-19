@@ -227,19 +227,12 @@ body.idle{cursor:none}
 .slide[data-spk] .stack{gap:16px}
 .slide[data-spk] .name{font-size:60px;line-height:1.2}
 .slide[data-spk] .meta{font-size:42px;font-weight:400;line-height:1.45;color:#B4BDC9}
-
-/* 대기 타이틀: 파랑 → 초록 그라데이션이 왼쪽부터 스윽 덮고(0.8초) 1초 유지 뒤 다시 흰색으로(0.8초). 등장 1.6초 뒤, 이후 6초마다 */
-@property --sx{syntax:"<length>";inherits:true;initial-value:0px}
-.slide[data-sweep] .title{position:relative;--tw:1000px;--sx:0px}
-.slide[data-sweep] .title .w{background:linear-gradient(90deg,#fff 0,#fff 30.3%,#2E8BFF 34.85%,#21af6b 65.15%,#fff 69.7%,#fff 100%);background-size:calc(var(--tw)*3.3) 100%;background-repeat:no-repeat;background-position:calc(var(--sx) - var(--wl,0px)) 0;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent}
-.slide.on[data-sweep] .title{animation:sweep 6s 1.6s infinite}
-@keyframes sweep{0%{--sx:calc(var(--tw)*-2.3);animation-timing-function:cubic-bezier(.45,0,.25,1)}13.33%{--sx:calc(var(--tw)*-1.15)}30%{--sx:calc(var(--tw)*-1.15);animation-timing-function:cubic-bezier(.45,0,.25,1)}43.33%{--sx:0px}100%{--sx:0px}}
 </style></head>
 <body>
 <div class="stage" id="scr" data-foot="full">
 <iframe id="c" src="assets/ds-bg.html?w=4200&amp;h=1600&amp;ox=.5&amp;bright=1.6&amp;size=1.25&amp;scale=1.5" tabindex="-1" title="" aria-hidden="true"></iframe>
 <canvas id="pcv"></canvas>
-<section class="slide" id="m1_1" data-no="M1-1" data-title="M1-1 대기 · 타이틀" data-bg="A" data-foot="logo" data-group="standby" data-auto="12" data-tr="xfade" data-sweep data-lay="center">
+<section class="slide" id="m1_1" data-no="M1-1" data-title="M1-1 대기 · 타이틀" data-bg="A" data-foot="logo" data-group="standby" data-auto="12" data-tr="xfade" data-lay="center">
 <h1 class="title" data-words style="--i:1">전자주주총회 플랫폼 시연 설명회</h1>
 <p class="cmeta fu" style="--i:2"><span class="lx">2026.11.30</span><i class="dot"></i><span class="ko">IR KUDOS</span></p>
 </section>
@@ -564,8 +557,6 @@ document.querySelectorAll('[data-words]').forEach(el=>{let w=0;[...el.childNodes
   el.replaceChild(f,nd);});});
 document.querySelectorAll('[data-stagger]').forEach(el=>[...el.children].forEach((c,i)=>c.style.setProperty('--w',i)));
 
-function sweepMeasure(){document.querySelectorAll('.slide[data-sweep] .title').forEach(h=>{h.style.setProperty('--tw',h.offsetWidth+'px');h.querySelectorAll('.w').forEach(w=>w.style.setProperty('--wl',w.offsetLeft+'px'));});}
-(document.fonts?document.fonts.ready:Promise.resolve()).then(sweepMeasure);addEventListener('resize',sweepMeasure);
 function counters(s){s.querySelectorAll('[data-count]').forEach(el=>{const to=parseFloat(el.dataset.count),dec=+(el.dataset.dec||0),pre=el.dataset.prefix||'',suf=el.dataset.suffix||'',t0=performance.now()+600,dur=1400;
   el.textContent=pre+(0).toFixed(dec)+suf;(function f(now){const p=Math.min(1,Math.max(0,(now-t0)/dur)),e=1-Math.pow(1-p,4);el.textContent=pre+(to*e).toFixed(dec)+suf;if(p<1&&s.classList.contains('on'))requestAnimationFrame(f);})(performance.now());});}
 // 영상: 파일이 있으면 재생, 끝나면 다음 화면
