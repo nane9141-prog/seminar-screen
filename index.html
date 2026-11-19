@@ -183,10 +183,10 @@ body.idle{cursor:none}
 .pin .pc__h h3{margin:0;font:700 84px/1.3 "KakaoBig",sans-serif;letter-spacing:0;color:#5EA2FF}
 .pin .pc__d{margin-top:20px;font:300 50px/1.55 "KakaoSmall",sans-serif;color:#C7CED8}
 .pin .rows{width:auto;margin-top:64px;border-top:3px solid rgba(255,255,255,.14);display:block}
-.pin .r{display:grid;grid-template-columns:450px minmax(0,1fr);gap:48px;padding:50px 0;border-bottom:3px solid rgba(255,255,255,.14);align-items:baseline}
+.pin .r{display:grid;grid-template-columns:300px minmax(0,1fr);gap:40px;padding:50px 0;border-bottom:3px solid rgba(255,255,255,.14);align-items:baseline}
 .pin .r:last-child{border-bottom:0;padding-bottom:0}
 .pin .r__t{font:300 48px/1.4 "Lexend",sans-serif;color:#9AA3AF;font-variant-numeric:tabular-nums;white-space:nowrap}
-.pin .r__ti{margin:0;font:700 63px/1.45 "KakaoBig",sans-serif;letter-spacing:0;color:#F2F5FA}
+.pin .r__ti{margin:0;font:700 60px/1.45 "KakaoBig",sans-serif;letter-spacing:0;color:#F2F5FA;white-space:nowrap}  /* 강연명 한 줄 유지 */
 .pin .r__b{margin-right:22px;font:400 58px/1 "Lexend",sans-serif;color:#5EA2FF}
 .pin .r__sp{margin:12px 0 0;font:300 48px/1.5 "KakaoSmall",sans-serif;color:#9AA3AF}
 .pin .r__sp b{margin-right:18px;font-weight:400;color:#D5DCE6}
@@ -526,8 +526,8 @@ function bgSet(s){const f=document.getElementById('c'),k=s.dataset.bg,lay=s.data
 document.getElementById('c').addEventListener('load',()=>{dsPost({ds:'q',v:window.FSQ});if(SPD!==1)dsPost({ds:'mul',v:SPD});try{const o=JSON.parse(localStorage.getItem('scr-ds')||'null');if(o)dsPost(Object.assign({ds:'set'},o));}catch(e){}const s=slides[idx];if(s)bgSet(s);});
 function progScroll(s){document.querySelectorAll('.pin').forEach(x=>{if(x._a){x._a.cancel();x._a=null;}});
   const pin=s&&s.querySelector('.pin');if(!pin)return;const box=pin.parentNode,z=parseFloat(getComputedStyle(pin).zoom)||1,dist=(pin.offsetHeight*z-box.clientHeight)/z;if(dist<=0)return;  // zoom 보정
-  const V=110,H=2,move=dist/V,back=1.2,T=H+move+H+back;
-  pin._a=pin.animate([{transform:'translateY(0)',offset:0},{transform:'translateY(0)',offset:H/T,easing:'linear'},{transform:`translateY(${-dist}px)`,offset:(H+move)/T},{transform:`translateY(${-dist}px)`,offset:(H+move+H)/T,easing:'cubic-bezier(.6,0,.2,1)'},{transform:'translateY(0)',offset:1}],{duration:T*1000,iterations:Infinity,delay:1200});}
+  const V=110,H=2,move=dist/V,T=H+move;  // 한 번 내려가고 맨 아래에서 멈춤(처음으로 돌아가지 않음)
+  pin._a=pin.animate([{transform:'translateY(0)',offset:0},{transform:'translateY(0)',offset:H/T,easing:'linear'},{transform:`translateY(${-dist}px)`,offset:1}],{duration:T*1000,iterations:1,delay:1200,fill:'forwards'});}
 function initBG(){if(!window.FS)return;FS.mode(4);FS.resize();if(qp.get('bg'))FS.set('bgb',qp.get('bg'));if(qp.get('snap')){cur=(LAY[qp.get('snap')]||LAY.B).map(o=>({...o}));}requestAnimationFrame(bgTick);}
 let idx=-1,home=0,auto=true,autoT=null,numbuf='',SPD=1,autoT0=0,autoLen=0;
 const toast=(t)=>{const e=document.getElementById('toast');e.textContent=t;e.classList.add('on');clearTimeout(toast.t);toast.t=setTimeout(()=>e.classList.remove('on'),1600);};
