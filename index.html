@@ -118,19 +118,68 @@ body.idle{cursor:none}
 #q-lab .qn{color:#F2F5FA;margin-left:24px}
 .nrows{width:2600px}.nrows .ptxt{flex:1}.nrows .pwho{width:auto}
 #hud .sch{margin-top:8px;color:#c7d0dd}#hud .late{color:#FF8A7A}#hud .early{color:#7FD6A0}
+
+/* ── slide layout.svg 반영 (595.28×226.77pt 대지 → ×7.0556) ── */
+@font-face{font-family:"KakaoBig";src:url(assets/KakaoBigSans-Bold.woff2) format("woff2");font-weight:700;font-display:block}
+@font-face{font-family:"KakaoBig";src:url(assets/KakaoBigSans-Regular.woff2) format("woff2");font-weight:400;font-display:block}
+@font-face{font-family:"KakaoSmall";src:url(assets/KakaoSmallSans-Light.woff2) format("woff2");font-weight:300;font-display:block}
+@font-face{font-family:"KakaoSmall";src:url(assets/KakaoSmallSans-Regular.woff2) format("woff2");font-weight:400 500;font-display:block}
+@font-face{font-family:"KakaoSmall";src:url(assets/KakaoSmallSans-Bold.woff2) format("woff2");font-weight:600 800;font-display:block}
+@font-face{font-family:"Lexend";src:url(assets/LexendDeca-Light.woff2) format("woff2");font-weight:300;font-display:block}
+@font-face{font-family:"Lexend";src:url(assets/LexendDeca-Regular.woff2) format("woff2");font-weight:400 600;font-display:block}
+.stage{font-family:"KakaoSmall","Pretendard Variable","Malgun Gothic",sans-serif}
+.title,.title-m,.head,.talk,.name,.name-xl,.card-t,.panel b,.next .card-t{font-family:"KakaoBig","Pretendard Variable",sans-serif;letter-spacing:0}
+.lead{font-weight:300}
+.eyebrow,.ptime,.num,.card-k,.timer-v,.qn{font-family:"Lexend","KakaoSmall",sans-serif}
+.eyebrow{font-weight:400;letter-spacing:.02em}
+#footer{display:none}  /* 레이아웃 시안에 하단 로고 · 행사명 없음 */
+.slide{padding:160px 416px}
+.photo{right:416px}.timer{right:416px}
+/* center: 국문 가운데 — 제목 29pt → 204.6px, 정보 9pt → 63.5px */
+.slide[data-lay=center]{align-items:center;text-align:center;gap:0}
+.slide[data-lay=center] .eyebrow{margin-bottom:70px;font-size:63.5px}
+.slide[data-lay=center] .title{font-size:204.6px;line-height:1.2}
+.slide[data-lay=center] .title-m{font-size:183.4px;line-height:1.31}
+.slide[data-lay=center] .lead{margin-top:96px;max-width:2900px;font-size:76px;line-height:1.46;color:#E3E8EF}
+.slide[data-lay=center] .meta{margin-top:40px}
+.cmeta{margin-top:120px;font:300 63.5px/1 "Lexend","KakaoSmall",sans-serif;color:#fff;display:flex;align-items:center}
+.cmeta .ko{font-family:"KakaoSmall",sans-serif;font-weight:400;letter-spacing:.02em}
+.cmeta .dot{display:inline-block;width:10px;height:10px;border-radius:50%;background:#fff;margin:0 34px}
+/* en: 영문 가운데 — 20pt → 141px Lexend Regular, 9pt → 63.5px Lexend Light */
+.slide[data-lay=en]{align-items:center;text-align:center;gap:0}
+.en{font:400 141px/1.2 "Lexend",sans-serif;letter-spacing:.02em}
+.ensub{margin-top:120px;font:300 63.5px/1 "Lexend",sans-serif;letter-spacing:.01em}
+/* split: 2단 — 왼쪽 제목 x416 · 26pt → 183.4px / 행간 240px, 오른쪽 본문 x1896 · 13pt → 91.7px / 행간 134px, 주석 11pt → 77.6px */
+.slide[data-lay=split]{padding:160px 360px 160px 416px}
+.sp{display:grid;grid-template-columns:1480px minmax(0,1fr);align-items:start}
+.sp .cl .eyebrow{display:none}
+.sp .cl .title-m,.sp .cl .head{font-size:183.4px;line-height:240px;padding-right:80px}
+.sp .cr{display:flex;flex-direction:column;gap:0;padding-top:4px}
+.sp .cr>.lead{font-size:91.7px;line-height:134px;color:#F2F5FA;max-width:none}
+.sp .cr>.meta,.sp .cr>.stack{margin-top:134px}
+.sp .cr>.meta,.sp .cr>.stack .meta{font-size:77.6px;line-height:1.46;font-weight:300;color:#D5DCE6}
+.sp .cr>.cards,.sp .cr>.panel,.sp .cr>.notes,.sp .cr>.grid2{margin-top:0}
+.sp .cr>.lead+.cards,.sp .cr>.lead+.panel{margin-top:96px}
+.sp .cr .cards{width:100%}
+.slide[data-no=M1-4] .sp .cr .cards{flex-direction:column;gap:26px}
+.slide[data-no=M1-4] .sp .card{padding:38px 48px}
+.sp .notes .lead,.sp .grid2 .lead{font-size:66px;line-height:1.4;color:#F2F5FA}
+.sp .grid2{grid-template-columns:1fr;width:100%;gap:26px}
+.sp .notes{gap:30px}
+.sp .panel{width:100%}
+.ptag{width:290px;white-space:nowrap;font-size:48px}  /* Lexend에서 'Session 3'이 꺾이지 않게 */
+.sp .cr>.stack .meta{font-size:66px;white-space:nowrap}
 </style></head>
 <body>
 <div class="stage" id="scr" data-foot="full">
 <iframe id="c" src="assets/ds-bg.html?w=4200&amp;h=1600&amp;ox=.66" tabindex="-1" title="" aria-hidden="true"></iframe>
-<section class="slide" id="m1_1" data-no="M1-1" data-title="M1-1 대기 · 타이틀" data-bg="A" data-foot="logo" data-group="standby" data-auto="12" data-tr="xfade">
-<p class="eyebrow fu" style="--i:0">2027 전자주총 의무화, 설명회에서 프로세스를 직접 확인하세요</p>
-<h1 class="title" data-words style="--i:1">전자주주총회 플랫폼<br>시연 설명회</h1>
-<p class="meta fu" style="--i:2">2026.11.30 (월) 13:00 · 페어몬트 앰배서더 서울 지하 1층(B1) 그랜드볼룸</p>
+<section class="slide" id="m1_1" data-no="M1-1" data-title="M1-1 대기 · 타이틀" data-bg="A" data-foot="logo" data-group="standby" data-auto="12" data-tr="xfade" data-lay="center">
+<h1 class="title" data-words style="--i:1">전자주주총회 플랫폼 시연 설명회</h1>
+<p class="cmeta fu" style="--i:2"><span class="lx">2026.11.30</span><i class="dot"></i><span class="ko">IR KUDOS</span></p>
 </section>
-<section class="slide" id="m1_2" data-no="M1-2" data-title="M1-2 대기 · 환영 및 좌석 안내" data-bg="A" data-foot="full" data-group="standby" data-auto="18" data-tr="xfade">
-<p class="eyebrow fu" style="--i:0">WELCOME</p>
-<h1 class="title-m" data-words style="--i:1">참석해 주셔서 감사합니다</h1>
-<p class="lead w2600 fu" style="--i:2">설명회는 13:00에 시작합니다.<br>등록 데스크에서 안내 받으신 좌석 번호로 가시면 테이블에 기업명이 기재된 명패를 확인하실 수 있습니다.</p>
+<section class="slide" id="m1_2" data-no="M1-2" data-title="M1-2 대기 · 환영 및 좌석 안내" data-bg="B" data-foot="full" data-group="standby" data-auto="18" data-tr="xfade" data-lay="split">
+<h1 class="title-m" data-words style="--i:1">참석해 주셔서<br>감사합니다.</h1>
+<p class="lead fu" style="--i:2">설명회는 13:00에 시작합니다.<br>등록 데스크에서 안내 받으신 좌석 번호로 가시면 테이블에 기업명이 기재된 명패를 확인하실 수 있습니다.</p>
 <p class="meta fu" style="--i:3">자리를 찾기 어려우시면 가까운 운영 스태프에게 말씀해 주세요.</p>
 </section>
 <section class="slide" id="m1_3" data-no="M1-3" data-title="M1-3 대기 · 프로그램" data-bg="B" data-foot="full" data-group="standby" data-auto="20" data-tr="xfade">
@@ -141,7 +190,7 @@ body.idle{cursor:none}
 </div>
 <p class="small fu" style="--i:2">상기 프로그램 일정은 변동될 수 있습니다.</p>
 </section>
-<section class="slide" id="m1_4" data-no="M1-4" data-title="M1-4 대기 · 이용 안내" data-bg="B" data-foot="full" data-group="standby" data-auto="18" data-tr="xfade">
+<section class="slide" id="m1_4" data-no="M1-4" data-title="M1-4 대기 · 이용 안내" data-bg="B" data-foot="full" data-group="standby" data-auto="18" data-tr="xfade" data-lay="split">
 <h2 class="head fu" style="--i:0">이용 안내</h2>
 <div class="cards" data-stagger style="--i:1">
 <div class="card"><p class="card-k">주차</p><h3 class="card-t">등록 데스크에서 주차 지원 등록</h3><p class="card-b">페어몬트 호텔 주차장만 지원됩니다.<br>연결된 더현대 서울 주차장은 지원되지 않습니다.</p></div>
@@ -149,12 +198,12 @@ body.idle{cursor:none}
 <div class="card"><p class="card-k">Wi-Fi</p><h3 class="card-t tbd">[네트워크 이름]</h3><p class="card-b tbd">[비밀번호]</p></div>
 </div>
 </section>
-<section class="slide" id="m1_s1" data-no="M1-S1" data-title="M1-S1 [상황] 착석 요청" data-bg="B" data-foot="full" data-msg="1" data-tr="fade">
+<section class="slide" id="m1_s1" data-no="M1-S1" data-title="M1-S1 [상황] 착석 요청" data-bg="B" data-foot="full" data-msg="1" data-tr="fade" data-lay="center">
 <p class="eyebrow fu" style="--i:0">NOTICE</p>
 <h1 class="title-m" data-words style="--i:1">잠시 후 설명회가 시작됩니다</h1>
 <p class="lead fu" style="--i:2">안내받은 좌석에 앉아 주시고, 휴대폰은 무음으로 설정해 주세요.</p>
 </section>
-<section class="slide" id="m1_s2" data-no="M1-S2" data-title="M1-S2 [상황] 시작 지연" data-bg="B" data-foot="full" data-msg="1" data-tr="fade">
+<section class="slide" id="m1_s2" data-no="M1-S2" data-title="M1-S2 [상황] 시작 지연" data-bg="B" data-foot="full" data-msg="1" data-tr="fade" data-lay="center">
 <p class="eyebrow fu" style="--i:0">NOTICE</p>
 <h1 class="title-m" data-words style="--i:1">설명회는 잠시 후 시작합니다</h1>
 <p class="lead fu" style="--i:2">자리에 앉아 잠시만 기다려 주세요.</p>
@@ -163,10 +212,10 @@ body.idle{cursor:none}
 <video id="v-intro" class="vid" src="assets/intro.mp4" playsinline preload="metadata"></video>
 <p class="lead tbd center vph">[인트로 영상 — assets/intro.mp4 를 넣으면 이 화면에서 재생됩니다]</p>
 </section>
-<section class="slide" id="m3_1" data-no="M3-1" data-title="M3-1 개회 타이틀" data-bg="A" data-foot="logo" data-tr="zoom">
+<section class="slide" id="m3_1" data-no="M3-1" data-title="M3-1 개회 타이틀" data-bg="A" data-foot="logo" data-tr="zoom" data-lay="center">
 <p class="eyebrow fu" style="--i:0">개회</p>
-<h1 class="title" data-words style="--i:1">전자주주총회 플랫폼<br>시연 설명회</h1>
-<p class="meta fu" style="--i:2">2026.11.30 (월) 13:00 · 페어몬트 앰배서더 서울 지하 1층(B1) 그랜드볼룸</p>
+<h1 class="title" data-words style="--i:1">전자주주총회 플랫폼 시연 설명회</h1>
+<p class="cmeta fu" style="--i:2"><span class="lx">2026.11.30</span><i class="dot"></i><span class="ko">IR KUDOS</span></p>
 </section>
 <section class="slide" id="m3_2" data-no="M3-2" data-title="M3-2 행사 안내 · 프로그램" data-bg="B" data-foot="full" >
 <h2 class="head fu" style="--i:0">행사 프로그램</h2>
@@ -176,11 +225,11 @@ body.idle{cursor:none}
 </div>
 <p class="small fu" style="--i:2">상기 프로그램 일정은 변동될 수 있습니다.</p>
 </section>
-<section class="slide" id="m3_3" data-no="M3-3" data-title="M3-3 행사 안내 · 안내 말씀" data-bg="B" data-foot="full" >
+<section class="slide" id="m3_3" data-no="M3-3" data-title="M3-3 행사 안내 · 안내 말씀" data-bg="B" data-foot="full" data-lay="split">
 <h2 class="head fu" style="--i:0">안내 말씀</h2>
 <div class="notes tight" data-stagger style="--i:1"><div class="note"><p class="num">1</p><p class="lead">휴대폰은 무음으로 설정해 주세요.</p></div><div class="note"><p class="num">2</p><p class="lead">휴식은 14:25, 15:40 두 차례 15분씩 있습니다.</p></div><div class="note"><p class="num">3</p><p class="lead">현장 질의는 명찰 뒷면의 QR코드로 남겨 주세요. 사전 질문과 함께 질의응답 시간(17:30)에 답변 드립니다.</p></div><div class="note"><p class="num">4</p><p class="lead">설명회는 현장 참석으로만 진행되며, 온라인 생중계 · 다시보기와 발표자료는 제공되지 않습니다.</p></div><div class="note"><p class="num">5</p><p class="lead">원활한 진행을 위해 영상 촬영은 삼가 주시기 바랍니다.</p></div><div class="note"><p class="num">6</p><p class="lead">행사 종료 후 설문 참여 안내를 이메일로 보내드립니다.</p></div></div>
 </section>
-<section class="slide" id="m4_1" data-no="M4-1" data-title="M4-1 파트 타이틀 · 축사 및 출범식" data-bg="A" data-foot="full" data-tr="zoom">
+<section class="slide" id="m4_1" data-no="M4-1" data-title="M4-1 파트 타이틀 · 축사 및 출범식" data-bg="A" data-foot="full" data-tr="zoom" data-lay="center">
 <p class="eyebrow fu" style="--i:0">OPENING</p>
 <h1 class="title-m" data-words style="--i:1">축사 및 출범식</h1>
 <p class="lead w2600 fu" style="--i:2">전자주주총회 플랫폼 설명회 개회에 각계의 응원과 한국주주총회연구소 공식 출범을 알립니다.</p>
@@ -207,7 +256,7 @@ body.idle{cursor:none}
 <p class="lead fu" style="--i:2">한국주주총회연구소의 공식 출범을 알립니다.</p>
 <p class="meta fu" style="--i:3">권재열 한국주주총회연구소장, 경희대 법학전문대학원 교수</p>
 </section>
-<section class="slide" id="m5_1" data-no="M5-1" data-title="M5-1 파트 타이틀 · 의무화가 바꾸는 주주총회" data-bg="A" data-foot="full" data-tr="zoom">
+<section class="slide" id="m5_1" data-no="M5-1" data-title="M5-1 파트 타이틀 · 의무화가 바꾸는 주주총회" data-bg="A" data-foot="full" data-tr="zoom" data-lay="center">
 <p class="eyebrow fu" style="--i:0">PART 1</p>
 <h1 class="title-m" data-words style="--i:1">의무화가 바꾸는 주주총회</h1>
 <p class="lead w2600 fu" style="--i:2">상법 개정과 전자주주총회 의무화를 법률 · 학계 관점에서 다룹니다.</p>
@@ -245,12 +294,12 @@ body.idle{cursor:none}
 <p class="lead"><span class="t-normal-i"><span data-resume>--:--</span>에 다시 시작합니다.</span><span class="t-soon-i">자리로 돌아와 주세요.</span></p>
 <div class="next"><p class="card-k">다음 순서 · Session 3</p><h3 class="card-t">Proxymity, 글로벌 의결권 행사 인프라의 혁신과 미래</h3><p class="card-b">Scott Oakland · Proxymity, Head of APAC</p></div>
 </section>
-<section class="slide" id="m6_s1" data-no="M6-S1" data-title="M6-S1 [상황] 재개 임박 (Session 3)" data-bg="B" data-foot="full" data-msg="1" data-tr="fade">
+<section class="slide" id="m6_s1" data-no="M6-S1" data-title="M6-S1 [상황] 재개 임박 (Session 3)" data-bg="B" data-foot="full" data-msg="1" data-tr="fade" data-lay="center">
 <p class="eyebrow fu" style="--i:0">NOTICE</p>
 <h1 class="title-m" data-words style="--i:1">곧 Session 3이 시작됩니다</h1>
 <p class="lead fu" style="--i:2">자리로 돌아와 주세요.</p>
 </section>
-<section class="slide" id="m7_1" data-no="M7-1" data-title="M7-1 파트 타이틀 · 전자주주총회 및 의결권 행사의 미래" data-bg="A" data-foot="full" data-tr="zoom">
+<section class="slide" id="m7_1" data-no="M7-1" data-title="M7-1 파트 타이틀 · 전자주주총회 및 의결권 행사의 미래" data-bg="A" data-foot="full" data-tr="zoom" data-lay="center">
 <p class="eyebrow fu" style="--i:0">PART 2</p>
 <h1 class="title-m" data-words style="--i:1">전자주주총회 및<br>의결권 행사의 미래</h1>
 <p class="lead w2600 fu" style="--i:2">글로벌 의결권 플랫폼의 시각과 IR큐더스의 통합 솔루션으로 전자주주총회 도입 · 운영 방안을 살펴봅니다.</p>
@@ -288,12 +337,12 @@ body.idle{cursor:none}
 <p class="lead"><span class="t-normal-i"><span data-resume>--:--</span>에 다시 시작합니다.</span><span class="t-soon-i">자리로 돌아와 주세요.</span></p>
 <div class="next"><p class="card-k">다음 순서</p><h3 class="card-t">모의 전자주주총회 시연</h3><p class="card-b">박성용 · IR큐더스, 본부장 · 참석자와 함께 모의 전자주주총회를 진행합니다.</p></div>
 </section>
-<section class="slide" id="m8_s1" data-no="M8-S1" data-title="M8-S1 [상황] 재개 임박 (시연)" data-bg="B" data-foot="full" data-msg="1" data-tr="fade">
+<section class="slide" id="m8_s1" data-no="M8-S1" data-title="M8-S1 [상황] 재개 임박 (시연)" data-bg="B" data-foot="full" data-msg="1" data-tr="fade" data-lay="center">
 <p class="eyebrow fu" style="--i:0">NOTICE</p>
 <h1 class="title-m" data-words style="--i:1">곧 모의 전자주주총회 시연이 시작됩니다</h1>
 <p class="lead fu" style="--i:2">자리로 돌아와 주세요. 입장 시 설치하신 <span class="tbd">[참여 앱]</span>으로 모의 표결에 참여하실 수 있습니다.</p>
 </section>
-<section class="slide" id="m9_2" data-no="M9-2" data-title="M9-2 시연 타이틀" data-bg="A" data-foot="full" data-tr="zoom">
+<section class="slide" id="m9_2" data-no="M9-2" data-title="M9-2 시연 타이틀" data-bg="B" data-foot="full" data-tr="zoom" data-lay="split">
 <p class="eyebrow fu" style="--i:0">PART 3 · DEMO</p>
 <h1 class="title-m" data-words style="--i:1">모의 전자주주총회 시연</h1>
 <p class="lead fu" style="--i:2">준비부터 집계까지, 전자주총 전 과정을 그대로<br>모의 회사 · 주주 · 의안으로 주주총회 전 과정을 진행합니다.</p>
@@ -304,14 +353,14 @@ body.idle{cursor:none}
 </div>
 <p class="meta fu" style="--i:4">박성용 · IR큐더스, 본부장</p>
 </section>
-<section class="slide" id="m9_3" data-no="M9-3" data-title="M9-3 시연 주요 실무 사례" data-bg="B" data-foot="full" >
+<section class="slide" id="m9_3" data-no="M9-3" data-title="M9-3 시연 주요 실무 사례" data-bg="B" data-foot="full" data-lay="split">
 <h2 class="head fu" style="--i:0">시연에서 살펴볼 주요 실무 사례</h2>
 <div class="grid2" data-stagger style="--i:1"><div class="case"><p class="num">01</p><p class="lead">결의요건 충족 여부와 가결 판정</p></div><div class="case"><p class="num">02</p><p class="lead">최대주주 등 합산 3% 의결권 제한</p></div><div class="case"><p class="num">03</p><p class="lead">특별이해관계자의 의결권 제한</p></div><div class="case"><p class="num">04</p><p class="lead">수정동의 접수와 표결</p></div><div class="case"><p class="num">05</p><p class="lead">양립불가 의안의 표결 처리</p></div><div class="case"><p class="num">06</p><p class="lead">집중투표의 의결권 배분과 집계</p></div><div class="case"><p class="num">07</p><p class="lead">전자주주총회 사전신청 및 총회 당일 출석</p></div><div class="case"><p class="num">08</p><p class="lead">주주 질의 접수 및 발언 요청 승인</p></div></div>
 </section>
 <section class="slide" id="m9_4" data-no="M9-4" data-title="M9-4 시연 라이브 화면 — 외부 소스" data-bg="C" data-foot="full" data-ext="1">
 
 </section>
-<section class="slide" id="m10_1" data-no="M10-1" data-title="M10-1 Q&amp;A 타이틀" data-bg="A" data-foot="full" >
+<section class="slide" id="m10_1" data-no="M10-1" data-title="M10-1 Q&amp;A 타이틀" data-bg="B" data-foot="full" data-lay="split">
 <p class="eyebrow fu" style="--i:0">Q&amp;A</p>
 <h1 class="title-m" data-words style="--i:1">사전 질문 및 현장 질의응답</h1>
 <p class="lead w2600 fu" style="--i:2">신청서에 남겨주신 사전 질문과 현장에서 접수해주신 질의 내용을 확인 후 답변 드리겠습니다.</p>
@@ -324,16 +373,16 @@ body.idle{cursor:none}
 <div class="qbox"><p class="qtext" id="q-text">질문을 준비하고 있습니다.</p></div>
 <p class="meta" id="q-who"></p>
 </section>
-<section class="slide" id="m11_1" data-no="M11-1" data-title="M11-1 폐회" data-bg="A" data-foot="full" data-tr="zoom">
-<p class="eyebrow fu" style="--i:0">THANK YOU</p>
-<h1 class="title-m" data-words style="--i:1">참석해 주셔서 감사합니다</h1>
+<section class="slide" id="m11_1" data-no="M11-1" data-title="M11-1 폐회" data-bg="B" data-foot="full" data-tr="zoom" data-lay="split">
+<h1 class="title-m" data-words style="--i:1">참석해 주셔서<br>감사합니다.</h1>
 <p class="lead fu" style="--i:2">행사 종료 후 설문 참여 안내를 이메일로 보내드립니다.</p>
 <div class="stack fu" style="--i:3"><p class="meta">전자주주총회 도입 상담　agm@irkudos.co.kr · 02-6011-2000</p><p class="meta">주차 지원은 등록 데스크에서 등록해 주세요.</p></div>
 </section>
-<section class="slide" id="m0_1" data-no="M0-1" data-title="M0-1 기본 화면 (4개 배치)" data-bg="C" data-foot="full" >
-
+<section class="slide" id="m0_1" data-no="M0-1" data-title="M0-1 기본 화면 (영문 타이틀)" data-bg="C" data-foot="full" data-lay="en">
+<h1 class="en" data-words style="--i:1">Korea Shareholders’ Meeting Online Service</h1>
+<p class="ensub fu" style="--i:2">Live Demo Briefing</p>
 </section>
-<section class="slide" id="m0_2" data-no="M0-2" data-title="M0-2 [상황] 기술 점검" data-bg="B" data-foot="full" data-msg="1" data-tr="fade">
+<section class="slide" id="m0_2" data-no="M0-2" data-title="M0-2 [상황] 기술 점검" data-bg="B" data-foot="full" data-msg="1" data-tr="fade" data-lay="center">
 <p class="eyebrow fu" style="--i:0">NOTICE</p>
 <h1 class="title-m" data-words style="--i:1">잠시 화면을 점검하고 있습니다</h1>
 <p class="lead fu" style="--i:2">곧 이어서 진행하겠습니다.</p>
@@ -355,6 +404,8 @@ body.idle{cursor:none}
 const stage=document.getElementById('scr'),slides=[...document.querySelectorAll('.slide')];
 const qp=new URLSearchParams(location.search);
 if(qp.get('lite'))stage.classList.add('lite');
+slides.filter(s=>s.dataset.lay==='split').forEach(s=>{const sp=document.createElement('div'),L=document.createElement('div'),Rr=document.createElement('div');sp.className='sp';L.className='cl';Rr.className='cr';
+  [...s.children].forEach(c=>{(!Rr.children.length&&c.matches('.eyebrow,h1,h2')?L:Rr).appendChild(c);});sp.append(L,Rr);s.append(sp);});
 window.FSQ=parseFloat(qp.get('q')||localStorage.getItem('scr-q')||'0.75');
 function fit(){const s=Math.min(innerWidth/4200,innerHeight/1600);stage.style.transform='translate('+((innerWidth-4200*s)/2)+'px,'+((innerHeight-1600*s)/2)+'px) scale('+s+')';}
 addEventListener('resize',fit);fit();
@@ -369,8 +420,10 @@ function bgTick(now){const f=1-Math.exp(-Math.min(.25,((now||bt)-bt)/1000)*3.2);
 /* 배경 Data Stream: 화면 종류별 밝기 · 형태 중심 위치. A 타이틀류 · B 본문 · C 기본 화면(외부 소스 전환) */
 const BGDIM={A:.55,B:.3,C:1},BGOX={A:.66,B:.7,C:.5};
 const dsPost=m=>{const f=document.getElementById('c');if(f&&f.contentWindow)f.contentWindow.postMessage(m,'*');};
-function bgSet(k){const f=document.getElementById('c');f.style.opacity=k==='N'?0:(BGDIM[k]??.3);dsPost({ds:'ox',v:BGOX[k]??.66});}
-document.getElementById('c').addEventListener('load',()=>{dsPost({ds:'q',v:window.FSQ});if(SPD!==1)dsPost({ds:'mul',v:SPD});const s=slides[idx];if(s)bgSet(s.dataset.bg);});
+function bgSet(s){const f=document.getElementById('c'),k=s.dataset.bg,lay=s.dataset.lay;let d=BGDIM[k]??.3,ox=BGOX[k]??.66;
+  if(lay==='center'||lay==='en'){d=.45;ox=.5;}else if(lay==='split'){d=.3;ox=.5;}
+  f.style.opacity=k==='N'?0:d;dsPost({ds:'ox',v:ox});}
+document.getElementById('c').addEventListener('load',()=>{dsPost({ds:'q',v:window.FSQ});if(SPD!==1)dsPost({ds:'mul',v:SPD});const s=slides[idx];if(s)bgSet(s);});
 function initBG(){if(!window.FS)return;FS.mode(4);FS.resize();if(qp.get('bg'))FS.set('bgb',qp.get('bg'));if(qp.get('snap')){cur=(LAY[qp.get('snap')]||LAY.B).map(o=>({...o}));}requestAnimationFrame(bgTick);}
 let idx=-1,home=0,auto=true,autoT=null,numbuf='',SPD=1,autoT0=0,autoLen=0;
 const toast=(t)=>{const e=document.getElementById('toast');e.textContent=t;e.classList.add('on');clearTimeout(toast.t);toast.t=setTimeout(()=>e.classList.remove('on'),1600);};
@@ -382,7 +435,7 @@ function go(n){n=Math.max(0,Math.min(slides.length-1,n));if(n===idx)return;
   if(prev){prev.classList.remove('on');prev.classList.add('leave','tr-'+tr);const pv=prev;clearTimeout(pv._t);pv._t=setTimeout(()=>pv.classList.remove('leave','tr-'+tr),1300);
     const v=prev.dataset.video&&document.getElementById(prev.dataset.video);if(v){v.pause();}}
   idx=n;if(!isMsg(s))home=n;void s.offsetWidth;s.classList.add('on','enter','tr-'+tr);counters(s);
-  stage.dataset.foot=s.dataset.foot;stage.classList.toggle('nobg',s.dataset.bg==='N');tgt=LAY[s.dataset.bg]||LAY.B;bgSet(s.dataset.bg);
+  stage.dataset.foot=s.dataset.foot;stage.classList.toggle('nobg',s.dataset.bg==='N');tgt=LAY[s.dataset.bg]||LAY.B;bgSet(s);
   history.replaceState(null,'','#'+s.dataset.no);
   const v=s.dataset.video&&document.getElementById(s.dataset.video);
   if(v&&v.classList.contains('ok')){v.currentTime=0;v.play().catch(()=>{});}
