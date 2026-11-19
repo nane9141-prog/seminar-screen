@@ -259,6 +259,23 @@ body.idle{cursor:none}
 .cg-t~.cg-n{font:700 99.1px/1.2 "KakaoSmall",sans-serif}
 .cg-t~.cg-r{margin-top:23px;font:300 77.6px/1.45 "KakaoSmall",sans-serif;white-space:nowrap}
 .cg-r{margin:34px 0 0;font:400 77.6px/120px "KakaoSmall",sans-serif;color:#fff;letter-spacing:0}
+
+/* 휴식 · 재개 타이머(M6-1, M8-1): 세션 연사와 같은 2단 그리드(라벨 418px | 본문) + 오른쪽 타이머 */
+.slide[data-break] .bk{position:absolute;left:604px;top:0;bottom:120px;width:1780px;display:grid;grid-template-columns:418px minmax(0,1fr);align-content:center;align-items:start}
+.bk-e{margin:0;padding-top:30px;font:300 63.5px/85px "Lexend",sans-serif;color:#80cde5}
+.bk-t{margin:0;font:700 131.2px/171.7px "KakaoBig",sans-serif;color:#fff;white-space:nowrap;letter-spacing:0}
+.bk-r{margin:40px 0 0;font:300 77.6px/1.45 "KakaoSmall",sans-serif;color:#C7D0DD;white-space:nowrap}
+.bk-r [data-resume]{font-family:"Lexend",sans-serif;font-weight:400;color:#fff}
+.bk-n{margin-top:96px;padding-top:60px;border-top:2px solid rgba(255,255,255,.16);display:flex;flex-direction:column;gap:18px}
+.bk-nk{margin:0 0 6px;font:300 52px/1.2 "Lexend",sans-serif;color:#80cde5}
+.bk-nt{margin:0;font:700 77.6px/1.32 "KakaoBig",sans-serif;color:#F2F5FA}
+.bk-nb{margin:0;font:300 58px/1.45 "KakaoSmall",sans-serif;color:#9AA3AF}
+.slide[data-break] .timer{right:416px;top:0;bottom:120px;transform:none;display:flex;flex-direction:column;justify-content:center;text-align:right;width:1260px}
+.slide[data-break] .timer-k{margin:0;font:300 63.5px/85px "Lexend",sans-serif;color:#80cde5}
+.slide[data-break] .timer-v{margin:10px 0 0;font:300 400px/1 "Lexend",sans-serif;letter-spacing:-8px;color:#fff;font-variant-numeric:tabular-nums}
+.timer-bar{margin:56px 0 0 auto;width:100%;height:6px;border-radius:3px;background:rgba(255,255,255,.12);overflow:hidden}
+.timer-bar i{display:block;height:100%;background:#80cde5;transform-origin:left;transition:transform .5s linear}
+.soon .bk-t{color:#FFB84D}.slide[data-break].soon .timer-v{color:#FFB84D}.soon .timer-bar i{background:#FFB84D}
 </style></head>
 <body>
 <div class="stage" id="scr" data-foot="full">
@@ -343,12 +360,13 @@ body.idle{cursor:none}
 
 </section>
 <section class="slide" id="m6_1" data-no="M6-1" data-title="M6-1 휴식 · 재개 타이머" data-bg="B" data-foot="full" data-break="brk1">
-<div class="timer"><p class="timer-k">재개까지</p><p class="timer-v" data-timer>15:00</p></div>
-<p class="eyebrow">BREAK</p>
-<div class="t-normal"><h1 class="title" data-words style="--i:0">잠시 쉬어갑니다</h1></div>
-<div class="t-soon"><h1 class="title-m">곧 Session 3이 시작됩니다</h1></div>
-<p class="lead"><span class="t-normal-i"><span data-resume>--:--</span>에 다시 시작합니다.</span><span class="t-soon-i">자리로 돌아와 주세요.</span></p>
-<div class="next"><p class="card-k">다음 순서 · Session 3</p><h3 class="card-t">Proxymity, 글로벌 의결권 행사 인프라의 혁신과 미래</h3><p class="card-b">Scott Oakland · Proxymity, Head of APAC</p></div>
+<div class="bk"><p class="bk-e fu" style="--i:0">Break</p><div class="bk-b">
+<div class="t-normal"><h1 class="bk-t" data-words style="--i:0">잠시 쉬어갑니다</h1></div>
+<div class="t-soon"><h1 class="bk-t">곧 Session 3이<br>시작됩니다</h1></div>
+<p class="bk-r fu" style="--i:1"><span class="t-normal-i"><span data-resume>--:--</span>에 다시 시작합니다.</span><span class="t-soon-i">자리로 돌아와 주세요.</span></p>
+<div class="bk-n fu" style="--i:2"><p class="bk-nk">Next · Session 3.</p><p class="bk-nt">Proxymity, 글로벌 의결권 행사<br>인프라의 혁신과 미래</p><p class="bk-nb">Scott Oakland · Proxymity, Head of APAC</p></div>
+</div></div>
+<div class="timer fu" style="--i:1"><p class="timer-k">Resume in</p><p class="timer-v" data-timer>15:00</p><div class="timer-bar"><i data-bar></i></div></div>
 </section>
 <section class="slide" id="m6_s1" data-no="M6-S1" data-title="M6-S1 [상황] 재개 임박 (Session 3)" data-bg="B" data-foot="full" data-msg="1" data-tr="fade" data-lay="center">
 <p class="eyebrow fu" style="--i:0">NOTICE</p>
@@ -372,12 +390,13 @@ body.idle{cursor:none}
 
 </section>
 <section class="slide" id="m8_1" data-no="M8-1" data-title="M8-1 휴식 · 재개 타이머" data-bg="B" data-foot="full" data-break="brk2">
-<div class="timer"><p class="timer-k">재개까지</p><p class="timer-v" data-timer>15:00</p></div>
-<p class="eyebrow">BREAK</p>
-<div class="t-normal"><h1 class="title" data-words style="--i:0">잠시 쉬어갑니다</h1></div>
-<div class="t-soon"><h1 class="title-m">곧 모의 전자주주총회 시연이 시작됩니다</h1></div>
-<p class="lead"><span class="t-normal-i"><span data-resume>--:--</span>에 다시 시작합니다.</span><span class="t-soon-i">자리로 돌아와 주세요.</span></p>
-<div class="next"><p class="card-k">다음 순서</p><h3 class="card-t">모의 전자주주총회 시연</h3><p class="card-b">박성용 · IR큐더스, 본부장 · 참석자와 함께 모의 전자주주총회를 진행합니다.</p></div>
+<div class="bk"><p class="bk-e fu" style="--i:0">Break</p><div class="bk-b">
+<div class="t-normal"><h1 class="bk-t" data-words style="--i:0">잠시 쉬어갑니다</h1></div>
+<div class="t-soon"><h1 class="bk-t">곧 모의 전자주주총회<br>시연이 시작됩니다</h1></div>
+<p class="bk-r fu" style="--i:1"><span class="t-normal-i"><span data-resume>--:--</span>에 다시 시작합니다.</span><span class="t-soon-i">자리로 돌아와 주세요.</span></p>
+<div class="bk-n fu" style="--i:2"><p class="bk-nk">Next</p><p class="bk-nt">모의 전자주주총회 시연</p><p class="bk-nb">박성용 · IR큐더스, 본부장</p></div>
+</div></div>
+<div class="timer fu" style="--i:1"><p class="timer-k">Resume in</p><p class="timer-v" data-timer>15:00</p><div class="timer-bar"><i data-bar></i></div></div>
 </section>
 <section class="slide" id="m8_s1" data-no="M8-S1" data-title="M8-S1 [상황] 재개 임박 (시연)" data-bg="B" data-foot="full" data-msg="1" data-tr="fade" data-lay="center">
 <p class="eyebrow fu" style="--i:0">NOTICE</p>
@@ -567,7 +586,7 @@ function applySched(){
 function tick(){const ns=SCHED.nowSec();slides.forEach(s=>{if(!s.dataset.break)return;const it=SCHED.item(SC,s.dataset.break);if(!it)return;
   let r=Math.round(it.end*60-ns);if(r<0)r=0;if(r>5400)r=(it.end-it.start)*60;
   const m=Math.floor(r/60),sec=r%60;s.querySelector('[data-timer]').textContent=(m<10?'0':'')+m+':'+(sec<10?'0':'')+sec;
-  s.querySelector('[data-resume]').textContent=SCHED.fmt(it.end);s.classList.toggle('soon',r>0&&r<=180);});}
+  s.querySelector('[data-resume]').textContent=SCHED.fmt(it.end);const bar=s.querySelector('[data-bar]');if(bar)bar.style.transform='scaleX('+Math.max(0,Math.min(1,r/Math.max(60,(it.end-it.start)*60)))+')';s.classList.toggle('soon',r>0&&r<=180);});}
 setInterval(tick,500);
 function renderNotice(){const n=SCHED.nowMin(),up=SC.items.filter(x=>x.end>n&&x.id!=='reg').slice(0,5);
   const moved=up.some(x=>x.start!==x.ps);
