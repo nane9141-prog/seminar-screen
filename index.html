@@ -251,9 +251,10 @@ body.idle{cursor:none}
 .slide[data-spk]{padding:0}
 .slide[data-spk] .cg{position:absolute;left:604px;top:0;bottom:0;width:1700px;display:grid;grid-template-columns:418px minmax(0,1fr);align-content:center;align-items:start}
 .cg-e{margin:0;padding-top:14px;font:300 63.5px/85px "Lexend",sans-serif;color:#80cde5;letter-spacing:0}
-.cg-t{margin:0 0 56px;font:400 77.6px/1.45 "KakaoSmall",sans-serif;color:#E6EBF2;letter-spacing:-.02em}
+.cg-t{margin:0 0 56px;font:400 92px/1.38 "KakaoSmall",sans-serif;white-space:nowrap;color:#E6EBF2;letter-spacing:-.02em}
 .cg-n{margin:0;font:700 183.4px/1.15 "KakaoBig",sans-serif;color:#fff;letter-spacing:0;white-space:nowrap}
 .cg-n.ko{letter-spacing:.28em}
+.cg-t~.cg-n{font-size:112px;line-height:1.2}  /* 세션 연사: 세션명 크게, 이름 작게 */
 .cg-r{margin:34px 0 0;font:400 77.6px/120px "KakaoSmall",sans-serif;color:#fff;letter-spacing:0}
 </style></head>
 <body>
@@ -456,10 +457,10 @@ const PHOTO={};[...document.querySelectorAll('.slide[data-spk]')].map(s=>s.datas
 const PH_A=.9,PH_IN=.7,OUT=1.4;  // 사진 밝기 · 등장 페이드 · 퇴장 페이드(초)
 /* 공전 궤도: 기울기가 다른 타원 3개에 점 13개. 타원 아래쪽 반이 인물 앞, 위쪽 반이 뒤 */
 const OC={x:BOX.x+BOX.w*.5,y:BOX.y+BOX.h*.54};  // 공전 중심: 가슴 아래 높이(이전 .40 → .54, 약 137px 아래)
-const RINGS=[{tilt:-.30,R:300,k:.30,per:20},{tilt:.20,R:268,k:.36,per:16},{tilt:.52,R:236,k:.26,per:24}];
+const RINGS=[{tilt:-.30,R:370,k:.30,per:20},{tilt:.20,R:330,k:.36,per:16},{tilt:.52,R:292,k:.26,per:24}];  // 반지름 1.23배
 const ORB=[];{let sd=11;const rnd=()=>{sd=(sd*1664525+1013904223)>>>0;return sd/4294967296;};
-  [5,4,4].forEach((n,r)=>{for(let j=0;j<n;j++)ORB.push({r,ph:j/n*Math.PI*2+rnd()*.9,dr:(rnd()-.5)*26,sz:1.6+rnd()*1.4});});}
-const LINK=250;let port=null;  // {k,t0,tOut,sp}
+  [5,4,4].forEach((n,r)=>{for(let j=0;j<n;j++)ORB.push({r,ph:j/n*Math.PI*2+rnd()*.9,dr:(rnd()-.5)*32,sz:2.6+rnd()*2.2});});}
+const LINK=310;let port=null;  // {k,t0,tOut,sp}
 const P=ORB.map(()=>({x:0,y:0,z:0}));
 function orbPos(o,t,grow){const g=RINGS[o.r],a=o.ph+t*Math.PI*2/g.per,R=(g.R+o.dr)*grow,ex=Math.cos(a)*R,ey=Math.sin(a)*R*g.k,c=Math.cos(g.tilt),s=Math.sin(g.tilt);
   return{x:OC.x+ex*c-ey*s,y:OC.y+ex*s+ey*c,z:Math.sin(a)};}
@@ -477,7 +478,7 @@ function drawPort(now){
       const pa=PH_A*sm(0,PH_IN,t)*fo,oa=sm(.3,1.6,t)*fo;       // 점 · 선은 사진과 함께(조금 늦게) 떠오름
       const grow=(.86+.14*(1-Math.pow(1-sm(.3,2,t),2)))*(tr<0?1:1+.06*sm(0,OUT,tr));
       ORB.forEach((o,i)=>Object.assign(P[i],orbPos(o,t,grow)));
-      px.lineWidth=1;
+      px.lineWidth=1.6;
       const lines=(front)=>{for(let i=0;i<P.length;i++)for(let j=i+1;j<P.length;j++){const a=P[i],b=P[j],zf=(a.z+b.z)/2;if((zf>=0)!==front)continue;
         const d=Math.hypot(a.x-b.x,a.y-b.y);if(d>LINK)continue;const w=(1-d/LINK)*(.35+.65*(zf+1)/2)*oa*.5;
         px.strokeStyle='rgba(214,226,246,'+w.toFixed(3)+')';px.beginPath();px.moveTo(a.x,a.y);px.lineTo(b.x,b.y);px.stroke();}};
