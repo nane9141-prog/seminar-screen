@@ -202,6 +202,12 @@ button.arr.on{box-shadow:none;background:#1f6b46;color:#fff}button.arr.on:hover{
 #smlist .sk{flex:none;width:46px;font-weight:800;color:var(--warn);font-variant-numeric:tabular-nums;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}#smlist .sk.none{color:var(--fg-3);font-weight:500;font-size:12px}
 #smlist .nm{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:13px}#smlist .nm b{font-weight:700}
 #smlist .acts{display:flex;gap:4px;flex:none}#smlist .acts button{min-height:28px;padding:0 9px;font-size:12px}
+/* 좌석 배치 탭: 카드를 화면 가로 · 세로 끝까지 (탭 메뉴 위치는 그대로) */
+body[data-m=seat] main{padding-bottom:20px}
+body[data-m=seat] #colSeat{width:calc(100vw - 64px);margin-left:calc((100% - 100vw)/2 + 32px)}
+body[data-m=seat] #colSeat .box{min-height:0}
+body[data-m=seat] #smstage,body[data-m=seat] #smside{height:calc(100vh - 264px)}
+html{overflow-x:hidden}
 @media (max-width:1100px){.smwrap{grid-template-columns:1fr}#smside{height:auto}#smlist{max-height:320px}}
 </style></head>
 <body>
