@@ -230,7 +230,7 @@ const STEPS=[
  {n:'Data Stream',ov:null,dim:1,dur:20},
  {n:'타이틀 B',ov:'ov-titleB',dim:.35,dur:T('tb')||30},
  {n:'Data Stream',ov:null,dim:1,dur:60},
- {n:'서비스 소개 영상 (KOSMOS v7 45.5초)',ov:'ov-svc',dim:0,dur:45.5,video:'vSvc'},
+ {n:'서비스 소개 영상 (KOSMOS v8 43.5초)',ov:'ov-svc',dim:0,dur:43.5,video:'vSvc'},
  {n:'Data Stream + 문구 2종',ov:'ov-msg',dim:1,dur:60}];
 let idx=-1,t1=null,t2=null,t3=null,run=true,vEnd=null,SPD=1,stepT0=0,stepLen=0;
 /* 첫 장면 영상: 실제 길이에 맞추고, 파일이 없으면 이 장면을 건너뜀. 다른 장면으로 가면 멈춤 */
@@ -314,7 +314,7 @@ const SCN=[
 // 장면별 공통 조절값: mv 움직임 속도, size 점 크기, scale 형태 크기, bright 밝기 (모두 1이 기본)
 SCN.forEach(s=>{s.mv=1;s.size=1;s.scale=1;s.bright=1;s.boost=s.k==='tunnel'||s.k==='well';}); // boost: 촘촘한 격자 장면은 점을 자동으로 늘림
 // 장면별 기본값 조정
-SCN.forEach(s=>{s.dur=s.k==='gather'?20:10;}); // 길이: 모임 20초, 나머지 10초
+SCN.forEach(s=>{s.dur=s.k==='gather'?20:s.k==='sphere'?15:10;}); // 길이: 모임 20초, 구체 15초, 나머지 10초
 Object.assign(SCN.find(s=>s.k==='stream'),{tail:.4,size:.46,scale:.72,bright:.32,form:.64});
 Object.assign(SCN.find(s=>s.k==='sphere'),{tail:.74,size:.8,scale:.7,bright:.9,form:.86});
 Object.assign(SCN.find(s=>s.k==='net'),{tail:.1,size:.8,scale:.82,bright:1,form:.3});
@@ -324,7 +324,7 @@ Object.assign(SCN.find(s=>s.k==='radial'),{scale:.85});
 Object.assign(SCN.find(s=>s.k==='converge'),{size:1.8,form:0,scale:1.1,bright:.6,tail:.8});
 Object.assign(SCN.find(s=>s.k==='orbit'),{scale:.46,tail:.42,size:1.5,form:.8,bright:.22});
 Object.assign(SCN.find(s=>s.k==='vortex'),{tail:.66,size:1,scale:.84,bright:.78,form:1.6});
-SCN.forEach((s,i)=>{s.on=s.k!=='sphere'&&s.k!=='vortex';s.o0=i;}); // on: 재생 여부, o0: 처음 순서
+SCN.forEach((s,i)=>{s.on=s.k!=='tunnel'&&s.k!=='vortex';s.o0=i;}); // on: 재생 여부, o0: 처음 순서
 const SCN0=SCN.map(s=>({...s})); // 초기화용 장면별 기본값
 let START=[],LOOP_S=0,ACT=[];
 function relayout(){
