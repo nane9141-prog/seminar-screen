@@ -246,7 +246,7 @@ body.idle{cursor:none}
 
 /* slide layout.svg 5번(M4-1): 영문 눈썹 Lexend Light 흰색 */
 .slide[data-no=M4-1],.slide[data-no=M5-1],.slide[data-no=M7-1]{padding-bottom:380px}  /* svg처럼 가운데보다 조금 위 */
-.slide[data-no=M4-5] .kism{margin:0 auto 110px;display:block}
+.slide[data-no=M4-5] .kism{margin:120px auto 0;display:block}
 .slide[data-lay=center] .en-eb{font:300 77.6px/1.2 "Lexend",sans-serif;color:#fff;letter-spacing:0;margin-bottom:96px}
 /* slide layout.svg 6번(축사 · 연사): 왼쪽 604px 눈썹 열(Lexend Light #80cde5), 1022px부터 이름 · 소속. 사진은 오른쪽 캔버스 */
 .slide[data-spk]{padding:0}
@@ -351,8 +351,8 @@ body.idle{cursor:none}
 <p class="lead tbd center vph">[출범식 인트로 영상 — assets/kism-intro.mp4]</p>
 </section>
 <section class="slide" id="m4_5" data-no="M4-5" data-title="M4-5 한국주주총회연구소 출범식" data-bg="A" data-foot="logo" data-lay="center">
-<img class="kism fu" style="--i:0" src="assets/kism-white.svg" alt="KISM 한국주주총회연구소">
-<h1 class="title-m" data-words style="--i:1">한국주주총회연구소 출범식</h1>
+<h1 class="title-m" data-words style="--i:0">한국주주총회연구소 출범식</h1>
+<img class="kism fu" style="--i:2" src="assets/kism-white.svg" alt="KISM 한국주주총회연구소">
 </section>
 <section class="slide" id="m5_1" data-no="M5-1" data-title="M5-1 파트 타이틀 · 의무화가 바꾸는 주주총회" data-bg="A" data-foot="logo" data-tr="zoom" data-glow="1" data-fill="1" data-lay="center">
 <p class="eyebrow en-eb fu" style="--i:0">PART 1</p>
@@ -571,7 +571,13 @@ function go(n){n=Math.max(0,Math.min(slides.length-1,n));if(n===idx)return;
   hud();if(window.CtrlPanel)CtrlPanel.draw();SCHED.pub({cur:s.dataset.no,slides:slides.map(x=>({no:x.dataset.no,title:x.dataset.title.replace(/&amp;/g,'&'),msg:isMsg(x)?1:0,auto:x.dataset.auto?+x.dataset.auto:0,vid:(v=>v&&isFinite(v.duration)?Math.round(v.duration):0)(x.querySelector('video'))}))});
 }
 // 상황 메시지(data-msg)는 순서 이동에서 건너뜀. 메시지에서 → 는 띄우기 전 화면의 다음, ← 는 띄우기 전 화면으로
-function step(d){if(isMsg(slides[idx])){go(d>0?nextMain(home,1):home);return;}go(nextMain(idx,d));}
+
+// 처음 열면 배경(Data Stream)만 10초 → M1-1 대기 화면 자동 시작
+const BOOT_MS=10000;let BOOT_T=0,bootTimer=null;
+function bootGo(){clearTimeout(bootTimer);bootTimer=null;if(idx<0)go(0);}
+function boot(){BOOT_T=performance.now()+BOOT_MS;const c=document.getElementById('c');if(c)c.style.opacity=1;bootTimer=setTimeout(bootGo,BOOT_MS);
+  SCHED.pub({cur:'시작 대기',slides:slides.map(x=>({no:x.dataset.no,title:x.dataset.title.replace(/&amp;/g,'&'),msg:isMsg(x)?1:0,auto:x.dataset.auto?+x.dataset.auto:0,vid:0}))});}
+function step(d){if(idx<0){bootGo();return;}if(isMsg(slides[idx])){go(d>0?nextMain(home,1):home);return;}go(nextMain(idx,d));}
 function nextMain(i,d){let j=i+d;while(slides[j]&&isMsg(slides[j]))j+=d;return slides[j]?j:i;}
 document.querySelectorAll('[data-words]').forEach(el=>{let w=0;[...el.childNodes].forEach(nd=>{if(nd.nodeType!==3)return;const f=document.createDocumentFragment();
   nd.textContent.split(/(\s+)/).forEach(t=>{if(!t)return;if(/^\s+$/.test(t)){f.appendChild(document.createTextNode(' '));return;}const sp=document.createElement('span');sp.className='w';sp.style.setProperty('--w',w++);sp.textContent=t;f.appendChild(sp);});
@@ -670,7 +676,7 @@ CtrlPanel.mount({title:'메인 스크린',key:'scr-main',placeholder:'예: 4-5, 
   prev:()=>step(-1),next:()=>step(1),go:i=>go(i),
   goNo:t=>{const n=byNo('M'+t.trim().toUpperCase().replace(/^M/,''));if(n<0)return false;go(n);return true;},
   list:()=>slides.map((s,i)=>({no:s.dataset.no,label:nm(s),cur:i===idx,msg:isMsg(s),dur:s.dataset.auto?s.dataset.auto+'초':(v=>v&&isFinite(v.duration)?'영상 '+Math.round(v.duration)+'초':'')(s.querySelector('video'))})),
-  status:()=>{const s=slides[idx];let nx=nextMain(isMsg(s)?home:idx,1);nx=nx!==idx?slides[nx]:null;
+  status:()=>{const s=slides[idx];if(!s)return {title:'시작 대기',sub:'배경만 재생 중 · '+Math.max(0,Math.ceil((BOOT_T-performance.now())/1000))+'초 뒤 M1-1 대기 화면 시작 (→ 누르면 바로)',prog:Math.min(1,1-(BOOT_T-performance.now())/BOOT_MS)};let nx=nextMain(isMsg(s)?home:idx,1);nx=nx!==idx?slides[nx]:null;
     const sub=(isMsg(s)?'상황 메시지 · → 누르면 원래 순서로 · ':'')+(nx?'다음: '+nx.dataset.no+' '+nm(nx):'마지막 화면');
     return {title:s.dataset.no+'  '+nm(s),sub,prog:autoLen?Math.min(1,(performance.now()-autoT0)/autoLen):null};},
   setSpeed:v=>{SPD=v;window.FSSPD=v;dsPost({ds:'mul',v});},
@@ -683,10 +689,10 @@ CtrlPanel.mount({title:'메인 스크린',key:'scr-main',placeholder:'예: 4-5, 
     SCHED.warnings(SC).forEach(w=>h+='<br><span style="color:#FF8A7A">⚠ '+w+'</span>');return h+'<br>오프라인: '+(window.OFFLINE_STATE||'-');},
   foot:'P 패널 열기/닫기 · → ← 이동(상황 메시지 건너뜀) · 번호+Enter 바로가기 · F 전체화면 · B 블랙아웃 · A 자동순환 · 휴식 화면 +/− 재개 1분 · 배속은 화면 전환 · 글자 애니메이션 · 배경 · 대기 자동 넘김에 적용'});
 document.addEventListener('offline-state',()=>CtrlPanel.draw());
-window.SCR={go,initBG,byNo,count:slides.length};
+window.SCR={go,initBG,byNo,boot,count:slides.length};
 })();
 </script>
-<script>SCR.initBG();SCR.go(Math.max(0,SCR.byNo(decodeURIComponent(location.hash.slice(1)))));</script>
+<script>SCR.initBG();{const h=decodeURIComponent(location.hash.slice(1)),n=SCR.byNo(h);if(h&&n>=0)SCR.go(n);else SCR.boot();}</script>
 <script>/* 온라인 주소로 열면 오프라인 캐시 등록 (sw.js) */
 (function(){const st=t=>{window.OFFLINE_STATE=t;document.dispatchEvent(new CustomEvent('offline-state',{detail:t}));};
 if(!location.protocol.startsWith('http')){st('파일 실행 (오프라인)');return;}
