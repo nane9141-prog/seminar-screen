@@ -279,8 +279,10 @@ body.idle{cursor:none}
 .bk-r{margin:56px 0 0;font:300 63.5px/1 "KakaoSmall",sans-serif;color:#fff;letter-spacing:0;white-space:nowrap}  /* 타이머 아래 작게: 00:00에 다시 시작합니다. */
 .bk-timer .dots circle{fill:#fff;fill-opacity:.09;transition:fill-opacity .35s}
 .bk-timer .dots circle.on{fill-opacity:1}
-.bk-next{position:absolute;left:0;right:0;top:1222px;height:378px;background:linear-gradient(90deg,#6cc6d6,#44b68d,#6cc6d6,#44b68d);background-size:300% 100%;animation:bkFlow 14s ease-in-out infinite alternate;color:#111}
-@keyframes bkFlow{from{background-position:0% 0}to{background-position:100% 0}}  /* NEXT 띠: 두 색이 좌우로 천천히 흐름 */
+.bk-next{position:absolute;left:0;right:0;top:1222px;height:378px;color:#111;overflow:hidden}
+.bk-next::before{content:'';position:absolute;inset:0;background:linear-gradient(90deg,#6cc6d6,#44b68d,#6cc6d6) repeat-x;background-size:8400px 100%;animation:bkFlow 16s linear infinite}  /* .fu 등장 애니메이션과 겹치지 않게 가상 요소에서 흐름 */
+.bk-next>*{z-index:1}
+@keyframes bkFlow{from{background-position:0 0}to{background-position:-8400px 0}}  /* 끊김 없이 왼쪽으로 계속 흐름 */  /* NEXT 띠: 두 색이 좌우로 천천히 흐름 */
 .bk-nk{position:absolute;left:604px;top:99px;margin:0;font:700 63.5px/1 "Lexend",sans-serif;letter-spacing:0}
 .bk-next>div{position:absolute;left:1022px;top:77px}
 .bk-nt{margin:0;font:800 99.1px/1 "KakaoBig",sans-serif;letter-spacing:0;white-space:nowrap}
