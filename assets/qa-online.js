@@ -43,7 +43,7 @@ async function poll(){
   if(busy)return;busy=true;
   try{
     const [q,s]=await Promise.all([
-      sb.from('live_questions').select('id,kind,n,company,name,session,body,who,status,ord,picked_by,shown_at,created_at').order('created_at'),
+      sb.from('live_questions').select('id,kind,n,company,name,email,session,body,who,status,ord,picked_by,shown_at,created_at').order('created_at'),
       sb.from('qa_state').select('cur,updated_by,updated_at').eq('id',1).single()]);
     if(q.error)throw q.error;
     L=q.data||[];cur=s.data?s.data.cur:null;
@@ -76,7 +76,7 @@ function draw(st){
     :(tab==='all'?q.status==='new':tab==='new')?'<button data-a="pick" class="pri">선택</button><button data-a="edit">수정</button><button data-a="hide">숨김</button>'
     :'<button data-a="unhide">되돌리기</button><button data-a="del" class="warn">삭제</button>';
   $('oql').innerHTML=list.length?list.map(q=>'<div class="q'+(q.id===cur?' cur':'')+'" data-id="'+q.id+'"><div class="tag '+q.kind+'">'+lab(q)+'<div class="w">'+SL[q.session]+'</div></div>'+
-    '<div><div class="t">'+(tab==='all'?'<span class="st '+q.status+'">'+({new:'접수',picked:'선택',hidden:'숨김'})[q.status]+'</span>':'')+esc(q.body)+'</div><div class="w">'+esc(q.company)+' '+esc(q.name)+' · '+tm(q.created_at)+(q.who?' · 답변 '+esc(q.who):'')+(q.picked_by&&q.status==='picked'?' · 선택 '+esc(q.picked_by):'')+(q.shown_at?' · <span style="color:#FFB84D">송출됨 '+tm(q.shown_at)+'</span>':'')+'</div></div>'+
+    '<div><div class="t">'+(tab==='all'?'<span class="st '+q.status+'">'+({new:'접수',picked:'선택',hidden:'숨김'})[q.status]+'</span>':'')+esc(q.body)+'</div><div class="w">'+esc(q.company)+' '+esc(q.name)+(q.email?' · <a href="mailto:'+esc(q.email)+'" style="color:#8FB8FF">'+esc(q.email)+'</a>':'')+' · '+tm(q.created_at)+(q.who?' · 답변 '+esc(q.who):'')+(q.picked_by&&q.status==='picked'?' · 선택 '+esc(q.picked_by):'')+(q.shown_at?' · <span style="color:#FFB84D">송출됨 '+tm(q.shown_at)+'</span>':'')+'</div></div>'+
     '<div class="act">'+act(q)+'</div></div>').join(''):'<p class="mut empty">'+(kind==='pre'&&!K.length?'사전 질의가 없습니다. 사전 신청 때 받은 질문이 있으면 "사전 질문 가져오기"로 불러옵니다.':tab==='all'?'질문이 없습니다.':tab==='pick'?'선택한 질문이 없습니다. "접수" 탭에서 고르세요.':tab==='new'?'새 질문이 없습니다.':'숨긴 질문이 없습니다.')+'</p>';
 }
 async function upd(id,patch){const {error}=await sb.from('live_questions').update(patch).eq('id',id);if(error)msg(error.message,true);sig='';poll();}
