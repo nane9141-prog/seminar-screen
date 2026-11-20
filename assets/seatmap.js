@@ -1,0 +1,248 @@
+/* 좌석 배치 3D — control.html '좌석 배치' 탭
+   도면: 15줄(A~O, 무대 쪽이 A) × 줄당 21석(1~21, 객석 기준 왼쪽=입구 쪽이 1), 테이블(1800×450×740mm 가정)당 3석.
+   좌석마다 테이블 상단면 위쪽 끝에 라벨(102×70mm) 1장 — 좌석 번호 + 회사명.
+   데이터: 참석자 관리와 같은 registrations + seat_assign(좌석 값 "A1" 형식). window.Attendees 를 통해 읽고 저장합니다. */
+(function(){
+const $=id=>document.getElementById(id);
+const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const norm=s=>String(s||'').toLowerCase().replace(/\s|\(주\)|㈜|주식회사|-/g,'');
+const COL={empty:0x3a3f4d,assigned:0x2f6bff,arrived:0x5ed39a,pending:0xffb74d,dup:0xff7a7a};
+
+/* ---------- 레이아웃 (1 unit = 0.686 m) ---------- */
+const M=1/0.686,ROWS=15,PITCH=.6*M,ROW_X0=-15.7,ROW_DX=2.7,T_LEN=1.8*M,T_DEP=.45*M,T_H=.74*M,LBL_W=.102*M,LBL_H=.07*M;
+const LBL_DX=-T_DEP/2+.03*M+LBL_H/2;            // 라벨: 테이블 위쪽 끝(무대 쪽)에서 30mm 여백
+const BLOCKS=[{z:8.6,n:2},{z:-.4,n:3},{z:-8.7,n:2}];
+const tables=[],seats=[],byId={};
+for(let r=0;r<ROWS;r++){const x=ROW_X0+r*ROW_DX,L=String.fromCharCode(65+r);let num=0;
+  BLOCKS.forEach(b=>{for(let k=0;k<b.n;k++){const z=b.z+((b.n-1)/2-k)*T_LEN,t={row:L,x,z,i:tables.length,blockFirst:k===0};tables.push(t);
+    for(let j=0;j<3;j++){num++;const s={id:L+num,row:L,num,x,z:z+(1-j)*PITCH,i:seats.length};seats.push(s);byId[s.id]=s;}}});}
+function seatKey(v){const m=/^([A-O])-?(\d{1,2})$/.exec(String(v||'').toUpperCase().replace(/\s/g,''));return m&&byId[m[1]+(+m[2])]?m[1]+(+m[2]):null;}
+
+/* ---------- 상태 ---------- */
+let R=[],S={},occ={},sel=null,moveFrom=null,q='',big=false,ready=false,libState=0,busy=false;
+let scene,camera,renderer,controls,tMesh,seatMesh,backMesh,hl,labels=[],dummy,tmpColor,held={};
+const A=()=>window.Attendees;
+const active=()=>document.body.dataset.m==='seat';
+function msg(t,bad){const e=$('smmsg');if(!e)return;e.textContent=t;e.style.color=bad?'#FF8A7A':'#7FD6A0';clearTimeout(e._t);e._t=setTimeout(()=>e.textContent='',bad?6000:2500);}
+function sync(){
+  const d=A()&&A().get?A().get():{R:[],S:{}};R=d.R||[];S=d.S||{};occ={};
+  R.forEach(x=>{const k=seatKey((S[x.id]||{}).seat);if(k)(occ[k]=occ[k]||[]).push(x);});
+  if(sel&&!byId[sel.id])sel=null;
+  paint();side();
+}
+function seatColor(s){const o=occ[s.id];if(!o)return COL.empty;if(o.length>1)return COL.dup;if(o[0].attended)return COL.arrived;if(o[0].status!=='confirmed')return COL.pending;return COL.assigned;}
+
+/* ---------- 3D ---------- */
+function loadLib(cb){
+  if(window.THREE&&THREE.OrbitControls)return cb();
+  if(libState===1)return;libState=1;
+  const add=(src,next)=>{const s=document.createElement('script');s.src=src;s.onload=next;s.onerror=()=>{libState=0;$('smstage').insertAdjacentHTML('beforeend','<p class="mut" style="padding:40px">3D 라이브러리를 불러오지 못했습니다. 새로고침해 주세요.</p>');};document.head.appendChild(s);};
+  add('assets/three.min.js',()=>add('assets/OrbitControls.js',cb));
+}
+function ctex(w,h,draw){const c=document.createElement('canvas');c.width=w;c.height=h;draw(c.getContext('2d'),w,h);const t=new THREE.CanvasTexture(c);t.anisotropy=8;return t;}
+const FONT='"Pretendard Variable","Noto Sans KR",sans-serif';
+function sprite(text,x,y,z,color,scale){
+  const tex=ctex(512,128,g=>{g.font='700 60px '+FONT;g.textAlign='center';g.textBaseline='middle';g.fillStyle='rgba(8,10,16,.72)';const tw=g.measureText(text).width+56;g.fillRect(256-tw/2,20,tw,88);g.fillStyle=color||'#fff';g.fillText(text,256,66);});
+  const s=new THREE.Sprite(new THREE.SpriteMaterial({map:tex,transparent:true,depthTest:false}));s.scale.set(scale||5,(scale||5)/4,1);s.position.set(x,y,z);scene.add(s);
+}
+function box(w,h,d,color,x,y,z,opt){const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),new THREE.MeshStandardMaterial(Object.assign({color,roughness:.9},opt||{})));m.position.set(x,y,z);scene.add(m);return m;}
+function drawLabel(lb){
+  const g=lb.ctx,W=320,H=220,name=lb.text;
+  g.fillStyle='#fff';g.fillRect(0,0,W,H);g.strokeStyle='#000';g.lineWidth=3;g.strokeRect(1.5,1.5,W-3,H-3);
+  g.fillStyle='#000';g.textAlign='center';g.textBaseline='alphabetic';g.font='900 116px '+FONT;g.fillText(lb.s.id,W/2,name?128:150);
+  if(name){let fs=33;g.font='700 '+fs+'px '+FONT;while(fs>14&&g.measureText(name).width>W-34){fs-=2;g.font='700 '+fs+'px '+FONT;}g.fillText(name,W/2,184);}
+  lb.tex.needsUpdate=true;
+}
+function build(){
+  const el=$('smstage'),w=el.clientWidth||800,h=el.clientHeight||500;
+  scene=new THREE.Scene();scene.background=new THREE.Color(0x121212);scene.fog=new THREE.Fog(0x121212,70,150);
+  camera=new THREE.PerspectiveCamera(42,w/h,.05,400);
+  renderer=new THREE.WebGLRenderer({antialias:true});renderer.setPixelRatio(Math.min(devicePixelRatio,2));renderer.setSize(w,h);
+  el.insertBefore(renderer.domElement,el.firstChild);
+  controls=new THREE.OrbitControls(camera,renderer.domElement);controls.enableDamping=true;controls.dampingFactor=.08;controls.maxPolarAngle=Math.PI/2-.03;controls.minDistance=1.2;controls.maxDistance=110;
+  dummy=new THREE.Object3D();tmpColor=new THREE.Color();
+  scene.add(new THREE.AmbientLight(0xb8c4e6,.62));const dl=new THREE.DirectionalLight(0xfff1dc,.75);dl.position.set(10,40,20);scene.add(dl);
+  [[-14,-4],[2,-4],[18,-4],[-6,6],[12,6]].forEach(p=>{const pl=new THREE.PointLight(0xffd9a8,.35,36);pl.position.set(p[0],8,p[1]);scene.add(pl);});
+  const W=56,D=27,HW=W/2,HD=D/2;
+  /* 카펫 */
+  const carpet=ctex(512,512,(g,cw,ch)=>{g.fillStyle='#232a45';g.fillRect(0,0,cw,ch);const pal=['#2f3a63','#1b2038','#3d4a78','#5a5568','#7d6a62','#161a2c'];
+    for(let i=0;i<1400;i++){g.fillStyle=pal[(Math.random()*pal.length)|0];g.globalAlpha=.18+Math.random()*.3;g.fillRect(Math.random()*cw,Math.random()*ch,20+Math.random()*90,1+Math.random()*3);}g.globalAlpha=1;});
+  carpet.wrapS=carpet.wrapT=THREE.RepeatWrapping;carpet.repeat.set(7,3.5);
+  const floor=new THREE.Mesh(new THREE.PlaneGeometry(W,D),new THREE.MeshStandardMaterial({map:carpet,roughness:1}));floor.rotation.x=-Math.PI/2;scene.add(floor);
+  const outer=new THREE.Mesh(new THREE.PlaneGeometry(W+30,D+24),new THREE.MeshStandardMaterial({color:0x151515,roughness:1}));outer.rotation.x=-Math.PI/2;outer.position.y=-.02;scene.add(outer);
+  /* 벽 */
+  const wood=ctex(256,64,(g,cw,ch)=>{g.fillStyle='#3a2318';g.fillRect(0,0,cw,ch);for(let i=0;i<cw;i+=8){g.fillStyle=i%16?'#8a5a3a':'#6f4329';g.fillRect(i,0,5,ch);}});
+  wood.wrapS=THREE.RepeatWrapping;wood.repeat.set(10,1);
+  box(W,3.4,.3,0x14161f,0,1.7,-HD-.15);
+  const up=new THREE.Mesh(new THREE.BoxGeometry(W,4.2,.3),new THREE.MeshStandardMaterial({map:wood,roughness:.8,emissive:0x2a160c,emissiveIntensity:.5}));up.position.set(0,5.5,-HD-.15);scene.add(up);
+  box(.3,7.6,D+.6,0x12141c,-HW-.15,3.8,0);box(.3,.9,D+.6,0x1a1d28,HW+.15,.45,0);box(W,.9,.3,0x1a1d28,0,.45,HD+.15);
+  /* 무대 + 스크린, 후면 단상 */
+  box(3.6,.8,16.2,0x1c1f2a,-25.1,.4,-.4);box(.12,5.2,13,0x23262f,-27.8,3.9,-.4,{emissive:0x1b2233,emissiveIntensity:.9});box(.6,1.6,.8,0x2a2e3b,-24.4,1.6,-.4);
+  sprite('STAGE',-25.1,7.8,-.4,'#cfd8ff',7);
+  box(3.6,.4,16.2,0x1c1f2a,25.4,.2,-.4);sprite('후면 단상 · 콘솔',25.4,2.6,-.4,'#aab3cc',6.5);
+  /* 무대 좌·우 LED 타워: 3100(W)×2230(D)×4170(H)mm, 하단 1820mm 베이스, 블랙 패널, 안쪽으로 25° */
+  const ledTex=ctex(512,400,(g,cw,ch)=>{const gr=g.createLinearGradient(0,0,cw,ch);gr.addColorStop(0,'#1d3a7a');gr.addColorStop(1,'#0c1a3c');g.fillStyle=gr;g.fillRect(0,0,cw,ch);
+    g.strokeStyle='rgba(0,0,0,.55)';g.lineWidth=2;for(let i=1;i<6;i++){g.beginPath();g.moveTo(i*cw/6,0);g.lineTo(i*cw/6,ch);g.stroke();}for(let j=1;j<3;j++){g.beginPath();g.moveTo(0,j*ch/3);g.lineTo(cw,j*ch/3);g.stroke();}
+    g.fillStyle='rgba(255,255,255,.85)';g.font='700 54px '+FONT;g.textAlign='center';g.textBaseline='middle';g.fillText('LED',cw/2,ch/2);});
+  [[-10.7,-1],[10.7,1]].forEach(p=>{const lw=3.1*M,ld=2.23*M,lh=4.17*M,grp=new THREE.Group();
+    const body=new THREE.Mesh(new THREE.BoxGeometry(ld,lh,lw),new THREE.MeshStandardMaterial({color:0x08090c,roughness:.6}));body.position.y=lh/2;grp.add(body);
+    const scr=new THREE.Mesh(new THREE.PlaneGeometry(2.9*M,2.25*M),new THREE.MeshBasicMaterial({map:ledTex}));scr.rotation.y=Math.PI/2;scr.position.set(ld/2+.02,(1.82+2.25/2)*M,0);grp.add(scr);
+    grp.position.set(-25.1,0,p[0]);grp.rotation.y=p[1]*Math.PI*25/180;scene.add(grp);});
+  /* 출입문: 폐쇄 4곳, 사용 2곳 · 등록 데스크 */
+  [-14.9,-1.6,6.6,17.6].forEach(dx=>{box(2.2,1.2,.36,0x5a1f26,dx,.6,HD+.15);sprite('✕ 폐쇄',dx,2.1,HD+.2,'#ff6b6b',3.4);});
+  box(2.2,1.2,.36,0x1f5a3c,25.4,.6,HD+.15);sprite('입구',25.4,2.1,HD+.2,'#6dffb0',3.2);box(2.2,1.2,.36,0x2a2e3b,-21.1,.6,HD+.15);
+  box(5.4,T_H,.8,0x15171f,19.3,T_H/2,HD+1.8);sprite('등록 데스크',19.3,2.3,HD+1.8,'#fff',4.6);
+  /* 테이블 · 의자 */
+  const n=tables.length;
+  tMesh=new THREE.InstancedMesh(new THREE.BoxGeometry(T_DEP,T_H,T_LEN-.03),new THREE.MeshStandardMaterial({color:0x101116,roughness:.85}),n);
+  tables.forEach(t=>{dummy.position.set(t.x,T_H/2,t.z);dummy.scale.set(1,1,1);dummy.rotation.set(0,0,0);dummy.updateMatrix();tMesh.setMatrixAt(t.i,dummy.matrix);});scene.add(tMesh);
+  seatMesh=new THREE.InstancedMesh(new THREE.BoxGeometry(.45*M,.45*M,.48*M),new THREE.MeshStandardMaterial({color:0xffffff,roughness:.8}),n*3);
+  backMesh=new THREE.InstancedMesh(new THREE.BoxGeometry(.08*M,.92*M,.48*M),new THREE.MeshStandardMaterial({color:0xffffff,roughness:.8}),n*3);
+  const sx=T_DEP/2+.12*M+.225*M;
+  seats.forEach(s=>{dummy.rotation.set(0,0,0);dummy.scale.set(1,1,1);
+    dummy.position.set(s.x+sx,.225*M,s.z);dummy.updateMatrix();seatMesh.setMatrixAt(s.i,dummy.matrix);
+    dummy.position.set(s.x+sx+.265*M,.46*M,s.z);dummy.updateMatrix();backMesh.setMatrixAt(s.i,dummy.matrix);});
+  scene.add(seatMesh,backMesh);
+  /* 줄 문자: 블록 왼쪽 끝 테이블의 좌측면(+z 면) */
+  const sideGeo=new THREE.PlaneGeometry(.42*M,.42*M),sideTex={};
+  tables.forEach(t=>{if(!t.blockFirst)return;
+    if(!sideTex[t.row])sideTex[t.row]=ctex(256,256,g=>{g.fillStyle='#fff';g.fillRect(0,0,256,256);g.strokeStyle='#000';g.lineWidth=8;g.strokeRect(4,4,248,248);g.fillStyle='#000';g.font='900 190px '+FONT;g.textAlign='center';g.textBaseline='middle';g.fillText(t.row,128,140);});
+    const m=new THREE.Mesh(sideGeo,new THREE.MeshBasicMaterial({map:sideTex[t.row]}));m.position.set(t.x,T_H*.52,t.z+T_LEN/2+.012);scene.add(m);});
+  /* 좌석별 라벨(테이블 상단면, 위쪽 끝): 의자 쪽에서 바로 읽히는 방향 */
+  const lGeo=new THREE.PlaneGeometry(LBL_W,LBL_H);
+  const qt=new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0,1,0),Math.PI/2).multiply(new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(1,0,0),-Math.PI/2));
+  seats.forEach(s=>{const c=document.createElement('canvas');c.width=320;c.height=220;const tex=new THREE.CanvasTexture(c);tex.generateMipmaps=false;tex.minFilter=THREE.LinearFilter;tex.anisotropy=4;
+    const m=new THREE.Mesh(lGeo,new THREE.MeshBasicMaterial({map:tex}));m.quaternion.copy(qt);m.position.set(s.x+LBL_DX,T_H+.006,s.z);scene.add(m);
+    labels[s.i]={s,ctx:c.getContext('2d'),tex,mesh:m,text:null};});
+  hl=new THREE.Mesh(new THREE.PlaneGeometry(T_DEP+1.9,PITCH),new THREE.MeshBasicMaterial({color:0xffffff,transparent:true,opacity:.3,depthWrite:false}));hl.rotation.x=-Math.PI/2;hl.visible=false;scene.add(hl);
+
+  setView('persp');ready=true;paint();
+  if(document.fonts&&document.fonts.ready)document.fonts.ready.then(()=>{labels.forEach(lb=>lb.text=null);paint();});
+  if(window.ResizeObserver)new ResizeObserver(resize).observe(el);addEventListener('resize',resize);
+  pointer();
+  let last=performance.now();
+  (function loop(){requestAnimationFrame(loop);if(!active())return;const now=performance.now();keys(Math.min(.05,(now-last)/1000));last=now;controls.update();
+    if(hl.visible)hl.material.opacity=.22+.14*Math.sin(now/260);renderer.render(scene,camera);})();
+}
+function resize(){if(!ready)return;const el=$('smstage'),w=el.clientWidth,h=el.clientHeight;if(!w||!h)return;camera.aspect=w/h;camera.updateProjectionMatrix();renderer.setSize(w,h);}
+function paint(){
+  if(!ready)return;
+  seats.forEach(s=>{tmpColor.setHex(seatColor(s));seatMesh.setColorAt(s.i,tmpColor);backMesh.setColorAt(s.i,tmpColor);
+    const o=occ[s.id],lb=labels[s.i],text=o?o[0].company_name||'':'';
+    if(lb.text!==text){lb.text=text;drawLabel(lb);}
+    const k=big?4:1;lb.mesh.scale.set(k,k,1);lb.mesh.position.x=s.x+(big?0:LBL_DX);});
+  seatMesh.instanceColor.needsUpdate=backMesh.instanceColor.needsUpdate=true;
+  if(sel){hl.visible=true;hl.position.set(sel.x+.6,.05,sel.z);}else hl.visible=false;
+}
+const VIEWS={persp:[[30,17,27],[2,0,0]],top:[[0,62,.01],[0,0,0]],stage:[[-23,4.6,-.4],[6,0,-.4]],back:[[33,10,-.4],[-6,0,-.4]]};
+function setView(v){const p=VIEWS[v];camera.position.set(p[0][0],p[0][1],p[0][2]);controls.target.set(p[1][0],p[1][1],p[1][2]);controls.update();
+  document.querySelectorAll('#smview [data-v]').forEach(b=>b.classList.toggle('sel',b.dataset.v===v));}
+function focus(s){if(!ready)return;const off=camera.position.clone().sub(controls.target);if(off.length()>16)off.setLength(16);controls.target.set(s.x,T_H,s.z);camera.position.copy(controls.target).add(off);}
+function pointer(){
+  const ray=new THREE.Raycaster(),v=new THREE.Vector2(),cv=renderer.domElement,tip=$('smtip');let down=null;
+  function pick(e){const r=cv.getBoundingClientRect();v.set((e.clientX-r.left)/r.width*2-1,-((e.clientY-r.top)/r.height)*2+1);ray.setFromCamera(v,camera);
+    const hit=ray.intersectObjects([tMesh,seatMesh,backMesh])[0];if(!hit||hit.instanceId==null)return null;
+    if(hit.object!==tMesh)return seats[hit.instanceId];
+    let best=null,bd=1e9;for(let k=0;k<3;k++){const s=seats[hit.instanceId*3+k],dd=Math.abs(s.z-hit.point.z);if(dd<bd){bd=dd;best=s;}}return best;}
+  cv.addEventListener('pointerdown',e=>{down={x:e.clientX,y:e.clientY};});
+  cv.addEventListener('pointermove',e=>{if(e.pointerType==='touch'||e.buttons){tip.style.display='none';return;}
+    const s=pick(e);if(!s){tip.style.display='none';cv.style.cursor='';return;}cv.style.cursor='pointer';
+    const o=occ[s.id],r=$('smstage').getBoundingClientRect();
+    tip.textContent=s.id+(o?' · '+o.map(x=>x.company_name+' '+x.name).join(', '):' · 빈 좌석');
+    tip.style.left=(e.clientX-r.left+14)+'px';tip.style.top=(e.clientY-r.top+14)+'px';tip.style.display='block';});
+  cv.addEventListener('pointerleave',()=>tip.style.display='none');
+  cv.addEventListener('pointerup',e=>{if(!down||Math.abs(e.clientX-down.x)+Math.abs(e.clientY-down.y)>6){down=null;return;}down=null;
+    const s=pick(e);if(!s){if(!moveFrom)select(null);return;}if(moveFrom)return doMove(moveFrom,s);select(s);});
+}
+
+/* ---------- 키보드 (좌석 배치 탭에서만) ---------- */
+const typing=()=>{const a=document.activeElement;return a&&/^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName);};
+addEventListener('keydown',e=>{
+  if(!active()||!ready)return;
+  if(e.key==='Escape'){if(typing())document.activeElement.blur();else select(null);return;}
+  if(typing()||e.ctrlKey||e.metaKey||e.altKey)return;
+  const k=e.key.length===1?e.key.toLowerCase():e.key,v={'1':'persp','2':'top','3':'stage','4':'back'}[k];
+  if(v)return setView(v);
+  if(k==='l')return $('smlabel').click();
+  if(k==='/'){e.preventDefault();return $('smq').focus();}
+  if(/^(w|a|s|d|q|e|r|f|\+|=|-|ArrowUp|ArrowDown|ArrowLeft|ArrowRight|PageUp|PageDown)$/.test(k)){held[k]=true;e.preventDefault();}
+});
+addEventListener('keyup',e=>{delete held[e.key.length===1?e.key.toLowerCase():e.key];});
+addEventListener('blur',()=>held={});
+function keys(dt){
+  if(!Object.keys(held).length)return;
+  let off=camera.position.clone().sub(controls.target);const dist=off.length(),fwd=new THREE.Vector3(-off.x,0,-off.z);
+  if(fwd.lengthSq()<1e-6)fwd.set(0,0,-1);fwd.normalize();
+  const right=new THREE.Vector3(-fwd.z,0,fwd.x),mv=new THREE.Vector3();
+  if(held.w||held.ArrowUp)mv.add(fwd);if(held.s||held.ArrowDown)mv.sub(fwd);if(held.d||held.ArrowRight)mv.add(right);if(held.a||held.ArrowLeft)mv.sub(right);
+  if(mv.lengthSq()){mv.normalize().multiplyScalar(Math.max(4,dist*.7)*dt);const t=controls.target.clone().add(mv);t.x=Math.max(-32,Math.min(32,t.x));t.z=Math.max(-18,Math.min(20,t.z));mv.copy(t).sub(controls.target);controls.target.copy(t);camera.position.add(mv);}
+  off=camera.position.clone().sub(controls.target);
+  const rot=(held.q?1:0)-(held.e?1:0);if(rot)off.applyAxisAngle(new THREE.Vector3(0,1,0),rot*1.2*dt);
+  const tilt=(held.PageUp?1:0)-(held.PageDown?1:0);if(tilt){const sp=new THREE.Spherical().setFromVector3(off);sp.phi=Math.max(.05,Math.min(Math.PI/2-.04,sp.phi-tilt*.9*dt));off.setFromSpherical(sp);}
+  const zoom=((held.r||held['+']||held['='])?1:0)-((held.f||held['-'])?1:0);if(zoom)off.setLength(Math.max(controls.minDistance,Math.min(controls.maxDistance,dist*(1-zoom*1.1*dt))));
+  camera.position.copy(controls.target).add(off);
+}
+
+/* ---------- 사이드 패널 ---------- */
+const who=x=>'<b>'+esc(x.company_name)+'</b> '+esc(x.name)+(x.status!=='confirmed'?' <span class="pill wait">대기</span>':'')+(x.attended?' <span class="pill ok">참석</span>':'');
+function side(){
+  if(!$('smstat'))return;
+  const logged=!!(window.QAOnline&&QAOnline.client&&QAOnline.client());
+  const placed=R.filter(x=>seatKey((S[x.id]||{}).seat)),un=R.filter(x=>!seatKey((S[x.id]||{}).seat)),dup=Object.keys(occ).filter(k=>occ[k].length>1);
+  $('smstat').innerHTML='<div><span class="mut">좌석</span><b>'+seats.length+'</b></div><div><span class="mut">배정</span><b>'+Object.keys(occ).length+'</b></div><div><span class="mut">잔여</span><b>'+(seats.length-Object.keys(occ).length)+'</b></div><div><span class="mut">미배정 인원</span><b>'+un.length+'</b></div>';
+  $('smwarn').innerHTML=!logged?'<span class="late">참석자 관리 탭에서 로그인하면 신청자와 좌석 배정이 표시됩니다.</span>':(dup.length?'<span class="late">같은 좌석에 2명 이상: '+dup.map(esc).join(', ')+'</span>':'');
+  /* 선택 좌석 카드 */
+  const c=$('smsel');
+  if(!sel){c.className='smsel empty';c.innerHTML='<span class="mut">3D 화면에서 좌석을 클릭하세요. 빈 좌석이면 아래 미배정 인원에서 골라 배정합니다.</span>';}
+  else{const o=occ[sel.id]||[];c.className='smsel';
+    c.innerHTML='<div class="sid">'+sel.id+'<small>'+sel.row+'줄 '+sel.num+'번</small></div>'+
+      (o.length?o.map(x=>'<div class="occ"><div>'+who(x)+'<div class="mut">'+esc([x.dept,x.title].filter(Boolean).join(' · '))+'</div></div>'+
+        '<div class="acts">'+(x.status==='confirmed'?'<button data-a="arr" data-id="'+x.id+'" class="'+(x.attended?'arr on':'')+'">'+(x.attended?'참석 체크됨':'참석 체크')+'</button>':'')+
+        '<button data-a="move" data-id="'+x.id+'" class="'+(moveFrom&&moveFrom.reg===x.id?'on':'')+'">자리 이동</button><button data-a="un" data-id="'+x.id+'">배정 해제</button></div></div>').join('')+
+        (moveFrom?'<div class="hintm">옮길 좌석을 클릭하세요. 사람이 있으면 서로 맞바꿉니다. (Esc 취소)</div>':'')
+       :'<div class="mut">빈 좌석 — 아래 목록에서 배정할 사람을 고르세요.</div>');}
+  /* 목록 */
+  const n=norm(q),assignMode=sel&&!(occ[sel.id]||[]).length;
+  let L=(assignMode?un:R).filter(x=>!n||norm(x.name).includes(n)||norm(x.company_name).includes(n)||norm((S[x.id]||{}).seat).includes(n));
+  $('smlt').textContent=assignMode?sel.id+'에 배정 · 미배정 '+L.length+'명':'전체 '+L.length+'명';
+  const coUn={};un.forEach(x=>{const k=norm(x.company_name);coUn[k]=(coUn[k]||0)+1;});
+  $('smlist').innerHTML=L.length?L.slice(0,300).map(x=>{const k=seatKey((S[x.id]||{}).seat),raw=(S[x.id]||{}).seat,cn=coUn[norm(x.company_name)]||0;
+    return '<div class="it" data-id="'+x.id+'"><span class="sk'+(k?'':' none')+'">'+(k||(raw?esc(raw):'미배정'))+'</span><div class="nm">'+who(x)+'</div>'+
+      (assignMode?'<span class="acts"><button data-a="as" data-id="'+x.id+'" class="pri">배정</button>'+(cn>1?'<button data-a="asco" data-id="'+x.id+'" title="같은 회사 미배정 인원을 이 좌석부터 옆 빈자리에 이어서 배정">회사 '+cn+'명</button>':'')+'</span>':'')+'</div>';}).join('')
+    :'<p class="mut" style="padding:18px 4px">'+(R.length?(assignMode?'미배정 인원이 없습니다.':'검색 결과가 없습니다.'):'신청자 목록이 없습니다.')+'</p>';
+}
+function select(s){sel=s;moveFrom=null;paint();side();}
+async function save(id,seat){if(!A()||!A().saveSeat){msg('참석자 관리에 로그인해 주세요',true);return false;}const ok=await A().saveSeat(id,{seat});if(ok===false)msg('저장하지 못했습니다',true);return ok!==false;}
+async function doMove(mf,to){
+  moveFrom=null;if(mf.seat===to){side();return;}
+  const other=(occ[to.id]||[])[0];busy=true;
+  if(await save(mf.reg,to.id)){if(other)await save(other.id,mf.seat.id);msg(mf.seat.id+' → '+to.id+(other?' (맞바꿈)':' 이동'));}
+  busy=false;sel=to;sync();
+}
+function bind(){
+  $('smside').addEventListener('click',async e=>{
+    const b=e.target.closest('button[data-a]');
+    if(!b){const it=e.target.closest('.it');if(it){const k=seatKey((S[it.dataset.id]||{}).seat);if(k){select(byId[k]);focus(byId[k]);}}return;}
+    if(busy)return;const id=b.dataset.id,a=b.dataset.a,x=R.find(r=>String(r.id)===String(id));if(!x)return;
+    if(a==='arr')return A().toggleArr(x.id);
+    if(a==='un'){busy=true;if(await save(x.id,null))msg(x.name+'님 배정 해제');busy=false;return sync();}
+    if(a==='move'){moveFrom=moveFrom&&moveFrom.reg===x.id?null:{reg:x.id,seat:sel};return side();}
+    if(a==='as'&&sel){busy=true;if(await save(x.id,sel.id))msg(sel.id+' · '+x.company_name+' '+x.name);busy=false;return sync();}
+    if(a==='asco'&&sel){const co=norm(x.company_name),P=R.filter(r=>norm(r.company_name)===co&&!seatKey((S[r.id]||{}).seat));
+      P.sort((p,r)=>(p.id===x.id?-1:r.id===x.id?1:0));
+      const free=seats.slice(sel.i).filter(s=>!occ[s.id]);if(free.length<P.length)return msg('이 좌석 뒤로 빈자리가 부족합니다',true);
+      busy=true;let n=0;for(let i=0;i<P.length;i++){if(!(await save(P[i].id,free[i].id)))break;n++;}busy=false;
+      msg(x.company_name+' '+n+'명 · '+free[0].id+'~'+free[Math.max(0,n-1)].id);return sync();}
+  });
+  $('smq').addEventListener('input',e=>{q=e.target.value.trim();side();});
+  $('smq').addEventListener('keydown',e=>{if(e.key==='Escape'){e.target.value='';q='';side();}});
+  document.querySelectorAll('#smview [data-v]').forEach(b=>b.onclick=()=>{if(ready)setView(b.dataset.v);});
+  $('smlabel').onclick=function(){big=!big;this.classList.toggle('on',big);this.textContent=big?'라벨 실제 크기':'라벨 확대';paint();};
+  $('smreload').onclick=()=>{if(A()&&A().reload)A().reload();};
+}
+if($('smside'))bind();
+document.addEventListener('att-data',()=>{if(!busy)sync();});
+window.addEventListener('qa-auth',()=>setTimeout(sync,0));
+window.SeatMap={show(){sync();if(!ready)loadLib(()=>{try{build();sync();}catch(e){$('smstage').insertAdjacentHTML('beforeend','<p class="mut" style="padding:40px">3D 화면을 그리지 못했습니다. 목록은 오른쪽에서 계속 쓸 수 있습니다.</p>');}});else setTimeout(resize,0);}};
+if(active()){if(A()&&A().show)A().show();SeatMap.show();}
+})();

@@ -24,7 +24,7 @@ async function load(){
 }
 function view(){
   const has=!!sb();$('atlogin').hidden=has;$('atmain').hidden=!has;
-  if(has){load();clearInterval(timer);timer=setInterval(()=>{if(document.body.dataset.m==='att')load();},15000);}
+  if(has){load();clearInterval(timer);timer=setInterval(()=>{const m=document.body.dataset.m;if(m==='att'||m==='seat')load();},15000);}
   else clearInterval(timer);
 }
 const last4=p=>String(p||'').replace(/\D/g,'').slice(-4);
@@ -52,6 +52,7 @@ function draw(){
     :'<tr><td colspan="7" class="mut empty">'+(q?'"'+esc(q)+'"에 해당하는 신청자가 없습니다. 사전 신청하지 않은 분입니다 — 현장 등록 데스크로 안내하세요.':'목록이 비어 있습니다.')+'</td></tr>';
   if(keep){const [k,id]=keep.split(':');const el=document.querySelector('#attb tr[data-id="'+id+'"] [data-k="'+k+'"]');if(el){el.focus();const v=el.value;el.setSelectionRange(v.length,v.length);}}
   card();
+  document.dispatchEvent(new Event('att-data'));   // 좌석 배치 탭(seatmap.js) 갱신
 }
 function card(){
   const x=R.find(r=>r.id===pick)||(q&&R.filter(match).length===1?R.filter(match)[0]:null),el=$('atcard');
@@ -63,8 +64,8 @@ function card(){
     '<div class="st"><div class="mut">좌석</div><div class="seatv'+(a.seat?'':' none')+'">'+(a.seat?esc(a.seat):'미지정')+'</div></div>'+
     (x.status==='confirmed'?'<div><button data-a="arr" data-id="'+x.id+'" class="'+(x.attended?'arr on':'arr pri')+'">'+(x.attended?'현장 참석 체크됨':'현장 참석 체크')+'</button></div>':'<div class="mut" style="max-width:180px;font-size:12px">신청 대기 상태입니다. 관리자 페이지에서 확정한 뒤 참석 체크하세요.</div>');
 }
-async function saveSeat(id,patch){const c=sb();if(!c)return;const a=Object.assign({reg_id:id,seat:(S[id]||{}).seat||null,note:(S[id]||{}).note||null},patch,{updated_by:QAOnline.who(),updated_at:new Date().toISOString()});
-  const {error}=await c.from('seat_assign').upsert(a);if(error)return msg(error.message,true);S[id]=a;msg('저장했습니다');draw();}
+async function saveSeat(id,patch){const c=sb();if(!c)return false;const a=Object.assign({reg_id:id,seat:(S[id]||{}).seat||null,note:(S[id]||{}).note||null},patch,{updated_by:QAOnline.who(),updated_at:new Date().toISOString()});
+  const {error}=await c.from('seat_assign').upsert(a);if(error){msg(error.message,true);return false;}S[id]=a;msg('저장했습니다');draw();return true;}
 async function toggleArr(id){const c=sb(),x=R.find(r=>r.id===id);if(!c||!x)return;if(x.status!=='confirmed')return msg('확정된 신청자만 참석 체크할 수 있습니다',true);
   const {error}=await c.from('registrations').update({attended:!x.attended}).eq('id',id);if(error)return msg(error.message,true);
   x.attended=!x.attended;x.attended_at=x.attended?new Date().toISOString():null;msg(x.attended?x.name+'님 현장 참석 체크 (관리자 페이지에도 반영)':x.name+'님 참석 체크 해제');draw();}
@@ -90,5 +91,5 @@ $('atcsv').onclick=()=>{const head=['회사','이름','부서','직함','상태'
 $('atlogin').addEventListener('submit',async e=>{e.preventDefault();$('atlerr').textContent='로그인 중…';const m=await QAOnline.login($('atid').value.trim(),$('atpw').value);$('atlerr').textContent=m;if(!m){$('atpw').value='';view();}});
 
 window.addEventListener('qa-auth',view);
-window.Attendees={show:()=>{if(!sb()&&window.QAOnline)QAOnline.start();view();}};
+window.Attendees={show:()=>{if(!sb()&&window.QAOnline)QAOnline.start();view();},get:()=>({R,S}),saveSeat,toggleArr,reload:load};
 })();

@@ -73,7 +73,7 @@ td.pl{color:var(--fg-3);font-variant-numeric:tabular-nums}.d{font-variant-numeri
 .mtab button.on{box-shadow:none;background:#2c2c2c;color:#fff}
 .mtab b{display:inline-block;min-width:20px;padding:0 6px;margin-left:2px;border-radius:99px;background:var(--blue-2);color:#fff;font-size:12px;line-height:18px;text-align:center}
 .mtab b:empty{display:none}
-body:not([data-m=qa]) #colQa,body:not([data-m=ops]) #colOps,body:not([data-m=att]) #colAtt{display:none}
+body:not([data-m=qa]) #colQa,body:not([data-m=ops]) #colOps,body:not([data-m=att]) #colAtt,body:not([data-m=seat]) #colSeat{display:none}
 #colOps table th:nth-child(2){width:150px}#colOps table th:nth-child(3),#colOps table th:nth-child(4){width:110px}#colOps table th:nth-child(5){width:90px}
 body[data-m=qa] .ql{max-height:calc(100vh - 600px);min-height:180px}
 .ql .st{display:inline-block;font-size:11px;font-weight:700;padding:1px 6px;border-radius:5px;margin-right:4px;background:#262626;color:var(--fg-3)}
@@ -176,11 +176,38 @@ button.arr.on{box-shadow:none;background:#1f6b46;color:#fff}button.arr.on:hover{
 .fold:not(.open) h2{margin-bottom:0}
 #clock{font-variant-numeric:tabular-nums;font-size:20px;font-weight:800;color:var(--warn)}
 @media (max-width:960px){main{padding:16px}.top{padding:12px 16px}.atstat{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+/* 좌석 배치 (3D) */
+.smwrap{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:14px}
+#smstage{position:relative;height:calc(100vh - 250px);min-height:420px;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#121212}
+#smstage canvas{display:block}
+#smtip{position:absolute;display:none;pointer-events:none;background:rgba(0,0,0,.82);border:1px solid var(--line);padding:5px 9px;border-radius:6px;font-size:12px;white-space:nowrap;z-index:2}
+#smkeys{position:absolute;left:10px;bottom:10px;font-size:11px;color:var(--fg-3);background:rgba(18,18,18,.8);border:1px solid var(--line);border-radius:8px;padding:5px 9px}
+#smleg{position:absolute;right:10px;bottom:10px;display:flex;gap:10px;font-size:11px;color:var(--fg-2);background:rgba(18,18,18,.8);border:1px solid var(--line);border-radius:8px;padding:5px 9px}
+#smleg i{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:4px}
+#smside{display:flex;flex-direction:column;height:calc(100vh - 250px);min-height:420px;min-width:0}
+#smstat{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+#smstat div{background:var(--card-2);border-radius:10px;padding:8px 10px}#smstat b{display:block;font-size:18px;font-variant-numeric:tabular-nums}#smstat span{font-size:11px}
+#smwarn{font-size:12px;min-height:0;margin-top:6px}
+.smsel{margin-top:8px;border:1px solid var(--line);border-radius:12px;padding:12px 14px;background:var(--card-2)}
+.smsel.empty{border-style:dashed;border-color:#3a3a3a;font-size:13px}
+.smsel .sid{font-size:26px;font-weight:800;color:var(--warn);line-height:1.1;margin-bottom:8px}.smsel .sid small{font-size:12px;font-weight:500;color:var(--fg-3);margin-left:8px}
+.smsel .occ{padding:6px 0;border-top:1px solid var(--line)}.smsel .acts{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
+.smsel .acts button{min-height:30px;font-size:12px}.smsel button.arr.on{background:rgba(94,211,154,.18);color:var(--ok);box-shadow:none}
+.smsel .hintm{margin-top:8px;font-size:12px;color:var(--warn)}
+#smq{width:100%;margin-top:10px}
+#smlh{display:flex;justify-content:space-between;align-items:center;font-size:12px;margin-top:8px}
+#smlist{flex:1;overflow:auto;margin-top:6px;border:1px solid var(--line);border-radius:12px}
+#smlist .it{display:flex;align-items:center;gap:10px;padding:8px 12px;border-bottom:1px solid var(--line);cursor:pointer}#smlist .it:hover{background:#222}
+#smlist .sk{flex:none;width:46px;font-weight:800;color:var(--warn);font-variant-numeric:tabular-nums;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}#smlist .sk.none{color:var(--fg-3);font-weight:500;font-size:12px}
+#smlist .nm{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:13px}#smlist .nm b{font-weight:700}
+#smlist .acts{display:flex;gap:4px;flex:none}#smlist .acts button{min-height:28px;padding:0 9px;font-size:12px}
+@media (max-width:1100px){.smwrap{grid-template-columns:1fr}#smside{height:auto}#smlist{max-height:320px}}
 </style></head>
 <body>
 <header class="top"><h1>운영 입력<small id="hint">메인 스크린(index.html)과 같은 PC · 같은 브라우저에서 열어 주세요. 입력 즉시 반영됩니다.</small></h1><div class="me"><span id="offst" class="mut"></span><span id="clock">--:--</span></div></header>
 <main>
-<nav class="mtab" id="mtab"><button data-m="att">참석자 관리</button><button data-m="ops">운영 관리</button><button data-m="qa">질의 관리 <b id="mtabn"></b></button></nav>
+<nav class="mtab" id="mtab"><button data-m="att">참석자 관리</button><button data-m="seat">좌석 배치</button><button data-m="ops">운영 관리</button><button data-m="qa">질의 관리 <b id="mtabn"></b></button></nav>
 <div class="wrap">
 <div id="colOps">
  <div class="box">
@@ -223,8 +250,27 @@ button.arr.on{box-shadow:none;background:#1f6b46;color:#fff}button.arr.on:hover{
    <div class="oq-head" style="margin-top:20px"><nav class="subtab" id="atflt"><button data-f="all">전체</button><button data-f="noseat">좌석 미지정</button><button data-f="notarr">미확인</button><button data-f="arr">참석</button></nav><div class="oq-flt"><span class="mut" id="atcnt"></span><span id="atmsg"></span></div></div>
    <div class="attw"><table class="att"><thead><tr><th>회사</th><th>이름</th><th>전화</th><th>신청</th><th>좌석</th><th>메모</th><th>현장 참석</th></tr></thead><tbody id="attb"></tbody></table></div>
    <details class="adm" style="margin-top:16px"><summary>좌석 일괄 입력 · 내보내기</summary>
-    <div class="bar"><span class="mut">회사 전체 좌석</span><input type="text" id="atbulkco" list="atcos" placeholder="회사명" style="width:180px"><datalist id="atcos"></datalist><input type="text" id="atbulkseat" placeholder="좌석 (예: A-3 테이블)" style="width:160px"><button id="atbulkgo">적용</button><span class="hint">같은 회사 신청자 모두에게 같은 좌석</span><span class="sp"></span><button id="atcsv">좌석 배치 CSV 내보내기</button></div>
+    <div class="bar"><span class="mut">회사 전체 좌석</span><input type="text" id="atbulkco" list="atcos" placeholder="회사명" style="width:180px"><datalist id="atcos"></datalist><input type="text" id="atbulkseat" placeholder="좌석 (예: A1)" style="width:160px"><button id="atbulkgo">적용</button><span class="hint">같은 회사 신청자 모두에게 같은 좌석</span><span class="sp"></span><button id="atcsv">좌석 배치 CSV 내보내기</button></div>
    </details>
+  </div>
+ </div>
+</div>
+<div id="colSeat">
+ <div class="box">
+  <h2><span>좌석 배치 <span class="mut" style="font-weight:500;font-size:13px">3D 도면 · 좌석을 클릭해 배정 · 참석자 관리와 같은 데이터</span></span>
+   <span style="display:flex;gap:8px;align-items:center"><span id="smmsg" style="font-size:12px;font-weight:500"></span><nav class="subtab" id="smview"><button data-v="persp">3D</button><button data-v="top">평면</button><button data-v="stage">무대에서</button><button data-v="back">뒤에서</button></nav><button id="smlabel" title="라벨을 실제 크기(102×70mm) / 4배 확대로 전환">라벨 확대</button><button id="smreload">새로고침</button></span></h2>
+  <div class="smwrap">
+   <div id="smstage"><div id="smtip"></div>
+    <div id="smkeys">WASD·방향키 이동 · Q/E 회전 · R/F 확대·축소 · PgUp/PgDn 기울기 · 1~4 시점 · L 라벨 · / 검색 · Esc 선택 해제</div>
+    <div id="smleg"><span><i style="background:#3a3f4d"></i>빈 좌석</span><span><i style="background:#2f6bff"></i>배정</span><span><i style="background:#5ed39a"></i>참석</span><span><i style="background:#ffb74d"></i>신청 대기</span><span><i style="background:#ff7a7a"></i>중복</span></div>
+   </div>
+   <aside id="smside">
+    <div id="smstat"></div><div id="smwarn"></div>
+    <div id="smsel" class="smsel empty"></div>
+    <input type="search" id="smq" placeholder="이름 · 회사 · 좌석 검색" autocomplete="off">
+    <div id="smlh"><span class="mut" id="smlt"></span></div>
+    <div id="smlist"></div>
+   </aside>
   </div>
  </div>
 </div>
@@ -357,12 +403,12 @@ const ofs=()=>{$('offst').textContent=window.OFFLINE_STATE||'';$('offst').style.
 function scrFold(o){$('scrbody').hidden=!o;$('scrbox').classList.toggle('open',o);$('scrfold').setAttribute('aria-expanded',o);localStorage.setItem('ctl-scrfold',o?'1':'0');}
 $('scrfold').onclick=()=>scrFold($('scrbody').hidden);scrFold(localStorage.getItem('ctl-scrfold')==='1');
 // 메뉴 탭: 운영 관리 / 질의 관리
-const HINT={att:'사전 신청자 확인 · 좌석은 미리 입력해 두면 현장에서 검색으로 바로 안내할 수 있습니다. 운영자 노트북 어디서나 사용.',ops:'메인 스크린(index.html)과 같은 PC · 같은 브라우저에서 열어 주세요. 입력 즉시 반영됩니다.',qa:'운영자 노트북 어디서나 사용 · 관리자 계정으로 로그인 · 송출하면 메인 스크린에 2초 안에 표시됩니다.',qaLocal:'직접 입력은 메인 스크린과 같은 PC · 같은 브라우저에서만 반영됩니다.'};
-function hint(){const m=document.body.dataset.m;$('hint').textContent=m==='qa'?(SCHED.getSrc()==='local'?HINT.qaLocal:HINT.qa):m==='att'?HINT.att:HINT.ops;}
+const HINT={seat:'행사장 3D 도면에서 좌석(A1~O21)을 눌러 신청자를 배정합니다. 좌석 값은 참석자 관리의 좌석 칸과 같습니다. 운영자 노트북 어디서나 사용.',att:'사전 신청자 확인 · 좌석은 미리 입력해 두면 현장에서 검색으로 바로 안내할 수 있습니다. 운영자 노트북 어디서나 사용.',ops:'메인 스크린(index.html)과 같은 PC · 같은 브라우저에서 열어 주세요. 입력 즉시 반영됩니다.',qa:'운영자 노트북 어디서나 사용 · 관리자 계정으로 로그인 · 송출하면 메인 스크린에 2초 안에 표시됩니다.',qaLocal:'직접 입력은 메인 스크린과 같은 PC · 같은 브라우저에서만 반영됩니다.'};
+function hint(){const m=document.body.dataset.m;$('hint').textContent=m==='qa'?(SCHED.getSrc()==='local'?HINT.qaLocal:HINT.qa):m==='att'?HINT.att:m==='seat'?HINT.seat:HINT.ops;}
 document.addEventListener('keydown',e=>{if(document.body.dataset.m!=='qa'||/INPUT|TEXTAREA|SELECT/.test(e.target.tagName)||e.target.isContentEditable)return;
   if(e.key!=='ArrowRight'&&e.key!=='ArrowLeft')return;e.preventDefault();const d=e.key==='ArrowRight'?1:-1;
   if(SCHED.getSrc()==='online'){if(window.QAOnline&&QAOnline.step)QAOnline.step(d);}else qStep(d);});
-function setM(m){document.body.dataset.m=m;localStorage.setItem('ctl-menu',m);document.querySelectorAll('#mtab [data-m]').forEach(b=>b.classList.toggle('on',b.dataset.m===m));if(window.SCHED)hint();if(m==='att'&&window.Attendees)Attendees.show();if(m==='att')setTimeout(()=>{const q=document.getElementById('atq');if(q&&!q.closest('[hidden]'))q.focus();},50);}
+function setM(m){document.body.dataset.m=m;localStorage.setItem('ctl-menu',m);document.querySelectorAll('#mtab [data-m]').forEach(b=>b.classList.toggle('on',b.dataset.m===m));if(window.SCHED)hint();if((m==='att'||m==='seat')&&window.Attendees)Attendees.show();if(m==='seat'&&window.SeatMap)SeatMap.show();if(m==='att')setTimeout(()=>{const q=document.getElementById('atq');if(q&&!q.closest('[hidden]'))q.focus();},50);}
 document.querySelectorAll('#mtab [data-m]').forEach(b=>b.onclick=()=>setM(b.dataset.m));
 setM(localStorage.getItem('ctl-menu')||'att');
 // 질문 소스 (온라인 / 직접 입력) — 같은 PC의 메인 스크린도 따라 바뀜
@@ -374,5 +420,6 @@ SCHED.onSrc(drawSrc);
 </script>
 <script src="assets/qa-online.js"></script>
 <script src="assets/attendees.js"></script>
+<script src="assets/seatmap.js"></script>
 <script>drawSrc();if(document.body.dataset.m==="att")Attendees.show();</script>
 </body></html>
