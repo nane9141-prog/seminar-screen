@@ -37,7 +37,7 @@ function loadLib(cb){
   if(window.THREE&&THREE.OrbitControls)return cb();
   if(libState===1)return;libState=1;
   const add=(src,next)=>{const s=document.createElement('script');s.src=src;s.onload=next;s.onerror=()=>{libState=0;$('smstage').insertAdjacentHTML('beforeend','<p class="mut" style="padding:40px">3D 라이브러리를 불러오지 못했습니다. 새로고침해 주세요.</p>');};document.head.appendChild(s);};
-  add('assets/three.min.js',()=>add('assets/OrbitControls.js',cb));
+  add('assets/three.min.js',()=>add('assets/OrbitControls.js',()=>add('assets/seat-screen.js',cb)));
 }
 function ctex(w,h,draw){const c=document.createElement('canvas');c.width=w;c.height=h;draw(c.getContext('2d'),w,h);const t=new THREE.CanvasTexture(c);t.anisotropy=8;return t;}
 const FONT='"Pretendard Variable","Noto Sans KR",sans-serif';
@@ -79,6 +79,9 @@ function build(){
   /* 무대 + 스크린, 후면 단상 */
   box(3.6,.8,16.2,0x1c1f2a,-25.1,.4,-.4);box(.12,5.2,13,0x23262f,-27.8,3.9,-.4,{emissive:0x1b2233,emissiveIntensity:.9});box(.6,1.6,.8,0x2a2e3b,-24.4,1.6,-.4);
   sprite('STAGE',-25.1,7.8,-.4,'#cfd8ff',7);
+  /* 무대 스크린에 메인 스크린 화면(21:8) 표시 */
+  if(window.SEAT_SCREEN_IMG){const im=new Image();im.onload=()=>{const tx=new THREE.Texture(im);tx.anisotropy=8;tx.needsUpdate=true;
+    const pm=new THREE.Mesh(new THREE.PlaneGeometry(5.2*21/8,5.2),new THREE.MeshBasicMaterial({map:tx}));pm.rotation.y=Math.PI/2;pm.position.set(-27.72,3.9,-.4);scene.add(pm);};im.src=window.SEAT_SCREEN_IMG;}
   box(3.6,.4,16.2,0x1c1f2a,25.4,.2,-.4);sprite('후면 단상 · 콘솔',25.4,2.6,-.4,'#aab3cc',6.5);
   /* 무대 좌·우 LED 타워: 3100(W)×2230(D)×4170(H)mm, 하단 1820mm 베이스, 블랙 패널, 안쪽으로 25° */
   const ledTex=ctex(512,400,(g,cw,ch)=>{const gr=g.createLinearGradient(0,0,cw,ch);gr.addColorStop(0,'#1d3a7a');gr.addColorStop(1,'#0c1a3c');g.fillStyle=gr;g.fillRect(0,0,cw,ch);
