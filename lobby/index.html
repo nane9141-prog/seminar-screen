@@ -70,6 +70,8 @@ body.idle{cursor:none}
 .talk{font-size:54px;font-weight:700;line-height:70.6px;letter-spacing:0;white-space:nowrap}
 .name{margin-top:40px;font:700 40.8px/1.2 "카카오 작은글씨",sans-serif;letter-spacing:.28em}
 .name.en{letter-spacing:0}
+/* 자간: 타이틀(h1 · h2 · 타이틀 문구)과 자간 넓힌 이름을 뺀 오버레이 글자를 조금 좁게 */
+.ov :not(h1):not(h2):not(h1 *):not(h2 *):not(.mt):not(.mt *):not(.name){letter-spacing:-.025em}
 .meta{margin-top:12px;font:300 32px/1.45 "KakaoSmallSansL","카카오 작은글씨",sans-serif;color:#fff;white-space:nowrap}
 .spk.on .col>.eyebrow,.spk.on .cb>*{animation:up 1s cubic-bezier(.2,.7,.2,1) both}
 .spk.on .col>.eyebrow{animation-delay:.5s}.spk.on .cb>*:nth-child(1){animation-delay:.55s}.spk.on .cb>*:nth-child(2){animation-delay:.75s}.spk.on .cb>*:nth-child(3){animation-delay:.9s}

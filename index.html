@@ -248,6 +248,8 @@ body.idle{cursor:none}
 .slide[data-no=M4-1],.slide[data-no=M5-1],.slide[data-no=M7-1]{padding-bottom:380px}  /* svg처럼 가운데보다 조금 위 */
 .slide[data-no=M4-5] .kism{margin:120px auto 0;display:block}
 .qa-note{margin:40px 0 0;font:300 52px/1.4 "KakaoSmall",sans-serif;color:#B4BDC9;letter-spacing:0}  /* M10-1 패널 아래 작은 안내 */
+/* 자간: 타이틀(h1 · h2 · h3)과 자간 넓힌 이름을 뺀 모든 글자를 조금 좁게 */
+.stage .slide :not(h1):not(h2):not(h3):not(h1 *):not(h2 *):not(h3 *):not(.cg-n):not(.sp-n){letter-spacing:-.025em}
 .slide[data-lay=center] .en-eb{font:300 77.6px/1.2 "Lexend",sans-serif;color:#fff;letter-spacing:0;margin-bottom:96px}
 /* slide layout.svg 6번(축사 · 연사): 왼쪽 604px 눈썹 열(Lexend Light #80cde5), 1022px부터 이름 · 소속. 사진은 오른쪽 캔버스 */
 .slide[data-spk]{padding:0}
