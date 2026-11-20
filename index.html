@@ -271,14 +271,15 @@ body.idle{cursor:none}
 .bk-tw{position:absolute;left:1022px;top:335px}
 .bk-t{margin:0;font:700 148.2px/197.6px "KakaoBig",sans-serif;color:#fff;letter-spacing:0;white-space:nowrap}
 .soon .t-soon .bk-t{color:#fff}
-.bk-s{position:absolute;left:1022px;top:791px;margin:0;font:300 63.5px/1 "KakaoSmall",sans-serif;color:#fff;letter-spacing:0;white-space:nowrap}
+.bk-s{position:absolute;left:1022px;top:836px;margin:0;font:300 63.5px/1 "KakaoSmall",sans-serif;color:#fff;letter-spacing:0;white-space:nowrap}
 .bk-tv{display:none}
 .bk-timer{position:absolute;left:2522px;top:404px}
 .bk-timer .dots{display:block;overflow:visible}
 .bk-r{margin:56px 0 0;font:300 63.5px/1 "KakaoSmall",sans-serif;color:#fff;letter-spacing:0;white-space:nowrap}  /* 타이머 아래 작게: 00:00에 다시 시작합니다. */
 .bk-timer .dots circle{fill:#fff;fill-opacity:.09;transition:fill-opacity .35s}
 .bk-timer .dots circle.on{fill-opacity:1}
-.bk-next{position:absolute;left:0;right:0;top:1222px;height:378px;background:linear-gradient(90deg,#6cc6d6,#44b68d);color:#111}
+.bk-next{position:absolute;left:0;right:0;top:1222px;height:378px;background:linear-gradient(90deg,#6cc6d6,#44b68d,#6cc6d6,#44b68d);background-size:300% 100%;animation:bkFlow 14s ease-in-out infinite alternate;color:#111}
+@keyframes bkFlow{from{background-position:0% 0}to{background-position:100% 0}}  /* NEXT 띠: 두 색이 좌우로 천천히 흐름 */
 .bk-nk{position:absolute;left:604px;top:99px;margin:0;font:700 63.5px/1 "Lexend",sans-serif;letter-spacing:0}
 .bk-next>div{position:absolute;left:1022px;top:77px}
 .bk-nt{margin:0;font:800 99.1px/1 "KakaoBig",sans-serif;letter-spacing:0;white-space:nowrap}
