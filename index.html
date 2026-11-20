@@ -245,37 +245,16 @@ body.idle{cursor:none}
 .slide[data-spk] .talk{min-height:0}
 
 /* slide layout.svg 5번(M4-1): 영문 눈썹 Lexend Light 흰색 */
-.slide[data-no=M4-1],.slide[data-no=M5-1],.slide[data-no=M7-1]{padding-bottom:380px}  /* svg처럼 가운데보다 조금 위 — 파트 타이틀 모두 같은 위치 */
+.slide[data-no=M4-1]{padding-bottom:380px}  /* svg처럼 가운데보다 조금 위 */
 .slide[data-lay=center] .en-eb{font:300 77.6px/1.2 "Lexend",sans-serif;color:#fff;letter-spacing:0;margin-bottom:96px}
 /* slide layout.svg 6번(축사 · 연사): 왼쪽 604px 눈썹 열(Lexend Light #80cde5), 1022px부터 이름 · 소속. 사진은 오른쪽 캔버스 */
 .slide[data-spk]{padding:0}
 .slide[data-spk] .cg{position:absolute;left:604px;top:0;bottom:0;width:1700px;display:grid;grid-template-columns:418px minmax(0,1fr);align-content:center;align-items:start}
 .cg-e{margin:0;padding-top:14px;font:300 63.5px/85px "Lexend",sans-serif;color:#80cde5;letter-spacing:0}
-.cg-t{margin:0 0 106px;font:700 131.2px/171.7px "KakaoBig",sans-serif;white-space:nowrap;color:#fff;letter-spacing:0}
+.cg-t{margin:0 0 56px;font:400 77.6px/1.45 "KakaoSmall",sans-serif;color:#E6EBF2;letter-spacing:-.02em}
 .cg-n{margin:0;font:700 183.4px/1.15 "KakaoBig",sans-serif;color:#fff;letter-spacing:0;white-space:nowrap}
 .cg-n.ko{letter-spacing:.28em}
-/* slide layout.svg 8번(세션 연사): 눈썹 'Session N.' 한 줄, 세션명 Kakao Big Bold 131px, 이름 Kakao Small Bold 99px, 소속 Kakao Small Light 77.6px 한 줄 */
-.cg:has(.cg-t) .cg-e{padding-top:22px;white-space:nowrap}
-.cg-t~.cg-n{font:700 99.1px/1.2 "KakaoSmall",sans-serif}
-.cg-t~.cg-r{margin-top:23px;font:300 77.6px/1.45 "KakaoSmall",sans-serif;white-space:nowrap}
 .cg-r{margin:34px 0 0;font:400 77.6px/120px "KakaoSmall",sans-serif;color:#fff;letter-spacing:0}
-
-/* 휴식 · 재개 타이머(M6-1, M8-1): 세션 연사와 같은 2단 그리드(라벨 418px | 본문) + 오른쪽 타이머 */
-.slide[data-break] .bk{position:absolute;left:604px;top:0;bottom:120px;width:1780px;display:grid;grid-template-columns:418px minmax(0,1fr);align-content:center;align-items:start}
-.bk-e{margin:0;padding-top:30px;font:300 63.5px/85px "Lexend",sans-serif;color:#80cde5}
-.bk-t{margin:0;font:700 131.2px/171.7px "KakaoBig",sans-serif;color:#fff;white-space:nowrap;letter-spacing:0}
-.bk-r{margin:40px 0 0;font:300 77.6px/1.45 "KakaoSmall",sans-serif;color:#C7D0DD;white-space:nowrap}
-.bk-r [data-resume]{font-family:"Lexend",sans-serif;font-weight:400;color:#fff}
-.bk-n{margin-top:96px;padding-top:60px;border-top:2px solid rgba(255,255,255,.16);display:flex;flex-direction:column;gap:18px}
-.bk-nk{margin:0 0 6px;font:300 52px/1.2 "Lexend",sans-serif;color:#80cde5}
-.bk-nt{margin:0;font:700 77.6px/1.32 "KakaoBig",sans-serif;color:#F2F5FA}
-.bk-nb{margin:0;font:300 58px/1.45 "KakaoSmall",sans-serif;color:#9AA3AF}
-.slide[data-break] .timer{right:416px;top:0;bottom:120px;transform:none;display:flex;flex-direction:column;justify-content:center;text-align:right;width:1260px}
-.slide[data-break] .timer-k{margin:0;font:300 63.5px/85px "Lexend",sans-serif;color:#80cde5}
-.slide[data-break] .timer-v{margin:10px 0 0;font:300 400px/1 "Lexend",sans-serif;letter-spacing:-8px;color:#fff;font-variant-numeric:tabular-nums}
-.timer-bar{margin:56px 0 0 auto;width:100%;height:6px;border-radius:3px;background:rgba(255,255,255,.12);overflow:hidden}
-.timer-bar i{display:block;height:100%;background:#80cde5;transform-origin:left;transition:transform .5s linear}
-.soon .bk-t{color:#FFB84D}.slide[data-break].soon .timer-v{color:#FFB84D}.soon .timer-bar i{background:#FFB84D}
 </style></head>
 <body>
 <div class="stage" id="scr" data-foot="full">
@@ -339,64 +318,68 @@ body.idle{cursor:none}
 <video id="v-kism" class="vid" src="assets/kism-intro.mp4" playsinline preload="auto"></video>
 <p class="lead tbd center vph">[출범식 인트로 영상 — assets/kism-intro.mp4]</p>
 </section>
-<section class="slide" id="m4_5" data-no="M4-5" data-title="M4-5 한국주주총회연구소 출범식" data-bg="A" data-foot="full" data-lay="center">
-<img class="kism fu" style="--i:0;align-self:center;margin-bottom:110px" src="assets/kism-white.svg" alt="KISM 한국주주총회연구소">
-<h1 class="title-m" data-words style="--i:1;font-size:210px;line-height:1.25">한국주주총회연구소 출범식</h1>
+<section class="slide" id="m4_5" data-no="M4-5" data-title="M4-5 한국주주총회연구소 출범식" data-bg="A" data-foot="full" >
+<img class="kism fu" style="--i:0" src="assets/kism-white.svg" alt="KISM 한국주주총회연구소">
+<h1 class="title-m" data-words style="--i:1">한국주주총회연구소 출범식</h1>
+<p class="lead fu" style="--i:2">한국주주총회연구소의 공식 출범을 알립니다.</p>
+<p class="meta fu" style="--i:3">권재열 한국주주총회연구소장, 경희대 법학전문대학원 교수</p>
 </section>
-<section class="slide" id="m5_1" data-no="M5-1" data-title="M5-1 파트 타이틀 · 의무화가 바꾸는 주주총회" data-bg="A" data-foot="logo" data-tr="zoom" data-glow="1" data-fill="1" data-lay="center">
-<p class="eyebrow en-eb fu" style="--i:0">PART 1</p>
+<section class="slide" id="m5_1" data-no="M5-1" data-title="M5-1 파트 타이틀 · 의무화가 바꾸는 주주총회" data-bg="A" data-foot="full" data-tr="zoom" data-glow="1" data-fill="1" data-lay="center">
+<p class="eyebrow fu" style="--i:0">PART 1</p>
 <h1 class="title-m" data-words style="--i:1">의무화가 바꾸는 주주총회</h1>
+<p class="lead w2600 fu" style="--i:2">상법 개정과 전자주주총회 의무화를 법률 · 학계 관점에서 다룹니다.</p>
+<p class="meta fu" style="--i:3">Session 1 · Session 2</p>
 </section>
 <section class="slide" id="m5_2" data-no="M5-2" data-title="M5-2 Session 1 연사 소개 · 김승준" data-bg="B" data-foot="full" data-spk="speaker1-1">
-<div class="cg"><p class="cg-e fu" style="--i:0">Session 1.</p><div class="cg-b"><p class="cg-t fu" style="--i:0">전자주주총회 제도 도입 및<br>진행 관련 주요 실무 쟁점</p><h2 class="cg-n ko" data-words style="--i:1">김승준</h2><p class="cg-r fu" style="--i:2">김앤장 법률사무소, 변호사</p></div></div>
+<div class="cg"><p class="cg-e fu" style="--i:0">Session<br>1</p><div class="cg-b"><p class="cg-t fu" style="--i:0">전자주주총회 제도 도입 및<br>진행 관련 주요 실무 쟁점</p><h2 class="cg-n ko" data-words style="--i:1">김승준</h2><p class="cg-r fu" style="--i:2">김앤장 법률사무소,<br>변호사</p></div></div>
 </section>
 <section class="slide" id="m5_3" data-no="M5-3" data-title="M5-3 Session 1 발표자료 — 외부 소스" data-bg="C" data-foot="full" data-ext="1">
 
 </section>
 <section class="slide" id="m5_4" data-no="M5-4" data-title="M5-4 Session 2 연사 소개 · 권재열" data-bg="B" data-foot="full" data-spk="speaker2">
-<div class="cg"><p class="cg-e fu" style="--i:0">Session 2.</p><div class="cg-b"><p class="cg-t fu" style="--i:0">상법 개정과 전자주총이 몰고 올<br>기업 경영의 지각변동</p><h2 class="cg-n ko" data-words style="--i:1">권재열</h2><p class="cg-r fu" style="--i:2">한국주주총회연구소장, 경희대 법학전문대학원 교수</p></div></div>
+<div class="cg"><p class="cg-e fu" style="--i:0">Session<br>2</p><div class="cg-b"><p class="cg-t fu" style="--i:0">상법 개정과 전자주총이 몰고 올<br>기업 경영의 지각변동</p><h2 class="cg-n ko" data-words style="--i:1">권재열</h2><p class="cg-r fu" style="--i:2">한국주주총회연구소장,<br>경희대 법학전문대학원 교수</p></div></div>
 </section>
 <section class="slide" id="m5_5" data-no="M5-5" data-title="M5-5 Session 2 발표자료 — 외부 소스" data-bg="C" data-foot="full" data-ext="1">
 
 </section>
 <section class="slide" id="m6_1" data-no="M6-1" data-title="M6-1 휴식 · 재개 타이머" data-bg="B" data-foot="full" data-break="brk1">
-<div class="bk"><p class="bk-e fu" style="--i:0">Break</p><div class="bk-b">
-<div class="t-normal"><h1 class="bk-t" data-words style="--i:0">잠시 쉬어갑니다</h1></div>
-<div class="t-soon"><h1 class="bk-t">곧 Session 3이<br>시작됩니다</h1></div>
-<p class="bk-r fu" style="--i:1"><span class="t-normal-i"><span data-resume>--:--</span>에 다시 시작합니다.</span><span class="t-soon-i">자리로 돌아와 주세요.</span></p>
-<div class="bk-n fu" style="--i:2"><p class="bk-nk">Next · Session 3.</p><p class="bk-nt">Proxymity, 글로벌 의결권 행사<br>인프라의 혁신과 미래</p><p class="bk-nb">Scott Oakland · Proxymity, Head of APAC</p></div>
-</div></div>
-<div class="timer fu" style="--i:1"><p class="timer-k">Resume in</p><p class="timer-v" data-timer>15:00</p><div class="timer-bar"><i data-bar></i></div></div>
+<div class="timer"><p class="timer-k">재개까지</p><p class="timer-v" data-timer>15:00</p></div>
+<p class="eyebrow">BREAK</p>
+<div class="t-normal"><h1 class="title" data-words style="--i:0">잠시 쉬어갑니다</h1></div>
+<div class="t-soon"><h1 class="title-m">곧 Session 3이 시작됩니다</h1></div>
+<p class="lead"><span class="t-normal-i"><span data-resume>--:--</span>에 다시 시작합니다.</span><span class="t-soon-i">자리로 돌아와 주세요.</span></p>
+<div class="next"><p class="card-k">다음 순서 · Session 3</p><h3 class="card-t">Proxymity, 글로벌 의결권 행사 인프라의 혁신과 미래</h3><p class="card-b">Scott Oakland · Proxymity, Head of APAC</p></div>
 </section>
 <section class="slide" id="m6_s1" data-no="M6-S1" data-title="M6-S1 [상황] 재개 임박 (Session 3)" data-bg="B" data-foot="full" data-msg="1" data-tr="fade" data-lay="center">
 <p class="eyebrow fu" style="--i:0">NOTICE</p>
 <h1 class="title-m" data-words style="--i:1">곧 Session 3이 시작됩니다</h1>
 <p class="lead fu" style="--i:2">자리로 돌아와 주세요.</p>
 </section>
-<section class="slide" id="m7_1" data-no="M7-1" data-title="M7-1 파트 타이틀 · 전자주주총회 및 의결권 행사의 미래" data-bg="A" data-foot="logo" data-tr="zoom" data-glow="1" data-fill="1" data-lay="center">
-<p class="eyebrow en-eb fu" style="--i:0">PART 2</p>
+<section class="slide" id="m7_1" data-no="M7-1" data-title="M7-1 파트 타이틀 · 전자주주총회 및 의결권 행사의 미래" data-bg="A" data-foot="full" data-tr="zoom" data-glow="1" data-fill="1" data-lay="center">
+<p class="eyebrow fu" style="--i:0">PART 2</p>
 <h1 class="title-m" data-words style="--i:1">전자주주총회 및<br>의결권 행사의 미래</h1>
+<p class="lead w2600 fu" style="--i:2">글로벌 의결권 플랫폼의 시각과 IR큐더스의 통합 솔루션으로 전자주주총회 도입 · 운영 방안을 살펴봅니다.</p>
+<p class="meta fu" style="--i:3">Session 3 · Session 4</p>
 </section>
 <section class="slide" id="m7_2" data-no="M7-2" data-title="M7-2 Session 3 연사 소개 · Scott Oakland" data-bg="B" data-foot="full" data-spk="speaker-scott">
-<div class="cg"><p class="cg-e fu" style="--i:0">Session 3.</p><div class="cg-b"><p class="cg-t fu" style="--i:0">Proxymity, 글로벌 의결권 행사<br>인프라의 혁신과 미래</p><h2 class="cg-n" data-words style="--i:1">Scott Oakland</h2><p class="cg-r fu" style="--i:2">Proxymity, Head of APAC</p></div></div>
+<div class="cg"><p class="cg-e fu" style="--i:0">Session<br>3</p><div class="cg-b"><p class="cg-t fu" style="--i:0">Proxymity, 글로벌 의결권 행사<br>인프라의 혁신과 미래</p><h2 class="cg-n" data-words style="--i:1">Scott Oakland</h2><p class="cg-r fu" style="--i:2">Proxymity,<br>Head of APAC</p></div></div>
 </section>
 <section class="slide" id="m7_3" data-no="M7-3" data-title="M7-3 Session 3 발표자료 — 외부 소스" data-bg="C" data-foot="full" data-ext="1">
 
 </section>
 <section class="slide" id="m7_4" data-no="M7-4" data-title="M7-4 Session 4 연사 소개 · 박성용" data-bg="B" data-foot="full" data-spk="speaker3-1">
-<div class="cg"><p class="cg-e fu" style="--i:0">Session 4.</p><div class="cg-b"><p class="cg-t fu" style="--i:0">전자주주총회 도입 · 운영 방안 및<br>통합 솔루션 소개</p><h2 class="cg-n ko" data-words style="--i:1">박성용</h2><p class="cg-r fu" style="--i:2">IR큐더스, 본부장</p></div></div>
+<div class="cg"><p class="cg-e fu" style="--i:0">Session<br>4</p><div class="cg-b"><p class="cg-t fu" style="--i:0">전자주주총회 도입 · 운영 방안 및<br>통합 솔루션 소개</p><h2 class="cg-n ko" data-words style="--i:1">박성용</h2><p class="cg-r fu" style="--i:2">IR큐더스,<br>본부장</p></div></div>
 </section>
 <section class="slide" id="m7_5" data-no="M7-5" data-title="M7-5 Session 4 발표자료 — 외부 소스" data-bg="C" data-foot="full" data-ext="1">
 
 </section>
 <section class="slide" id="m8_1" data-no="M8-1" data-title="M8-1 휴식 · 재개 타이머" data-bg="B" data-foot="full" data-break="brk2">
-<div class="bk"><p class="bk-e fu" style="--i:0">Break</p><div class="bk-b">
-<div class="t-normal"><h1 class="bk-t" data-words style="--i:0">잠시 쉬어갑니다</h1></div>
-<div class="t-soon"><h1 class="bk-t">곧 모의 전자주주총회<br>시연이 시작됩니다</h1></div>
-<p class="bk-r fu" style="--i:1"><span class="t-normal-i"><span data-resume>--:--</span>에 다시 시작합니다.</span><span class="t-soon-i">자리로 돌아와 주세요.</span></p>
-<div class="bk-n fu" style="--i:2"><p class="bk-nk">Next</p><p class="bk-nt">모의 전자주주총회 시연</p><p class="bk-nb">박성용 · IR큐더스, 본부장</p></div>
-</div></div>
-<div class="timer fu" style="--i:1"><p class="timer-k">Resume in</p><p class="timer-v" data-timer>15:00</p><div class="timer-bar"><i data-bar></i></div></div>
+<div class="timer"><p class="timer-k">재개까지</p><p class="timer-v" data-timer>15:00</p></div>
+<p class="eyebrow">BREAK</p>
+<div class="t-normal"><h1 class="title" data-words style="--i:0">잠시 쉬어갑니다</h1></div>
+<div class="t-soon"><h1 class="title-m">곧 모의 전자주주총회 시연이 시작됩니다</h1></div>
+<p class="lead"><span class="t-normal-i"><span data-resume>--:--</span>에 다시 시작합니다.</span><span class="t-soon-i">자리로 돌아와 주세요.</span></p>
+<div class="next"><p class="card-k">다음 순서</p><h3 class="card-t">모의 전자주주총회 시연</h3><p class="card-b">박성용 · IR큐더스, 본부장 · 참석자와 함께 모의 전자주주총회를 진행합니다.</p></div>
 </section>
 <section class="slide" id="m8_s1" data-no="M8-S1" data-title="M8-S1 [상황] 재개 임박 (시연)" data-bg="B" data-foot="full" data-msg="1" data-tr="fade" data-lay="center">
 <p class="eyebrow fu" style="--i:0">NOTICE</p>
@@ -466,23 +449,23 @@ const stage=document.getElementById('scr'),slides=[...document.querySelectorAll(
 const qp=new URLSearchParams(location.search);
 if(qp.get('lite'))stage.classList.add('lite');
 /* ---- 연사 초상(로비 lobby/index.html 와 같은 코드): 원본 사진이 나타나고, 인물 중심을 13개 점이 공전(점끼리 가까우면 선으로 이어짐). 사진 · 점 · 선 · 글씨가 함께 나타나고 함께 사라짐 ---- */
-const BOX={x:867,y:-20,w:878,h:1176};  // 사진 자리: 1.2배 확대(가운데 x 1306 유지, 머리 위치 유지)
+const BOX={x:940,y:50,w:732,h:980};  // 사진 자리(이전 x 1080 → 140px 왼쪽)
 const sm=(a,b,x)=>{x=(x-a)/(b-a);x=x<0?0:x>1?1:x;return x*x*(3-2*x);};
 const pc=document.getElementById('pcv'),px=pc.getContext('2d');pc.width=4200;pc.height=1600;
-const K=1600/1080,OXS=3450-(940+366)*K;  // 로비 좌표(1920×1080)를 메인(4200×1600)으로: 높이 기준 확대, 사진 가운데를 가로 82% 지점에(세션명이 길어 오른쪽으로)
+const K=1600/1080,OXS=2772-(940+366)*K;  // 로비 좌표(1920×1080)를 메인(4200×1600)으로: 높이 기준 확대, 사진 가운데를 가로 66% 지점에
 /* 원본 사진(아래 · 좌우 끝은 그라데이션으로 사라짐) */
 const PHOTO={};[...document.querySelectorAll('.slide[data-spk]')].map(s=>s.dataset.spk).forEach(n=>{const c=document.createElement('canvas');c.width=BOX.w;c.height=BOX.h;
   const im=new Image();im.onload=()=>{const g=c.getContext('2d');g.drawImage(im,0,0,BOX.w,BOX.h);g.globalCompositeOperation='destination-in';
     let gr=g.createLinearGradient(0,0,0,BOX.h);gr.addColorStop(0,'rgba(0,0,0,1)');gr.addColorStop(.42,'rgba(0,0,0,1)');gr.addColorStop(.88,'rgba(0,0,0,0)');g.fillStyle=gr;g.fillRect(0,0,BOX.w,BOX.h);
     gr=g.createLinearGradient(0,0,BOX.w,0);gr.addColorStop(0,'rgba(0,0,0,0)');gr.addColorStop(.12,'rgba(0,0,0,1)');gr.addColorStop(.88,'rgba(0,0,0,1)');gr.addColorStop(1,'rgba(0,0,0,0)');g.fillStyle=gr;g.fillRect(0,0,BOX.w,BOX.h);};
   im.src='assets/'+n+'.webp';PHOTO[n]=c;});
-const PH_A=.9,PH_IN=.7,OUT=1.4;  // 사진 밝기 · 등장 페이드 · 퇴장 페이드(초)
+const PH_A=.62,PH_IN=.7,OUT=1.4;  // 사진 밝기 · 등장 페이드 · 퇴장 페이드(초)
 /* 공전 궤도: 기울기가 다른 타원 3개에 점 13개. 타원 아래쪽 반이 인물 앞, 위쪽 반이 뒤 */
 const OC={x:BOX.x+BOX.w*.5,y:BOX.y+BOX.h*.54};  // 공전 중심: 가슴 아래 높이(이전 .40 → .54, 약 137px 아래)
-const RINGS=[{tilt:-.30,R:370,k:.30,per:20},{tilt:.20,R:330,k:.36,per:16},{tilt:.52,R:292,k:.26,per:24}];  // 반지름 1.23배
+const RINGS=[{tilt:-.30,R:300,k:.30,per:20},{tilt:.20,R:268,k:.36,per:16},{tilt:.52,R:236,k:.26,per:24}];
 const ORB=[];{let sd=11;const rnd=()=>{sd=(sd*1664525+1013904223)>>>0;return sd/4294967296;};
-  [5,4,4].forEach((n,r)=>{for(let j=0;j<n;j++)ORB.push({r,ph:j/n*Math.PI*2+rnd()*.9,dr:(rnd()-.5)*32,sz:2.6+rnd()*2.2});});}
-const LINK=310;let port=null;  // {k,t0,tOut,sp}
+  [5,4,4].forEach((n,r)=>{for(let j=0;j<n;j++)ORB.push({r,ph:j/n*Math.PI*2+rnd()*.9,dr:(rnd()-.5)*26,sz:1.6+rnd()*1.4});});}
+const LINK=250;let port=null;  // {k,t0,tOut,sp}
 const P=ORB.map(()=>({x:0,y:0,z:0}));
 function orbPos(o,t,grow){const g=RINGS[o.r],a=o.ph+t*Math.PI*2/g.per,R=(g.R+o.dr)*grow,ex=Math.cos(a)*R,ey=Math.sin(a)*R*g.k,c=Math.cos(g.tilt),s=Math.sin(g.tilt);
   return{x:OC.x+ex*c-ey*s,y:OC.y+ex*s+ey*c,z:Math.sin(a)};}
@@ -500,7 +483,7 @@ function drawPort(now){
       const pa=PH_A*sm(0,PH_IN,t)*fo,oa=sm(.3,1.6,t)*fo;       // 점 · 선은 사진과 함께(조금 늦게) 떠오름
       const grow=(.86+.14*(1-Math.pow(1-sm(.3,2,t),2)))*(tr<0?1:1+.06*sm(0,OUT,tr));
       ORB.forEach((o,i)=>Object.assign(P[i],orbPos(o,t,grow)));
-      px.lineWidth=1.6;
+      px.lineWidth=1;
       const lines=(front)=>{for(let i=0;i<P.length;i++)for(let j=i+1;j<P.length;j++){const a=P[i],b=P[j],zf=(a.z+b.z)/2;if((zf>=0)!==front)continue;
         const d=Math.hypot(a.x-b.x,a.y-b.y);if(d>LINK)continue;const w=(1-d/LINK)*(.35+.65*(zf+1)/2)*oa*.5;
         px.strokeStyle='rgba(214,226,246,'+w.toFixed(3)+')';px.beginPath();px.moveTo(a.x,a.y);px.lineTo(b.x,b.y);px.stroke();}};
@@ -534,7 +517,7 @@ const dsPost=m=>{const f=document.getElementById('c');if(f&&f.contentWindow)f.co
 function bgSet(s){const f=document.getElementById('c'),k=s.dataset.bg,lay=s.dataset.lay;let d=BGDIM[k]??1,ox=.5;if(k!=='N'){d=(lay==='center'||lay==='en')?OVDIM.title:OVDIM.body;}
   f.style.opacity=k==='N'?0:d;dsPost({ds:'ox',v:ox});}
 document.getElementById('c').addEventListener('load',()=>{dsPost({ds:'q',v:window.FSQ});if(SPD!==1)dsPost({ds:'mul',v:SPD});try{const o=JSON.parse(localStorage.getItem('scr-ds')||'null');if(o)dsPost(Object.assign({ds:'set'},o));}catch(e){}const s=slides[idx];if(s)bgSet(s);});
-function progScroll(s){document.querySelectorAll('.pin').forEach(x=>{if(x._a){x._a.cancel();x._a=null;}});
+function progScroll(s){document.querySelectorAll('.pin').forEach(x=>{if(!x._a)return;const a=x._a;x._a=null;const sl=x.closest('.slide');setTimeout(()=>{if(!sl.classList.contains('on'))a.cancel();},2500);});  // 나가는 화면은 스크롤 위치 그대로 두고 전환이 끝난 뒤 초기화
   const pin=s&&s.querySelector('.pin');if(!pin)return;const box=pin.parentNode,z=parseFloat(getComputedStyle(pin).zoom)||1,dist=(pin.offsetHeight*z-box.clientHeight)/z;if(dist<=0)return;  // zoom 보정
   const V=110,H=2,move=dist/V,T=H+move;  // 한 번 내려가고 맨 아래에서 멈춤(처음으로 돌아가지 않음)
   pin._a=pin.animate([{transform:'translateY(0)',offset:0},{transform:'translateY(0)',offset:H/T,easing:'linear'},{transform:`translateY(${-dist}px)`,offset:1}],{duration:T*1000,iterations:1,delay:1200,fill:'forwards'});}
@@ -586,7 +569,7 @@ function applySched(){
 function tick(){const ns=SCHED.nowSec();slides.forEach(s=>{if(!s.dataset.break)return;const it=SCHED.item(SC,s.dataset.break);if(!it)return;
   let r=Math.round(it.end*60-ns);if(r<0)r=0;if(r>5400)r=(it.end-it.start)*60;
   const m=Math.floor(r/60),sec=r%60;s.querySelector('[data-timer]').textContent=(m<10?'0':'')+m+':'+(sec<10?'0':'')+sec;
-  s.querySelector('[data-resume]').textContent=SCHED.fmt(it.end);const bar=s.querySelector('[data-bar]');if(bar)bar.style.transform='scaleX('+Math.max(0,Math.min(1,r/Math.max(60,(it.end-it.start)*60)))+')';s.classList.toggle('soon',r>0&&r<=180);});}
+  s.querySelector('[data-resume]').textContent=SCHED.fmt(it.end);s.classList.toggle('soon',r>0&&r<=180);});}
 setInterval(tick,500);
 function renderNotice(){const n=SCHED.nowMin(),up=SC.items.filter(x=>x.end>n&&x.id!=='reg').slice(0,5);
   const moved=up.some(x=>x.start!==x.ps);
