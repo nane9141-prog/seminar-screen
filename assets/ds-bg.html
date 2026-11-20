@@ -66,13 +66,13 @@ body.clean.hover .show{display:block}
   <div class="steps" id="ed"></div>
   <div id="edrows"></div>
   <h3>전체</h3>
-  <div class="row"><label for="trans">전환 시간</label><input id="trans" type="range" min="0.8" max="8" step="0.1" value="4"><span class="v"></span></div>
-  <div class="row"><label for="ep">전환 이징</label><input id="ep" type="range" min="1" max="8" step="0.1" value="4.5"><span class="v"></span></div>
-  <div class="row"><label for="speed">전체 속도</label><input id="speed" type="range" min="0" max="2" step="0.01" value="0.6"><span class="v"></span></div>
-  <div class="row"><label for="count">점 개수</label><input id="count" type="range" min="600" max="8000" step="100" value="1600"><span class="v"></span></div>
-  <div class="row"><label for="trail">꼬리 길이</label><input id="trail" type="range" min="0" max="2.5" step="0.01" value="1"><span class="v"></span></div>
-  <div class="row"><label for="size">점 크기</label><input id="size" type="range" min="0.3" max="2.5" step="0.01" value="0.9"><span class="v"></span></div>
-  <div class="row"><label for="scale">형태 크기</label><input id="scale" type="range" min="0.4" max="2.5" step="0.01" value="1"><span class="v"></span></div>
+  <div class="row"><label for="trans">전환 시간</label><input id="trans" type="range" min="0.8" max="8" step="0.1" value="2.8"><span class="v"></span></div>
+  <div class="row"><label for="ep">전환 이징</label><input id="ep" type="range" min="1" max="8" step="0.1" value="2.8"><span class="v"></span></div>
+  <div class="row"><label for="speed">전체 속도</label><input id="speed" type="range" min="0" max="2" step="0.01" value="1"><span class="v"></span></div>
+  <div class="row"><label for="count">점 개수</label><input id="count" type="range" min="600" max="8000" step="100" value="1200"><span class="v"></span></div>
+  <div class="row"><label for="trail">꼬리 길이</label><input id="trail" type="range" min="0" max="2.5" step="0.01" value="0.7"><span class="v"></span></div>
+  <div class="row"><label for="size">점 크기</label><input id="size" type="range" min="0.3" max="2.5" step="0.01" value="1"><span class="v"></span></div>
+  <div class="row"><label for="scale">형태 크기</label><input id="scale" type="range" min="0.4" max="1.6" step="0.01" value="1"><span class="v"></span></div>
   <div class="row"><label for="bright">밝기</label><input id="bright" type="range" min="0.3" max="2" step="0.01" value="1"><span class="v"></span></div>
   <h3>컬러</h3>
   <div class="tints" id="tints"></div>
@@ -130,7 +130,7 @@ Object.assign(SCN.find(s=>s.k==='ring'),{tail:.56,size:1.26,scale:.9,bright:.75,
 Object.assign(SCN.find(s=>s.k==='meridian'),{scale:.8});
 Object.assign(SCN.find(s=>s.k==='radial'),{scale:.85});
 Object.assign(SCN.find(s=>s.k==='converge'),{size:1.8,form:0,scale:1.1,bright:.6,tail:.8});
-Object.assign(SCN.find(s=>s.k==='orbit'),{scale:.46,tail:.42,size:1.5,form:.8,bright:.22});
+Object.assign(SCN.find(s=>s.k==='orbit'),{scale:.7,tail:.42,size:1.5,form:.8,bright:.22});
 Object.assign(SCN.find(s=>s.k==='vortex'),{tail:.66,size:1,scale:.84,bright:.78,form:1.6});
 SCN.forEach((s,i)=>{s.on=s.k!=='tunnel'&&s.k!=='vortex';s.o0=i;}); // on: 재생 여부, o0: 처음 순서
 const SCN0=SCN.map(s=>({...s})); // 초기화용 장면별 기본값
@@ -142,7 +142,7 @@ function relayout(){
 relayout();
 const TINTS=[{n:'화이트',fg:[255,255,255],bg:'#000000'},{n:'아이스',fg:[196,226,255],bg:'#01050b'},{n:'틸',fg:[150,240,228],bg:'#011a22'}];
 
-const S={speed:1,count:1600,trail:1,size:1,scale:1,bright:1,trans:4,ep:4.5,tint:0,grid:false,auto:true};
+const S={speed:1,count:1200,trail:1,size:1,scale:1,bright:1,trans:2.8,ep:2.8,tint:0,grid:false,auto:true};
 
 /* ---------- 입자별 고정 난수 ---------- */
 const MAXN=12000,NODES=56,GL=260;
