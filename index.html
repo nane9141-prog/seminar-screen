@@ -161,6 +161,17 @@ body.idle{cursor:none}
 .slide[data-lay=en]{align-items:center;text-align:center;gap:0}
 .en{font:400 141px/1.2 "Lexend",sans-serif;letter-spacing:.02em}
 .ensub{margin-top:120px;font:300 63.5px/1 "Lexend",sans-serif;letter-spacing:.01em}
+/* M10-1 오른쪽: 설명 + 패널 목록 + Proxymity 안내 */
+.qa1{display:flex;flex-direction:column;padding-top:28px}
+.qa1 .dm-h{font-size:76px;line-height:1.45;font-weight:500}
+.qa1-k{margin-top:96px;font:400 50px/1 "Lexend",sans-serif;letter-spacing:.12em;text-transform:uppercase;background:linear-gradient(90deg,#5bade1,#00ab84);-webkit-background-clip:text;background-clip:text;color:transparent;align-self:flex-start}
+.qa1-pn{list-style:none;margin:28px 0 0;padding:0}
+.qa1-pn li{display:grid;grid-template-columns:330px 1fr;align-items:center;height:150px;border-top:2px solid rgba(255,255,255,.1)}
+.qa1-pn li:last-child{border-bottom:2px solid rgba(255,255,255,.1)}
+.qa1-pn b{font:700 70px/1 "KakaoBig","Pretendard Variable",sans-serif;color:#fff;letter-spacing:0}
+.qa1-pn span{font-size:60px;line-height:1.3;font-weight:400;color:#C3CCD8;white-space:nowrap}
+.qa1-note{margin-top:72px;display:flex;align-items:center;gap:30px;font-size:54px;line-height:1.4;font-weight:300;color:#A9B4C4}
+.qa1-note::before{content:"";flex:none;width:18px;height:18px;border-radius:50%;background:linear-gradient(135deg,#5bade1,#00ab84)}
 /* M9-1 오른쪽: 핵심 문장 + 보조 문장 + 세로 타임라인 + 시연자 */
 .demo{display:flex;flex-direction:column;padding-top:28px}
 .dm-h{font-size:80px;line-height:1.4;font-weight:600;color:#F2F5FA}
@@ -468,11 +479,16 @@ body.idle{cursor:none}
 <section class="slide" id="m10_1" data-no="M10-1" data-title="M10-1 Q&amp;A 타이틀" data-bg="B" data-foot="full" data-lay="split">
 <p class="eyebrow fu" style="--i:0">Q&amp;A</p>
 <h1 class="title-m" data-words style="--i:1">사전 질문 및 현장 질의응답</h1>
-<p class="lead w2600 fu" style="--i:2">신청서에 남겨주신 사전 질문과 현장에서 접수해주신 질의 내용을 확인 후 답변 드리겠습니다.</p>
-<div class="panel fu" style="--i:3">
-<p><b>김승준</b>김앤장 법률사무소, 변호사</p><p><b>권재열</b>한국주주총회연구소장, 경희대 법학전문대학원 교수</p>
-<p><b>박성용</b>IR큐더스, 본부장</p></div>
-<p class="qa-note fu" style="--i:4">Proxymity 세션에 질문 주신 내용은 세미나 종료 후 메일을 통해 답변 드리겠습니다.</p>
+<div class="qa1">
+<p class="dm-h fu" style="--i:2">신청서에 남겨주신 사전 질문과 현장에서 접수해주신<br>질의 내용을 확인 후 답변 드리겠습니다.</p>
+<p class="qa1-k fu" style="--i:3">Panel</p>
+<ul class="qa1-pn" data-stagger style="--i:3">
+<li><b>김승준</b><span>김앤장 법률사무소, 변호사</span></li>
+<li><b>권재열</b><span>한국주주총회연구소장, 경희대 법학전문대학원 교수</span></li>
+<li><b>박성용</b><span>IR큐더스, 본부장</span></li>
+</ul>
+<p class="qa1-note fu" style="--i:4">Proxymity 세션에 질문 주신 내용은 세미나 종료 후 메일을 통해 답변 드리겠습니다.</p>
+</div>
 </section>
 <section class="slide" id="m10_2" data-no="M10-2" data-title="M10-2 질문 화면 (control.html 송출)" data-bg="B" data-foot="full" data-qa="1" data-tr="blur">
 <div class="qa2">
