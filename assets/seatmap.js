@@ -1,6 +1,6 @@
 /* 좌석 배치 3D — control.html '좌석 배치' 탭
    도면: 15줄(A~O, 무대 쪽이 A) × 줄당 21석(1~21, 객석 기준 왼쪽=입구 쪽이 1), 테이블(1800×450×740mm 가정)당 3석.
-   좌석마다 테이블 상단면 위쪽 끝에 라벨(102×70mm) 1장 — 좌석 번호 + 회사명.
+   좌석마다 테이블 상단면 위쪽 끝에 라벨(140×99.1mm) 1장 — 좌석 번호 + 회사명.
    데이터: 참석자 관리와 같은 registrations + seat_assign(좌석 값 "A1" 형식). window.Attendees 를 통해 읽고 저장합니다. */
 (function(){
 const $=id=>document.getElementById(id);
@@ -9,7 +9,7 @@ const norm=s=>String(s||'').toLowerCase().replace(/\s|\(주\)|㈜|주식회사|-
 const COL={empty:0x3a3f4d,assigned:0x2f6bff,arrived:0x5ed39a,pending:0xffb74d,dup:0xff7a7a};
 
 /* ---------- 레이아웃 (1 unit = 0.686 m) ---------- */
-const M=1/0.686,ROWS=15,PITCH=.6*M,ROW_X0=-15.7,ROW_DX=2.7,T_LEN=1.8*M,T_DEP=.45*M,T_H=.74*M,LBL_W=.102*M,LBL_H=.07*M;
+const M=1/0.686,ROWS=15,PITCH=.6*M,ROW_X0=-15.7,ROW_DX=2.7,T_LEN=1.8*M,T_DEP=.45*M,T_H=.74*M,LBL_W=.140*M,LBL_H=.0991*M;
 const LBL_DX=-T_DEP/2+.03*M+LBL_H/2;            // 라벨: 테이블 위쪽 끝(무대 쪽)에서 30mm 여백
 const BLOCKS=[{z:8.6,n:2},{z:-.4,n:3},{z:-8.7,n:2}];
 const tables=[],seats=[],byId={};
@@ -47,10 +47,10 @@ function sprite(text,x,y,z,color,scale){
 }
 function box(w,h,d,color,x,y,z,opt){const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),new THREE.MeshStandardMaterial(Object.assign({color,roughness:.9},opt||{})));m.position.set(x,y,z);scene.add(m);return m;}
 function drawLabel(lb){
-  const g=lb.ctx,W=320,H=220,name=lb.text;
+  const g=lb.ctx,W=320,H=226,name=lb.text;
   g.fillStyle='#fff';g.fillRect(0,0,W,H);g.strokeStyle='#000';g.lineWidth=3;g.strokeRect(1.5,1.5,W-3,H-3);
-  g.fillStyle='#000';g.textAlign='center';g.textBaseline='alphabetic';g.font='900 116px '+FONT;g.fillText(lb.s.id,W/2,name?128:150);
-  if(name){let fs=33;g.font='700 '+fs+'px '+FONT;while(fs>14&&g.measureText(name).width>W-34){fs-=2;g.font='700 '+fs+'px '+FONT;}g.fillText(name,W/2,184);}
+  g.fillStyle='#000';g.textAlign='center';g.textBaseline='alphabetic';g.font='900 116px '+FONT;g.fillText(lb.s.id,W/2,name?131:154);
+  if(name){let fs=33;g.font='700 '+fs+'px '+FONT;while(fs>14&&g.measureText(name).width>W-34){fs-=2;g.font='700 '+fs+'px '+FONT;}g.fillText(name,W/2,189);}
   lb.tex.needsUpdate=true;
 }
 function build(){
@@ -111,7 +111,7 @@ function build(){
   /* 좌석별 라벨(테이블 상단면, 위쪽 끝): 의자 쪽에서 바로 읽히는 방향 */
   const lGeo=new THREE.PlaneGeometry(LBL_W,LBL_H);
   const qt=new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0,1,0),Math.PI/2).multiply(new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(1,0,0),-Math.PI/2));
-  seats.forEach(s=>{const c=document.createElement('canvas');c.width=320;c.height=220;const tex=new THREE.CanvasTexture(c);tex.generateMipmaps=false;tex.minFilter=THREE.LinearFilter;tex.anisotropy=4;
+  seats.forEach(s=>{const c=document.createElement('canvas');c.width=320;c.height=226;const tex=new THREE.CanvasTexture(c);tex.generateMipmaps=false;tex.minFilter=THREE.LinearFilter;tex.anisotropy=4;
     const m=new THREE.Mesh(lGeo,new THREE.MeshBasicMaterial({map:tex}));m.quaternion.copy(qt);m.position.set(s.x+LBL_DX,T_H+.006,s.z);scene.add(m);
     labels[s.i]={s,ctx:c.getContext('2d'),tex,mesh:m,text:null};});
   hl=new THREE.Mesh(new THREE.PlaneGeometry(T_DEP+1.9,PITCH),new THREE.MeshBasicMaterial({color:0xffffff,transparent:true,opacity:.3,depthWrite:false}));hl.rotation.x=-Math.PI/2;hl.visible=false;scene.add(hl);
