@@ -254,7 +254,6 @@ body.idle{cursor:none}
 .cg-t{margin:0 0 56px;font:400 77.6px/1.45 "KakaoSmall",sans-serif;color:#E6EBF2;letter-spacing:-.02em}
 .cg-n{margin:0;font:700 183.4px/1.15 "KakaoBig",sans-serif;color:#fff;letter-spacing:0;white-space:nowrap}
 .cg-n.ko{letter-spacing:.28em}
-.cg-n:not(.ko){font-size:150px}  /* 영문 이름(Scott Oakland)이 사진과 겹치지 않게 */
 .cg-r{margin:34px 0 0;font:400 77.6px/120px "KakaoSmall",sans-serif;color:#fff;letter-spacing:0}
 </style></head>
 <body>
@@ -453,7 +452,7 @@ if(qp.get('lite'))stage.classList.add('lite');
 const BOX={x:940,y:50,w:732,h:980};  // 사진 자리(이전 x 1080 → 140px 왼쪽)
 const sm=(a,b,x)=>{x=(x-a)/(b-a);x=x<0?0:x>1?1:x;return x*x*(3-2*x);};
 const pc=document.getElementById('pcv'),px=pc.getContext('2d');pc.width=4200;pc.height=1600;
-const K=1600/1080,OXS=2690-(940+366)*K;  // 로비 좌표(1920×1080)를 메인(4200×1600)으로: 높이 기준 확대, 사진 가운데를 가로 66% 지점에
+const K=1600/1080,OXS=2700-(940+366)*K;  // 로비 좌표(1920×1080)를 메인(4200×1600)으로: 높이 기준 확대, 사진 가운데를 가로 66% 지점에
 /* 원본 사진(아래 · 좌우 끝은 그라데이션으로 사라짐) */
 const PHOTO={};[...document.querySelectorAll('.slide[data-spk]')].map(s=>s.dataset.spk).forEach(n=>{const c=document.createElement('canvas');c.width=BOX.w;c.height=BOX.h;
   const im=new Image();im.onload=()=>{const g=c.getContext('2d');g.drawImage(im,0,0,BOX.w,BOX.h);g.globalCompositeOperation='destination-in';
