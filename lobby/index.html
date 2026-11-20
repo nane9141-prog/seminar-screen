@@ -26,7 +26,7 @@ body.idle{cursor:none}
 #ov-video.on .mt1{animation:mtx 4.5s ease-in-out 1s both}
 #ov-video.on .mt2{animation:mtx 4.5s ease-in-out 6.5s both}
 #ov-msg{padding:0}
-.mt.ko{font-family:"KakaoBigSans",sans-serif;font-weight:700;letter-spacing:0}  /* 카카오 큰글씨 Bold */
+.mt.ko{font-family:"KakaoBigSans",sans-serif;font-weight:400;font-size:32px;letter-spacing:0}  /* 카카오 큰글씨 Regular (11/20: Bold → Regular, 26.7 → 32px) */
 #ov-msg.on .mt1{animation:mtx 4.5s ease-in-out 2.5s both}
 #ov-msg.on .mt2{animation:mtx 4.5s ease-in-out 8s both}
 @keyframes mtx{0%{opacity:0}33.3%{opacity:1}66.7%{opacity:1}100%{opacity:0}}
@@ -84,10 +84,6 @@ body.idle{cursor:none}
 <div class="stage" id="scr">
 <canvas id="c"></canvas>
 <canvas id="pc"></canvas>
-<div class="ov" id="ov-video"><video id="vMood" src="../assets/yeouido-mood.mp4" muted playsinline preload="auto"></video>
-<!-- 영상 처음 글씨 2종 (movie-text.svg 기준): 화면 가운데, 1.5초 나타남 → 1.5초 유지 → 1.5초 사라짐, 1초 뒤 두 번째 -->
-<p class="mt mt1"><i style="letter-spacing:0">K</i>o<i style="letter-spacing:.03em">r</i>ea Sha<i style="letter-spacing:.03em">r</i>eho<i style="letter-spacing:.04em">l</i>ders’ Meeting Online Se<i style="letter-spacing:.1em">r</i>vice</p>
-<p class="mt mt2">Li<i style="letter-spacing:.04em">v</i>e Demo Briefing · 2026.11.30</p></div>
 <div class="ov" id="ov-svc"><video id="vSvc" src="../assets/service-intro.mp4" muted playsinline preload="auto"></video></div>
 <div class="ov" id="ov-msg"><!-- 서비스 소개 영상 뒤 배경 위 문구 2종 (영상 앞 글씨와 같은 방식) -->
 <p class="mt mt1 ko">장소의 제약 없는 주주 참여</p>
@@ -214,23 +210,19 @@ function drawPort(now){
 requestAnimationFrame(drawPort);
 /* ---- 시퀀스 ---- */
 const T=k=>parseFloat(qp.get(k)||0);
-const SHOW=T('show')||7.5;  // 연사 한 명이 보이는 시간(등장 → 퇴장 시작, 초)
+const SHOW=T('show')||8;  // 연사 한 명이 보이는 시간(등장 → 퇴장 시작, 초)
 const STEPS=[
- {n:'여의도 무드 영상',ov:'ov-video',dim:0,dur:45.6,video:'vMood',restartDS:1},
- {n:'Data Stream',ov:null,dim:1,dur:15},
- {n:'타이틀 10초 → 타이틀 2 5초',ov:'ov-title',dim:.42,dur:18.5,swap:11.4},
- {n:'Data Stream',ov:null,dim:1,dur:60},
- {n:'타임테이블',ov:'ov-tt',dim:.2,dur:T('tt')||11.7},
- {n:'Data Stream',ov:null,dim:1,dur:30},
+ {n:'Data Stream',ov:null,dim:1,dur:5},
+ // 타이틀 5초 → 타이틀 2 3초 (등장 0.3초 + 교체 페이드 포함)
+ {n:'타이틀 5초 → 타이틀 2 3초',ov:'ov-title',dim:.42,dur:11.5,swap:6.4},
+ {n:'타임테이블',ov:'ov-tt',dim:.2,dur:T('tt')||10},
  // 연사: SHOW초 보인 뒤 사진 · 점 · 선 · 글씨가 함께 1.4초 동안 사라짐. 첫 연사는 0.3초, 2~4번째는 앞 연사 퇴장 2초 뒤 등장
  {n:'Session 1 · 김승준',ov:'ov-spk0',dim:.2,dur:0.3+SHOW,port:0},
  {n:'Session 2 · 권재열',ov:'ov-spk1',dim:.2,dur:2+SHOW,port:1},
  {n:'Session 3 · Scott Oakland',ov:'ov-spk2',dim:.2,dur:2+SHOW,port:2},
  {n:'Session 4 · 박성용',ov:'ov-spk3',dim:.2,dur:2+SHOW,port:3},
- {n:'Data Stream',ov:null,dim:1,dur:20},
- {n:'타이틀 B',ov:'ov-titleB',dim:.35,dur:T('tb')||30},
- {n:'Data Stream',ov:null,dim:1,dur:60},
- {n:'서비스 소개 영상 (KOSMOS v8 43.5초)',ov:'ov-svc',dim:0,dur:43.5,video:'vSvc'},
+ {n:'타이틀 B',ov:'ov-titleB',dim:.35,dur:T('tb')||10},
+ {n:'서비스 소개 영상 (KOSMOS C안+A안 합본 60초)',ov:'ov-svc',dim:0,dur:60,video:'vSvc',restartDS:1},
  {n:'Data Stream + 문구 2종',ov:'ov-msg',dim:1,dur:60}];
 let idx=-1,t1=null,t2=null,t3=null,run=true,vEnd=null,SPD=1,stepT0=0,stepLen=0;
 /* 첫 장면 영상: 실제 길이에 맞추고, 파일이 없으면 이 장면을 건너뜀. 다른 장면으로 가면 멈춤 */
