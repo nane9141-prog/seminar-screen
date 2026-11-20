@@ -149,6 +149,21 @@ body.idle{cursor:none}
 .slide[data-lay=en]{align-items:center;text-align:center;gap:0}
 .en{font:400 141px/1.2 "Lexend",sans-serif;letter-spacing:.02em}
 .ensub{margin-top:120px;font:300 63.5px/1 "Lexend",sans-serif;letter-spacing:.01em}
+/* M9-1 오른쪽: 핵심 문장 + 보조 문장 + 세로 타임라인 + 시연자 */
+.demo{display:flex;flex-direction:column;padding-top:28px}
+.dm-h{font-size:80px;line-height:1.4;font-weight:600;color:#F2F5FA}
+.dm-s{margin-top:22px;font-size:60px;line-height:1.45;font-weight:400;color:#A9B4C4}
+.flow{list-style:none;margin:96px 0 0;padding:0;position:relative;display:flex;flex-direction:column;gap:0}
+.flow::before{content:"";position:absolute;left:58px;top:72px;bottom:72px;width:3px;background:linear-gradient(#5bade1,#00ab84);opacity:.55}
+.flow li{display:grid;grid-template-columns:116px 190px 1fr;align-items:center;column-gap:44px;height:160px;border-bottom:2px solid rgba(255,255,255,.08)}
+.flow li:last-child{border-bottom:0}
+.fl-n{position:relative;z-index:1;justify-self:center;display:grid;place-items:center;width:116px;height:116px;border-radius:50%;background:#0A1322;border:3px solid #2C6FA0;font:500 46px/1 "Lexend",sans-serif;color:#7CC4EA;letter-spacing:0}
+.flow li:nth-child(2) .fl-n{border-color:#1F8E9A;color:#5DD0C2}
+.flow li:nth-child(3) .fl-n{border-color:#0E9474;color:#3FD3A6}
+.fl-k{font:700 70px/1 "KakaoBig","Pretendard Variable",sans-serif;color:#fff;letter-spacing:0}
+.fl-b{font-size:62px;line-height:1.3;font-weight:400;color:#D5DCE6;white-space:nowrap}
+.dm-p{margin-top:92px;padding-top:56px;border-top:2px solid rgba(255,255,255,.14);font-size:60px;line-height:1;font-weight:300;color:#A9B4C4;display:flex;align-items:baseline;gap:32px}
+.dm-p b{font-weight:600;color:#F2F5FA;font-size:66px}
 /* split: 2단 — 왼쪽 제목 x416 · 26pt → 183.4px / 행간 240px, 오른쪽 본문 x1896 · 13pt → 91.7px / 행간 134px, 주석 11pt → 77.6px */
 .slide[data-lay=split]{padding:160px 360px 160px 416px}
 .lay2{display:grid;grid-template-columns:1480px minmax(0,1fr);align-items:start}
@@ -420,13 +435,16 @@ body.idle{cursor:none}
 <section class="slide" id="m9_1" data-no="M9-1" data-title="M9-1 시연 타이틀" data-bg="B" data-foot="full" data-tr="zoom" data-glow="1" data-fill="1" data-lay="split">
 <p class="eyebrow fu" style="--i:0">PART 3 · DEMO</p>
 <h1 class="title-m" data-words style="--i:1">모의 전자주주총회 시연</h1>
-<p class="lead fu" style="--i:2">준비부터 집계까지, 전자주총 전 과정을 그대로<br>모의 회사 · 주주 · 의안으로 주주총회 전 과정을 진행합니다.</p>
-<div class="cards narrow" data-stagger style="--i:3">
-<div class="card"><p class="card-k">01 설정</p><p class="card-b">주주명부, 의안 등록,<br>의결권 제한</p></div>
-<div class="card"><p class="card-k">02 사전</p><p class="card-b">사전 투표 ·<br>의결권 행사 관리</p></div>
-<div class="card"><p class="card-k">03 당일</p><p class="card-b">출석, 질의,<br>표결, 집계</p></div>
+<div class="demo">
+<p class="dm-h fu" style="--i:2">준비부터 집계까지, 전자주총 전 과정을 그대로</p>
+<p class="dm-s fu" style="--i:2.5">모의 회사 · 주주 · 의안으로 주주총회 전 과정을 진행합니다.</p>
+<ol class="flow" data-stagger style="--i:3">
+<li><span class="fl-n">01</span><span class="fl-k">설정</span><span class="fl-b">주주명부, 의안 등록, 의결권 제한</span></li>
+<li><span class="fl-n">02</span><span class="fl-k">사전</span><span class="fl-b">사전 투표 · 의결권 행사 관리</span></li>
+<li><span class="fl-n">03</span><span class="fl-k">당일</span><span class="fl-b">출석, 질의, 표결, 집계</span></li>
+</ol>
+<p class="dm-p fu" style="--i:4"><b>박성용</b>IR큐더스, 본부장</p>
 </div>
-<p class="meta fu" style="--i:4">박성용 · IR큐더스, 본부장</p>
 </section>
 <section class="slide" id="m9_2" data-no="M9-2" data-title="M9-2 시연 주요 실무 사례" data-bg="B" data-foot="full" data-lay="split">
 <h2 class="head fu" style="--i:0">시연에서 살펴볼 주요 실무 사례</h2>
