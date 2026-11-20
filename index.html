@@ -113,9 +113,21 @@ body.idle{cursor:none}
 .t-soon,.t-soon-i{display:none}
 .soon .t-normal,.soon .t-normal-i{display:none}.soon .t-soon{display:block}.soon .t-soon-i{display:inline}
 .soon .t-soon .title-m{color:#FFB84D}
-.qbox{width:3000px;height:760px;display:flex;align-items:center}
-.qtext{font-size:120px;font-weight:700;line-height:1.3;letter-spacing:-1.5px}
-#q-lab .qn{color:#F2F5FA;margin-left:24px}
+/* M10-2 질문 화면: 왼쪽 Q + 구분 칩, 오른쪽 질문 본문 + 하단 질문자 · 답변 */
+.qa2{position:absolute;left:416px;right:360px;top:250px;bottom:250px;display:grid;grid-template-columns:560px minmax(0,1fr);column-gap:120px}
+.qa2-l{display:flex;flex-direction:column;align-items:flex-start;padding-top:10px}
+.qa2-q{font:300 420px/0.8 "Lexend",sans-serif;letter-spacing:0;background:linear-gradient(135deg,#5bade1,#00ab84);-webkit-background-clip:text;background-clip:text;color:transparent}
+.qa2-lab{margin-top:90px;display:inline-flex;align-items:center;height:104px;padding:0 48px;border-radius:52px;border:3px solid rgba(91,173,225,.55);background:rgba(10,19,34,.6);font-size:56px;font-weight:600;color:#BFE3F5;letter-spacing:0}
+.qa2-lab.pre{border-color:rgba(91,173,225,.65);color:#BFE3F5}.qa2-lab.live{border-color:rgba(0,171,132,.7);color:#A6EBD6}
+.qa2-r{display:flex;flex-direction:column;min-width:0}
+.qbox{flex:1;min-height:0;display:flex;align-items:center;border-left:4px solid rgba(255,255,255,.12);padding-left:100px}
+.qa2-ft{display:flex;justify-content:space-between;align-items:center;gap:80px;height:150px;margin-left:104px;border-top:2px solid rgba(255,255,255,.14);padding-top:20px}
+.qa2-ft.empty{visibility:hidden}
+.qa2-meta{font-size:58px;font-weight:400;color:#A9B4C4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.qa2-ans{font-size:62px;font-weight:300;color:#A9B4C4;white-space:nowrap}.qa2-ans b{margin-left:28px;font-weight:700;color:#F2F5FA;font-size:72px}
+.qtext.idle{color:#7D8899;font-weight:500}
+.qtext{font-family:"KakaoBig","Pretendard Variable",sans-serif;font-size:120px;font-weight:700;line-height:1.36;letter-spacing:-1px;color:#F7F9FC;word-break:keep-all}
+
 .nrows{width:2600px}.nrows .ptxt{flex:1}.nrows .pwho{width:auto}
 #hud .sch{margin-top:8px;color:#c7d0dd}#hud .late{color:#FF8A7A}#hud .early{color:#7FD6A0}
 
@@ -463,9 +475,13 @@ body.idle{cursor:none}
 <p class="qa-note fu" style="--i:4">Proxymity 세션에 질문 주신 내용은 세미나 종료 후 메일을 통해 답변 드리겠습니다.</p>
 </section>
 <section class="slide" id="m10_2" data-no="M10-2" data-title="M10-2 질문 화면 (control.html 송출)" data-bg="B" data-foot="full" data-qa="1" data-tr="blur">
-<p class="eyebrow" id="q-lab">Q&amp;A</p>
+<div class="qa2">
+<div class="qa2-l fu" style="--i:0"><span class="qa2-q">Q</span><p class="qa2-lab" id="q-lab">Q&amp;A</p></div>
+<div class="qa2-r">
 <div class="qbox"><p class="qtext" id="q-text">질문을 준비하고 있습니다.</p></div>
-<p class="meta" id="q-who"></p>
+<div class="qa2-ft" id="q-ft"><p class="qa2-meta" id="q-meta"></p><p class="qa2-ans" id="q-ans"></p></div>
+</div>
+</div>
 </section>
 <section class="slide" id="m11_1" data-no="M11-1" data-title="M11-1 폐회" data-bg="B" data-foot="full" data-tr="zoom" data-lay="split">
 <h1 class="title-m" data-words style="--i:1">참석해 주셔서<br>감사합니다.</h1>
@@ -653,12 +669,13 @@ async function pollOQ(){if(QSRC!=='online'||!location.protocol.startsWith('http'
     if(!r.ok)return;const d=await r.json(),k=JSON.stringify(d);if(k===oqKey)return;oqKey=k;
     OQ=d&&d.id?{type:d.kind,n:d.n,text:d.body,who:d.who,meta:[(d.company+' '+d.name).trim(),OQ_SL[d.session]].filter(Boolean).join('　·　')}:null;renderQ();}catch(e){}}
 setInterval(pollOQ,2000);pollOQ();
-function renderQ(){const q=QSRC==='online'?OQ:QA.list.find(x=>x.id===QA.cur),lab=document.getElementById('q-lab'),tx=document.getElementById('q-text'),who=document.getElementById('q-who');
-  if(!q){lab.textContent='Q&A';tx.textContent='질문을 준비하고 있습니다.';who.textContent='';fitQ();return;}
-  lab.innerHTML=(q.type==='pre'?'사전 질문':'현장 질문')+'<span class="qn">Q'+String(q.n).padStart(2,'0')+'</span>';
-  tx.textContent=q.text;who.textContent=[q.meta,q.who?'답변　'+q.who:''].filter(Boolean).join('　·　');fitQ();
+function renderQ(){const q=QSRC==='online'?OQ:QA.list.find(x=>x.id===QA.cur),lab=document.getElementById('q-lab'),tx=document.getElementById('q-text'),meta=document.getElementById('q-meta'),ans=document.getElementById('q-ans'),ft=document.getElementById('q-ft');
+  if(!q){lab.textContent='Q&A';lab.className='qa2-lab';tx.textContent='질문을 준비하고 있습니다.';tx.classList.add('idle');meta.textContent='';ans.innerHTML='';ft.classList.add('empty');fitQ();return;}
+  lab.textContent=q.type==='pre'?'사전 질문':'현장 질문';lab.className='qa2-lab '+(q.type==='pre'?'pre':'live');  // Q번호는 표시하지 않음
+  tx.textContent=q.text;tx.classList.remove('idle');meta.textContent=q.meta||'';ans.innerHTML=q.who?'답변<b></b>':'';if(q.who)ans.querySelector('b').textContent=q.who;
+  ft.classList.toggle('empty',!q.meta&&!q.who);fitQ();
   const s=slides[idx];if(s&&s.dataset.qa){tx.parentNode.animate([{opacity:0,transform:'translateY(30px)',filter:'blur(12px)'},{opacity:1,transform:'none',filter:'none'}],{duration:600,easing:'cubic-bezier(.2,.7,.2,1)'});}}
-function fitQ(){const tx=document.getElementById('q-text'),box=tx.parentNode;let f=120;tx.style.fontSize=f+'px';while(f>56&&tx.scrollHeight>box.clientHeight){f-=4;tx.style.fontSize=f+'px';}}
+function fitQ(){const tx=document.getElementById('q-text'),box=tx.parentNode;let f=132;tx.style.fontSize=f+'px';while(f>56&&tx.scrollHeight>box.clientHeight){f-=4;tx.style.fontSize=f+'px';}}
 function qStep(d){const L=QA.list;if(!L.length)return;let i=L.findIndex(x=>x.id===QA.cur);i=Math.max(0,Math.min(L.length-1,i<0?0:i+d));QA.cur=L[i].id;SCHED.saveQ(QA);renderQ();}
 SCHED.onCmd(c=>{if(!c)return;if(c.go){const n=byNo(c.go);if(n>=0)go(n);}if(c.nav)step(c.nav);if(c.speed&&window.CtrlPanel)CtrlPanel.setSpeed(c.speed);if(c.black!=null)document.getElementById('black').classList.toggle('on',!!c.black);if(c.dsset){let o={};try{o=JSON.parse(localStorage.getItem('scr-ds')||'{}')||{};}catch(e){}Object.assign(o,c.dsset);try{localStorage.setItem('scr-ds',JSON.stringify(o));}catch(e){}dsPost(Object.assign({ds:'set'},c.dsset));}});
 // ── HUD ──
