@@ -352,7 +352,7 @@ body.idle{cursor:none}
 <h2 class="head fu" style="--i:0">이용 안내</h2>
 <div class="cards" data-stagger style="--i:1">
 <div class="card"><p class="card-k">주차</p><h3 class="card-t">등록 데스크에서 주차 지원 등록</h3><p class="card-b">페어몬트 호텔 주차장만 지원됩니다.<br>연결된 더현대 서울 주차장은 지원되지 않습니다.</p></div>
-<div class="card"><p class="card-k">현장 질문</p><h3 class="card-t">명찰 뒷면 QR코드로 질문</h3><p class="card-b">현장 질의는 명찰 뒷면에 있는 QR코드로 질문을 남겨 주세요. 사전 질문과 함께 질의응답 시간(17:30)에 답변 드립니다.</p></div>
+<div class="card"><p class="card-k">현장 질문</p><h3 class="card-t">명찰 뒷면 QR코드로 질문</h3><p class="card-b">현장 질의는 명찰 뒷면에 있는 QR코드로 질문을 남겨 주세요.<br>사전 질문과 함께 질의응답 시간(17:30)에 답변 드립니다.</p></div>
 <div class="card"><p class="card-k">Wi-Fi</p><h3 class="card-t tbd">[네트워크 이름]</h3><p class="card-b tbd">[비밀번호]</p></div>
 </div>
 </section>
@@ -621,7 +621,8 @@ function go(n){n=Math.max(0,Math.min(slides.length-1,n));if(n===idx)return;
   if(s.dataset.qa)renderQ();
   if(s.dataset.no==='M0-3')renderNotice();
   clearTimeout(autoT);
-  autoLen=0;if(s.dataset.auto&&auto){autoT0=performance.now();autoLen=+s.dataset.auto*1000/SPD;autoT=setTimeout(()=>{const g=s.dataset.group;let m=idx+1;if(!slides[m]||slides[m].dataset.group!==g){m=slides.findIndex(x=>x.dataset.group===g);}go(m);},autoLen);}
+  autoLen=0;if(s.dataset.auto&&auto){autoT0=performance.now();autoLen=+s.dataset.auto*1000/SPD;{const pn=s.querySelector('.pin');if(pn&&pn._a){pn._a.playbackRate=SPD;const tm=pn._a.effect.getTiming();autoLen=(tm.delay+tm.duration+3000)/SPD;}}  // 프로그램: 스크롤이 끝나고 3초 뒤 다음 화면
+  autoT=setTimeout(()=>{const g=s.dataset.group;let m=idx+1;if(!slides[m]||slides[m].dataset.group!==g){m=slides.findIndex(x=>x.dataset.group===g);}go(m);},autoLen);}
   hud();if(window.CtrlPanel)CtrlPanel.draw();SCHED.pub({cur:s.dataset.no,slides:slides.map(x=>({no:x.dataset.no,title:x.dataset.title.replace(/&amp;/g,'&'),msg:isMsg(x)?1:0,auto:x.dataset.auto?+x.dataset.auto:0,vid:(v=>v&&isFinite(v.duration)?Math.round(v.duration):0)(x.querySelector('video'))}))});
 }
 // 상황 메시지(data-msg)는 순서 이동에서 건너뜀. 메시지에서 → 는 띄우기 전 화면의 다음, ← 는 띄우기 전 화면으로
