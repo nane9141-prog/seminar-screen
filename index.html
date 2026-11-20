@@ -161,6 +161,24 @@ body.idle{cursor:none}
 .slide[data-lay=en]{align-items:center;text-align:center;gap:0}
 .en{font:400 141px/1.2 "Lexend",sans-serif;letter-spacing:.02em}
 .ensub{margin-top:120px;font:300 63.5px/1 "Lexend",sans-serif;letter-spacing:.01em}
+/* M7-3 Zoom 세션: 가운데 16:9 창(2480×1395) + 좌우 정보 */
+.zm{position:absolute;inset:0}
+.zm-c{position:absolute;left:860px;top:102px;width:2480px;height:1395px;border-radius:28px;background:#05080d;overflow:hidden;box-shadow:0 0 0 3px rgba(91,173,225,.35),0 0 120px rgba(0,171,132,.12)}
+.zm-v{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#000;display:none}.zm-c.on .zm-v{display:block}.zm-c.on .zm-ph{display:none}
+.zm-ph{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:30px;margin:0;font:300 64px/1.3 "Lexend","KakaoSmall",sans-serif;color:#3A4A5E;letter-spacing:.04em;text-align:center}
+.zm-ph small{font-size:36px;color:#2B394A;letter-spacing:0}
+.zm-l{position:absolute;left:150px;width:620px;top:150px;bottom:150px;display:flex;flex-direction:column}
+.zm-e{margin:0;font:400 60px/1 "Lexend",sans-serif;letter-spacing:.02em;background:linear-gradient(90deg,#5bade1,#00ab84);-webkit-background-clip:text;background-clip:text;color:transparent;align-self:flex-start}
+.zm-t{margin:56px 0 0;font:700 84px/1.32 "KakaoBig","Pretendard Variable",sans-serif;color:#fff;letter-spacing:0;word-break:keep-all}
+.zm-live{margin:auto 0 0;display:flex;align-items:center;gap:22px;font:500 50px/1 "Lexend",sans-serif;color:#fff;letter-spacing:.06em}
+.zm-live i{width:26px;height:26px;border-radius:50%;background:#ff4d4f;box-shadow:0 0 0 0 rgba(255,77,79,.6);animation:zmPulse 1.8s ease-out infinite}
+.zm-live span{font-weight:300;color:#A9B4C4;letter-spacing:.02em}
+@keyframes zmPulse{0%{box-shadow:0 0 0 0 rgba(255,77,79,.55)}70%{box-shadow:0 0 0 26px rgba(255,77,79,0)}100%{box-shadow:0 0 0 0 rgba(255,77,79,0)}}
+.zm-r{position:absolute;right:150px;width:620px;top:150px;bottom:150px;display:flex;flex-direction:column;align-items:flex-start}
+.zm-ph2{width:620px;height:760px;border-radius:28px;overflow:hidden;background:#0A1322;-webkit-mask-image:linear-gradient(#000 70%,transparent);mask-image:linear-gradient(#000 70%,transparent)}
+.zm-ph2 img{width:100%;height:100%;object-fit:cover;object-position:50% 12%}
+.zm-n{margin:30px 0 0;font:500 66px/1.1 "Lexend",sans-serif;color:#fff;letter-spacing:.01em}
+.zm-ro{margin:26px 0 0;font-size:52px;line-height:1.35;font-weight:400;color:#A9B4C4}
 /* M10-1 오른쪽: 설명 + 패널 목록 + Proxymity 안내 */
 .qa1{display:flex;flex-direction:column;padding-top:28px}
 .qa1 .dm-h{font-size:76px;line-height:1.45;font-weight:500}
@@ -432,8 +450,13 @@ body.idle{cursor:none}
 <section class="slide" id="m7_2" data-no="M7-2" data-title="M7-2 Session 3 연사 소개 · Scott Oakland" data-bg="B" data-foot="full" data-spk="speaker-scott">
 <div class="cg sp"><p class="cg-e fu" style="--i:0">Session 3.</p><div class="cg-b"><h2 class="sp-t" data-words style="--i:1">Proxymity, 글로벌 의결권 행사<br>인프라의 혁신과 미래</h2><p class="sp-n fu" style="--i:2">Scott Oakland</p><p class="sp-r fu" style="--i:3">Proxymity, Head of APAC</p></div></div>
 </section>
-<section class="slide" id="m7_3" data-no="M7-3" data-title="M7-3 Session 3 발표자료 — 외부 소스" data-bg="C" data-foot="full" data-ext="1">
-
+<section class="slide" id="m7_3" data-no="M7-3" data-title="M7-3 Session 3 · Zoom 화면 (가운데 16:9)" data-bg="B" data-foot="none" data-zoom="1">
+<div class="zm">
+<div class="zm-l"><p class="zm-e fu" style="--i:0">Session 3.</p><h2 class="zm-t" data-words style="--i:1">Proxymity,<br>글로벌 의결권<br>행사 인프라의<br>혁신과 미래</h2>
+<p class="zm-live fu" style="--i:3"><i></i>LIVE<span>via Zoom</span></p></div>
+<div class="zm-c fu" style="--i:1"><video class="zm-v" muted playsinline></video><p class="zm-ph">ZOOM 화면 · 16:9<br><small>V: 이 PC의 줌 창 캡처 · C: 캡처보드 입력 · X: 해제</small></p></div>
+<div class="zm-r"><div class="zm-ph2 fu" style="--i:2"><img src="assets/speaker-scott.webp" alt=""></div><p class="zm-n fu" style="--i:3">Scott Oakland</p><p class="zm-ro fu" style="--i:3">Proxymity,<br>Head of APAC</p></div>
+</div>
 </section>
 <section class="slide" id="m7_4" data-no="M7-4" data-title="M7-4 Session 4 연사 소개 · 박성용" data-bg="B" data-foot="full" data-spk="speaker3-1">
 <div class="cg sp"><p class="cg-e fu" style="--i:0">Session 4.</p><div class="cg-b"><h2 class="sp-t" data-words style="--i:1">전자주주총회 도입 · 운영 방안 및<br>통합 솔루션 소개</h2><p class="sp-n ko fu" style="--i:2">박성용</p><p class="sp-r fu" style="--i:3">IR큐더스, 본부장</p></div></div>
@@ -640,6 +663,12 @@ document.querySelectorAll('[data-words]').forEach(el=>{let w=0;[...el.childNodes
 document.querySelectorAll('[data-stagger]').forEach(el=>[...el.children].forEach((c,i)=>c.style.setProperty('--w',i)));
 
 
+// M7-3 Zoom 화면: V = 이 PC 화면/창 캡처(줌 창 선택), C = 캡처보드(카메라 장치) 입력, X = 해제
+let ZMS=null;async function zoomIn(m){const box=document.querySelector('.slide[data-zoom] .zm-c'),v=box.querySelector('video');
+  if(ZMS){ZMS.getTracks().forEach(t=>t.stop());ZMS=null;}v.srcObject=null;box.classList.remove('on');if(m==='x'){toast('Zoom 입력 해제');return;}
+  try{ZMS=m==='v'?await navigator.mediaDevices.getDisplayMedia({video:{frameRate:30},audio:false}):await navigator.mediaDevices.getUserMedia({video:{width:{ideal:1920},height:{ideal:1080},frameRate:{ideal:30}},audio:false});
+    v.srcObject=ZMS;await v.play();box.classList.add('on');ZMS.getVideoTracks()[0].addEventListener('ended',()=>{box.classList.remove('on');ZMS=null;});toast(m==='v'?'화면 캡처 연결':'캡처보드 연결');}
+  catch(err){toast('입력 연결 실패: '+(err.name||err));}}
 function fillMeasure(){document.querySelectorAll('.slide[data-fill] h1[data-words]').forEach(h=>{const W=[...h.querySelectorAll('.w')];if(!W.length)return;
   const L=Math.min(...W.map(w=>w.offsetLeft)),Rr=Math.max(...W.map(w=>w.offsetLeft+w.offsetWidth));h.style.setProperty('--tw',(Rr-L)+'px');W.forEach(w=>w.style.setProperty('--wl',(w.offsetLeft-L)+'px'));});}
 (document.fonts?document.fonts.ready:Promise.resolve()).then(fillMeasure);addEventListener('resize',fillMeasure);
@@ -710,6 +739,7 @@ addEventListener('keydown',e=>{const k=e.key;
   if(k==='Enter'&&numbuf){const n=byNo('M'+numbuf);if(n>=0)go(n);else toast('없는 화면: M'+numbuf);numbuf='';return;}
   if(k==='Escape'&&numbuf){numbuf='';toast('취소');return;}
   numbuf='';
+  if(slides[idx]&&slides[idx].dataset.zoom&&/^[vVcCxX]$/.test(k)){e.preventDefault();zoomIn(k.toLowerCase());return;}
   const qa=slides[idx]&&slides[idx].dataset.qa;
   if(qa&&(k==='ArrowRight'||k==='ArrowLeft')){e.preventDefault();if(QSRC==='online'){toast('온라인 질문 — control에서 넘겨 주세요');return;}qStep(k==='ArrowRight'?1:-1);return;}
   if(k==='ArrowRight'||k==='PageDown'||k===' '||k==='ArrowDown'){e.preventDefault();step(1);}
