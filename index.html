@@ -263,6 +263,26 @@ body.idle{cursor:none}
 .sp-n{margin:108px 0 0;font:700 99.1px/1.2 "KakaoSmall",sans-serif;color:#fff;letter-spacing:0;white-space:nowrap}
 .sp-n.ko{letter-spacing:.3em}
 .sp-r{margin:32px 0 0;font:300 77.6px/1.2 "KakaoSmall",sans-serif;color:#fff;letter-spacing:0;white-space:nowrap}
+
+/* slide layout.svg 8번(휴식 M6-1 · M8-1) */
+.slide[data-break]{padding:0}
+.bk{position:absolute;inset:0}
+.bk-e{position:absolute;left:604px;top:383px;margin:0;font:300 63.5px/1 "Lexend",sans-serif;color:#80cde5;letter-spacing:0}
+.bk-tw{position:absolute;left:1022px;top:335px}
+.bk-t{margin:0;font:700 148.2px/197.6px "KakaoBig",sans-serif;color:#fff;letter-spacing:0;white-space:nowrap}
+.soon .t-soon .bk-t{color:#fff}
+.bk-s{position:absolute;left:1022px;top:791px;margin:0;font:300 63.5px/1 "KakaoSmall",sans-serif;color:#fff;letter-spacing:0;white-space:nowrap}
+.bk-tv{display:none}
+.bk-timer{position:absolute;left:2522px;top:404px}
+.bk-timer .dots{display:block;overflow:visible}
+.bk-r{margin:56px 0 0;font:300 63.5px/1 "KakaoSmall",sans-serif;color:#fff;letter-spacing:0;white-space:nowrap}  /* 타이머 아래 작게: 00:00에 다시 시작합니다. */
+.bk-timer .dots circle{fill:#fff;fill-opacity:.09;transition:fill-opacity .35s}
+.bk-timer .dots circle.on{fill-opacity:1}
+.bk-next{position:absolute;left:0;right:0;top:1222px;height:378px;background:linear-gradient(90deg,#6cc6d6,#44b68d);color:#111}
+.bk-nk{position:absolute;left:604px;top:99px;margin:0;font:700 63.5px/1 "Lexend",sans-serif;letter-spacing:0}
+.bk-next>div{position:absolute;left:1022px;top:77px}
+.bk-nt{margin:0;font:800 99.1px/1 "KakaoBig",sans-serif;letter-spacing:0;white-space:nowrap}
+.bk-nw{margin:37px 0 0;font:700 77.6px/1 "KakaoSmall",sans-serif;letter-spacing:0;white-space:nowrap}
 </style></head>
 <body>
 <div class="stage" id="scr" data-foot="full">
@@ -351,12 +371,13 @@ body.idle{cursor:none}
 
 </section>
 <section class="slide" id="m6_1" data-no="M6-1" data-title="M6-1 휴식 · 재개 타이머" data-bg="B" data-foot="full" data-break="brk1">
-<div class="timer"><p class="timer-k">재개까지</p><p class="timer-v" data-timer>15:00</p></div>
-<p class="eyebrow">BREAK</p>
-<div class="t-normal"><h1 class="title" data-words style="--i:0">잠시 쉬어갑니다</h1></div>
-<div class="t-soon"><h1 class="title-m">곧 Session 3이 시작됩니다</h1></div>
-<p class="lead"><span class="t-normal-i"><span data-resume>--:--</span>에 다시 시작합니다.</span><span class="t-soon-i">자리로 돌아와 주세요.</span></p>
-<div class="next"><p class="card-k">다음 순서 · Session 3</p><h3 class="card-t">Proxymity, 글로벌 의결권 행사 인프라의 혁신과 미래</h3><p class="card-b">Scott Oakland · Proxymity, Head of APAC</p></div>
+<div class="bk">
+<p class="bk-e fu" style="--i:0">BREAK</p>
+<div class="bk-tw"><div class="t-normal"><h1 class="bk-t" data-words style="--i:1">잠시 쉬어가는<br>시간입니다.</h1></div><div class="t-soon"><h1 class="bk-t">곧 Session 3이<br>시작됩니다</h1></div></div>
+<p class="bk-s fu" style="--i:2"><span class="t-normal-i">로비에 간단한 다과와 음료가 마련되어 있습니다.</span><span class="t-soon-i">자리로 돌아와 주세요.</span></p>
+<div class="bk-timer fu" style="--i:2"><span class="bk-tv" data-timer>15:00</span><svg class="dots" aria-hidden="true"></svg><p class="bk-r"><span data-resume>--:--</span>에 다시 시작합니다.</p></div>
+<div class="bk-next fu" style="--i:3"><p class="bk-nk">NEXT</p><div><p class="bk-nt">Proxymity, 글로벌 의결권 행사 인프라의 혁신과 미래</p><p class="bk-nw">Scott Oakland · Proxymity, Head of APAC</p></div></div>
+</div>
 </section>
 <section class="slide" id="m6_s1" data-no="M6-S1" data-title="M6-S1 [상황] 재개 임박 (Session 3)" data-bg="B" data-foot="full" data-msg="1" data-tr="fade" data-lay="center">
 <p class="eyebrow fu" style="--i:0">NOTICE</p>
@@ -382,12 +403,13 @@ body.idle{cursor:none}
 
 </section>
 <section class="slide" id="m8_1" data-no="M8-1" data-title="M8-1 휴식 · 재개 타이머" data-bg="B" data-foot="full" data-break="brk2">
-<div class="timer"><p class="timer-k">재개까지</p><p class="timer-v" data-timer>15:00</p></div>
-<p class="eyebrow">BREAK</p>
-<div class="t-normal"><h1 class="title" data-words style="--i:0">잠시 쉬어갑니다</h1></div>
-<div class="t-soon"><h1 class="title-m">곧 모의 전자주주총회 시연이 시작됩니다</h1></div>
-<p class="lead"><span class="t-normal-i"><span data-resume>--:--</span>에 다시 시작합니다.</span><span class="t-soon-i">자리로 돌아와 주세요.</span></p>
-<div class="next"><p class="card-k">다음 순서</p><h3 class="card-t">모의 전자주주총회 시연</h3><p class="card-b">박성용 · IR큐더스, 본부장 · 참석자와 함께 모의 전자주주총회를 진행합니다.</p></div>
+<div class="bk">
+<p class="bk-e fu" style="--i:0">BREAK</p>
+<div class="bk-tw"><div class="t-normal"><h1 class="bk-t" data-words style="--i:1">잠시 쉬어가는<br>시간입니다.</h1></div><div class="t-soon"><h1 class="bk-t">곧 시연이<br>시작됩니다</h1></div></div>
+<p class="bk-s fu" style="--i:2"><span class="t-normal-i">로비에 간단한 다과와 음료가 마련되어 있습니다.</span><span class="t-soon-i">자리로 돌아와 주세요.</span></p>
+<div class="bk-timer fu" style="--i:2"><span class="bk-tv" data-timer>15:00</span><svg class="dots" aria-hidden="true"></svg><p class="bk-r"><span data-resume>--:--</span>에 다시 시작합니다.</p></div>
+<div class="bk-next fu" style="--i:3"><p class="bk-nk">NEXT</p><div><p class="bk-nt">모의 전자주주총회 시연</p><p class="bk-nw">박성용 · IR큐더스, 본부장 · 참석자와 함께 모의 전자주주총회를 진행합니다.</p></div></div>
+</div>
 </section>
 <section class="slide" id="m8_s1" data-no="M8-S1" data-title="M8-S1 [상황] 재개 임박 (시연)" data-bg="B" data-foot="full" data-msg="1" data-tr="fade" data-lay="center">
 <p class="eyebrow fu" style="--i:0">NOTICE</p>
@@ -574,9 +596,20 @@ function applySched(){
   slides.forEach(s=>s.querySelectorAll('.prow[data-item],.r[data-item]').forEach(r=>{const it=SCHED.item(SC,r.dataset.item);if(!it)return;
     const adj=SC.progAdj&&it.start!==it.ps;r.querySelector('.ptime,.r__t').textContent=SC.progAdj?SCHED.fmt(it.start)+'~'+SCHED.fmt(it.end):SCHED.fmt(it.ps)+'~'+SCHED.fmt(it.pe);r.classList.toggle('adj',adj);}));
   tick();if(slides[idx]&&slides[idx].dataset.no==='M0-3')renderNotice();hud();}
+
+// 도트 타이포 타이머(5×7 도트): 숫자 0-9와 콜론
+const DOTF={'0':['01110','10001','10011','10101','11001','10001','01110'],'1':['00100','01100','00100','00100','00100','00100','01110'],'2':['01110','10001','00001','00010','00100','01000','11111'],'3':['11110','00001','00001','01110','00001','00001','11110'],'4':['00010','00110','01010','10010','11111','00010','00010'],'5':['11111','10000','11110','00001','00001','10001','01110'],'6':['00110','01000','10000','11110','10001','10001','01110'],'7':['11111','00001','00010','00100','01000','01000','01000'],'8':['01110','10001','10001','01110','10001','10001','01110'],'9':['01110','10001','10001','01111','00001','00010','01100'],':':['0','0','1','0','1','0','0']};
+const DP=34,DR=12.5;
+function dotTimer(svg,str){if(svg._s===str)return;const NS='http://www.w3.org/2000/svg';
+  if(svg._len!==str.length){svg.innerHTML='';let x=0;svg._cells=[];
+    [...str].forEach((ch,i)=>{const w=ch===':'?1:5,cells=[];for(let r=0;r<7;r++)for(let c=0;c<w;c++){const e=document.createElementNS(NS,'circle');e.setAttribute('cx',x+c*DP+DP/2);e.setAttribute('cy',r*DP+DP/2);e.setAttribute('r',DR);svg.appendChild(e);cells.push(e);}
+      svg._cells.push(cells);x+=w*DP+DP;});
+    svg.setAttribute('width',x-DP);svg.setAttribute('height',7*DP);svg.setAttribute('viewBox',`0 0 ${x-DP} ${7*DP}`);svg._len=str.length;}
+  [...str].forEach((ch,i)=>{const g=DOTF[ch]||DOTF['0'],w=g[0].length,cells=svg._cells[i];for(let r=0;r<7;r++)for(let c=0;c<w;c++)cells[r*w+c].classList.toggle('on',g[r][c]==='1');});
+  svg._s=str;}
 function tick(){const ns=SCHED.nowSec();slides.forEach(s=>{if(!s.dataset.break)return;const it=SCHED.item(SC,s.dataset.break);if(!it)return;
   let r=Math.round(it.end*60-ns);if(r<0)r=0;if(r>5400)r=(it.end-it.start)*60;
-  const m=Math.floor(r/60),sec=r%60;s.querySelector('[data-timer]').textContent=(m<10?'0':'')+m+':'+(sec<10?'0':'')+sec;
+  const m=Math.floor(r/60),sec=r%60;const tv=(m<10?'0':'')+m+':'+(sec<10?'0':'')+sec;s.querySelector('[data-timer]').textContent=tv;const dv=s.querySelector('svg.dots');if(dv)dotTimer(dv,tv);
   s.querySelector('[data-resume]').textContent=SCHED.fmt(it.end);s.classList.toggle('soon',r>0&&r<=180);});}
 setInterval(tick,500);
 function renderNotice(){const n=SCHED.nowMin(),up=SC.items.filter(x=>x.end>n&&x.id!=='reg').slice(0,5);
