@@ -162,6 +162,13 @@ function build(){
     path(after,tB,[[25.4,13.4],[25.4,12.4],[23.95,12.4],[23.95,-5.2],[6,-5.2]]);path(after,tB,[[23.6,12.4],[6,12.4]]);path(after,tB,[[23.6,4.75],[6,4.75]]);
     scene.add(visit,before,after);RT.g={visit:visit,before:before,after:after};applyRoute();
   })();
+  /* 에스컬레이터 내려오는 쪽 벽면 LED 월: 5540(W)×1520(D)×3500(H)mm, 화면 4940×2900mm(하단 600 · 좌우 300 프레임), 블랙 패널. 로비 스크린 화면(16:9) */
+  (function(){var lw=5.54*M,ld=1.52*M,lh=3.5*M,cx=35.6-.13-ld/2,cz=33.3-.13-lw/2,fx=cx-ld/2;
+    box(ld,lh,lw,0x08090c,cx,lh/2,cz,{roughness:.6});
+    var bk=new THREE.Mesh(new THREE.PlaneGeometry(4.94*M,2.9*M),new THREE.MeshBasicMaterial({color:0x030407}));bk.rotation.y=-Math.PI/2;bk.position.set(fx-.02,(.6+1.45)*M,cz);scene.add(bk);
+    var src=window.SEAT_LOBBY_IMG;if(!src)return;var im=new Image();im.onload=function(){var tx=new THREE.Texture(im);tx.anisotropy=8;tx.needsUpdate=true;
+      var pm=new THREE.Mesh(new THREE.PlaneGeometry(4.94*M,4.94*M*9/16),new THREE.MeshBasicMaterial({map:tx}));pm.rotation.y=-Math.PI/2;pm.position.set(fx-.04,(.6+1.45)*M,cz);scene.add(pm);};im.src=src;
+  })();
   /* 테이블 · 의자 */
   const n=tables.length;
   tMesh=new THREE.InstancedMesh(new THREE.BoxGeometry(T_DEP,T_H,T_LEN-.03),new THREE.MeshStandardMaterial({color:0x101116,roughness:.85}),n);
