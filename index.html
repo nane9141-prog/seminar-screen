@@ -146,6 +146,8 @@ body.idle{cursor:none}
 .eyebrow{font-weight:400;letter-spacing:.02em}
 #footer{display:none}  /* 레이아웃 시안에 하단 로고 · 행사명 없음 */
 .slide{padding:160px 416px}
+.slide .zm-c iframe.kn{position:absolute;inset:0;width:100%;height:100%;border:0;background:#0a1017;pointer-events:none}  /* 세션 2 자료(session2.html?embed=1) — V · C 입력이 들어오면 그 위로 덮음 */
+.zm-c iframe.kn~.zm-ph{display:none}
 .slide[data-kn]{padding:0}.slide iframe.kn{position:absolute;left:0;top:0;width:4200px;height:1600px;border:0;background:transparent;pointer-events:none}  /* 세션 4 키노트 (session4.html?embed=1) */
 .photo{right:416px}.timer{right:416px}
 /* center: 국문 가운데 — 제목 29pt → 204.6px, 정보 9pt → 63.5px */
@@ -442,11 +444,11 @@ body.idle{cursor:none}
 <section class="slide" id="m5_4" data-no="M5-4" data-title="M5-4 Session 2 연사 소개 · 권재열" data-bg="B" data-foot="full" data-spk="speaker2">
 <div class="cg sp"><p class="cg-e fu" style="--i:0">Session 2.</p><div class="cg-b"><h2 class="sp-t" data-words style="--i:1">상법 개정과 전자주총이 몰고 올<br>기업 경영의 지각변동</h2><p class="sp-n ko fu" style="--i:2">권재열</p><p class="sp-r fu" style="--i:3">한국주주총회연구소장, 경희대 법학전문대학원 교수</p></div></div>
 </section>
-<section class="slide" id="m5_5" data-no="M5-5" data-title="M5-5 Session 2 발표자료 (가운데 16:9 PPT)" data-bg="B" data-foot="none" data-zoom="1" data-ox=".905" data-dim=".42" >
+<section class="slide" id="m5_5" data-no="M5-5" data-title="M5-5 Session 2 발표자료 (가운데 16:9 · session2.html 30장)" data-bg="B" data-foot="none" data-zoom="1" data-ox=".905" data-dim=".42" >
 <div class="zm pp">
 <div class="zm-l"><p class="zm-e fu" style="--i:0">Session 2.</p><h2 class="zm-t pp-t" data-words style="--i:1">상법 개정과 전자주총이 몰고 올 기업 경영의 지각변동</h2>
 <div class="pp-who fu" style="--i:3"><p class="pp-n">권재열</p><p class="pp-ro">한국주주총회연구소장, 경희대 법학전문대학원 교수</p></div></div>
-<div class="zm-c fu" style="--i:1"><video class="zm-v" muted playsinline></video><p class="zm-ph">PPT 슬라이드 · 16:9<br><small>V: 이 PC의 발표 창 캡처 · C: 캡처보드 입력 · X: 해제</small></p></div>
+<div class="zm-c fu" style="--i:1"><iframe class="kn" data-src="session2.html?embed=1" tabindex="-1" title="Session 2 발표자료" aria-hidden="true"></iframe><video class="zm-v" muted playsinline></video><p class="zm-ph">PPT 슬라이드 · 16:9<br><small>V: 이 PC의 발표 창 캡처 · C: 캡처보드 입력 · X: 해제</small></p></div>
 <div class="pp-r"><p class="pp-ev fu" style="--i:2">전자주주총회 플랫폼<br>시연 설명회</p></div>
 </div>
 </section>
@@ -659,17 +661,17 @@ function initBG(){if(!window.FS)return;FS.mode(4);FS.resize();if(qp.get('bg'))FS
 let idx=-1,home=0,auto=true,autoT=null,numbuf='',SPD=1,autoT0=0,autoLen=0;
 const toast=(t)=>{const e=document.getElementById('toast');e.textContent=t;e.classList.add('on');clearTimeout(toast.t);toast.t=setTimeout(()=>e.classList.remove('on'),1600);};
 const isMsg=s=>s&&s.dataset.msg==='1';
-// ── 세션 4 키노트 (M7-5): session4.html?embed=1 을 화면 안에 넣고 postMessage로 넘김. 배경은 메인의 Data Stream 하나만 사용 ──
-const KN={el:null,ready:false,q:null,
-  init(){this.el=document.querySelector('iframe.kn');if(!this.el)return;this.el.src=this.el.dataset.src;},
-  post(m){if(this.el&&this.el.contentWindow)this.el.contentWindow.postMessage(m,'*');},
-  enter(at){if(this.ready)this.post({s4:'enter',at});else this.q=at;}};
-addEventListener('message',e=>{const d=e.data||{};if(!d.s4||!KN.el||e.source!==KN.el.contentWindow)return;
-  if(d.s4==='ready'){KN.ready=true;if(KN.q){KN.post({s4:'enter',at:KN.q});KN.q=null;}}
-  else if(d.s4==='edge'){if(slides[idx]&&slides[idx].dataset.kn)go(nextMain(idx,d.d));}
-  else if(d.s4==='bg'){const s=slides[idx];if(s&&s.dataset.kn){const f=document.getElementById('c');if(f)f.style.opacity=d.dim;dsPost({ds:'ox',v:d.ox});}}
-  else if(d.s4==='pos'){KN.pos=d.label;if(window.CtrlPanel)CtrlPanel.draw();}});
-KN.init();
+// ── 발표 덱 (M7-5 세션 4 키노트 · M5-5 세션 2 자료): iframe.kn 을 화면 안에 넣고 postMessage로 넘김. → ← 는 덱 안에서, 처음/끝이면 앞뒤 화면으로 ──
+const KN={frames:[...document.querySelectorAll('iframe.kn')],pos:'',
+  of(s){return s&&s.querySelector('iframe.kn');},
+  post(f,m){if(f&&f.contentWindow)f.contentWindow.postMessage(m,'*');},
+  enter(f,at){if(!f)return;if(f._r)this.post(f,{s4:'enter',at});else f._q=at;}};
+KN.frames.forEach(f=>f.src=f.dataset.src);
+addEventListener('message',e=>{const d=e.data||{};if(!d.s4)return;const f=KN.frames.find(x=>x.contentWindow===e.source);if(!f)return;const fs=f.closest('.slide'),cur=slides[idx]===fs;
+  if(d.s4==='ready'){f._r=true;if(f._q){KN.post(f,{s4:'enter',at:f._q});f._q=null;}}
+  else if(d.s4==='edge'){if(cur)go(nextMain(idx,d.d));}
+  else if(d.s4==='bg'){if(cur&&fs.dataset.kn){const c=document.getElementById('c');if(c)c.style.opacity=d.dim;dsPost({ds:'ox',v:d.ox});}}
+  else if(d.s4==='pos'){if(cur){KN.pos=d.label;if(window.CtrlPanel)CtrlPanel.draw();}}});
 const byNo=no=>slides.findIndex(s=>s.dataset.no.toUpperCase()===String(no).toUpperCase());
 function go(n){n=Math.max(0,Math.min(slides.length-1,n));if(n===idx)return;const oi=idx;
   const prev=slides[idx],s=slides[n],tr=qp.get('tr')||((isMsg(prev)||isMsg(s))?'fade':(s.dataset.tr||'blur'));  // 상황 메시지를 띄우거나 내릴 때는 항상 0.3초 페이드
@@ -682,7 +684,7 @@ function go(n){n=Math.max(0,Math.min(slides.length-1,n));if(n===idx)return;const
   const v=s.dataset.video&&document.getElementById(s.dataset.video);
   if(v&&v.classList.contains('ok')){v.currentTime=0;v.play().catch(()=>{});}
   if(s.dataset.qa)renderQ();
-  if(slides[oi]&&slides[oi].dataset.kn)KN.post({s4:'leave'});if(s.dataset.kn)KN.enter(oi>n?'last':'first');
+  KN.post(KN.of(slides[oi]),{s4:'leave'});KN.pos='';KN.enter(KN.of(s),oi>n?'last':'first');
   if(s.dataset.no==='M0-3')renderNotice();
   clearTimeout(autoT);
   autoLen=0;if(s.dataset.auto&&auto){autoT0=performance.now();autoLen=+s.dataset.auto*1000/SPD;{const pn=s.querySelector('.pin');if(pn&&pn._a){pn._a.playbackRate=SPD;const tm=pn._a.effect.getTiming();autoLen=(tm.delay+tm.duration+3000)/SPD;}}  // 프로그램: 스크롤이 끝나고 3초 뒤 다음 화면
@@ -696,7 +698,7 @@ const BOOT_MS=10000;let BOOT_T=0,bootTimer=null;
 function bootGo(){clearTimeout(bootTimer);bootTimer=null;if(idx<0)go(0);}
 function boot(){BOOT_T=performance.now()+BOOT_MS;const c=document.getElementById('c');if(c)c.style.opacity=1;bootTimer=setTimeout(bootGo,BOOT_MS);
   SCHED.pub({cur:'시작 대기',slides:slides.map(x=>({no:x.dataset.no,title:x.dataset.title.replace(/&amp;/g,'&'),msg:isMsg(x)?1:0,auto:x.dataset.auto?+x.dataset.auto:0,vid:0}))});}
-function step(d){if(idx<0){bootGo();return;}if(slides[idx]&&slides[idx].dataset.kn&&KN.ready){KN.post({s4:'nav',d});return;}/* 세션 4 키노트: 키노트 안에서 넘기고, 처음/끝이면 키노트가 edge를 돌려줌 */if(isMsg(slides[idx])){go(d>0?nextMain(home,1):home);return;}go(nextMain(idx,d));}
+function step(d){if(idx<0){bootGo();return;}{const f=KN.of(slides[idx]);if(f&&f._r){KN.post(f,{s4:'nav',d});return;}}/* 세션 4 키노트: 키노트 안에서 넘기고, 처음/끝이면 키노트가 edge를 돌려줌 */if(isMsg(slides[idx])){go(d>0?nextMain(home,1):home);return;}go(nextMain(idx,d));}
 function nextMain(i,d){let j=i+d;while(slides[j]&&(isMsg(slides[j])||slides[j].dataset.skip))j+=d;return slides[j]?j:i;}/* 예비 화면(data-skip)도 건너뜀 */
 document.querySelectorAll('[data-words]').forEach(el=>{let w=0;[...el.childNodes].forEach(nd=>{if(nd.nodeType!==3)return;const f=document.createDocumentFragment();
   nd.textContent.split(/(\s+)/).forEach(t=>{if(!t)return;if(/^\s+$/.test(t)){f.appendChild(document.createTextNode(' '));return;}const sp=document.createElement('span');sp.className='w';sp.style.setProperty('--w',w++);sp.textContent=t;f.appendChild(sp);});
@@ -804,7 +806,7 @@ CtrlPanel.mount({title:'메인 스크린',key:'scr-main',placeholder:'예: 4-5, 
   goNo:t=>{const n=byNo('M'+t.trim().toUpperCase().replace(/^M/,''));if(n<0)return false;go(n);return true;},
   list:()=>slides.map((s,i)=>({no:s.dataset.no,label:nm(s),cur:i===idx,msg:isMsg(s),dur:s.dataset.auto?s.dataset.auto+'초':(v=>v&&isFinite(v.duration)?'영상 '+Math.round(v.duration)+'초':'')(s.querySelector('video'))})),
   status:()=>{const s=slides[idx];if(!s)return {title:'시작 대기',sub:'배경만 재생 중 · '+Math.max(0,Math.ceil((BOOT_T-performance.now())/1000))+'초 뒤 M1-1 대기 화면 시작 (→ 누르면 바로)',prog:Math.min(1,1-(BOOT_T-performance.now())/BOOT_MS)};let nx=nextMain(isMsg(s)?home:idx,1);nx=nx!==idx?slides[nx]:null;
-    const sub=(isMsg(s)?'상황 메시지 · → 누르면 원래 순서로 · ':'')+(s.dataset.kn&&KN.pos?'키노트 '+KN.pos+' · ':'')+(nx?'다음: '+nx.dataset.no+' '+nm(nx):'마지막 화면');
+    const sub=(isMsg(s)?'상황 메시지 · → 누르면 원래 순서로 · ':'')+(KN.of(s)&&KN.pos?'발표 '+KN.pos+' · ':'')+(nx?'다음: '+nx.dataset.no+' '+nm(nx):'마지막 화면');
     return {title:s.dataset.no+'  '+nm(s),sub,prog:autoLen?Math.min(1,(performance.now()-autoT0)/autoLen):null};},
   setSpeed:v=>{SPD=v;window.FSSPD=v;dsPost({ds:'mul',v});},
   toggles:[{label:'전체화면',key:'F',click:()=>{if(document.fullscreenElement)document.exitFullscreen();else document.documentElement.requestFullscreen();},on:()=>!!document.fullscreenElement},
