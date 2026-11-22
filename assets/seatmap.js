@@ -55,11 +55,11 @@ function drawLabel(lb){
 }
 function build(){
   const el=$('smstage'),w=el.clientWidth||800,h=el.clientHeight||500;
-  scene=new THREE.Scene();scene.background=new THREE.Color(0x121212);scene.fog=new THREE.Fog(0x121212,70,150);
+  scene=new THREE.Scene();scene.background=new THREE.Color(0x121212);scene.fog=new THREE.Fog(0x121212,120,280);
   camera=new THREE.PerspectiveCamera(42,w/h,.05,400);
   renderer=new THREE.WebGLRenderer({antialias:true});renderer.setPixelRatio(Math.min(devicePixelRatio,2));renderer.setSize(w,h);
   el.insertBefore(renderer.domElement,el.firstChild);
-  controls=new THREE.OrbitControls(camera,renderer.domElement);controls.enableDamping=true;controls.dampingFactor=.08;controls.maxPolarAngle=Math.PI/2-.03;controls.minDistance=1.2;controls.maxDistance=110;
+  controls=new THREE.OrbitControls(camera,renderer.domElement);controls.enableDamping=true;controls.dampingFactor=.08;controls.maxPolarAngle=Math.PI/2-.03;controls.minDistance=1.2;controls.maxDistance=170;
   dummy=new THREE.Object3D();tmpColor=new THREE.Color();
   scene.add(new THREE.AmbientLight(0xb8c4e6,.62));const dl=new THREE.DirectionalLight(0xfff1dc,.75);dl.position.set(10,40,20);scene.add(dl);
   [[-14,-4],[2,-4],[18,-4],[-6,6],[12,6]].forEach(p=>{const pl=new THREE.PointLight(0xffd9a8,.35,36);pl.position.set(p[0],8,p[1]);scene.add(pl);});
@@ -69,7 +69,7 @@ function build(){
     for(let i=0;i<1400;i++){g.fillStyle=pal[(Math.random()*pal.length)|0];g.globalAlpha=.18+Math.random()*.3;g.fillRect(Math.random()*cw,Math.random()*ch,20+Math.random()*90,1+Math.random()*3);}g.globalAlpha=1;});
   carpet.wrapS=carpet.wrapT=THREE.RepeatWrapping;carpet.repeat.set(7,3.5);
   const floor=new THREE.Mesh(new THREE.PlaneGeometry(W,D),new THREE.MeshStandardMaterial({map:carpet,roughness:1}));floor.rotation.x=-Math.PI/2;scene.add(floor);
-  const outer=new THREE.Mesh(new THREE.PlaneGeometry(W+30,D+24),new THREE.MeshStandardMaterial({color:0x151515,roughness:1}));outer.rotation.x=-Math.PI/2;outer.position.y=-.02;scene.add(outer);
+  const outer=new THREE.Mesh(new THREE.PlaneGeometry(260,140),new THREE.MeshStandardMaterial({color:0x151515,roughness:1}));outer.rotation.x=-Math.PI/2;outer.position.y=-.02;outer.position.x=-15;outer.position.z=8;scene.add(outer);
   /* 벽 */
   const wallTex=ctex(1024,256,(g,cw,ch)=>{g.fillStyle='#b3a288';g.fillRect(0,0,cw,ch);
     let x=0,i=0;const sh=['#b3a288','#a99982','#b9a98f','#9d9382','#ae9d84'];
@@ -107,6 +107,31 @@ function build(){
   [-14.9,-1.6,6.6,17.6].forEach(dx=>{box(2.2,1.2,.36,0x5a1f26,dx,.6,HD+.15);sprite('✕ 폐쇄',dx,2.1,HD+.2,'#ff6b6b',3.4);});
   box(2.2,1.2,.36,0x1f5a3c,25.4,.6,HD+.15);sprite('입구',25.4,2.1,HD+.2,'#6dffb0',3.2);box(2.2,1.2,.36,0x2a2e3b,-21.1,.6,HD+.15);
   box(5.4,T_H,.8,0x15171f,19.3,T_H/2,HD+1.8);sprite('등록 데스크',19.3,2.3,HD+1.8,'#fff',4.6);
+  /* 행사장 밖 B1: 포이어·복도·부속실·리프트 (B1 평면도 배치 + 제공 치수, 단위 m). 부속실은 실제 높이를 반투명 볼륨으로 표시 */
+  (function(){
+    function flr(x0,x1,z0,z1,c){var m=new THREE.Mesh(new THREE.PlaneGeometry(x1-x0,z1-z0),new THREE.MeshStandardMaterial({color:c,roughness:1}));m.rotation.x=-Math.PI/2;m.position.set((x0+x1)/2,-.008,(z0+z1)/2);scene.add(m);}
+    function wl(x0,x1,z0,z1){box(Math.max(.25,x1-x0),1,Math.max(.25,z1-z0),0x23252d,(x0+x1)/2,.5,(z0+z1)/2);}
+    function lift(x0,x1,z0,z1){box(x1-x0,3.4,z1-z0,0x2a2d36,(x0+x1)/2,1.7,(z0+z1)/2);}
+    var FC=0x3d4048;
+    flr(-30,35.6,13.8,33.3,FC);flr(28.3,35.6,-13.8,13.8,FC);flr(35.6,56.8,-12,8.6,FC);flr(-83.2,-30,15.7,20.7,FC);
+    wl(-30,35.6,33.3,33.3);wl(35.6,35.6,8.6,33.3);wl(35.6,35.6,-13.8,-12);wl(28.3,35.6,-13.8,-13.8);
+    wl(35.6,56.8,-12,-12);wl(35.6,56.8,8.6,8.6);wl(56.8,56.8,-12,8.6);
+    wl(-83.2,-28.3,15.7,15.7);wl(-83.2,-83.2,15.7,20.7);wl(-28.3,-28.3,13.8,15.7);
+    sprite('FOYER',3,2.2,24,'#cfd8ff',7);
+    var RM=[['PYEBAEK',5.2,7,2.8,'5.2×7×2.8m · 11평'],['BRIDAL ROOM',8.5,6.5,2.8,'8.5×6.5×2.8m · 16평'],['RED UME 1',7,6.5,4.8,''],['RED UME 2',7,6.5,4.8,''],['PINO',8.5,6.5,2.8,'8.5×6.5×2.8m · 16평']],rx=-30;
+    RM.forEach(function(r){var L=r[1]*M,Dp=r[2]*M,H=r[3]*M,x1=rx,x0=rx-L,z0=20.7,z1=20.7+Dp;
+      flr(x0,x1,z0,z1,0x2c2f37);wl(x0,x1,z0,z0);wl(x0,x1,z1,z1);wl(x0,x0,z0,z1);wl(x1,x1,z0,z1);
+      var v=new THREE.Mesh(new THREE.BoxGeometry(L,H,Dp),new THREE.MeshBasicMaterial({color:0x8fa3d6,transparent:true,opacity:.07,depthWrite:false}));v.position.set((x0+x1)/2,H/2,(z0+z1)/2);scene.add(v);
+      var e=new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(L,H,Dp)),new THREE.LineBasicMaterial({color:0x6f7890,transparent:true,opacity:.6}));e.position.copy(v.position);scene.add(e);
+      sprite(r[0],(x0+x1)/2,H+1.5,(z0+z1)/2,'#fff',5);if(r[4])sprite(r[4],(x0+x1)/2,H+.4,(z0+z1)/2,'#aab3cc',4.4);
+      rx=x0;});
+    sprite('14×6.5×4.8m · 27평',-30-(5.2+8.5+7)*M,4.8*M+.4,20.7+3.25*M,'#aab3cc',4.4);
+    lift(-16,-11.5,28.6,33);lift(-6.3,-1.6,28.6,33);sprite('LIFT',-8.9,4.4,30.8,'#fff',3.4);
+    box(20.7,.9,4.6,0x2a2d36,21.3,.45,30.6);sprite('ESCALATOR',21.3,2.2,30.6,'#fff',4.6);
+    [[36.6,42.6],[43.2,49.2],[49.8,55.8]].forEach(function(p){lift(p[0],p[1],-11.8,-7.2);});
+    [[40,46],[46.6,52.6]].forEach(function(p){lift(p[0],p[1],4,8.4);});
+    sprite('GUEST LIFT',46,4.6,-1.7,'#fff',5);
+  })();
   /* 테이블 · 의자 */
   const n=tables.length;
   tMesh=new THREE.InstancedMesh(new THREE.BoxGeometry(T_DEP,T_H,T_LEN-.03),new THREE.MeshStandardMaterial({color:0x101116,roughness:.85}),n);
@@ -149,7 +174,7 @@ function paint(){
   seatMesh.instanceColor.needsUpdate=backMesh.instanceColor.needsUpdate=true;
   if(sel){hl.visible=true;hl.position.set(sel.x+.6,.05,sel.z);}else hl.visible=false;
 }
-const VIEWS={persp:[[30,17,27],[2,0,0]],top:[[0,62,.01],[0,0,0]],stage:[[-23,4.6,-.4],[6,0,-.4]],back:[[33,10,-.4],[-6,0,-.4]]};
+const VIEWS={persp:[[30,17,27],[2,0,0]],top:[[0,62,.01],[0,0,0]],stage:[[-23,4.6,-.4],[6,0,-.4]],back:[[33,10,-.4],[-6,0,-.4]],all:[[-20,88,96],[-20,0,10]]};
 function setView(v){const p=VIEWS[v];camera.position.set(p[0][0],p[0][1],p[0][2]);controls.target.set(p[1][0],p[1][1],p[1][2]);controls.update();
   document.querySelectorAll('#smview [data-v]').forEach(b=>b.classList.toggle('sel',b.dataset.v===v));}
 function focus(s){if(!ready)return;const off=camera.position.clone().sub(controls.target);if(off.length()>16)off.setLength(16);controls.target.set(s.x,T_H,s.z);camera.position.copy(controls.target).add(off);}
@@ -176,7 +201,7 @@ addEventListener('keydown',e=>{
   if(!active()||!ready)return;
   if(e.key==='Escape'){if(typing())document.activeElement.blur();else select(null);return;}
   if(typing()||e.ctrlKey||e.metaKey||e.altKey)return;
-  const k=e.key.length===1?e.key.toLowerCase():e.key,v={'1':'persp','2':'top','3':'stage','4':'back'}[k];
+  const k=e.key.length===1?e.key.toLowerCase():e.key,v={'1':'persp','2':'top','3':'stage','4':'back','5':'all'}[k];
   if(v)return setView(v);
   if(k==='l')return $('smlabel').click();
   if(k==='/'){e.preventDefault();return $('smq').focus();}
@@ -190,7 +215,7 @@ function keys(dt){
   if(fwd.lengthSq()<1e-6)fwd.set(0,0,-1);fwd.normalize();
   const right=new THREE.Vector3(-fwd.z,0,fwd.x),mv=new THREE.Vector3();
   if(held.w||held.ArrowUp)mv.add(fwd);if(held.s||held.ArrowDown)mv.sub(fwd);if(held.d||held.ArrowRight)mv.add(right);if(held.a||held.ArrowLeft)mv.sub(right);
-  if(mv.lengthSq()){mv.normalize().multiplyScalar(Math.max(4,dist*.7)*dt);const t=controls.target.clone().add(mv);t.x=Math.max(-32,Math.min(32,t.x));t.z=Math.max(-18,Math.min(20,t.z));mv.copy(t).sub(controls.target);controls.target.copy(t);camera.position.add(mv);}
+  if(mv.lengthSq()){mv.normalize().multiplyScalar(Math.max(4,dist*.7)*dt);const t=controls.target.clone().add(mv);t.x=Math.max(-90,Math.min(60,t.x));t.z=Math.max(-20,Math.min(36,t.z));mv.copy(t).sub(controls.target);controls.target.copy(t);camera.position.add(mv);}
   off=camera.position.clone().sub(controls.target);
   const rot=(held.q?1:0)-(held.e?1:0);if(rot)off.applyAxisAngle(new THREE.Vector3(0,1,0),rot*1.2*dt);
   const tilt=(held.PageUp?1:0)-(held.PageDown?1:0);if(tilt){const sp=new THREE.Spherical().setFromVector3(off);sp.phi=Math.max(.05,Math.min(Math.PI/2-.04,sp.phi-tilt*.9*dt));off.setFromSpherical(sp);}
