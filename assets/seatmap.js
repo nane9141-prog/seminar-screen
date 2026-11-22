@@ -162,11 +162,12 @@ function build(){
     path(after,tB,[[25.4,13.4],[25.4,12.4],[23.95,12.4],[23.95,-5.2],[6,-5.2]]);path(after,tB,[[23.6,12.4],[6,12.4]]);path(after,tB,[[23.6,4.75],[6,4.75]]);
     scene.add(visit,before,after);RT.g={visit:visit,before:before,after:after};applyRoute();
   })();
-  /* 포이어 끝 벽(에스컬레이터 내려오는 방향) 전체 LED: 포이어 폭 약 10m × 16:9(약 5.6m), 로비 스크린 화면. 블랙 패널 */
-  (function(){var z0=13.8,z1=28.2,sw=z1-z0,sh=sw*9/16,cz=(z0+z1)/2,y0=.3*M;
-    box(.3,sh+y0+.25,sw,0x08090c,35.6-.28,(sh+y0+.25)/2,cz,{roughness:.6});
-    var src=window.SEAT_LOBBY_IMG;if(!src)return;var im=new Image();im.onload=function(){var tx=new THREE.Texture(im);tx.anisotropy=8;tx.needsUpdate=true;
-      var pm=new THREE.Mesh(new THREE.PlaneGeometry(sw-.15,sh),new THREE.MeshBasicMaterial({map:tx}));pm.rotation.y=-Math.PI/2;pm.position.set(35.6-.45,y0+sh/2,cz);scene.add(pm);};im.src=src;
+  /* 포이어 끝 벽(에스컬레이터 내려오는 방향) 로비 LED: 5540(W)×1520(D)×3500(H)mm, 화면 4940×2900mm(하단 600 · 좌우 300 프레임), 블랙 패널. 벽 중앙 배치, 로비 스크린 화면을 화면 비율(약 1.7:1)에 맞춰 꽉 채움 */
+  (function(){var lw=5.54*M,ld=1.52*M,lh=3.5*M,cx=35.6-.13-ld/2,cz=(13.8+28.2)/2,fx=cx-ld/2;
+    box(ld,lh,lw,0x08090c,cx,lh/2,cz,{roughness:.6});
+    var bk=new THREE.Mesh(new THREE.PlaneGeometry(4.94*M,2.9*M),new THREE.MeshBasicMaterial({color:0x030407}));bk.rotation.y=-Math.PI/2;bk.position.set(fx-.02,(.6+1.45)*M,cz);scene.add(bk);
+    var src=window.SEAT_LOBBY_IMG;if(!src)return;var im=new Image();im.onload=function(){var tx=new THREE.Texture(im);tx.anisotropy=8;var rx=(4.94/2.9)/(16/9);tx.repeat.set(rx,1);tx.offset.set((1-rx)/2,0);tx.needsUpdate=true;
+      var pm=new THREE.Mesh(new THREE.PlaneGeometry(4.94*M,2.9*M),new THREE.MeshBasicMaterial({map:tx}));pm.rotation.y=-Math.PI/2;pm.position.set(fx-.04,(.6+1.45)*M,cz);scene.add(pm);};im.src=src;
   })();
   /* 테이블 · 의자 */
   const n=tables.length;
