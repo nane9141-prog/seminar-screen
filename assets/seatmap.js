@@ -90,7 +90,7 @@ function build(){
   /* 무대 스크린에 메인 스크린 화면(21:8) 표시 */
   if(window.SEAT_SCREEN_IMG){const im=new Image();im.onload=()=>{const tx=new THREE.Texture(im);tx.anisotropy=8;tx.needsUpdate=true;
     const pm=new THREE.Mesh(new THREE.PlaneGeometry(5.2*21/8,5.2),new THREE.MeshBasicMaterial({map:tx}));pm.rotation.y=Math.PI/2;pm.position.set(-27.72,3.9,-.4);scene.add(pm);};im.src=window.SEAT_SCREEN_IMG;}
-  box(3.6,.4,16.2,0x1c1f2a,25.4,.2,-.4);sprite('후면 단상 · 콘솔',25.4,2.6,-.4,'#aab3cc',6.5);
+  box(3.2,.4,16.2,0x1c1f2a,26.15,.2,-.4);sprite('후면 단상 · 콘솔',26.15,2.6,-.4,'#aab3cc',6.5);   // 맨 뒷줄과 단상 사이 횡단 통로(약 0.8m) 확보
   /* 무대 좌·우 LED 타워: 3100(W)×2230(D)×4170(H)mm, 하단 1820mm 베이스, 블랙 패널, 안쪽으로 25° */
   const ledTex=ctex(512,400,(g,cw,ch)=>{const gr=g.createLinearGradient(0,0,cw,ch);gr.addColorStop(0,'#1d3a7a');gr.addColorStop(1,'#0c1a3c');g.fillStyle=gr;g.fillRect(0,0,cw,ch);
     g.strokeStyle='rgba(0,0,0,.55)';g.lineWidth=2;for(let i=1;i<6;i++){g.beginPath();g.moveTo(i*cw/6,0);g.lineTo(i*cw/6,ch);g.stroke();}for(let j=1;j<3;j++){g.beginPath();g.moveTo(0,j*ch/3);g.lineTo(cw,j*ch/3);g.stroke();}
@@ -143,13 +143,13 @@ function build(){
     box(2.62,T_H,.87,0xcfcfcf,-21.8,T_H/2,29.6);sprite('커피·티',-21.8,2.2,29.6,'#fff',3.2);
     box(.6,1.9,.5,0x3a4660,-31,.95,19.9,{emissive:0x1b2740,emissiveIntensity:.8});sprite('주차 등록',-31,2.9,19.9,'#fff',3.4);
     /* 통역 부스(약 1.7×1.7×2.0m): 후면 단상·콘솔 우측(객석 기준), 무대 쪽 창 */
-    box(2.5,2.9,2.5,0x1b1e27,25.4,1.45,-11);
-    var win=new THREE.Mesh(new THREE.PlaneGeometry(2.1,1.1),new THREE.MeshBasicMaterial({color:0x7fb6e6,transparent:true,opacity:.55}));win.rotation.y=-Math.PI/2;win.position.set(25.4-1.26,2.0,-11);scene.add(win);
-    sprite('통역 부스',25.4,3.7,-11,'#fff',3.4);
+    box(2.5,2.9,2.5,0x1b1e27,26.2,1.45,-11);
+    var win=new THREE.Mesh(new THREE.PlaneGeometry(2.1,1.1),new THREE.MeshBasicMaterial({color:0x7fb6e6,transparent:true,opacity:.55}));win.rotation.y=-Math.PI/2;win.position.set(26.2-1.26,2.0,-11);scene.add(win);
+    sprite('통역 부스',26.2,3.7,-11,'#fff',3.4);
     /* 동선: 바닥 화살표 리본(진행 방향으로 흐름) */
     function chev(color){var t=ctex(64,32,function(g){g.clearRect(0,0,64,32);g.strokeStyle=color;g.lineWidth=7;g.lineCap='round';g.lineJoin='round';g.beginPath();g.moveTo(16,5);g.lineTo(34,16);g.lineTo(16,27);g.stroke();});t.wrapS=THREE.RepeatWrapping;RT.tex.push(t);return t;}
     function path(grp,tex,pts){for(var k=0;k<pts.length-1;k++){var a=pts[k],b=pts[k+1],ddx=b[0]-a[0],ddz=b[1]-a[1],len=Math.sqrt(ddx*ddx+ddz*ddz);
-      var geo=new THREE.PlaneGeometry(len,.6),uv=geo.attributes.uv;for(var u=0;u<uv.count;u++)uv.setX(u,uv.getX(u)*len/1.1);
+      var geo=new THREE.PlaneGeometry(len,.34),uv=geo.attributes.uv;for(var u=0;u<uv.count;u++)uv.setX(u,uv.getX(u)*len/.68);
       var m=new THREE.Mesh(geo,new THREE.MeshBasicMaterial({map:tex,transparent:true,depthWrite:false}));
       m.rotation.order='YXZ';m.rotation.y=-Math.atan2(ddz,ddx);m.rotation.x=-Math.PI/2;m.position.set((a[0]+b[0])/2,.07,(a[1]+b[1])/2);grp.add(m);}}
     var tA=chev('#ffc24d'),tR=chev('#ff5a5a'),tB=chev('#7fd0ff');
@@ -158,9 +158,9 @@ function build(){
     path(visit,tA,[[46,-2.7],[32,-2.7],[32,25.3],[-15.2,25.3]]);path(visit,tA,[[32,29.4],[32,25.9]]);path(visit,tA,[[-8.9,28.4],[-8.9,25.9]]);
     for(i=0;i<7;i++){path(visit,tA,[[dx[i]-.7,24.9],[dx[i]-.7,17.3]]);path(visit,tR,[[dx[i]+.7,17.3],[dx[i]+.7,20.6]]);}
     path(visit,tR,[[-13.8,21],[25.4,21],[25.4,14]]);
-    /* 행사장 출입 동선 — 시작 전: Gate → 좌측 통로 → 무대 앞 → 각 통로 / 시작 후: Gate → 좌측 통로(무대 앞 횡단 없음) */
-    path(before,tB,[[25.4,13.4],[25.4,12.4],[-19,12.4],[-19,-12.4],[22,-12.4]]);path(before,tB,[[-18.6,4.75],[22,4.75]]);path(before,tB,[[-18.6,-5.2],[22,-5.2]]);
-    path(after,tB,[[25.4,13.4],[25.4,12.4],[-8,12.4]]);
+    /* 행사장 출입 동선 — 시작 전: Gate → 후면 단상 앞 횡단 통로 → 네 통로로 무대 쪽까지 / 시작 후: 같은 횡단 통로 → 뒤쪽 줄(I열 부근)까지만 */
+    path(before,tB,[[25.4,13.4],[25.4,12.4],[23.95,12.4],[23.95,-12.4],[-16,-12.4]]);path(before,tB,[[23.6,12.4],[-16,12.4]]);path(before,tB,[[23.6,4.75],[-16,4.75]]);path(before,tB,[[23.6,-5.2],[-16,-5.2]]);
+    path(after,tB,[[25.4,13.4],[25.4,12.4],[23.95,12.4],[23.95,-5.2],[6,-5.2]]);path(after,tB,[[23.6,12.4],[6,12.4]]);path(after,tB,[[23.6,4.75],[6,4.75]]);
     scene.add(visit,before,after);RT.g={visit:visit,before:before,after:after};applyRoute();
   })();
   /* 테이블 · 의자 */
