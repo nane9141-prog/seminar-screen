@@ -120,12 +120,29 @@ function build(){
     wl(-30,35.6,28.2,28.2);wl(35.6,35.6,8.6,28.2);wl(35.6,35.6,-13.8,-12);wl(28.3,35.6,-13.8,-13.8);
     wl(35.6,56.8,-12,-12);wl(35.6,56.8,8.6,8.6);wl(56.8,56.8,-12,8.6);
     wl(-83.2,-28.3,15.7,15.7);wl(-83.2,-83.2,15.7,20.7);wl(-28.3,-28.3,13.8,15.7);wl(-30,-30,20.7,28.2);
-    var RM=[['PYEBAEK',5.2,7,2.8,'5.2×7×2.8m · 11평'],['BRIDAL ROOM',8.5,6.5,2.8,'8.5×6.5×2.8m · 16평'],['RED UME 1',7,6.5,4.8,''],['RED UME 2',7,6.5,4.8,''],['PINO',8.5,6.5,2.8,'8.5×6.5×2.8m · 16평']],rx=-30;
-    RM.forEach(function(r){var L=r[1]*M,Dp=r[2]*M,H=r[3]*M,x1=rx,x0=rx-L,z0=20.7,z1=20.7+Dp;
-      flr(x0,x1,z0,z1,0x2c2f37);wl(x0,x1,z0,z0);wl(x0,x1,z1,z1);wl(x0,x0,z0,z1);wl(x1,x1,z0,z1);
-      var v=new THREE.Mesh(new THREE.BoxGeometry(L,H,Dp),new THREE.MeshBasicMaterial({color:0x8fa3d6,transparent:true,opacity:.07,depthWrite:false}));v.position.set((x0+x1)/2,H/2,(z0+z1)/2);scene.add(v);
+    var RM=[['PYEBAEK',5.2,7,2.8,''],['BRIDAL ROOM',8.5,6.5,2.8,''],['RED UME 1·2',14,6.5,4.8,'ume'],['PINO',8.5,6.5,2.8,'pino']],rx=-30;
+    function chair(x,z,ang,c){var gp=new THREE.Group(),mt=new THREE.MeshStandardMaterial({color:c,roughness:.8});
+      var a=new THREE.Mesh(new THREE.BoxGeometry(.66,.66,.7),mt);a.position.set(0,.33,0);gp.add(a);
+      var b=new THREE.Mesh(new THREE.BoxGeometry(.12,1.34,.7),mt);b.position.set(.36,.67,0);gp.add(b);
+      gp.position.set(x,0,z);gp.rotation.y=ang;scene.add(gp);}
+    RM.forEach(function(r){var L=r[1]*M,Dp=r[2]*M,H=r[3]*M,x1=rx,x0=rx-L,z0=20.7,z1=20.7+Dp,cx=(x0+x1)/2,cz=(z0+z1)/2,k=r[4];
+      var wc=k==='ume'?0xa8987f:k==='pino'?0x8a6a4e:0x23252d;
+      flr(x0,x1,z0,z1,k?0x565b72:0x2c2f37);
+      [[x0,x1,z0,z0],[x0,x1,z1,z1],[x0,x0,z0,z1],[x1,x1,z0,z1]].forEach(function(w){box(Math.max(.25,w[1]-w[0]),1,Math.max(.25,w[3]-w[2]),wc,(w[0]+w[1])/2,.5,(w[2]+w[3])/2);});
+      var v=new THREE.Mesh(new THREE.BoxGeometry(L,H,Dp),new THREE.MeshBasicMaterial({color:0x8fa3d6,transparent:true,opacity:.07,depthWrite:false}));v.position.set(cx,H/2,cz);scene.add(v);
       var e=new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(L,H,Dp)),new THREE.LineBasicMaterial({color:0x6f7890,transparent:true,opacity:.6}));e.position.copy(v.position);scene.add(e);
-      sprite(r[0],(x0+x1)/2,H+.9,(z0+z1)/2,'#fff',5);
+      sprite(r[0],cx,H+.9,cz,'#fff',5);
+      if(k==='ume'){   /* RED UME 1·2 합친 레이아웃: 원형 테이블(검정 보) 3개 × 8석, 끝 벽 TV, 뒷벽 수납장 */
+        [.2,.5,.8].forEach(function(f){var tx=x0+L*f,tb=new THREE.Mesh(new THREE.CylinderGeometry(.9*M,.9*M,T_H,28),new THREE.MeshStandardMaterial({color:0x101116,roughness:.85}));tb.position.set(tx,T_H/2,cz);scene.add(tb);
+          for(var c=0;c<8;c++){var a=c*Math.PI/4+Math.PI/8,R=.9*M+.55;chair(tx+Math.cos(a)*R,cz+Math.sin(a)*R,-a,0x1c1d22);}});
+        box(.1,1.7,2.8,0x050608,x0+.25,2.6,cz);box(1.3,2.9,.9,0x8a7358,cx-1.2,1.45,z1-.6);box(1.3,2.9,.9,0x8a7358,cx+1.2,1.45,z1-.6);
+      }
+      if(k==='pino'){  /* PINO: 대형 회의 테이블(우드) + 크림색 회의 의자 14석, 우드 패널 벽 */
+        var tl=5.4*M,tw=2.1*M;box(tl,.14,tw,0x6b4a35,cx,T_H,cz,{roughness:.5});box(.5,T_H-.1,tw*.6,0x4a3324,cx-tl*.3,(T_H-.1)/2,cz);box(.5,T_H-.1,tw*.6,0x4a3324,cx+tl*.3,(T_H-.1)/2,cz);
+        for(var c2=0;c2<5;c2++){var px=cx-tl/2+tl*(c2+.5)/5;chair(px,cz+tw/2+.55,-Math.PI/2,0xe2d8c4);chair(px,cz-tw/2-.55,Math.PI/2,0xe2d8c4);}
+        [-.5,.5].forEach(function(o){chair(cx+tl/2+.55,cz+o*1.1,0,0xe2d8c4);chair(cx-tl/2-.55,cz+o*1.1,Math.PI,0xe2d8c4);});
+        box(1.3,2.9,.9,0x6f543d,x1-1.2,1.45,z1-.6);
+      }
       rx=x0;});
     lift(-16,-11.5,25.2,28);lift(-6.3,-1.6,25.2,28);sprite('LIFT',-8.9,4.4,26.6,'#fff',3.4);
     /* 에스컬레이터 2대(상행·하행): 유리 난간 · 검정 핸드레일 · 스틸 측판 · 노란 단 표시. 포이어 끝 벽 쪽이 B1 하차 지점, 반대쪽(-x)으로 올라감. 층고 약 5.5m · 경사 30° 가정 */
