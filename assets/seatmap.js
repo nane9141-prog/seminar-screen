@@ -174,10 +174,10 @@ function build(){
   /* 포이어 집기(등록 데스크 D1~D7 · 다과 · 커피 · 주차 등록 단말기) · 통역 부스 · 동선 */
   (function(){
     var i,dx=[21.05,15.1,9.1,3.2,-2.6,-8.6,-14.5];
-    for(i=0;i<7;i++){box(2.62,T_H,.87,0x15171f,dx[i],T_H/2,16.3);sprite('D'+(i+1),dx[i],2.1,16.3,'#fff',2.6);
+    for(i=0;i<7;i++){box(2.62,T_H,.87,0x15171f,dx[i],T_H/2,16.3);sprite('D'+(7-i),dx[i],2.1,16.3,'#fff',2.6);
       /* 데스크 앞면(방문객 쪽) 번호 표지: A4(210×297mm) 실제 크기, 흰 바탕 검정 글씨 */
       (function(n,x){var c=document.createElement('canvas');c.width=256;c.height=362;var g=c.getContext('2d');g.fillStyle='#fff';g.fillRect(0,0,256,362);g.fillStyle='#000';g.font='900 250px "Pretendard Variable","Noto Sans KR",Arial,sans-serif';g.textAlign='center';g.textBaseline='middle';g.fillText(String(n),128,196);
-        var t=new THREE.CanvasTexture(c);t.anisotropy=8;var m=new THREE.Mesh(new THREE.PlaneGeometry(.210*M,.297*M),new THREE.MeshBasicMaterial({map:t}));m.position.set(x,T_H/2+.06,16.3+.435+.012);scene.add(m);})(i+1,dx[i]);}
+        var t=new THREE.CanvasTexture(c);t.anisotropy=8;var m=new THREE.Mesh(new THREE.PlaneGeometry(.210*M,.297*M),new THREE.MeshBasicMaterial({map:t}));m.position.set(x,T_H-.1485*M,16.3+.435+.012);scene.add(m);})(7-i,dx[i]);}   // 번호: 다과 쪽이 1, Gate 쪽이 7 · 앞면 상단 끝선에 맞춤
     box(5.25,T_H,1.1,0xcfcfcf,-24.6,T_H/2,17.4);sprite('다과',-24.6,2.2,17.4,'#fff',3);
     box(2.62,T_H,.87,0xcfcfcf,-39.9,T_H/2,16.8);sprite('커피(소량)',-39.9,2.2,16.8,'#fff',3.6);
     box(2.62,T_H,.87,0xcfcfcf,-21.8,T_H/2,26.6);sprite('커피·티',-21.8,2.2,26.6,'#fff',3.2);
