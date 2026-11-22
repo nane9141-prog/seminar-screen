@@ -116,10 +116,10 @@ function build(){
     function wl(x0,x1,z0,z1){box(Math.max(.25,x1-x0),1,Math.max(.25,z1-z0),0x23252d,(x0+x1)/2,.5,(z0+z1)/2);}
     function lift(x0,x1,z0,z1){box(x1-x0,3.4,z1-z0,0x2a2d36,(x0+x1)/2,1.7,(z0+z1)/2);}
     var FC=0x3d4048;
-    flr(-30,35.6,13.8,33.3,FC);flr(28.3,35.6,-13.8,13.8,FC);flr(35.6,56.8,-12,8.6,FC);flr(-83.2,-30,15.7,20.7,FC);
-    wl(-30,35.6,33.3,33.3);wl(35.6,35.6,8.6,33.3);wl(35.6,35.6,-13.8,-12);wl(28.3,35.6,-13.8,-13.8);
+    flr(-30,35.6,13.8,28.2,FC);flr(28.3,35.6,-13.8,13.8,FC);flr(35.6,56.8,-12,8.6,FC);flr(-83.2,-30,15.7,20.7,FC);
+    wl(-30,35.6,28.2,28.2);wl(35.6,35.6,8.6,28.2);wl(35.6,35.6,-13.8,-12);wl(28.3,35.6,-13.8,-13.8);
     wl(35.6,56.8,-12,-12);wl(35.6,56.8,8.6,8.6);wl(56.8,56.8,-12,8.6);
-    wl(-83.2,-28.3,15.7,15.7);wl(-83.2,-83.2,15.7,20.7);wl(-28.3,-28.3,13.8,15.7);
+    wl(-83.2,-28.3,15.7,15.7);wl(-83.2,-83.2,15.7,20.7);wl(-28.3,-28.3,13.8,15.7);wl(-30,-30,20.7,28.2);
     var RM=[['PYEBAEK',5.2,7,2.8,'5.2×7×2.8m · 11평'],['BRIDAL ROOM',8.5,6.5,2.8,'8.5×6.5×2.8m · 16평'],['RED UME 1',7,6.5,4.8,''],['RED UME 2',7,6.5,4.8,''],['PINO',8.5,6.5,2.8,'8.5×6.5×2.8m · 16평']],rx=-30;
     RM.forEach(function(r){var L=r[1]*M,Dp=r[2]*M,H=r[3]*M,x1=rx,x0=rx-L,z0=20.7,z1=20.7+Dp;
       flr(x0,x1,z0,z1,0x2c2f37);wl(x0,x1,z0,z0);wl(x0,x1,z1,z1);wl(x0,x0,z0,z1);wl(x1,x1,z0,z1);
@@ -127,8 +127,8 @@ function build(){
       var e=new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(L,H,Dp)),new THREE.LineBasicMaterial({color:0x6f7890,transparent:true,opacity:.6}));e.position.copy(v.position);scene.add(e);
       sprite(r[0],(x0+x1)/2,H+.9,(z0+z1)/2,'#fff',5);
       rx=x0;});
-    lift(-16,-11.5,28.6,33);lift(-6.3,-1.6,28.6,33);sprite('LIFT',-8.9,4.4,30.8,'#fff',3.4);
-    box(20.7,.9,4.6,0x2a2d36,21.3,.45,30.6);sprite('ESCALATOR',21.3,2.2,30.6,'#fff',4.6);
+    lift(-16,-11.5,25.2,28);lift(-6.3,-1.6,25.2,28);sprite('LIFT',-8.9,4.4,26.6,'#fff',3.4);
+    box(20.7,.9,2.4,0x2a2d36,21.3,.45,26.9);sprite('ESCALATOR',21.3,2.2,26.9,'#fff',4.6);
     [[36.6,42.6],[43.2,49.2],[49.8,55.8]].forEach(function(p){lift(p[0],p[1],-11.8,-7.2);});
     [[40,46],[46.6,52.6]].forEach(function(p){lift(p[0],p[1],4,8.4);});
     sprite('GUEST LIFT',46,4.6,-1.7,'#fff',5);
@@ -139,7 +139,7 @@ function build(){
     for(i=0;i<7;i++){box(2.62,T_H,.87,0x15171f,dx[i],T_H/2,16.3);sprite('D'+(i+1),dx[i],2.1,16.3,'#fff',2.6);}
     box(5.25,T_H,1.1,0xcfcfcf,-24.6,T_H/2,17.4);sprite('다과',-24.6,2.2,17.4,'#fff',3);
     box(2.62,T_H,.87,0xcfcfcf,-39.9,T_H/2,16.8);sprite('커피(소량)',-39.9,2.2,16.8,'#fff',3.6);
-    box(2.62,T_H,.87,0xcfcfcf,-21.8,T_H/2,29.6);sprite('커피·티',-21.8,2.2,29.6,'#fff',3.2);
+    box(2.62,T_H,.87,0xcfcfcf,-21.8,T_H/2,26.6);sprite('커피·티',-21.8,2.2,26.6,'#fff',3.2);
     box(.6,1.9,.5,0x3a4660,-31,.95,19.9,{emissive:0x1b2740,emissiveIntensity:.8});sprite('주차 등록',-31,2.9,19.9,'#fff',3.4);
     /* 통역 부스(약 1.7×1.7×2.0m): 후면 단상·콘솔 우측(객석 기준), 무대 쪽 창 */
     box(2.5,2.9,2.5,0x1b1e27,26.2,1.45,-11);
@@ -154,20 +154,19 @@ function build(){
     var tA=chev('#ffc24d'),tR=chev('#ff5a5a'),tB=chev('#7fd0ff');
     var visit=new THREE.Group(),before=new THREE.Group(),after=new THREE.Group();
     /* 출입자 동선(포이어): 게스트 리프트 · 에스컬레이터 · 리프트 → 포이어 아래쪽 → 데스크 D1~D7 → 대기선 → Gate */
-    path(visit,tA,[[46,-2.7],[32,-2.7],[32,25.3],[-15.2,25.3]]);path(visit,tA,[[32,29.4],[32,25.9]]);path(visit,tA,[[-8.9,28.4],[-8.9,25.9]]);
-    for(i=0;i<7;i++){path(visit,tA,[[dx[i]-.7,24.9],[dx[i]-.7,17.3]]);path(visit,tR,[[dx[i]+.7,17.3],[dx[i]+.7,20.6]]);}
-    path(visit,tR,[[-13.8,21],[25.4,21],[25.4,14]]);
+    path(visit,tA,[[46,-2.7],[32,-2.7],[32,22.6],[-15.2,22.6]]);path(visit,tA,[[32,25.4],[32,23.1]]);path(visit,tA,[[-8.9,24.9],[-8.9,23.1]]);
+    for(i=0;i<7;i++){path(visit,tA,[[dx[i]-.7,22.2],[dx[i]-.7,17.3]]);path(visit,tR,[[dx[i]+.7,17.3],[dx[i]+.7,19.2]]);}
+    path(visit,tR,[[-13.8,19.6],[25.4,19.6],[25.4,14]]);
     /* 행사장 출입 동선 — 시작 전: Gate → 후면 단상 앞 횡단 통로 → 네 통로로 무대 쪽까지 / 시작 후: 같은 횡단 통로 → 뒤쪽 줄(I열 부근)까지만 */
     path(before,tB,[[25.4,13.4],[25.4,12.4],[23.95,12.4],[23.95,-12.4],[-16,-12.4]]);path(before,tB,[[23.6,12.4],[-16,12.4]]);path(before,tB,[[23.6,4.75],[-16,4.75]]);path(before,tB,[[23.6,-5.2],[-16,-5.2]]);
     path(after,tB,[[25.4,13.4],[25.4,12.4],[23.95,12.4],[23.95,-5.2],[6,-5.2]]);path(after,tB,[[23.6,12.4],[6,12.4]]);path(after,tB,[[23.6,4.75],[6,4.75]]);
     scene.add(visit,before,after);RT.g={visit:visit,before:before,after:after};applyRoute();
   })();
-  /* 에스컬레이터 내려오는 쪽 벽면 LED 월: 5540(W)×1520(D)×3500(H)mm, 화면 4940×2900mm(하단 600 · 좌우 300 프레임), 블랙 패널. 로비 스크린 화면(16:9) */
-  (function(){var lw=5.54*M,ld=1.52*M,lh=3.5*M,cx=35.6-.13-ld/2,cz=33.3-.13-lw/2,fx=cx-ld/2;
-    box(ld,lh,lw,0x08090c,cx,lh/2,cz,{roughness:.6});
-    var bk=new THREE.Mesh(new THREE.PlaneGeometry(4.94*M,2.9*M),new THREE.MeshBasicMaterial({color:0x030407}));bk.rotation.y=-Math.PI/2;bk.position.set(fx-.02,(.6+1.45)*M,cz);scene.add(bk);
+  /* 포이어 끝 벽(에스컬레이터 내려오는 방향) 전체 LED: 포이어 폭 약 10m × 16:9(약 5.6m), 로비 스크린 화면. 블랙 패널 */
+  (function(){var z0=13.8,z1=28.2,sw=z1-z0,sh=sw*9/16,cz=(z0+z1)/2,y0=.3*M;
+    box(.3,sh+y0+.25,sw,0x08090c,35.6-.28,(sh+y0+.25)/2,cz,{roughness:.6});
     var src=window.SEAT_LOBBY_IMG;if(!src)return;var im=new Image();im.onload=function(){var tx=new THREE.Texture(im);tx.anisotropy=8;tx.needsUpdate=true;
-      var pm=new THREE.Mesh(new THREE.PlaneGeometry(4.94*M,4.94*M*9/16),new THREE.MeshBasicMaterial({map:tx}));pm.rotation.y=-Math.PI/2;pm.position.set(fx-.04,(.6+1.45)*M,cz);scene.add(pm);};im.src=src;
+      var pm=new THREE.Mesh(new THREE.PlaneGeometry(sw-.15,sh),new THREE.MeshBasicMaterial({map:tx}));pm.rotation.y=-Math.PI/2;pm.position.set(35.6-.45,y0+sh/2,cz);scene.add(pm);};im.src=src;
   })();
   /* 테이블 · 의자 */
   const n=tables.length;
