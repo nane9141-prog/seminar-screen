@@ -71,10 +71,14 @@ function build(){
   const floor=new THREE.Mesh(new THREE.PlaneGeometry(W,D),new THREE.MeshStandardMaterial({map:carpet,roughness:1}));floor.rotation.x=-Math.PI/2;scene.add(floor);
   const outer=new THREE.Mesh(new THREE.PlaneGeometry(W+30,D+24),new THREE.MeshStandardMaterial({color:0x151515,roughness:1}));outer.rotation.x=-Math.PI/2;outer.position.y=-.02;scene.add(outer);
   /* 벽 */
-  const wood=ctex(256,64,(g,cw,ch)=>{g.fillStyle='#3a2318';g.fillRect(0,0,cw,ch);for(let i=0;i<cw;i+=8){g.fillStyle=i%16?'#8a5a3a':'#6f4329';g.fillRect(i,0,5,ch);}});
-  wood.wrapS=THREE.RepeatWrapping;wood.repeat.set(10,1);
-  box(W,3.4,.3,0x14161f,0,1.7,-HD-.15);
-  const up=new THREE.Mesh(new THREE.BoxGeometry(W,4.2,.3),new THREE.MeshStandardMaterial({map:wood,roughness:.8,emissive:0x2a160c,emissiveIntensity:.5}));up.position.set(0,5.5,-HD-.15);scene.add(up);
+  const wallTex=ctex(1024,256,(g,cw,ch)=>{g.fillStyle='#b3a288';g.fillRect(0,0,cw,ch);
+    let x=0,i=0;const sh=['#b3a288','#a99982','#b9a98f','#9d9382','#ae9d84'];
+    while(x<cw){const w=[52,34,70,26,44,60][i%6];g.fillStyle=sh[(i*3)%5];g.fillRect(x,0,w,ch);g.fillStyle='rgba(40,33,27,.75)';g.fillRect(x,0,i%7===3?7:2,ch);x+=w;i++;}
+    for(let k=0;k<5000;k++){g.fillStyle=k%2?'rgba(255,255,255,.035)':'rgba(0,0,0,.04)';g.fillRect(Math.random()*cw,Math.random()*ch,2,2);}});
+  wallTex.wrapS=THREE.RepeatWrapping;wallTex.repeat.set(5,1);
+  /* 우측 벽(-z): 베이지·토프 패브릭 패널 + 세로 라인, 하단 그레이 허리 패널 (행사장 사진 기준 색) */
+  (function(){var lo=new THREE.Mesh(new THREE.BoxGeometry(W,1.3,.3),new THREE.MeshBasicMaterial({color:0x77726a}));lo.position.set(0,.65,-HD-.15);scene.add(lo);})();
+  const up=new THREE.Mesh(new THREE.BoxGeometry(W,6.3,.3),new THREE.MeshBasicMaterial({map:wallTex,color:0xc8c8c8}));up.position.set(0,4.45,-HD-.15);scene.add(up);
   box(.3,7.6,D+.6,0x12141c,-HW-.15,3.8,0);box(.3,.9,D+.6,0x1a1d28,HW+.15,.45,0);box(W,.9,.3,0x1a1d28,0,.45,HD+.15);
   /* 무대 + 스크린, 후면 단상 */
   box(3.6,.8,16.2,0x1c1f2a,-25.1,.4,-.4);box(.12,5.2,13,0x23262f,-27.8,3.9,-.4,{emissive:0x1b2233,emissiveIntensity:.9});box(.6,1.6,.8,0x2a2e3b,-24.4,1.6,-.4);
