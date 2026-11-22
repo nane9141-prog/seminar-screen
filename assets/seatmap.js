@@ -148,7 +148,7 @@ function build(){
         });
       });
       add(new THREE.BoxGeometry(5,.5,6),dark,2+RUN+5.2,RISE-.27,0);    // 상부층 바닥 끝
-      g.position.set(31.2,0,25.72);g.rotation.y=Math.PI;scene.add(g);
+      g.position.set(35.6-6*M,0,25.72);g.rotation.y=Math.PI;scene.add(g);   // 끝 벽면에서 하차 지점까지 6m
     })();
     [[36.6,42.6],[43.2,49.2],[49.8,55.8]].forEach(function(p){lift(p[0],p[1],-11.8,-7.2);});
     [[40,46],[46.6,52.6]].forEach(function(p){lift(p[0],p[1],4,8.4);});
@@ -175,7 +175,7 @@ function build(){
     var tA=chev('#ffc24d'),tR=chev('#ff5a5a'),tB=chev('#7fd0ff');
     var visit=new THREE.Group(),before=new THREE.Group(),after=new THREE.Group();
     /* 출입자 동선(포이어): 게스트 리프트 · 에스컬레이터 · 리프트 → 포이어 아래쪽 → 데스크 D1~D7 → 대기선 → Gate */
-    path(visit,tA,[[46,-2.7],[32,-2.7],[32,22.6],[-15.2,22.6]]);path(visit,tA,[[32,25.4],[32,23.1]]);path(visit,tA,[[-8.9,24.9],[-8.9,23.1]]);
+    path(visit,tA,[[46,-2.7],[32,-2.7],[32,22.6],[-15.2,22.6]]);path(visit,tA,[[27.3,25.7],[29.4,25.7],[29.4,23.1]]);path(visit,tA,[[-8.9,24.9],[-8.9,23.1]]);
     for(i=0;i<7;i++){path(visit,tA,[[dx[i]-.7,22.2],[dx[i]-.7,17.3]]);path(visit,tR,[[dx[i]+.7,17.3],[dx[i]+.7,19.2]]);}
     path(visit,tR,[[-13.8,19.6],[25.4,19.6],[25.4,14]]);
     /* 행사장 출입 동선 — 시작 전: Gate → 후면 단상 앞 횡단 통로 → 네 통로로 무대 쪽까지 / 시작 후: 같은 횡단 통로 → 뒤쪽 줄(I열 부근)까지만 */
