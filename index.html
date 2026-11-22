@@ -203,10 +203,19 @@ body.idle{cursor:none}
 /* M3-1 개회 시퀀스: data-ph = c(카운트다운) · a(ANYWHERE) · p(2027) · e(시작) */
 .s3{position:absolute;inset:0}
 .s3-l{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;opacity:0;transition:opacity .45s,filter .45s;filter:blur(10px)}
-.slide[data-ph=c] .s3-c,.slide[data-ph=a] .s3-a,.slide[data-ph=p] .s3-p,.slide[data-ph=e] .s3-e{opacity:1;filter:none}
+.slide[data-ph=c] .s3-c,.slide[data-ph=a] .s3-a,.slide[data-ph=e] .s3-e{opacity:1;filter:none}
 .s3 [data-words] .w{animation:none!important;opacity:0}
-.slide[data-ph=a] .s3-a .w,.slide[data-ph=p] .s3-p .w,.slide[data-ph=e] .s3-e .w{animation:wordIn .85s cubic-bezier(.2,.7,.2,1) both!important;animation-delay:calc(.15s + var(--w)*.09s)!important}
-.s3-dots{height:640px;width:457px;overflow:visible;filter:drop-shadow(0 0 28px rgba(91,173,225,.55))}
+.slide[data-ph=a] .s3-a .w,.slide[data-ph=e] .s3-e .w{animation:wordIn .85s cubic-bezier(.2,.7,.2,1) both!important;animation-delay:calc(.15s + var(--w)*.09s)!important}
+.s3-dots{position:absolute;left:50%;top:50%;height:400px;width:286px;transform:translate(-50%,-50%);overflow:visible;filter:drop-shadow(0 0 22px rgba(91,173,225,.55))}
+.s3-ring{position:relative;width:820px;height:820px;margin:52px 0}
+.s3-rg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.s3-rg circle{fill-opacity:.13;transition:fill-opacity .25s,r .25s}
+.s3-rg circle.on{fill-opacity:1}
+.s3-rg .tr{fill:none;stroke:rgba(255,255,255,.08);stroke-width:1.5}
+.s3-rg .tk{stroke:rgba(255,255,255,.22);stroke-width:2}
+.s3-eb{margin:0;font:300 50px/1 "Lexend",sans-serif;color:#80cde5;letter-spacing:.32em;padding-left:.32em}
+.s3-cap{margin:0;display:flex;align-items:center;gap:30px;font:300 44px/1 "Lexend",sans-serif;color:#A8B2C1;letter-spacing:.28em}
+.s3-cap b{font:400 56px/1 "Lexend",sans-serif;color:#fff;letter-spacing:.06em}
 .s3-dots circle{fill:#fff;fill-opacity:.07;transition:fill-opacity .18s}
 .s3-dots circle.on{fill:#fff;fill-opacity:1}
 .s3-gl{position:absolute;left:-10%;right:-10%;bottom:0;height:100%;pointer-events:none;opacity:0;transform:translateY(45%);transition:opacity .9s cubic-bezier(.2,.7,.2,1),transform .9s cubic-bezier(.2,.7,.2,1);
@@ -216,7 +225,7 @@ body.idle{cursor:none}
 .slide[data-ph=c][data-n="3"] .s3-gl{opacity:.65;transform:translateY(22%)}
 .slide[data-ph=c][data-n="2"] .s3-gl{opacity:.8;transform:translateY(12%)}
 .slide[data-ph=c][data-n="1"] .s3-gl{opacity:.95;transform:none}
-.slide[data-ph=a] .s3-gl,.slide[data-ph=p] .s3-gl{opacity:.45;transform:translateY(28%)}
+.slide[data-ph=a] .s3-gl{opacity:.45;transform:translateY(28%)}
 .slide[data-ph=e] .s3-gl{opacity:.95;transform:none}
 .s3-en{margin:0;font:800 196px/1.1 "Pretendard Variable",sans-serif;color:#fff;letter-spacing:-.01em}
 .s3-en b,.s3-ko b,.s3-e b{background:linear-gradient(90deg,#5bade1,#00ab84);-webkit-background-clip:text;background-clip:text;color:transparent;font-weight:inherit}
@@ -439,12 +448,11 @@ body.idle{cursor:none}
 <video id="v-intro" class="vid" src="assets/intro.mp4" playsinline preload="auto"></video>
 <p class="lead tbd center vph">[인트로 영상 — assets/intro.mp4]</p>
 </section>
-<section class="slide" id="m3_1" data-no="M3-1" data-title="M3-1 개회 타이틀 (5 · 4 · 3 · 2 · 1 → ANYWHERE → 2027 → 시작)" data-bg="A" data-foot="logo" data-tr="zoom" data-s3="1" data-lay="center">
+<section class="slide" id="m3_1" data-no="M3-1" data-title="M3-1 개회 타이틀 (5 · 4 · 3 · 2 · 1 → ANYWHERE → 시작)" data-bg="A" data-foot="logo" data-tr="zoom" data-s3="1" data-lay="center">
 <div class="s3">
 <div class="s3-gl"></div>
-<div class="s3-l s3-c"><svg class="s3-dots" aria-hidden="true"></svg></div>
-<div class="s3-l s3-a"><h2 class="s3-en" data-words><b>ANYWHERE,</b> ALL SHAREHOLDERS</h2><p class="s3-sub">장소의 제약 없는 주주 참여</p></div>
-<div class="s3-l s3-p"><h2 class="s3-ko" data-words>2027년 전자주주총회<br><b>IR큐더스</b>와 준비하세요.</h2></div>
+<div class="s3-l s3-c"><p class="s3-eb">LIVE DEMO BRIEFING</p><div class="s3-ring"><svg class="s3-rg" viewBox="-400 -400 800 800" aria-hidden="true"></svg><svg class="s3-dots" aria-hidden="true"></svg></div><p class="s3-cap">STARTING IN<b class="s3-sec">00:05</b></p></div>
+<div class="s3-l s3-a"><h2 class="s3-en" data-words><b>ANYWHERE,</b> ALL SHAREHOLDERS</h2><p class="s3-sub">장소의 제약 없는 주주 참여, 2027년 전자주주총회</p></div>
 <div class="s3-l s3-e"><h1 class="title-m" data-words>전자주주총회 플랫폼 시연 설명회<br><b>지금 시작합니다.</b></h1></div>
 </div>
 </section>
@@ -717,11 +725,18 @@ addEventListener('message',e=>{const d=e.data||{};if(!d.s4)return;const f=KN.fra
   else if(d.s4==='bg'){if(cur&&fs.dataset.kn){const c=document.getElementById('c');if(c)c.style.opacity=d.dim;dsPost({ds:'ox',v:d.ox});}}
   else if(d.s4==='pos'){if(cur){KN.pos=d.label;if(window.CtrlPanel)CtrlPanel.draw();}}});
 const byNo=no=>slides.findIndex(s=>s.dataset.no.toUpperCase()===String(no).toUpperCase());
-/* M3-1 개회 시퀀스: 5 → 1 (1초씩) → 번쩍 → ANYWHERE(3.8초) → 2027(3.4초) → 시작 문구에서 멈춤 */
-function S3(s,on){if(!s||!s.dataset.s3)return;(s._t3||[]).forEach(clearTimeout);s._t3=[];if(!on){s.dataset.ph='';return;}
+/* M3-1 개회 시퀀스: 5 → 1 (1초씩, 점 링이 5초 동안 차오름) → ANYWHERE(4.1초) → 시작 문구에서 멈춤 */
+function S3(s,on){if(!s||!s.dataset.s3)return;(s._t3||[]).forEach(clearTimeout);clearInterval(s._iv3);s._t3=[];if(!on){s.dataset.ph='';return;}
   const sv=s.querySelector('.s3-dots'),at=(ms,f)=>s._t3.push(setTimeout(f,ms));s.dataset.ph='c';s.dataset.n='';sv._s=null;
-  [5,4,3,2,1].forEach((n,i)=>at(400+i*1000,()=>{s.dataset.ph='c';s.dataset.n=n;dotTimer(sv,String(n));}));
-  at(5500,()=>{s.dataset.ph='a';});at(9400,()=>{s.dataset.ph='p';});at(12800,()=>{s.dataset.ph='e';});}
+  const rg=s.querySelector('.s3-rg'),sec=s.querySelector('.s3-sec'),N=60;
+  if(!rg._c){const NS='http://www.w3.org/2000/svg',A=[91,173,225],B=[0,171,132];rg.innerHTML='<circle class="tr" r="352"/><circle class="tr" r="300"/>';rg._c=[];
+    for(let k=0;k<N;k++){const a=k/N*Math.PI*2-Math.PI/2,u=k/(N-1),c=A.map((v,j)=>Math.round(v+(B[j]-v)*u));
+      if(k%12===0){const l=document.createElementNS(NS,'line');l.setAttribute('class','tk');l.setAttribute('x1',Math.cos(a)*372);l.setAttribute('y1',Math.sin(a)*372);l.setAttribute('x2',Math.cos(a)*392);l.setAttribute('y2',Math.sin(a)*392);rg.appendChild(l);}
+      const e=document.createElementNS(NS,'circle');e.setAttribute('cx',(Math.cos(a)*326).toFixed(1));e.setAttribute('cy',(Math.sin(a)*326).toFixed(1));e.setAttribute('r',k%5===0?9:6.5);e.setAttribute('fill',`rgb(${c})`);rg.appendChild(e);rg._c.push(e);}}
+  rg._c.forEach(e=>e.classList.remove('on'));sec.textContent='00:05';
+  const t0=performance.now()+400;s._iv3=setInterval(()=>{const el=(performance.now()-t0)/5000;if(el<0)return;const k=Math.min(N,Math.floor(el*N)+1);rg._c.forEach((e,i)=>e.classList.toggle('on',i<k));},40);
+  [5,4,3,2,1].forEach((n,i)=>at(400+i*1000,()=>{s.dataset.ph='c';s.dataset.n=n;dotTimer(sv,String(n));sec.textContent='00:0'+n;}));
+  at(5500,()=>{s.dataset.ph='a';clearInterval(s._iv3);});at(9600,()=>{s.dataset.ph='e';});}
 /* four states (발표자료 오른쪽 아래): 들어오면 처음부터 재생, 나가면 멈춤. 처음 들어올 때 불러옴 */
 function FS(a,b){const pa=a&&a.querySelector('iframe.fs');if(pa&&pa.contentWindow)pa.contentWindow.postMessage('pause','*');const f=b&&b.querySelector('iframe.fs');if(!f)return;if(!f.getAttribute('src')){f.onload=()=>{if(slides[idx]===b)f.contentWindow.postMessage('play','*');};f.src=f.dataset.src;}else if(f.contentWindow)f.contentWindow.postMessage('play','*');}
 function go(n){n=Math.max(0,Math.min(slides.length-1,n));if(n===idx)return;const oi=idx;
