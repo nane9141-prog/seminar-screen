@@ -203,6 +203,15 @@ function build(){
     path(after,tB,[[25.4,13.4],[25.4,12.4],[23.95,12.4],[23.95,-5.2],[6,-5.2]]);path(after,tB,[[23.6,12.4],[6,12.4]]);path(after,tB,[[23.6,4.75],[6,4.75]]);
     scene.add(visit,before,after);RT.g={visit:visit,before:before,after:after};applyRoute();
   })();
+  /* 스탠딩 배너 600×1800mm: 06 = 1번 데스크 옆, 07 = Gate 오른쪽, 08 = 게스트 리프트 동선 벽면(볼룸 바깥벽) */
+  (function(){var B=window.SEAT_STANDS;if(!B)return;var bw=.6*M,bh=1.8*M,y0=.15*M;
+    var P=[[-16.8,16.3,0],[27.4,14.5,0],[28.8,4,Math.PI/2]];   // [x, z, 방향]
+    P.forEach(function(p,i){if(!B[i])return;var gp=new THREE.Group();
+      var bk=new THREE.Mesh(new THREE.BoxGeometry(bw,bh,.03),new THREE.MeshStandardMaterial({color:0x111216}));bk.position.set(0,y0+bh/2,-.02);gp.add(bk);
+      var ft=new THREE.Mesh(new THREE.BoxGeometry(bw,.06,.55),new THREE.MeshStandardMaterial({color:0x2a2c31}));ft.position.set(0,.03,-.12);gp.add(ft);
+      var im=new Image();im.onload=function(){var tx=new THREE.Texture(im);tx.anisotropy=8;tx.needsUpdate=true;var m=new THREE.Mesh(new THREE.PlaneGeometry(bw,bh),new THREE.MeshBasicMaterial({map:tx}));m.position.set(0,y0+bh/2,0);gp.add(m);};im.src=B[i];
+      gp.position.set(p[0],0,p[1]);gp.rotation.y=p[2];scene.add(gp);});
+  })();
   /* 포이어 끝 벽(에스컬레이터 내려오는 방향) 로비 LED: 5540(W)×1520(D)×3500(H)mm, 화면 4940×2900mm(하단 600 · 좌우 300 프레임), 블랙 패널. 벽 중앙 배치, 로비 스크린 화면을 화면 비율(약 1.7:1)에 맞춰 꽉 채움 */
   (function(){var lw=5.54*M,ld=1.52*M,lh=3.5*M,cx=35.6-.13-ld/2,cz=(13.8+28.2)/2,fx=cx-ld/2;
     box(ld,lh,lw,0x08090c,cx,lh/2,cz,{roughness:.6});
