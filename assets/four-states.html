@@ -1,9 +1,8 @@
-Four States</untrusted-document-b10856f04dd4>","total_lines":610,"url":"https://claude.ai/artifact/QGZRuhuWF6uLHLqyBYqx2y","version":"1794563963-0de7"}
-<untrusted-document-b10856f04dd4><!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<!-- Four States (아티팩트 QGZRuhuWF6uLHLqyBYqx2y, 1795334086-a1c1) — 스크린 삽입용: 패널 숨김, 멈춘 채 시작, 부모가 postMessage('play'|'pause')로 재생 -->
+<style>html,body{margin:0;background:#000;overflow:hidden}</style>
 <title>Four States</title>
 <meta name="claude:viewport-fit-sides" content="cover">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap">
 <style>
 /* Layout: full-bleed WebGL stage on black; glass control panel docked top-right (bottom sheet on phones). Single dark look by choice. */
 :root{
@@ -64,11 +63,12 @@ body.clean .panel{display:none}
 body.clean.hover .show{display:block}
 .fallback{position:fixed;inset:0;display:grid;place-items:center;padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px));color:var(--muted);text-align:center}
 @media (max-width:560px){.panel{top:auto;bottom:calc(12px + env(safe-area-inset-bottom, 0px));left:max(12px, env(safe-area-inset-left, 0px));right:max(12px, env(safe-area-inset-right, 0px));width:auto;max-height:50%}}
+
+/* 스크린 삽입용: 패널 없이 검은 바탕(부모에서 screen 합성으로 투명 처리) */
 .panel,.show{display:none!important}
-/* 로비 타이틀 B용: 패널 없이 검은 바탕(부모에서 screen 합성으로 투명 처리) */
 </style>
 
-<canvas id="c" aria-label="구체, 수렴, 소용돌이, 방사 네 가지 라인 오브젝트가 파티클과 함께 서로의 형태로 변해 가는 모션" role="img"></canvas>
+<canvas id="c" aria-label="구체, 수렴, 하프톤 링, 방사 네 가지 라인 오브젝트가 파티클과 함께 서로의 형태로 변해 가는 모션" role="img"></canvas>
 <button class="show" id="show" type="button">패널 열기</button>
 <div class="panel" id="panel">
   <h2>Four States <button class="x" id="hide" type="button" title="H">숨기기</button></h2>
@@ -78,11 +78,11 @@ body.clean.hover .show{display:block}
     <button id="m4" type="button" aria-pressed="false">4개 배치</button>
     <button id="m1" type="button" aria-pressed="true">1개 크게</button>
   </div>
-  <div class="row"><label for="osz">오브젝트 크기</label><input id="osz" type="range" min="0.4" max="2" step="0.01" value="0.9"><span class="v"></span></div>
+  <div class="row"><label for="osz">오브젝트 크기</label><input id="osz" type="range" min="0.4" max="2" step="0.01" value="0.8"><span class="v"></span></div>
   <div class="objs" id="objs" hidden>
     <div class="pick" role="group" aria-label="편집할 오브젝트">
       <button type="button" data-i="0" aria-pressed="true" title="구체로 시작">1</button>
-      <button type="button" data-i="1" aria-pressed="false" title="소용돌이로 시작">2</button>
+      <button type="button" data-i="1" aria-pressed="false" title="하프톤 링으로 시작">2</button>
       <button type="button" data-i="2" aria-pressed="false" title="수렴으로 시작">3</button>
       <button type="button" data-i="3" aria-pressed="false" title="방사로 시작">4</button>
     </div>
@@ -92,7 +92,7 @@ body.clean.hover .show{display:block}
     <div class="row"><label for="or">크기</label><input id="or" type="range" min="0.04" max="0.5" step="0.005"><span class="v"></span></div>
     <div class="sub"><span>화면에서 끌어 이동 · 휠로 크기</span><button type="button" id="oreset">배치 초기화</button></div>
   </div>
-  <div class="steps" id="steps"><span>구체<b></b></span><span>수렴<b></b></span><span>소용돌이<b></b></span><span>방사<b></b></span></div>
+  <div class="steps" id="steps"><span>구체<b></b></span><span>수렴<b></b></span><span>하프톤 링<b></b></span><span>방사<b></b></span></div>
 
   <h3>배경 · Blue Bloom</h3>
   <div class="row"><label for="bgb">배경 밝기</label><input id="bgb" type="range" min="0" max="1.2" step="0.01" value="0"><span class="v"></span></div>
@@ -102,10 +102,10 @@ body.clean.hover .show{display:block}
   <div class="cols bgcols"><label>녹색 <input id="bgcg" type="color" value="#3dd6e1"></label><label>시안 <input id="bgcc" type="color" value="#0586ff"></label></div>
 
   <h3>흐름</h3>
-  <div class="row"><label for="stage">단계 시간</label><input id="stage" type="range" min="2" max="10" step="0.5" value="6"><span class="v"></span></div>
-  <div class="row"><label for="morph">전환 비율</label><input id="morph" type="range" min="0.2" max="0.9" step="0.01" value="0.72"><span class="v"></span></div>
+  <div class="row"><label for="stage">단계 시간</label><input id="stage" type="range" min="2" max="10" step="0.5" value="4.5"><span class="v"></span></div>
+  <div class="row"><label for="morph">전환 비율</label><input id="morph" type="range" min="0.2" max="0.9" step="0.01" value="0.55"><span class="v"></span></div>
   <div class="row"><label for="spin">흔들림</label><input id="spin" type="range" min="0" max="3" step="1" value="1"><span class="v"></span></div>
-  <div class="row"><label for="suck">빨려듦</label><input id="suck" type="range" min="0" max="2" step="0.01" value="1"><span class="v"></span></div>
+  <div class="row"><label for="suck">링 두께</label><input id="suck" type="range" min="0.4" max="2" step="0.01" value="1"><span class="v"></span></div>
   <div class="row"><label for="wob">흐트러짐</label><input id="wob" type="range" min="0" max="2" step="0.01" value="1"><span class="v"></span></div>
 
   <h3>라인 · 파티클</h3>
@@ -118,7 +118,7 @@ body.clean.hover .show{display:block}
   <div class="pick" id="ppick" role="group" aria-label="파티클을 설정할 형태">
     <button type="button" data-s="0" aria-pressed="true">구체</button>
     <button type="button" data-s="1" aria-pressed="false">수렴</button>
-    <button type="button" data-s="2" aria-pressed="false">소용돌이</button>
+    <button type="button" data-s="2" aria-pressed="false">하프톤 링</button>
     <button type="button" data-s="3" aria-pressed="false">방사</button>
   </div>
   <div class="row"><label for="ppc">컬러</label><input id="ppc" type="color" value="#ffffff"></div>
@@ -133,10 +133,9 @@ body.clean.hover .show{display:block}
     <button id="rec" type="button" class="primary" hidden>1루프 녹화 (WebM)</button>
     <button id="rec8" type="button" class="primary" hidden title="7680×2926 · 30fps · VP9 WebM, 1루프">8K 21:8 녹화</button>
   </div>
-  <p class="hint" id="hint">각 오브젝트가 구체 → 수렴 → 소용돌이 → 방사 순으로 이어지며, 4단계가 지나면 처음 형태로 돌아옵니다. H 키로 패널을 숨깁니다.</p>
+  <p class="hint" id="hint">각 오브젝트가 구체 → 수렴 → 하프톤 링 → 방사 순으로 이어지며, 4단계가 지나면 처음 형태로 돌아옵니다. H 키로 패널을 숨깁니다.</p>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/webm-muxer@5.0.3/build/webm-muxer.js"></script>
 <script>
 (()=>{
 const $=id=>document.getElementById(id);
@@ -176,7 +175,7 @@ const sphereDir=r=>{const u=r()*2-1,a=r()*Math.PI*2,q=Math.sqrt(1-u*u);return[q*
 const STATES=[
   {name:'구체',ca:hex('#c7ffd9'),cb:hex('#2f52ff'),axis:'x',a0:.07,rim:.55,pc:hex('#d6ffe3'),pa:.95,ps:[1.6,3.6]},
   {name:'수렴',ca:hex('#1b3a52'),cb:hex('#5d6bff'),axis:'x',a0:.06,rim:.65,pc:hex('#7f8cff'),pa:.55,ps:[.8,1.7]},
-  {name:'소용돌이',ca:hex('#8fc3b4'),cb:hex('#4e62e0'),axis:'y',a0:.2,rim:0,pc:hex('#ffffff'),pa:.95,ps:[1.2,3.4]},
+  {name:'하프톤 링',ca:hex('#c7ffd9'),cb:hex('#3a5cff'),axis:'r',a0:.035,rim:0,pc:hex('#ebf2ff'),pa:.9,ps:[.6,1]},
   {name:'방사',ca:hex('#e2f2ff'),cb:hex('#4d73d8'),axis:'s',a0:.11,rim:0,pc:hex('#b8d8ff'),pa:.6,ps:[.7,1.5]},
 ];
 /* 소용돌이: 참고 SVG(111111.svg)의 링 패스와 파티클 좌표를 그대로 옮긴 데이터 (바깥 원 반지름 = 1) */
@@ -200,7 +199,11 @@ function vortexLines(n){
   return out;
 }
 function buildLines(st,n){
-  if(st===2)return vortexLines(n);
+  if(st===2){ // 하프톤 링: 망점 도넛을 받치는 옅은 동심원
+    const out=new Float32Array(n*K*3);
+    for(let i=0;i<n;i++){const r=.2+.95*(i+.5)/n,a0=i*2.39996;
+      for(let j=0;j<K;j++){const a=a0+j/(K-1)*Math.PI*2;out.set([r*Math.sin(a),r*Math.cos(a),0],(i*K+j)*3);}}
+    return out;}
   const r=rng(101+st*977),out=new Float32Array(n*K*3);
   for(let i=0;i<n;i++){
     const a=r(),b=r(),c=r(),d=sphereDir(r);
@@ -236,16 +239,23 @@ function buildParts(st,n){
     let p;
     if(st===0){do{p=sphereDir(r);}while(p[0]>-.05&&r()>.22);const k=1+(r()-.5)*.06;p=[p[0]*k,p[1]*k,p[2]*k];p=rotZ(p,-.42);}
     else if(st===1){p=sphereDir(r);const k=1.02+r()*.06;p=[p[0]*k,p[1]*k,p[2]*k];}
-    else if(st===2){ // 참고 SVG의 파티클 위치·크기 그대로 (수가 더 많으면 살짝 흩뿌려 반복)
-      const V=VDATA.parts[i%VDATA.parts.length],w=i>=VDATA.parts.length?.03:0;
-      p=[V[0]+(r()-.5)*w,V[1]+(r()-.5)*w,(r()-.5)*.08];
-      pos.set(p,i*3);sz[i]=Math.min(4.2,.45+V[2]*.42);continue;
+    else if(st===2){ // 하프톤 링: 망점 격자 위의 한 점으로 모여 망점 속에 녹아듦
+      const G=HT,k=(i*7919)%G.n;p=[G.x[k],G.y[k],0];
+      pos.set(p,i*3);sz[i]=.7;continue;
     }
     else{const d=sphereDir(r),L=(.55+.55*r())*(1+r()*.12);p=[d[0]*L,d[1]*L,d[2]*L];}
     pos.set(p,i*3);sz[i]=s0+(s1-s0)*Math.pow(r(),2);
   }
   return{pos,sz};
 }
+/* 하프톤 링 격자: 반지름 1.15 원 안의 정사각 격자(HTN개). 점 크기는 밝기만큼 커짐 */
+const HTN=1500;
+const HT=(()=>{const Rd=1.15,s=Math.sqrt(Math.PI*Rd*Rd/HTN)*1.02,x=[],y=[];
+  for(let yy=-Rd;yy<=Rd+1e-9;yy+=s)for(let xx=-Rd;xx<=Rd+1e-9;xx+=s)if(xx*xx+yy*yy<=Rd*Rd){x.push(xx);y.push(yy);}
+  return{s,x,y,n:x.length};})();
+// 각도별 색(위에서 시계방향): 민트 → 아이스 화이트 → 코발트 → 딥 블루 → 시안 — 구체·수렴·방사와 같은 계열
+const HTC=['#c7ffd9','#ebf2ff','#7f9bff','#3a5cff','#6fd6ff'].map(hex);
+const htRing=(r,f)=>{const w=.36*f,v=1-((r-.62)/w)**2;return v>0?Math.pow(v,1.6):0;};
 let GL=[],GP=[];
 function build(){GL=[0,1,2,3].map(st=>buildLines(st,S.lines|0));GP=[0,1,2,3].map(st=>buildParts(st,S.parts|0));dirty=false;}
 
@@ -328,7 +338,7 @@ function drawBG(ph){
 }
 const bA=gl.createBuffer(),bC=gl.createBuffer(),bS=gl.createBuffer(),bI=gl.createBuffer();
 const lineA=new Float32Array(4*MAXL*K*2),lineC=new Float32Array(4*MAXL*K*4);
-const partA=new Float32Array(4*MAXP*2),partC=new Float32Array(4*MAXP*4),partS=new Float32Array(4*MAXP);
+const partA=new Float32Array(4*(MAXP+HTN+64)*2),partC=new Float32Array(4*(MAXP+HTN+64)*4),partS=new Float32Array(4*(MAXP+HTN+64));
 // segment indices (one object worth; reused with an offset per object via drawElements on a shared buffer)
 const IDX=new Uint16Array(MAXL*(K-1)*2);
 gl.getExtension('OES_element_index_uint');
@@ -355,18 +365,17 @@ function colorOf(st,v,s,rad){
   return mix3(S0.ca,S0.cb,t);
 }
 let phase=0,paused=false,manual=false,last=performance.now(),rec=null;
-const SEQ=[0,1,3]; // 로비용: 소용돌이(2) 단계 제외 — 구체 → 수렴 → 방사 → 구체
-const TOTAL=()=>S.stage*SEQ.length;
+const TOTAL=()=>S.stage*4;
 function draw(){
   if(dirty)build();
-  const ph=((phase%1)+1)%1,T=ph*SEQ.length;             // T: 0..4 stages
+  const ph=((phase%1)+1)%1,T=ph*4;             // T: 0..4 stages
   const nL=S.lines|0,nP=S.parts|0,asp=cv.width/cv.height;
   const objs=layout();
   const ang=ph*Math.PI*2*S.spin, tw=ph*Math.PI*2;
   let vL=0,vP=0;FRAME=[];
   objs.forEach(([cx,cy,R,start],oi)=>{
     const L0=vL,P0i=vP;
-    const g=T,gi=Math.floor(g)%SEQ.length,st=SEQ[gi],nx=SEQ[(gi+1)%SEQ.length],f=g-Math.floor(g);
+    const g=T+start,st=Math.floor(g)%4,nx=(st+1)%4,f=g-Math.floor(g);
     const hold=1-S.morph,m=clamp01((f-hold)/S.morph);  // 0 during hold, 0→1 while morphing
     const A=GL[st],B=GL[nx],Pa=GP[st],Pb=GP[nx];
     const rim0=STATES[st].rim,rim1=STATES[nx].rim;
@@ -386,7 +395,8 @@ function draw(){
         const o=(i*K+j)*3,s=j/(K-1);
         let p=[A[o]+(B[o]-A[o])*e,A[o+1]+(B[o+1]-A[o+1])*e,A[o+2]+(B[o+2]-A[o+2])*e];
         if(w>0){p[0]+=Math.sin(s*5.1+i*.37+tw)*w;p[1]+=Math.cos(s*4.3+i*.21-tw)*w;p[2]+=Math.sin(s*3.7+i*.53+tw)*w;}
-        let glow=1;if(st===2){glow=inflow(Math.hypot(p[0],p[1]),1-e);p=suck(p,1-e);}
+        let glow=1;
+        if(st===2||nx===2){const w2=st===2?1-e:e;glow=1-w2+w2*(.25+2.2*htRing(Math.hypot(p[0],p[1]),S.suck));}
         const [q,k]=project(p),x=q[0]*k*R,y=q[1]*k*R;
         const c=toClip(x,y);lineA[vL*2]=c[0];lineA[vL*2+1]=c[1];
         const v=[q[0],q[1],q[2]];
@@ -404,29 +414,55 @@ function draw(){
       let p=[Pa.pos[i*3]+(Pb.pos[i*3]-Pa.pos[i*3])*e,Pa.pos[i*3+1]+(Pb.pos[i*3+1]-Pa.pos[i*3+1])*e,Pa.pos[i*3+2]+(Pb.pos[i*3+2]-Pa.pos[i*3+2])*e];
       if(w>0){p[0]+=Math.sin(i*.71+tw)*w;p[1]+=Math.cos(i*.53-tw)*w;}
       let pf=1,ps=1;
-      if(st===2&&S.suck>0){
-        p=suck(p,1-e);
+      if(false){
+        // 별의 약 65%는 나선을 그리며 중심으로 빨려 들어갔다가 사라지고, 제자리에서 다시 나타나 반복
         const sd=((i*40503)%997)/997;
         if(sd<.65){
+          // 일정한 비율로 반지름이 줄어드는 로그 나선 → 끊김 없이 점점 빨라지며 중심으로; 사라지고 나타날 때는 부드럽게 페이드
+          // 단계 시작 시 모두 제자리에서 출발: 각자 다른 지연 뒤에 하나씩 흘러들기 시작 (한꺼번에 쏠리는 구간 없음)
           const tt=f*1.1*S.suck-sd*1.35,ramp=tt>0?(1-e):0,ff=tt>0?tt%1:0;
           const kk=1-(1-Math.exp(-3.2*ff))*ramp,a=-2.2*ff*ramp,ca=Math.cos(a),sa=Math.sin(a);
           p=[(p[0]*ca-p[1]*sa)*kk,(p[0]*sa+p[1]*ca)*kk,p[2]];
           const sm=x=>x<=0?0:x>=1?1:x*x*(3-2*x);
-          const fin=tt>=1?sm(ff/.15):1;
+          const fin=tt>=1?sm(ff/.15):1;  // 첫 출발은 이미 보이는 상태라 페이드인 없음, 다시 나타날 때만 페이드인
           pf=1-ramp*(1-fin*(1-sm((ff-.72)/.28)));ps=.5+.5*kk;}
       }
       const [q,k]=project(p),c=toClip(q[0]*k*R,q[1]*k*R);
       partA[vP*2]=c[0];partA[vP*2+1]=c[1];
       const P0=PP[st],P1=PP[nx],col=mix3(hex(P0.c),hex(P1.c),e),al=P0.a+(P1.a-P0.a)*e;
       const tw2=.75+.25*Math.sin(tw*3+i*1.7);
+      const wp=st===2?1-e:nx===2?e:0;pf*=1-.85*wp;  // 하프톤 링에서는 망점 속으로 녹아듦
       partC.set([col[0],col[1],col[2],Math.max(0,al*tw2*(.6+.4*k)*pf)],vP*4);
       partS[vP]=ps*(Pa.sz[i]*P0.s+(Pb.sz[i]*P1.s-Pa.sz[i]*P0.s)*e)*S.psz*(cv.height/1080)*2.0*(R/.15)*.55*k;
       vP++;
     }
-    FRAME.push({l0:L0,l1:vL,p0:P0i,p1:vP,st});
+    // 하프톤 링: 격자 망점이 밝기만큼 커짐. 밝은 쪽이 천천히 돌고 파문이 바깥으로 번짐 (들어오고 나갈 때 망점이 자라나고 줄어듦)
+    const w2=st===2?1-ease(m):nx===2?ease(m):0;
+    if(w2>.001){
+      const rot=f*Math.PI*.9+tw,rip=f*Math.PI*4,px=cv.height/1080;
+      for(let g=0;g<HT.n;g++){
+        const x0=HT.x[g],y0=HT.y[g],r=Math.hypot(x0,y0),th=Math.atan2(x0,y0);
+        let I=htRing(r,S.suck);if(I<=0)continue;
+        const Lt=.5+.5*Math.cos(th-3.7-rot);
+        I*=(.3+.7*Lt)*(.86+.14*Math.sin(r*15-rip));
+        const [q,k]=project([x0,y0,0]),c=toClip(q[0]*k*R,q[1]*k*R);
+        const dpx=Math.pow(I,.75)*1.15*HT.s*R*cv.height*k*w2*S.psz;
+        if(dpx<.4)continue;
+        partA[vP*2]=c[0];partA[vP*2+1]=c[1];
+        let a=((th+tw*.5)%(Math.PI*2)+Math.PI*2)%(Math.PI*2)/(Math.PI*2)*HTC.length,j0=Math.floor(a)%HTC.length,j1=(j0+1)%HTC.length,u=a-Math.floor(a);u=u*u*(3-2*u);
+        const c0=HTC[j0],c1=HTC[j1],wl=.45*Lt*Math.min(1,I*1.4),lt=HTC[1];
+        const cc=[0,1,2].map(n=>{const v=c0[n]+(c1[n]-c0[n])*u;return v+(lt[n]-v)*wl;});
+        partC.set([cc[0],cc[1],cc[2],Math.min(1,(.55+.45*Lt)*w2*1.1)],vP*4);partS[vP]=dpx;vP++;
+      }
+    }
+    FRAME.push({l0:L0,l1:vL,p0:P0i,p1:vP,st:Math.floor(T+start)%4});
+    if(S.mode===1||oi===0){ // step indicator follows the first (or only) object
+      [...$('steps').children].forEach((el,k)=>{el.classList.toggle('on',k===st);el.firstChild.nextSibling&&0;const bar=el.querySelector('b');bar.style.width=(k===st?(f*100).toFixed(1):0)+'%';});
+    }
   });
   drawBG(ph);
   gl.enable(gl.BLEND);gl.blendFunc(gl.ONE,gl.ONE);
+  // lines
   gl.useProgram(pL);
   let n=0;const per=K-1;
   const objsN=vL/(nL*K)|0;
@@ -436,8 +472,10 @@ function draw(){
   gl.bindBuffer(gl.ARRAY_BUFFER,bC);gl.bufferData(gl.ARRAY_BUFFER,lineC.subarray(0,vL*4),gl.DYNAMIC_DRAW);
   let lc=gl.getAttribLocation(pL,'c');gl.enableVertexAttribArray(lc);gl.vertexAttribPointer(lc,4,gl.FLOAT,false,0,0);
   gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,bI);gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,IDX32.subarray(0,n),gl.DYNAMIC_DRAW);
+  // 1px 선은 8K 같은 큰 캔버스에서 상대적으로 가늘어지므로, 해상도에 맞춰 1px씩 비켜 여러 번 그려 화면과 같은 굵기감 유지
   const passes=Math.max(1,Math.round(cv.height/1500)),uo=gl.getUniformLocation(pL,'off');
   for(let k=0;k<passes;k++){const o=k-(passes-1)/2;gl.uniform2f(uo,o*2/cv.width,o*2/cv.height);gl.drawElements(gl.LINES,n,gl.UNSIGNED_INT,0);}
+  // particles
   if(vP){
     gl.useProgram(pP);
     gl.bindBuffer(gl.ARRAY_BUFFER,bA);gl.bufferData(gl.ARRAY_BUFFER,partA.subarray(0,vP*2),gl.DYNAMIC_DRAW);
@@ -450,17 +488,159 @@ function draw(){
     gl.disableVertexAttribArray(ls);
   }
 }
-/* ---------- 루프 (로비 타이틀 B용: 패널·저장 기능 없이 재생만) ---------- */
-let FRAME=[];
+
+/* ---------- loop + UI ---------- */
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
 function loop(now){
-  if(!paused)phase+=(now-last)/1000/TOTAL();
-  phase%=1;draw();
+  if(!manual){
+    if(!paused&&!reduce)phase+=(now-last)/1000/TOTAL();
+    if(rec&&phase-rec.start>=1)rec.r.stop();
+    if(!rec)phase%=1;
+    draw();
+  }
   last=now;requestAnimationFrame(loop);
 }
+NUM.forEach(k=>$(k).addEventListener('input',()=>{syncUI();if(paused)draw();}));
+function syncPP(){const o=PP[psel];$('ppc').value=o.c;$('pps').value=o.s;$('ppa').value=o.a;
+$('pps').parentNode.querySelector('.v').textContent=o.s.toFixed(2);$('ppa').parentNode.querySelector('.v').textContent=o.a.toFixed(2);
+  document.querySelectorAll('#ppick button').forEach(b=>b.setAttribute('aria-pressed',+b.dataset.s===psel));}
+document.querySelectorAll('#ppick button').forEach(b=>b.onclick=()=>{psel=+b.dataset.s;syncPP();});
+['bgcg','bgcc'].forEach(k=>$(k).addEventListener('input',()=>{if(paused)draw();}));
+$('ppc').addEventListener('input',()=>{PP[psel].c=$('ppc').value;syncPP();if(paused)draw();});
+$('pps').addEventListener('input',()=>{PP[psel].s=parseFloat($('pps').value);syncPP();if(paused)draw();});
+$('ppa').addEventListener('input',()=>{PP[psel].a=parseFloat($('ppa').value);syncPP();if(paused)draw();});
+function setMode(m){S.mode=m;$('m4').setAttribute('aria-pressed',m===4);$('m1').setAttribute('aria-pressed',m===1);$('objs').hidden=m!==4;document.body.classList.toggle('m4',m===4);draw();}
+/* 오브젝트별 편집 */
+function syncObj(){const o=OBJ[sel];$('ox').value=o.x;$('oy').value=o.y;$('or').value=o.r;
+  [['ox',o.x],['oy',o.y],['or',o.r]].forEach(([k,v])=>$(k).parentNode.querySelector('.v').textContent=v.toFixed(2));
+  $('oon').checked=o.on;
+  document.querySelectorAll('#objs .pick button').forEach(b=>{b.setAttribute('aria-pressed',+b.dataset.i===sel);b.classList.toggle('off',!OBJ[+b.dataset.i].on);});}
+$('oon').addEventListener('change',()=>{OBJ[sel].on=$('oon').checked;syncObj();saveObjs();draw();});
+function pick(i){sel=i;syncObj();}
+document.querySelectorAll('#objs .pick button').forEach(b=>b.onclick=()=>pick(+b.dataset.i));
+[['ox','x'],['oy','y'],['or','r']].forEach(([id,k])=>$(id).addEventListener('input',()=>{OBJ[sel][k]=parseFloat($(id).value);syncObj();saveObjs();if(paused)draw();}));
+$('oreset').onclick=()=>{OBJ=OBJ_DEF.map(o=>({...o}));saveObjs();syncObj();draw();};
+// 캔버스에서 직접 끌기 · 휠로 크기
+const toN=e=>{const r=cv.getBoundingClientRect();return[(e.clientX-r.left)/r.width-.5,.5-(e.clientY-r.top)/r.height];};
+function hit(e){const[nx,ny]=toN(e),asp=cv.width/cv.height;let best=-1,bd=1e9;
+  OBJ.forEach((o,i)=>{if(!o.on)return;const d=Math.hypot((nx-o.x)*asp,ny-o.y);if(d<o.r*S.osz*1.15&&d<bd){bd=d;best=i;}});return best;}
+let drag=null;
+cv.addEventListener('pointerdown',e=>{if(S.mode!==4)return;const i=hit(e);if(i<0)return;pick(i);const[nx,ny]=toN(e);
+  drag={i,dx:OBJ[i].x-nx,dy:OBJ[i].y-ny};cv.setPointerCapture(e.pointerId);document.body.classList.add('dragging');e.preventDefault();});
+cv.addEventListener('pointermove',e=>{if(!drag)return;const[nx,ny]=toN(e),o=OBJ[drag.i];
+  o.x=Math.max(-.5,Math.min(.5,nx+drag.dx));o.y=Math.max(-.5,Math.min(.5,ny+drag.dy));syncObj();if(paused)draw();});
+const endDrag=()=>{if(!drag)return;drag=null;document.body.classList.remove('dragging');saveObjs();};
+cv.addEventListener('pointerup',endDrag);cv.addEventListener('pointercancel',endDrag);
+cv.addEventListener('wheel',e=>{if(S.mode!==4)return;const i=hit(e);if(i<0)return;e.preventDefault();pick(i);
+  const o=OBJ[i];o.r=Math.max(.04,Math.min(.5,o.r*Math.exp(-e.deltaY*.0015)));syncObj();saveObjs();if(paused)draw();},{passive:false});
+$('m4').onclick=()=>setMode(4);$('m1').onclick=()=>setMode(1);
+$('pause').onclick=()=>{paused=!paused;$('pause').textContent=paused?'재생':'일시정지';};
+$('reset').onclick=()=>{NUM.forEach(k=>$(k).value=DEF[k]);$('bgcg').value='#3dd6e1';$('bgcc').value='#0586ff';syncUI();PP=PP_DEF.map(o=>({...o}));syncPP();OBJ=OBJ_DEF.map(o=>({...o}));saveObjs();syncObj();setMode(1);};
+function toggle(){document.body.classList.toggle('clean');}
+$('hide').onclick=toggle;$('show').onclick=toggle;
+addEventListener('keydown',e=>{if((e.key==='h'||e.key==='H')&&!/INPUT|TEXTAREA/.test(document.activeElement.tagName))toggle();});
+let ht;addEventListener('pointermove',()=>{document.body.classList.add('hover');clearTimeout(ht);ht=setTimeout(()=>document.body.classList.remove('hover'),1800);});
+
+/* file save through the viewer's downloads capability (buttons stay hidden without it) */
+let dl=null;
+(async()=>{try{dl=window.claude&&window.claude.use?await window.claude.use('downloads'):null;}catch(e){dl=null;}
+  if(dl){$('png').hidden=false;$('svg').hidden=false;if(window.MediaRecorder&&cv.captureStream)$('rec').hidden=false;if('VideoEncoder' in window)$('rec8').hidden=false;}})();
+async function saveFile(filename,blob){
+  if(!dl)return;
+  try{await dl.save({filename,data:blob});}catch(e){if(e&&e.code!=='declined')$('hint').textContent='파일을 저장하지 못했습니다.';}
+}
+/* SVG: 현재 프레임의 오브젝트마다 라인(짧은 구간별 색·투명도)과 파티클(원)을 벡터로 저장. 배경은 투명 */
+let FRAME=[];
+const SVG_NAME=['sphere','converge','halftone-ring','burst'];
+function objectSVG(fr){
+  const W=cv.width,H=cv.height,px=(x,y)=>[(x+1)/2*W,(1-y)/2*H];
+  let x0=1e9,y0=1e9,x1=-1e9,y1=-1e9;const out=[];
+  const grow=(x,y,r)=>{x0=Math.min(x0,x-r);y0=Math.min(y0,y-r);x1=Math.max(x1,x+r);y1=Math.max(y1,y+r);};
+  const rgb=(r,g,b)=>'rgb('+Math.round(r*255)+','+Math.round(g*255)+','+Math.round(b*255)+')';
+  const CH=4;
+  for(let base=fr.l0;base<fr.l1;base+=K){
+    for(let j=0;j<K-1;j+=CH-1){
+      const pts=[];let r=0,g=0,b=0,a=0,n=0;
+      for(let q=j;q<Math.min(K,j+CH);q++){const v=base+q,[x,y]=px(lineA[v*2],lineA[v*2+1]);pts.push(x.toFixed(1)+','+y.toFixed(1));grow(x,y,1);
+        r+=lineC[v*4];g+=lineC[v*4+1];b+=lineC[v*4+2];a+=lineC[v*4+3];n++;}
+      if(n<2||a/n<.004)continue;
+      out.push('<polyline points="'+pts.join(' ')+'" stroke="'+rgb(r/n,g/n,b/n)+'" stroke-opacity="'+Math.min(1,a/n).toFixed(3)+'"/>');
+    }
+  }
+  const dots=[];
+  for(let i=fr.p0;i<fr.p1;i++){const [x,y]=px(partA[i*2],partA[i*2+1]),rr=Math.max(.4,partS[i]/2),al=partC[i*4+3];
+    if(al<.01)continue;grow(x,y,rr);
+    dots.push('<circle cx="'+x.toFixed(1)+'" cy="'+y.toFixed(1)+'" r="'+rr.toFixed(2)+'" fill="'+rgb(partC[i*4],partC[i*4+1],partC[i*4+2])+'" fill-opacity="'+Math.min(1,al).toFixed(3)+'"/>');}
+  const pad=8,vx=Math.floor(x0-pad),vy=Math.floor(y0-pad),vw=Math.ceil(x1-x0+pad*2),vh=Math.ceil(y1-y0+pad*2);
+  return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="'+vx+' '+vy+' '+vw+' '+vh+'" width="'+vw+'" height="'+vh+'">\n'+
+    '<g fill="none" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" style="mix-blend-mode:screen">\n'+out.join('\n')+'\n</g>\n'+
+    '<g style="mix-blend-mode:screen">\n'+dots.join('\n')+'\n</g>\n</svg>\n';
+}
+$('svg').onclick=async()=>{
+  draw();
+  const list=FRAME.map((fr,i)=>({fr,name:'four-states'+(FRAME.length>1?'-'+(i+1):'')+'-'+SVG_NAME[fr.st]+'.svg'}));
+  for(const {fr,name} of list){await saveFile(name,new Blob([objectSVG(fr)],{type:'image/svg+xml'}));}
+};
+$('png').onclick=()=>{draw();cv.toBlob(b=>saveFile('four-states.png',b),'image/png');};
+$('rec').onclick=()=>{
+  if(rec)return;
+  const mime=['video/webm;codecs=vp9','video/webm;codecs=vp8','video/webm'].find(m=>MediaRecorder.isTypeSupported(m));
+  const r=new MediaRecorder(cv.captureStream(60),{mimeType:mime,videoBitsPerSecond:24e6});
+  const chunks=[];r.ondataavailable=e=>chunks.push(e.data);
+  r.onstop=()=>{saveFile('four-states-loop.webm',new Blob(chunks,{type:'video/webm'}));
+    rec=null;phase%=1;paused=false;$('rec').textContent='1루프 녹화 (WebM)';document.body.classList.remove('clean');};
+  phase=Math.floor(phase);paused=false;rec={r,start:phase};
+  document.body.classList.add('clean');$('rec').textContent='녹화 중…';r.start();
+};
+syncUI();syncObj();syncPP();draw();requestAnimationFrame(loop);
+/* 스크린 삽입용: 멈춘 채 시작, 'play'면 처음부터 재생, 'pause'면 멈춤 */
 paused=true;
-addEventListener('message',e=>{const d=e.data;if(d==='play'){phase=0;last=performance.now();paused=false;}else if(d==='pause')paused=true;});
-syncUI();draw();requestAnimationFrame(loop);
-window.renderAt=p=>{phase=p;draw();};
+addEventListener('message',e=>{const d=e.data;if(d==='play'){manual=false;phase=0;last=performance.now();paused=false;}else if(d==='pause')paused=true;});
+
+/* 8K 21:8 녹화: 실시간 녹화 대신 한 프레임씩 8K로 그려 WebCodecs(VP9)로 인코딩 → WebM. 프레임이 빠지지 않고 정확히 1루프 */
+const REC8=window.REC8={w:7680,h:2926,fps:30,q:8};
+async function rec8k(){
+  const btn=$('rec8'),say=t=>{$('hint').textContent=t;};
+  if(!('VideoEncoder' in window)){say('이 브라우저는 고해상도 녹화(WebCodecs)를 지원하지 않습니다. 최신 Chrome이나 Edge에서 열어 주세요.');return;}
+  if(!window.WebMMuxer){say('녹화 모듈을 불러오지 못했습니다. 페이지를 새로고침해 주세요.');return;}
+  const dur=TOTAL();if(!(dur>0)){say('속도를 0보다 크게 설정한 뒤 녹화하세요.');return;}
+  const mx=Math.min(gl.getParameter(gl.MAX_RENDERBUFFER_SIZE),gl.getParameter(gl.MAX_TEXTURE_SIZE),...gl.getParameter(gl.MAX_VIEWPORT_DIMS));
+  const sizes=[[REC8.w,REC8.h],[5120,1950],[3840,1462]].map(([w,h])=>w>mx?[Math.floor(mx/2)*2,Math.floor(h*mx/w/2)*2]:[w,h]);
+  let cfg=null,W=0,H=0;
+  // 화질 우선: 고정 양자화(quantizer, 낮을수록 고화질) → 안 되면 높은 비트레이트
+  outer:for(const [w,h] of sizes)for(const c of ['vp09.00.61.08','vp09.00.60.08','vp09.00.51.08'])for(const q of [true,false]){
+    const t={codec:c,width:w,height:h,framerate:REC8.fps,latencyMode:'quality'};
+    if(q)t.bitrateMode='quantizer';else{t.bitrateMode='variable';t.bitrate=w>=7000?240e6:120e6;}
+    try{const r=await VideoEncoder.isConfigSupported(t);if(r.supported){cfg=t;W=w;H=h;break outer;}}catch(e){}}
+  if(!cfg){say('이 기기에서는 이 해상도의 영상 인코딩을 지원하지 않습니다.');return;}
+  if(W!==REC8.w)say('이 기기의 한도로 '+W+'×'+H+'(21:8)로 저장합니다.');
+  const muxer=new WebMMuxer.Muxer({target:new WebMMuxer.ArrayBufferTarget(),video:{codec:'V_VP9',width:W,height:H,frameRate:REC8.fps}});
+  let err=null;const enc=new VideoEncoder({output:(c,m)=>muxer.addVideoChunk(c,m),error:e=>{err=e;}});
+  enc.configure(cfg);
+  const W0=cv.width,H0=cv.height,ph0=phase,wasManual=manual;manual=true;btn.disabled=true;document.body.classList.add('clean');
+  try{
+    cv.width=W;cv.height=H;gl.viewport(0,0,W,H);
+    const N=Math.round(dur*REC8.fps);
+    for(let i=0;i<N;i++){
+      if(err)throw err;
+      phase=i/N;draw();
+      const fr=new VideoFrame(cv,{timestamp:Math.round(i*1e6/REC8.fps),duration:Math.round(1e6/REC8.fps)});
+      enc.encode(fr,cfg.bitrateMode==='quantizer'?{keyFrame:i%60===0,vp9:{quantizer:REC8.q}}:{keyFrame:i%60===0});fr.close();
+      while(enc.encodeQueueSize>2)await new Promise(r=>setTimeout(r,4));
+      if(i%3===0){btn.textContent='8K 렌더 중 '+Math.round(i/N*100)+'%';await new Promise(r=>setTimeout(r,0));}
+    }
+    await enc.flush();if(err)throw err;muxer.finalize();
+    await saveFile('four-states-'+W+'x'+H+'.webm',new Blob([muxer.target.buffer],{type:'video/webm'}));
+  }catch(e){say('녹화하지 못했습니다: '+((e&&e.message)||e));}
+  finally{
+    try{enc.close();}catch(e){}
+    cv.width=W0;cv.height=H0;gl.viewport(0,0,W0,H0);
+    phase=ph0;manual=wasManual;draw();btn.disabled=false;btn.textContent='8K 21:8 녹화';document.body.classList.remove('clean');
+  }
+}
+$('rec8').onclick=rec8k;
+window.renderAt=(p,m)=>{manual=true;if(m)S.mode=m;phase=p;draw();};
 })();
 </script>
+
 </body></html>
