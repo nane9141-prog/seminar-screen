@@ -125,9 +125,8 @@ function build(){
       flr(x0,x1,z0,z1,0x2c2f37);wl(x0,x1,z0,z0);wl(x0,x1,z1,z1);wl(x0,x0,z0,z1);wl(x1,x1,z0,z1);
       var v=new THREE.Mesh(new THREE.BoxGeometry(L,H,Dp),new THREE.MeshBasicMaterial({color:0x8fa3d6,transparent:true,opacity:.07,depthWrite:false}));v.position.set((x0+x1)/2,H/2,(z0+z1)/2);scene.add(v);
       var e=new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(L,H,Dp)),new THREE.LineBasicMaterial({color:0x6f7890,transparent:true,opacity:.6}));e.position.copy(v.position);scene.add(e);
-      sprite(r[0],(x0+x1)/2,H+1.5,(z0+z1)/2,'#fff',5);if(r[4])sprite(r[4],(x0+x1)/2,H+.4,(z0+z1)/2,'#aab3cc',4.4);
+      sprite(r[0],(x0+x1)/2,H+.9,(z0+z1)/2,'#fff',5);
       rx=x0;});
-    sprite('14×6.5×4.8m · 27평',-30-(5.2+8.5+7)*M,4.8*M+.4,20.7+3.25*M,'#aab3cc',4.4);
     lift(-16,-11.5,28.6,33);lift(-6.3,-1.6,28.6,33);sprite('LIFT',-8.9,4.4,30.8,'#fff',3.4);
     box(20.7,.9,4.6,0x2a2d36,21.3,.45,30.6);sprite('ESCALATOR',21.3,2.2,30.6,'#fff',4.6);
     [[36.6,42.6],[43.2,49.2],[49.8,55.8]].forEach(function(p){lift(p[0],p[1],-11.8,-7.2);});
