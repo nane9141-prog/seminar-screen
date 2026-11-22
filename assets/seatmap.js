@@ -37,7 +37,7 @@ function loadLib(cb){
   if(window.THREE&&THREE.OrbitControls)return cb();
   if(libState===1)return;libState=1;
   const add=(src,next)=>{const s=document.createElement('script');s.src=src;s.onload=next;s.onerror=()=>{libState=0;$('smstage').insertAdjacentHTML('beforeend','<p class="mut" style="padding:40px">3D 라이브러리를 불러오지 못했습니다. 새로고침해 주세요.</p>');};document.head.appendChild(s);};
-  add('assets/three.min.js',()=>add('assets/OrbitControls.js',()=>add('assets/seat-screen.js',cb)));
+  add('assets/three.min.js',()=>add('assets/OrbitControls.js',()=>add('assets/seat-screen.js',()=>add('assets/seat-banners.js',cb))));
 }
 function ctex(w,h,draw){const c=document.createElement('canvas');c.width=w;c.height=h;draw(c.getContext('2d'),w,h);const t=new THREE.CanvasTexture(c);t.anisotropy=8;return t;}
 const FONT='"Pretendard Variable","Noto Sans KR",sans-serif';
@@ -91,6 +91,14 @@ function build(){
     const body=new THREE.Mesh(new THREE.BoxGeometry(ld,lh,lw),new THREE.MeshStandardMaterial({color:0x08090c,roughness:.6}));body.position.y=lh/2;grp.add(body);
     const scr=new THREE.Mesh(new THREE.PlaneGeometry(2.9*M,2.25*M),new THREE.MeshBasicMaterial({map:ledTex}));scr.rotation.y=Math.PI/2;scr.position.set(ld/2+.02,(1.82+2.25/2)*M,0);grp.add(scr);
     grp.position.set(-25.1,0,p[0]);grp.rotation.y=p[1]*Math.PI*25/180;scene.add(grp);});
+  /* 벽면 현수막: 1장 750×4200mm. 01~03 = 스크린을 바라볼 때 좌측 벽(C·D열 옆), 04·05 = 우측 벽(I·J열 옆). 벽을 마주 보고 왼쪽부터 번호순 */
+  (function(){var B=window.SEAT_BANNERS;if(!B||!B.length)return;
+    var bw=.75*M,bh=4.2*M,gap=.05*M,by=.8*M+bh/2,pitch=bw+gap,cL=(ROW_X0+2*ROW_DX+ROW_X0+3*ROW_DX)/2,cR=(ROW_X0+8*ROW_DX+ROW_X0+9*ROW_DX)/2;
+    var P=[[cL+pitch,1],[cL,1],[cL-pitch,1],[cR-pitch/2,-1],[cR+pitch/2,-1]];   // [x, 벽(1=좌측 +z, -1=우측 -z)]
+    var back=new THREE.Mesh(new THREE.BoxGeometry(pitch*3+.3,bh+.3,.08),new THREE.MeshStandardMaterial({color:0x14161f,roughness:.9}));back.position.set(cL,by,13.46);scene.add(back);
+    P.forEach(function(p,i){if(!B[i])return;var im=new Image();im.onload=function(){var tx=new THREE.Texture(im);tx.anisotropy=8;tx.needsUpdate=true;
+      var m=new THREE.Mesh(new THREE.PlaneGeometry(bw,bh),new THREE.MeshBasicMaterial({map:tx}));m.position.set(p[0],by,p[1]*13.4);if(p[1]>0)m.rotation.y=Math.PI;scene.add(m);};im.src=B[i];});
+  })();
   /* 출입문: 폐쇄 4곳, 사용 2곳 · 등록 데스크 */
   [-14.9,-1.6,6.6,17.6].forEach(dx=>{box(2.2,1.2,.36,0x5a1f26,dx,.6,HD+.15);sprite('✕ 폐쇄',dx,2.1,HD+.2,'#ff6b6b',3.4);});
   box(2.2,1.2,.36,0x1f5a3c,25.4,.6,HD+.15);sprite('입구',25.4,2.1,HD+.2,'#6dffb0',3.2);box(2.2,1.2,.36,0x2a2e3b,-21.1,.6,HD+.15);
