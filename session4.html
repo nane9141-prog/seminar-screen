@@ -119,10 +119,13 @@ canvas.viz{position:absolute;pointer-events:none}
 #K10 .mk small{font:400 48px "KakaoSmall";color:var(--mut);margin-left:16px}
 #K10 .river{position:absolute;font:400 44px "KakaoSmall";color:var(--dim)}
 #K11 .chart{position:absolute;left:300px;right:300px;top:600px;height:760px}
-#K11 .ax{position:absolute;left:0;right:0;bottom:120px;height:3px;background:var(--line)}
-#K11 .day{position:absolute;bottom:0;height:110px;width:180px;margin-left:-90px;text-align:center;font:300 64px/1 "Lexend";color:var(--mut);padding-top:18px}
-#K11 .day small{display:block;font:400 40px "KakaoSmall";color:var(--dim);margin-top:10px}
-#K11 .bar{position:absolute;bottom:123px;width:64px;border-radius:14px 14px 4px 4px;transform-origin:bottom;transition:transform 1s cubic-bezier(.2,.7,.2,1),opacity .8s,background .6s}
+#K11 .ax{position:absolute;left:0;right:0;bottom:180px;height:3px;background:var(--line)}
+#K11 .day{position:absolute;bottom:0;height:170px;width:180px;margin-left:-90px;text-align:center;font:300 64px/1 "Lexend";color:var(--mut);padding-top:18px}
+#K11 .day small{display:block;font:400 40px/1.25 "KakaoSmall";color:var(--dim);margin-top:8px;transition:color .6s,opacity .6s}
+#K11 .day .w26{color:var(--fg)}#K11 .day .w27{opacity:.45}
+#K11[data-step="1"] .day .w26,#K11[data-step="2"] .day .w26{color:var(--dim);opacity:.45}
+#K11[data-step="1"] .day .w27,#K11[data-step="2"] .day .w27{opacity:1;color:#3fd3aa}
+#K11 .bar{position:absolute;bottom:183px;width:64px;border-radius:14px 14px 4px 4px;transform-origin:bottom;transition:transform 1s cubic-bezier(.2,.7,.2,1),opacity .8s,background .6s}
 #K11 .bar i{position:absolute;left:50%;bottom:calc(100% + 14px);transform:translateX(-50%);font:400 50px "Lexend";font-style:normal;color:var(--mut);white-space:nowrap}
 #K11 .y26{background:rgba(242,245,250,.55)}
 #K11 .y27{background:var(--grad);transform:scaleY(0)}
@@ -131,8 +134,8 @@ canvas.viz{position:absolute;pointer-events:none}
 #K11[data-step="1"] .y26,#K11[data-step="2"] .y26{opacity:.16}
 #K11[data-step="1"] .y26 i,#K11[data-step="2"] .y26 i{opacity:0}
 #K11[data-step="1"] .y27,#K11[data-step="2"] .y27{transform:none}
-#K11 .full{position:absolute;bottom:123px;width:150px;margin-left:-75px;height:660px;border-radius:18px;background:repeating-linear-gradient(135deg,rgba(255,255,255,.08) 0 16px,rgba(255,255,255,0) 16px 32px),#05070a;border:3px solid rgba(255,255,255,.4);display:flex;align-items:flex-start;justify-content:center;padding-top:40px;font:400 44px/1.15 "Lexend";text-align:center;color:#fff}
-#K11 .tri{position:absolute;bottom:800px;margin-left:-60px;width:120px;text-align:center;font:400 90px/1 "Lexend";color:var(--warn)}
+#K11 .full{position:absolute;bottom:183px;width:150px;margin-left:-75px;height:560px;border-radius:18px;background:repeating-linear-gradient(135deg,rgba(255,255,255,.08) 0 16px,rgba(255,255,255,0) 16px 32px),#05070a;border:3px solid rgba(255,255,255,.4);display:flex;align-items:flex-start;justify-content:center;padding-top:40px;font:400 44px/1.15 "Lexend";text-align:center;color:#fff}
+#K11 .tri{position:absolute;bottom:520px;margin-left:-60px;width:120px;text-align:center;font:400 90px/1 "Lexend";color:var(--warn)}
 #K11 .lg{position:absolute;left:300px;right:300px;top:440px;display:flex;gap:40px;justify-content:flex-end}
 #K11 .stepcap{position:absolute;left:300px;top:1490px;font:400 52px "KakaoSmall";color:var(--mut)}
 #K13 .cols{position:absolute;left:300px;right:300px;top:560px;display:grid;grid-template-columns:repeat(3,1fr);gap:100px}
@@ -894,7 +897,8 @@ function count(s){s.querySelectorAll('.cnt').forEach(el=>{const to=+el.dataset.t
  const el=document.getElementById('mar');if(!el)return;const W=3600,d0=12.5,d1=31.5,X=d=>(d-d0)/(d1-d0)*W,H=560,MAX=91;
  const hot26=[26,24,31],hot27=[23,26,22];let h='<div class="ax"></div>';
  const wd27={};c27.forEach(([d,w])=>wd27[d]=w);
- for(let d=13;d<=31;d++){const w=wd27[d];if(!w&&!c26.find(x=>x[0]===d))continue;h+=`<div class="day" style="left:${X(d)}px">${d}<small>${w?'\'27 '+w:''}</small></div>`;}
+ const WD='일월화수목금토',wd=(y,d)=>WD[new Date(y,2,d).getDay()];/* 같은 날짜 칸에 '26 · '27 요일을 위아래로, 설명 단계에 맞춰 해당 연도만 밝게 */
+ for(let d=13;d<=31;d++){if(!wd27[d]&&!c26.find(x=>x[0]===d))continue;h+=`<div class="day" style="left:${X(d)}px">${d}<small class="w26">'26 ${wd(2026,d)}</small><small class="w27">'27 ${wd(2027,d)}</small></div>`;}
  c26.forEach(([d],i)=>{const v=v26[i];if(!v)return;h+=`<div class="bar y26${hot26.includes(d)?' hot':''}" data-hot="${hot26.includes(d)?1:0}" style="left:${X(d)-74}px;height:${Math.max(8,v/MAX*H)}px"><i>${v}</i></div>`;});
  c27.forEach(([d],i)=>{const v=v27[i];if(!v)return;h+=`<div class="bar y27${hot27.includes(d)?' hot':''}" style="left:${X(d)+10}px;height:${Math.max(8,v/MAX*H)}px;transition-delay:${i*.05}s"><i>${v}</i></div>`;});
  [[23,'FULL<br>BOOKING'],[26,'FULL<br>BOOKING']].forEach(([d,t])=>h+=`<div class="full" data-b="2" style="left:${X(d)+42}px">${t}</div>`);
