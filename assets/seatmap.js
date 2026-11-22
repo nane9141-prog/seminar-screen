@@ -128,7 +128,28 @@ function build(){
       sprite(r[0],(x0+x1)/2,H+.9,(z0+z1)/2,'#fff',5);
       rx=x0;});
     lift(-16,-11.5,25.2,28);lift(-6.3,-1.6,25.2,28);sprite('LIFT',-8.9,4.4,26.6,'#fff',3.4);
-    box(20.7,.9,2.4,0x2a2d36,21.3,.45,26.9);sprite('ESCALATOR',21.3,2.2,26.9,'#fff',4.6);
+    /* 에스컬레이터 2대(상행·하행): 유리 난간 · 검정 핸드레일 · 스틸 측판 · 노란 단 표시. 포이어 끝 벽 쪽이 B1 하차 지점, 반대쪽(-x)으로 올라감. 층고 약 5.5m · 경사 30° 가정 */
+    (function(){var RUN=13.9,RISE=8,L=Math.sqrt(RUN*RUN+RISE*RISE),th=Math.atan2(RISE,RUN),sn=Math.sin(th),cs=Math.cos(th),g=new THREE.Group();
+      var steel=new THREE.MeshStandardMaterial({color:0xa9adb4,metalness:.55,roughness:.38}),dark=new THREE.MeshStandardMaterial({color:0x1b1d22,roughness:.6}),
+          glass=new THREE.MeshBasicMaterial({color:0xa9d6e6,transparent:true,opacity:.2,depthWrite:false}),rail=new THREE.MeshStandardMaterial({color:0x0c0d10,roughness:.5});
+      var st=ctex(64,64,function(c){c.fillStyle='#8f9399';c.fillRect(0,0,64,64);c.fillStyle='#6c7076';for(var k=6;k<64;k+=5)c.fillRect(0,k,64,1);c.fillStyle='#24262a';c.fillRect(0,0,7,64);c.fillStyle='#e7c22f';c.fillRect(7,0,3,64);c.fillRect(0,0,64,4);c.fillRect(0,60,64,4);});
+      st.wrapS=THREE.RepeatWrapping;st.repeat.set(Math.round(L/.58),1);
+      var stepM=new THREE.MeshBasicMaterial({map:st});
+      function add(geo,mat,x,y,z,rz){var m=new THREE.Mesh(geo,mat);m.position.set(x,y,z);if(rz)m.rotation.z=rz;g.add(m);return m;}
+      function inc(geo,mat,off,z){add(geo,mat,2+RUN/2-sn*off,RISE/2+cs*off,z,th);}   // 경사면 기준 법선 방향 off 만큼 띄운 부재
+      [-1.2,1.2].forEach(function(zo){
+        inc(new THREE.BoxGeometry(L+.8,1.25,2.33),steel,-.68,zo);                       // 트러스·측판
+        inc(new THREE.BoxGeometry(L,.05,1.46),[dark,dark,stepM,dark,dark,dark],-.02,zo); // 디딤판
+        add(new THREE.BoxGeometry(2.7,.14,2.33),steel,.85,.07,zo);add(new THREE.BoxGeometry(3,.14,2.33),steel,2+RUN+1.3,RISE-.02,zo);   // 하부·상부 승강장
+        [-1.02,1.02].forEach(function(s){
+          inc(new THREE.BoxGeometry(L,1.25,.05),glass,.68,zo+s);inc(new THREE.BoxGeometry(L+.3,.13,.17),rail,1.37,zo+s);
+          add(new THREE.BoxGeometry(2.2,1.25,.05),glass,.9,.78,zo+s);add(new THREE.BoxGeometry(2.6,.13,.17),rail,.8,1.45,zo+s);
+          add(new THREE.BoxGeometry(2.6,1.25,.05),glass,2+RUN+1.3,RISE+.7,zo+s);add(new THREE.BoxGeometry(3,.13,.17),rail,2+RUN+1.4,RISE+1.37,zo+s);
+        });
+      });
+      add(new THREE.BoxGeometry(5,.5,6),dark,2+RUN+5.2,RISE-.27,0);    // 상부층 바닥 끝
+      g.position.set(31.2,0,25.72);g.rotation.y=Math.PI;scene.add(g);
+    })();
     [[36.6,42.6],[43.2,49.2],[49.8,55.8]].forEach(function(p){lift(p[0],p[1],-11.8,-7.2);});
     [[40,46],[46.6,52.6]].forEach(function(p){lift(p[0],p[1],4,8.4);});
     sprite('GUEST LIFT',46,4.6,-1.7,'#fff',5);
