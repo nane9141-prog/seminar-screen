@@ -19,6 +19,10 @@ for(let r=0;r<ROWS;r++){const x=ROW_X0+r*ROW_DX,L=String.fromCharCode(65+r);let 
 function seatKey(v){const m=/^([A-O])-?(\d{1,2})$/.exec(String(v||'').toUpperCase().replace(/\s/g,''));return m&&byId[m[1]+(+m[2])]?m[1]+(+m[2]):null;}
 
 /* ---------- 상태 ---------- */
+const RT={on:true,mode:'before',tex:[],g:null};
+function applyRoute(){const b=$('smroute');if(b){b.classList.toggle('sel',RT.on);b.textContent=RT.on?'출입자 동선 ON':'출입자 동선 OFF';}
+  document.querySelectorAll('#smentry [data-e]').forEach(x=>x.classList.toggle('sel',x.dataset.e===RT.mode));
+  if(!RT.g)return;RT.g.visit.visible=RT.on;RT.g.before.visible=RT.mode==='before';RT.g.after.visible=RT.mode==='after';}
 let R=[],S={},occ={},sel=null,moveFrom=null,q='',big=false,ready=false,libState=0,busy=false;
 let scene,camera,renderer,controls,tMesh,seatMesh,backMesh,hl,labels=[],dummy,tmpColor,held={};
 const A=()=>window.Attendees;
@@ -105,8 +109,7 @@ function build(){
   })();
   /* 출입문: 폐쇄 4곳, 사용 2곳 · 등록 데스크 */
   [-14.9,-1.6,6.6,17.6].forEach(dx=>{box(2.2,1.2,.36,0x5a1f26,dx,.6,HD+.15);sprite('✕ 폐쇄',dx,2.1,HD+.2,'#ff6b6b',3.4);});
-  box(2.2,1.2,.36,0x1f5a3c,25.4,.6,HD+.15);sprite('입구',25.4,2.1,HD+.2,'#6dffb0',3.2);box(2.2,1.2,.36,0x2a2e3b,-21.1,.6,HD+.15);
-  box(5.4,T_H,.8,0x15171f,19.3,T_H/2,HD+1.8);sprite('등록 데스크',19.3,2.3,HD+1.8,'#fff',4.6);
+  box(2.2,1.2,.36,0x1f5a3c,25.4,.6,HD+.15);sprite('Gate',25.4,2.1,HD+.2,'#6dffb0',3.2);box(2.2,1.2,.36,0x2a2e3b,-21.1,.6,HD+.15);
   /* 행사장 밖 B1: 포이어·복도·부속실·리프트 (B1 평면도 배치 + 제공 치수, 단위 m). 부속실은 실제 높이를 반투명 볼륨으로 표시 */
   (function(){
     function flr(x0,x1,z0,z1,c){var m=new THREE.Mesh(new THREE.PlaneGeometry(x1-x0,z1-z0),new THREE.MeshStandardMaterial({color:c,roughness:1}));m.rotation.x=-Math.PI/2;m.position.set((x0+x1)/2,-.008,(z0+z1)/2);scene.add(m);}
@@ -117,7 +120,6 @@ function build(){
     wl(-30,35.6,33.3,33.3);wl(35.6,35.6,8.6,33.3);wl(35.6,35.6,-13.8,-12);wl(28.3,35.6,-13.8,-13.8);
     wl(35.6,56.8,-12,-12);wl(35.6,56.8,8.6,8.6);wl(56.8,56.8,-12,8.6);
     wl(-83.2,-28.3,15.7,15.7);wl(-83.2,-83.2,15.7,20.7);wl(-28.3,-28.3,13.8,15.7);
-    sprite('FOYER',3,2.2,24,'#cfd8ff',7);
     var RM=[['PYEBAEK',5.2,7,2.8,'5.2×7×2.8m · 11평'],['BRIDAL ROOM',8.5,6.5,2.8,'8.5×6.5×2.8m · 16평'],['RED UME 1',7,6.5,4.8,''],['RED UME 2',7,6.5,4.8,''],['PINO',8.5,6.5,2.8,'8.5×6.5×2.8m · 16평']],rx=-30;
     RM.forEach(function(r){var L=r[1]*M,Dp=r[2]*M,H=r[3]*M,x1=rx,x0=rx-L,z0=20.7,z1=20.7+Dp;
       flr(x0,x1,z0,z1,0x2c2f37);wl(x0,x1,z0,z0);wl(x0,x1,z1,z1);wl(x0,x0,z0,z1);wl(x1,x1,z0,z1);
@@ -131,6 +133,35 @@ function build(){
     [[36.6,42.6],[43.2,49.2],[49.8,55.8]].forEach(function(p){lift(p[0],p[1],-11.8,-7.2);});
     [[40,46],[46.6,52.6]].forEach(function(p){lift(p[0],p[1],4,8.4);});
     sprite('GUEST LIFT',46,4.6,-1.7,'#fff',5);
+  })();
+  /* 포이어 집기(등록 데스크 D1~D7 · 다과 · 커피 · 주차 등록 단말기) · 통역 부스 · 동선 */
+  (function(){
+    var i,dx=[21.05,15.1,9.1,3.2,-2.6,-8.6,-14.5];
+    for(i=0;i<7;i++){box(2.62,T_H,.87,0x15171f,dx[i],T_H/2,16.3);sprite('D'+(i+1),dx[i],2.1,16.3,'#fff',2.6);}
+    box(5.25,T_H,1.1,0xcfcfcf,-24.6,T_H/2,17.4);sprite('다과',-24.6,2.2,17.4,'#fff',3);
+    box(2.62,T_H,.87,0xcfcfcf,-39.9,T_H/2,16.8);sprite('커피(소량)',-39.9,2.2,16.8,'#fff',3.6);
+    box(2.62,T_H,.87,0xcfcfcf,-21.8,T_H/2,29.6);sprite('커피·티',-21.8,2.2,29.6,'#fff',3.2);
+    box(.6,1.9,.5,0x3a4660,-31,.95,19.9,{emissive:0x1b2740,emissiveIntensity:.8});sprite('주차 등록',-31,2.9,19.9,'#fff',3.4);
+    /* 통역 부스(약 1.7×1.7×2.0m): 후면 단상·콘솔 우측(객석 기준), 무대 쪽 창 */
+    box(2.5,2.9,2.5,0x1b1e27,25.4,1.45,-11);
+    var win=new THREE.Mesh(new THREE.PlaneGeometry(2.1,1.1),new THREE.MeshBasicMaterial({color:0x7fb6e6,transparent:true,opacity:.55}));win.rotation.y=-Math.PI/2;win.position.set(25.4-1.26,2.0,-11);scene.add(win);
+    sprite('통역 부스',25.4,3.7,-11,'#fff',3.4);
+    /* 동선: 바닥 화살표 리본(진행 방향으로 흐름) */
+    function chev(color){var t=ctex(64,32,function(g){g.clearRect(0,0,64,32);g.strokeStyle=color;g.lineWidth=7;g.lineCap='round';g.lineJoin='round';g.beginPath();g.moveTo(16,5);g.lineTo(34,16);g.lineTo(16,27);g.stroke();});t.wrapS=THREE.RepeatWrapping;RT.tex.push(t);return t;}
+    function path(grp,tex,pts){for(var k=0;k<pts.length-1;k++){var a=pts[k],b=pts[k+1],ddx=b[0]-a[0],ddz=b[1]-a[1],len=Math.sqrt(ddx*ddx+ddz*ddz);
+      var geo=new THREE.PlaneGeometry(len,.6),uv=geo.attributes.uv;for(var u=0;u<uv.count;u++)uv.setX(u,uv.getX(u)*len/1.1);
+      var m=new THREE.Mesh(geo,new THREE.MeshBasicMaterial({map:tex,transparent:true,depthWrite:false}));
+      m.rotation.order='YXZ';m.rotation.y=-Math.atan2(ddz,ddx);m.rotation.x=-Math.PI/2;m.position.set((a[0]+b[0])/2,.07,(a[1]+b[1])/2);grp.add(m);}}
+    var tA=chev('#ffc24d'),tR=chev('#ff5a5a'),tB=chev('#7fd0ff');
+    var visit=new THREE.Group(),before=new THREE.Group(),after=new THREE.Group();
+    /* 출입자 동선(포이어): 게스트 리프트 · 에스컬레이터 · 리프트 → 포이어 아래쪽 → 데스크 D1~D7 → 대기선 → Gate */
+    path(visit,tA,[[46,-2.7],[32,-2.7],[32,25.3],[-15.2,25.3]]);path(visit,tA,[[32,29.4],[32,25.9]]);path(visit,tA,[[-8.9,28.4],[-8.9,25.9]]);
+    for(i=0;i<7;i++){path(visit,tA,[[dx[i]-.7,24.9],[dx[i]-.7,17.3]]);path(visit,tR,[[dx[i]+.7,17.3],[dx[i]+.7,20.6]]);}
+    path(visit,tR,[[-13.8,21],[25.4,21],[25.4,14]]);
+    /* 행사장 출입 동선 — 시작 전: Gate → 좌측 통로 → 무대 앞 → 각 통로 / 시작 후: Gate → 좌측 통로(무대 앞 횡단 없음) */
+    path(before,tB,[[25.4,13.4],[25.4,12.4],[-19,12.4],[-19,-12.4],[22,-12.4]]);path(before,tB,[[-18.6,4.75],[22,4.75]]);path(before,tB,[[-18.6,-5.2],[22,-5.2]]);
+    path(after,tB,[[25.4,13.4],[25.4,12.4],[-8,12.4]]);
+    scene.add(visit,before,after);RT.g={visit:visit,before:before,after:after};applyRoute();
   })();
   /* 테이블 · 의자 */
   const n=tables.length;
@@ -161,7 +192,7 @@ function build(){
   if(window.ResizeObserver)new ResizeObserver(resize).observe(el);addEventListener('resize',resize);
   pointer();
   let last=performance.now();
-  (function loop(){requestAnimationFrame(loop);if(!active())return;const now=performance.now();keys(Math.min(.05,(now-last)/1000));last=now;controls.update();
+  (function loop(){requestAnimationFrame(loop);if(!active())return;const now=performance.now(),dt=Math.min(.05,(now-last)/1000);keys(dt);last=now;for(let i=0;i<RT.tex.length;i++)RT.tex[i].offset.x-=dt*1.3;controls.update();
     if(hl.visible)hl.material.opacity=.22+.14*Math.sin(now/260);renderer.render(scene,camera);})();
 }
 function resize(){if(!ready)return;const el=$('smstage'),w=el.clientWidth,h=el.clientHeight;if(!w||!h)return;camera.aspect=w/h;camera.updateProjectionMatrix();renderer.setSize(w,h);}
@@ -278,6 +309,8 @@ function bind(){
   $('smq').addEventListener('keydown',e=>{if(e.key==='Escape'){e.target.value='';q='';side();}});
   document.querySelectorAll('#smview [data-v]').forEach(b=>b.onclick=()=>{if(ready)setView(b.dataset.v);});
   $('smlabel').onclick=function(){big=!big;this.classList.toggle('on',big);this.textContent=big?'라벨 실제 크기':'라벨 확대';paint();};
+  $('smroute').onclick=()=>{RT.on=!RT.on;applyRoute();};
+  document.querySelectorAll('#smentry [data-e]').forEach(b=>b.onclick=()=>{RT.mode=RT.mode===b.dataset.e?'':b.dataset.e;applyRoute();});applyRoute();
   $('smreload').onclick=()=>{if(A()&&A().reload)A().reload();};
 }
 if($('smside'))bind();
