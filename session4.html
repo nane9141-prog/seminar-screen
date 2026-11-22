@@ -920,7 +920,7 @@ VIZ.rings=(cv)=>{const g=cv.getContext('2d');const R=[[93,198,'전자투표'],[3
  return{enter(){t0=performance.now();},
  draw(t){g.clearRect(0,0,cv.width,cv.height);R.forEach(([pct,n,l],j)=>{const N=100,k=Math.min(1,Math.max(0,(t-t0-400-j*220)/1600)),fill=Math.round(pct*(1-Math.pow(1-k,3)));
   for(let i=0;i<N;i++){const a=-Math.PI/2+i/N*Math.PI*2,x=cx[j]+Math.cos(a)*rad,y=cy+Math.sin(a)*rad;g.fillStyle=i<fill?mix(i/N):'rgba(242,245,250,.16)';g.beginPath();g.arc(x,y,i<fill?10:7,0,7);g.fill();}
-  g.fillStyle=j===4?'#ffb74d':'#F2F5FA';g.font='300 170px "Pretendard Variable"';g.textAlign='center';g.textBaseline='middle';g.fillText(fill+'%',cx[j],cy-10);
+  g.fillStyle=j===4?'#ffb74d':'#F2F5FA';g.font='300 170px "Pretendard Variable"';g.textAlign='left';g.textBaseline='alphabetic';{const tx=fill+'%',m=g.measureText(tx);/* 글자 실제 윤곽 기준으로 원 가운데에 */g.fillText(tx,cx[j]-(m.actualBoundingBoxRight-m.actualBoundingBoxLeft)/2+m.actualBoundingBoxLeft,cy+(m.actualBoundingBoxAscent-m.actualBoundingBoxDescent)/2);}g.textAlign='center';g.textBaseline='middle';
   g.font='700 62px KakaoBig';g.fillStyle='#F2F5FA';g.fillText(l,cx[j],cy+rad+110);g.font='400 50px KakaoSmall';g.fillStyle='rgba(242,245,250,.58)';g.fillText(n+'개사',cx[j],cy+rad+190);});
   g.strokeStyle='rgba(242,245,250,.16)';g.lineWidth=3;g.beginPath();g.moveTo(1420,80);g.lineTo(1420,880);g.stroke();}};};
 VIZ.stream=(cv)=>{const g=cv.getContext('2d'),P=[...Array(240)].map(()=>({p:Math.random(),y:(Math.random()-.5),s:.0015+Math.random()*.0025}));
