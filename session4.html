@@ -909,7 +909,7 @@ function textPts(cv,text,font,gap){const o=document.createElement('canvas');o.wi
 VIZ.text=(cv)=>{const g=cv.getContext('2d');let P=null,t0=0;
  return{enter(){const pts=textPts(cv,cv.dataset.text,cv.dataset.font,cv.dataset.text.length>5?17:20);P=pts.map(([x,y])=>({x,y,sx:cv.width+Math.random()*600,sy:Math.random()*cv.height,d:Math.random()*900+(x/cv.width)*900,r:4.2+Math.random()*2.4}));t0=performance.now();},
  draw(t){if(!P)return;g.clearRect(0,0,cv.width,cv.height);for(const p of P){let k=Math.min(1,Math.max(0,(t-t0-p.d)/1500));k=1-Math.pow(1-k,3);const x=p.sx+(p.x-p.sx)*k,y=p.sy+(p.y-p.sy)*k+Math.sin(t/900+p.x*.02)*2*k;g.globalAlpha=.25+.75*k;g.fillStyle=mix(p.x/cv.width);g.beginPath();g.arc(x,y,p.r,0,7);g.fill();}g.globalAlpha=1;}};};
-VIZ.grid=(cv)=>{const g=cv.getContext('2d'),C=18,R=12,N=212,gap=Math.min(cv.width/C,cv.height/R),ox=(cv.width-gap*(C-1))/2,oy=(cv.height-gap*(R-1))/2,mode=cv.dataset.mode;let t0=0,ts=0,st=0;
+VIZ.grid=(cv)=>{const g=cv.getContext('2d'),C=18,R=12,N=212,gap=Math.min(cv.width/(C+.4),cv.height/(R+.4))/* 가장자리 점 글로우(반지름 0.63칸)가 잘리지 않게 여유 */,ox=(cv.width-gap*(C-1))/2,oy=(cv.height-gap*(R-1))/2,mode=cv.dataset.mode;let t0=0,ts=0,st=0;
  const P=[...Array(N)].map((_,i)=>({x:ox+(i%C)*gap,y:oy+Math.floor(i/C)*gap,sx:Math.random()*cv.width,sy:Math.random()*cv.height,d:Math.random()*700}));
  return{enter(){t0=performance.now();st=0;},step(n){st=n;ts=performance.now();},
  draw(t){g.clearRect(0,0,cv.width,cv.height);const r=gap*.3;P.forEach((p,i)=>{let k=Math.min(1,Math.max(0,(t-t0-p.d)/1300));k=1-Math.pow(1-k,3);const x=p.sx+(p.x-p.sx)*k,y=p.sy+(p.y-p.sy)*k;let col='rgba(242,245,250,.55)',a=.3+.7*k;
