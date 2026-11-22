@@ -206,26 +206,18 @@ body.idle{cursor:none}
 .slide[data-ph=c] .s3-c,.slide[data-ph=a] .s3-a,.slide[data-ph=p] .s3-p,.slide[data-ph=e] .s3-e{opacity:1;filter:none}
 .s3 [data-words] .w{animation:none!important;opacity:0}
 .slide[data-ph=a] .s3-a .w,.slide[data-ph=p] .s3-p .w,.slide[data-ph=e] .s3-e .w{animation:wordIn .85s cubic-bezier(.2,.7,.2,1) both!important;animation-delay:calc(.15s + var(--w)*.09s)!important}
-.s3-dots{height:860px;width:614px;overflow:visible;filter:drop-shadow(0 0 28px rgba(91,173,225,.55))}
+.s3-dots{height:640px;width:457px;overflow:visible;filter:drop-shadow(0 0 28px rgba(91,173,225,.55))}
 .s3-dots circle{fill:#fff;fill-opacity:.07;transition:fill-opacity .18s}
 .s3-dots circle.on{fill:#fff;fill-opacity:1}
-.s3-fan{position:absolute;inset:0;opacity:0;transition:opacity .5s,transform .8s cubic-bezier(.2,.7,.2,1);transform-origin:50% 108%;transform:scaleY(.55);
- background:repeating-conic-gradient(from 270deg at 50% 108%,transparent 0deg 4.2deg,rgba(128,205,229,.55) 4.2deg 4.9deg,transparent 4.9deg 9deg),radial-gradient(ellipse 60% 90% at 50% 108%,rgba(0,171,132,.35),rgba(0,113,243,.12) 45%,transparent 70%);
- -webkit-mask-image:linear-gradient(to top,#000 10%,transparent 92%);mask-image:linear-gradient(to top,#000 10%,transparent 92%)}
-.slide[data-ph=c][data-n="5"] .s3-fan{opacity:.25;transform:scaleY(.55)}
-.slide[data-ph=c][data-n="4"] .s3-fan{opacity:.4;transform:scaleY(.7)}
-.slide[data-ph=c][data-n="3"] .s3-fan{opacity:.6;transform:scaleY(.85)}
-.slide[data-ph=c][data-n="2"] .s3-fan{opacity:.8;transform:scaleY(1)}
-.slide[data-ph=c][data-n="1"] .s3-fan{opacity:1;transform:scaleY(1.12)}
-.s3-bars{position:absolute;inset:0;display:flex;pointer-events:none}
-.s3-bars i{flex:1;opacity:0;background:linear-gradient(180deg,transparent,rgba(91,173,225,.85) 30%,rgba(0,171,132,.7) 70%,transparent)}
-.s3-bars i:nth-child(3n){background:linear-gradient(180deg,transparent,rgba(255,255,255,.75) 40%,transparent)}
-.s3-bars i:nth-child(4n+1){background:linear-gradient(180deg,transparent,rgba(0,113,243,.9) 35%,transparent)}
-.slide[data-ph=a] .s3-bars i{animation:s3bar .9s cubic-bezier(.3,0,.2,1) both;animation-delay:var(--d)}
-@keyframes s3bar{0%{opacity:0;transform:scaleY(.2)}25%{opacity:.95;transform:scaleY(1)}100%{opacity:0;transform:scaleY(1.05)}}
-.s3-fl{position:absolute;inset:0;background:#fff;opacity:0;pointer-events:none}
-.slide[data-ph=f] .s3-fl{animation:s3fl .5s ease-out both}
-@keyframes s3fl{0%{opacity:.85}100%{opacity:0}}
+.s3-gl{position:absolute;left:-10%;right:-10%;bottom:0;height:100%;pointer-events:none;opacity:0;transform:translateY(45%);transition:opacity .9s cubic-bezier(.2,.7,.2,1),transform .9s cubic-bezier(.2,.7,.2,1);
+ background:radial-gradient(60% 75% at 50% 112%,var(--glow) 0%,color-mix(in srgb,var(--glow) 55%,transparent) 32%,transparent 72%);animation:glowHue 6s ease-in-out infinite alternate}
+.slide[data-ph=c][data-n="5"] .s3-gl{opacity:.35;transform:translateY(40%)}
+.slide[data-ph=c][data-n="4"] .s3-gl{opacity:.5;transform:translateY(31%)}
+.slide[data-ph=c][data-n="3"] .s3-gl{opacity:.65;transform:translateY(22%)}
+.slide[data-ph=c][data-n="2"] .s3-gl{opacity:.8;transform:translateY(12%)}
+.slide[data-ph=c][data-n="1"] .s3-gl{opacity:.95;transform:none}
+.slide[data-ph=a] .s3-gl,.slide[data-ph=p] .s3-gl{opacity:.45;transform:translateY(28%)}
+.slide[data-ph=e] .s3-gl{opacity:.95;transform:none}
 .s3-en{margin:0;font:800 196px/1.1 "Pretendard Variable",sans-serif;color:#fff;letter-spacing:-.01em}
 .s3-en b,.s3-ko b,.s3-e b{background:linear-gradient(90deg,#5bade1,#00ab84);-webkit-background-clip:text;background-clip:text;color:transparent;font-weight:inherit}
 .s3-en b .w,.s3-ko b .w,.s3-e b .w{background:inherit;-webkit-background-clip:text;background-clip:text;color:transparent}
@@ -449,12 +441,12 @@ body.idle{cursor:none}
 </section>
 <section class="slide" id="m3_1" data-no="M3-1" data-title="M3-1 개회 타이틀 (5 · 4 · 3 · 2 · 1 → ANYWHERE → 2027 → 시작)" data-bg="A" data-foot="logo" data-tr="zoom" data-s3="1" data-lay="center">
 <div class="s3">
-<div class="s3-fan"></div><div class="s3-bars"><i style="--d:0.175s"></i><i style="--d:0.070s"></i><i style="--d:0.210s"></i><i style="--d:0.350s"></i><i style="--d:0.000s"></i><i style="--d:0.035s"></i><i style="--d:0.280s"></i><i style="--d:0.035s"></i><i style="--d:0.175s"></i><i style="--d:0.315s"></i><i style="--d:0.000s"></i><i style="--d:0.280s"></i><i style="--d:0.105s"></i><i style="--d:0.000s"></i><i style="--d:0.035s"></i><i style="--d:0.210s"></i><i style="--d:0.210s"></i><i style="--d:0.035s"></i><i style="--d:0.105s"></i><i style="--d:0.035s"></i><i style="--d:0.280s"></i><i style="--d:0.210s"></i><i style="--d:0.000s"></i><i style="--d:0.315s"></i><i style="--d:0.035s"></i><i style="--d:0.105s"></i><i style="--d:0.350s"></i><i style="--d:0.350s"></i></div>
+<div class="s3-gl"></div>
 <div class="s3-l s3-c"><svg class="s3-dots" aria-hidden="true"></svg></div>
 <div class="s3-l s3-a"><h2 class="s3-en" data-words><b>ANYWHERE,</b> ALL SHAREHOLDERS</h2><p class="s3-sub">장소의 제약 없는 주주 참여</p></div>
 <div class="s3-l s3-p"><h2 class="s3-ko" data-words>2027년 전자주주총회<br><b>IR큐더스</b>와 준비하세요.</h2></div>
 <div class="s3-l s3-e"><h1 class="title-m" data-words>전자주주총회 플랫폼 시연 설명회<br><b>지금 시작합니다.</b></h1></div>
-<div class="s3-fl"></div></div>
+</div>
 </section>
 <section class="slide" id="m3_2" data-no="M3-2" data-title="M3-2 행사 안내 · 안내 말씀" data-bg="B" data-foot="full" data-lay="split">
 <h2 class="head fu" style="--i:0">안내 말씀</h2>
@@ -729,7 +721,7 @@ const byNo=no=>slides.findIndex(s=>s.dataset.no.toUpperCase()===String(no).toUpp
 function S3(s,on){if(!s||!s.dataset.s3)return;(s._t3||[]).forEach(clearTimeout);s._t3=[];if(!on){s.dataset.ph='';return;}
   const sv=s.querySelector('.s3-dots'),at=(ms,f)=>s._t3.push(setTimeout(f,ms));s.dataset.ph='c';s.dataset.n='';sv._s=null;
   [5,4,3,2,1].forEach((n,i)=>at(400+i*1000,()=>{s.dataset.ph='c';s.dataset.n=n;dotTimer(sv,String(n));}));
-  at(5400,()=>{s.dataset.ph='f';});at(5600,()=>{s.dataset.ph='a';});at(9400,()=>{s.dataset.ph='p';});at(12800,()=>{s.dataset.ph='e';});}
+  at(5500,()=>{s.dataset.ph='a';});at(9400,()=>{s.dataset.ph='p';});at(12800,()=>{s.dataset.ph='e';});}
 /* four states (발표자료 오른쪽 아래): 들어오면 처음부터 재생, 나가면 멈춤. 처음 들어올 때 불러옴 */
 function FS(a,b){const pa=a&&a.querySelector('iframe.fs');if(pa&&pa.contentWindow)pa.contentWindow.postMessage('pause','*');const f=b&&b.querySelector('iframe.fs');if(!f)return;if(!f.getAttribute('src')){f.onload=()=>{if(slides[idx]===b)f.contentWindow.postMessage('play','*');};f.src=f.dataset.src;}else if(f.contentWindow)f.contentWindow.postMessage('play','*');}
 function go(n){n=Math.max(0,Math.min(slides.length-1,n));if(n===idx)return;const oi=idx;
