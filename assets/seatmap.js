@@ -1,6 +1,6 @@
 /* 좌석 배치 3D — control.html '좌석 배치' 탭
    도면: 15줄(A~O, 무대 쪽이 A) × 줄당 21석(1~21, 객석 기준 왼쪽=입구 쪽이 1), 테이블(1800×450×740mm 가정)당 3석.
-   좌석마다 테이블 상단면 위쪽 끝에 라벨(140×99.1mm) 1장 — 좌석 번호 + 회사명.
+   좌석마다 테이블 상단면 위쪽 끝에 아크릴 스탠드(삽지 74×52mm) 1개 — 좌석 번호 + 회사명.
    데이터: 참석자 관리와 같은 registrations + seat_assign(좌석 값 "A1" 형식). window.Attendees 를 통해 읽고 저장합니다. */
 (function(){
 const $=id=>document.getElementById(id);
@@ -9,7 +9,8 @@ const norm=s=>String(s||'').toLowerCase().replace(/\s|\(주\)|㈜|주식회사|-
 const COL={empty:0x3a3f4d,assigned:0x2f6bff,arrived:0x5ed39a,pending:0xffb74d,dup:0xff7a7a};
 
 /* ---------- 레이아웃 (1 unit = 0.686 m) ---------- */
-const M=1/0.686,ROWS=15,PITCH=.6*M,ROW_X0=-15.7,ROW_DX=2.7,T_LEN=1.8*M,T_DEP=.45*M,T_H=.74*M,LBL_W=.140*M,LBL_H=.0991*M;
+const M=1/0.686,ROWS=15,PITCH=.6*M,ROW_X0=-15.7,ROW_DX=2.7,T_LEN=1.8*M,T_DEP=.45*M,T_H=.74*M,LBL_W=.074*M,LBL_H=.052*M;
+const ST={};   // 좌석 번호 아크릴 스탠드(받침·아크릴 판 인스턴스)
 const LBL_DX=-T_DEP/2+.03*M+LBL_H/2;            // 라벨: 테이블 위쪽 끝(무대 쪽)에서 30mm 여백
 const BLOCKS=[{z:8.6,n:2},{z:-.4,n:3},{z:-8.7,n:2}];
 const tables=[],seats=[],byId={};
@@ -263,10 +264,15 @@ function build(){
     if(!sideTex[t.row])sideTex[t.row]=ctex(256,362,g=>{g.fillStyle='#fff';g.fillRect(0,0,256,362);g.strokeStyle='#000';g.lineWidth=6;g.strokeRect(3,3,250,356);g.fillStyle='#000';g.font='900 230px '+FONT;g.textAlign='center';g.textBaseline='middle';g.fillText(t.row,128,196);});
     const m=new THREE.Mesh(sideGeo,new THREE.MeshBasicMaterial({map:sideTex[t.row]}));m.position.set(t.x-T_DEP/2+.105*M,T_H-.1485*M,t.z+T_LEN/2+.012);scene.add(m);});
   /* 좌석별 라벨(테이블 상단면, 위쪽 끝): 의자 쪽에서 바로 읽히는 방향 */
-  const lGeo=new THREE.PlaneGeometry(LBL_W,LBL_H);
+  const lGeo=(function(){var w=LBL_W/2,h=LBL_H/2,e=.004,g=new THREE.BufferGeometry();   // 삽지 앞·뒤 양면(74×52mm)
+    g.setAttribute('position',new THREE.Float32BufferAttribute([-w,-h,e, w,-h,e, w,h,e, -w,h,e,  w,-h,-e, -w,-h,-e, -w,h,-e, w,h,-e],3));
+    g.setAttribute('uv',new THREE.Float32BufferAttribute([0,0,1,0,1,1,0,1, 0,0,1,0,1,1,0,1],2));g.setIndex([0,1,2,0,2,3,4,5,6,4,6,7]);return g;})();
+  /* 좌석 번호 아크릴 스탠드: 받침 82×45×12mm(검정) + 아크릴 판 78×55mm + 삽지 74×52mm, 테이블 위쪽 끝(무대 쪽)에서 30mm */
+  ST.base=new THREE.InstancedMesh(new THREE.BoxGeometry(.045*M,.012*M,.082*M),new THREE.MeshStandardMaterial({color:0x0c0c0e,roughness:.5}),seats.length);
+  ST.acr=new THREE.InstancedMesh(new THREE.BoxGeometry(.005*M,.055*M,.078*M),new THREE.MeshBasicMaterial({color:0xcfe6f2,transparent:true,opacity:.28,depthWrite:false}),seats.length);scene.add(ST.base,ST.acr);
   const qt=new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0,1,0),Math.PI/2).multiply(new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(1,0,0),-Math.PI/2));
   seats.forEach(s=>{const c=document.createElement('canvas');c.width=320;c.height=226;const tex=new THREE.CanvasTexture(c);tex.generateMipmaps=false;tex.minFilter=THREE.LinearFilter;tex.anisotropy=4;
-    const m=new THREE.Mesh(lGeo,new THREE.MeshBasicMaterial({map:tex}));m.quaternion.copy(qt);m.position.set(s.x+LBL_DX,T_H+.006,s.z);scene.add(m);
+    const m=new THREE.Mesh(lGeo,new THREE.MeshBasicMaterial({map:tex}));m.rotation.y=Math.PI/2;m.position.set(s.x,T_H,s.z);scene.add(m);
     labels[s.i]={s,ctx:c.getContext('2d'),tex,mesh:m,text:null};});
   hl=new THREE.Mesh(new THREE.PlaneGeometry(T_DEP+1.9,PITCH),new THREE.MeshBasicMaterial({color:0xffffff,transparent:true,opacity:.3,depthWrite:false}));hl.rotation.x=-Math.PI/2;hl.visible=false;scene.add(hl);
 
@@ -284,7 +290,9 @@ function paint(){
   seats.forEach(s=>{tmpColor.setHex(seatColor(s));seatMesh.setColorAt(s.i,tmpColor);backMesh.setColorAt(s.i,tmpColor);
     const o=occ[s.id],lb=labels[s.i],text=o?o[0].company_name||'':'';
     if(lb.text!==text){lb.text=text;drawLabel(lb);}
-    const k=big?4:1;lb.mesh.scale.set(k,k,1);lb.mesh.position.x=s.x+(big?0:LBL_DX);});
+    const k=big?4:1,cx=s.x-T_DEP/2+(.03+.0225*k)*M;lb.mesh.scale.set(k,k,k);lb.mesh.position.set(cx,T_H+k*.0395*M,s.z);
+    dummy.rotation.set(0,0,0);dummy.scale.set(k,k,k);dummy.position.set(cx,T_H+k*.006*M,s.z);dummy.updateMatrix();ST.base.setMatrixAt(s.i,dummy.matrix);
+    dummy.position.set(cx,T_H+k*.0395*M,s.z);dummy.updateMatrix();ST.acr.setMatrixAt(s.i,dummy.matrix);ST.base.instanceMatrix.needsUpdate=ST.acr.instanceMatrix.needsUpdate=true;});
   seatMesh.instanceColor.needsUpdate=backMesh.instanceColor.needsUpdate=true;
   if(sel){hl.visible=true;hl.position.set(sel.x+.6,.05,sel.z);}else hl.visible=false;
 }
