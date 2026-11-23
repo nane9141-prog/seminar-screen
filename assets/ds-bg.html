@@ -54,7 +54,7 @@ body.clean.hover .show{display:block}
 </style>
 </head>
 <body>
-<canvas id="c" role="img" aria-label="흩어진 데이터 점들이 모임, 자오선 구, 흐름, 수렴, 소용돌이, 연결망, 타원 흐름, 방사, 링, 중력 우물, 웨이브 터널로 차례로 모양을 바꾸는 파티클 모션"></canvas>
+<canvas id="c" role="img" aria-label="흩어진 데이터 점들이 모임, 자오선 구, 흐름, 수렴, 하프톤 링, 연결망, 타원 흐름, 방사, 링, 중력 우물, 웨이브 터널로 차례로 모양을 바꾸는 파티클 모션"></canvas>
 <button class="show" id="show" type="button">패널 보기</button>
 <div class="panel" id="panel">
   <h2>Data Stream <button class="x" id="hide" type="button">숨기기</button></h2>
@@ -69,10 +69,10 @@ body.clean.hover .show{display:block}
   <div class="row"><label for="trans">전환 시간</label><input id="trans" type="range" min="0.8" max="8" step="0.1" value="2.8"><span class="v"></span></div>
   <div class="row"><label for="ep">전환 이징</label><input id="ep" type="range" min="1" max="8" step="0.1" value="2.8"><span class="v"></span></div>
   <div class="row"><label for="speed">전체 속도</label><input id="speed" type="range" min="0" max="2" step="0.01" value="1"><span class="v"></span></div>
-  <div class="row"><label for="count">점 개수</label><input id="count" type="range" min="600" max="8000" step="100" value="1200"><span class="v"></span></div>
+  <div class="row"><label for="count">점 개수</label><input id="count" type="range" min="600" max="8000" step="100" value="1600"><span class="v"></span></div>
   <div class="row"><label for="trail">꼬리 길이</label><input id="trail" type="range" min="0" max="2.5" step="0.01" value="0.7"><span class="v"></span></div>
-  <div class="row"><label for="size">점 크기</label><input id="size" type="range" min="0.3" max="2.5" step="0.01" value="1"><span class="v"></span></div>
-  <div class="row"><label for="scale">형태 크기</label><input id="scale" type="range" min="0.4" max="1.6" step="0.01" value="1"><span class="v"></span></div>
+  <div class="row"><label for="size">점 크기</label><input id="size" type="range" min="0.3" max="2.5" step="0.01" value="1.4"><span class="v"></span></div>
+  <div class="row"><label for="scale">형태 크기</label><input id="scale" type="range" min="0.4" max="1.6" step="0.01" value="1.2"><span class="v"></span></div>
   <div class="row"><label for="bright">밝기</label><input id="bright" type="range" min="0.3" max="2" step="0.01" value="1"><span class="v"></span></div>
   <h3>컬러</h3>
   <div class="tints" id="tints"></div>
@@ -110,7 +110,7 @@ const SCN=[
   {k:'meridian',name:'자오선 구',dur:9,tail:1.5,form:1,fl:'선 퍼짐'},
   {k:'stream',name:'흐름',    dur:7, tail:.9, form:1,fl:'흐름 폭'},
   {k:'converge',name:'수렴',  dur:8, tail:1.3, form:1,fl:'모임 폭'},
-  {k:'vortex',name:'소용돌이',dur:10,tail:1.0,form:1,fl:'나선 감김'},
+  {k:'halftone',name:'하프톤 링',dur:10,tail:0,form:1,fl:'링 두께'},
   {k:'net',   name:'연결망',  dur:8, tail:.35,form:1,fl:'연결선 밝기'},
   {k:'orbit', name:'타원 흐름',dur:8, tail:.9, form:1,fl:'타원 높이'},
   {k:'gather',name:'모임 2',  dur:18,tail:.06,form:1,fl:'모이기 전 퍼짐'},
@@ -129,10 +129,10 @@ Object.assign(SCN.find(s=>s.k==='net'),{tail:.1,size:.8,scale:.82,bright:1,form:
 Object.assign(SCN.find(s=>s.k==='ring'),{tail:.56,size:1.26,scale:.9,bright:.75,form:.76});
 Object.assign(SCN.find(s=>s.k==='meridian'),{scale:.8});
 Object.assign(SCN.find(s=>s.k==='radial'),{scale:.85});
-Object.assign(SCN.find(s=>s.k==='converge'),{size:1.8,form:0,scale:1.1,bright:.6,tail:.8});
+Object.assign(SCN.find(s=>s.k==='converge'),{size:1.8,form:0,scale:.88,bright:.6,tail:.8});
 Object.assign(SCN.find(s=>s.k==='orbit'),{scale:.7,tail:.42,size:1.5,form:.8,bright:.22});
-Object.assign(SCN.find(s=>s.k==='vortex'),{tail:.66,size:1,scale:.84,bright:.78,form:1.6});
-SCN.forEach((s,i)=>{s.on=s.k!=='tunnel'&&s.k!=='vortex';s.o0=i;}); // on: 재생 여부, o0: 처음 순서
+Object.assign(SCN.find(s=>s.k==='halftone'),{tail:0,size:.8,scale:.76,bright:1,form:.7});
+SCN.forEach((s,i)=>{s.on=s.k!=='tunnel'&&s.k!=='orbit';s.o0=i;}); // on: 재생 여부, o0: 처음 순서
 const SCN0=SCN.map(s=>({...s})); // 초기화용 장면별 기본값
 let START=[],LOOP_S=0,ACT=[];
 function relayout(){
@@ -142,7 +142,7 @@ function relayout(){
 relayout();
 const TINTS=[{n:'화이트',fg:[255,255,255],bg:'#000000'},{n:'아이스',fg:[196,226,255],bg:'#01050b'},{n:'틸',fg:[150,240,228],bg:'#011a22'}];
 
-const S={speed:1,count:1200,trail:1,size:1,scale:1,bright:1,trans:2.8,ep:2.8,tint:0,grid:false,auto:true};
+const S={speed:1,count:1600,trail:1,size:1.4,scale:1.2,bright:1,trans:2.8,ep:2.8,tint:0,grid:false,auto:true};
 
 /* ---------- 입자별 고정 난수 ---------- */
 const MAXN=12000,NODES=56,GL=260;
@@ -199,10 +199,18 @@ const GEDGES=knn(P.slice(0,GL).map(q=>q.g),2);
 const rotY=(p,a)=>{const c=Math.cos(a),s=Math.sin(a);return[p[0]*c+p[2]*s,p[1],-p[0]*s+p[2]*c];};
 const rotX=(p,a)=>{const c=Math.cos(a),s=Math.sin(a);return[p[0],p[1]*c-p[2]*s,p[1]*s+p[2]*c];};
 let HW=2,HH=1;
-const out=[0,0,0,0]; // x,y,size,alpha
+const out=[0,0,0,0,0,0,0]; // x,y,size,alpha,r,g,b
+// 하프톤 링: 색(위 주황에서 시계방향)과 격자. 격자는 점 개수와 상관없이 HTN개로 고정하고, 장면 동안 점을 자동으로 늘림
+const HTC=[[242,110,72],[246,178,140],[250,232,226],[214,168,232],[236,120,112]],HTN=3200;
+let HTG=null;
+function htGrid(){if(HTG)return HTG;
+  const Rd=1.15,s=Math.sqrt(Math.PI*Rd*Rd/HTN)*1.02,xs=[],ys=[];
+  for(let y=-Rd;y<=Rd;y+=s)for(let x=-Rd;x<=Rd;x+=s)if(x*x+y*y<=Rd*Rd){xs.push(x);ys.push(y);}
+  const ord=xs.map((_,k)=>k),rr=rng(77);for(let k=ord.length-1;k>0;k--){const j=(rr()*(k+1))|0;[ord[k],ord[j]]=[ord[j],ord[k]];}
+  return HTG={s,x:xs,y:ys,idx:Int32Array.from(ord)};}
 function proj(p,o){const k=3.2/(3.2-p[2]);o[0]=p[0]*k;o[1]=p[1]*k;o[2]*=k;o[3]*=.45+.55*clamp01((p[2]+1)/2);}
 const CAM=3.4;
-function modePos(m,q,i,t,o){modePos0(m,q,i,t,o);const s=SCN[m];o[2]*=s.size;o[3]*=s.bright;}
+function modePos(m,q,i,t,o){const tf=TINTS[S.tint].fg;o[4]=tf[0];o[5]=tf[1];o[6]=tf[2];modePos0(m,q,i,t,o);const s=SCN[m];o[2]*=s.size;o[3]*=s.bright;}
 function modePos0(m,q,i,t0,o){
   const s=SCN[m],sc=S.scale*s.scale,t=t0*s.mv,f=s.form;
   switch(s.k){
@@ -265,10 +273,17 @@ function modePos0(m,q,i,t0,o){
     let p=i<NODES?[b[0],b[1],b[2]]:[b[0]+q.no[0],b[1]+q.no[1],b[2]+q.no[2]];
     p=p.map(v=>v*sc);p=rotX(rotY(p,TAU*t/30),.3);
     o[2]=i<NODES?2.4+2*((i*7)%5)/5:.6;o[3]=i<NODES?1:.32;proj(p,o);return;}
-  case 'vortex':{ // 소용돌이
-    const r=(.1+1.05*q.vu)*sc,a=q.arm*Math.PI+2.6*f*Math.log(r/sc+.08)+q.vj*.2/(q.vu+.5)-TAU*t*q.vr/26;
-    let p=[Math.cos(a)*r,Math.sin(a)*r,0];p=rotX(p,.95);p=rotY(p,.2);
-    o[2]=.8+.6*(1-q.vu);o[3]=.75+.25*(1-q.vu);proj(p,o);return;}
+  case 'halftone':{ // 하프톤 링: 격자에 놓인 점이 밝기만큼 커지는 망점 도넛. 밝은 쪽이 천천히 돌고 파문이 바깥으로 번짐
+    const G=htGrid(),k=i<G.idx.length?G.idx[i]:-1;
+    if(k<0){o[0]=0;o[1]=0;o[2]=0;o[3]=0;return;}
+    const x=G.x[k],y=G.y[k],r=Math.hypot(x,y),th=Math.atan2(x,y);  // th: 위쪽 0, 시계방향
+    o[0]=x*sc;o[1]=y*sc;
+    const w=.36*f,rc=.62;let I=1-((r-rc)/w)**2;I=I>0?I**1.6:0;
+    const L=.5+.5*Math.cos(th-3.7-TAU*t/24);           // 밝은 쪽(처음엔 왼쪽 아래)
+    I*=(.3+.7*L)*(.86+.14*Math.sin(r*15-t*1.4));
+    o[2]=Math.pow(clamp01(I),.75)*.6*G.s*sc*U/(1.15*PX);o[3]=I>.01?1.3:0;
+    // 색은 다른 장면과 같은 점 색(컬러 설정)을 따름. 밝기는 망점 크기와 투명도로만 표현
+    o[3]*=.55+.45*L;return;}
   default:{ // 링
     const r=(.66+q.rg*.055*f)*sc,a=q.rt+TAU*t*q.rw/30*(q.rg<0?1.4:1);
     o[0]=Math.cos(a)*r;o[1]=Math.sin(a)*r;o[2]=.7;o[3]=.5+.5*Math.exp(-q.rg*q.rg);return;}
@@ -286,7 +301,7 @@ function seg(t){
   if(p===last&&last>0&&loc>SCN[k].dur-w)return{from:k,to:ACT[0],tl:loc-(SCN[k].dur-w),tf:t,tt:t-LOOP_S,k,loc};
   return{from:k,to:k,tl:1e9,tf:t,tt:t,k,loc};
 }
-const A=[0,0,0,0],B=[0,0,0,0];
+const A=[0,0,0,0,0,0,0],B=[0,0,0,0,0,0,0];
 function posAt(i,sg,o){
   const q=P[i];
   if(sg.from===sg.to){modePos(sg.to,q,i,sg.tt,o);return;}
@@ -296,7 +311,7 @@ function posAt(i,sg,o){
   modePos(sg.from,q,i,sg.tf,A);modePos(sg.to,q,i,sg.tt,B);
   const bend=Math.sin(Math.PI*e)*.12*(q.d-.4);
   o[0]=A[0]+(B[0]-A[0])*e-bend*(B[1]-A[1]);o[1]=A[1]+(B[1]-A[1])*e+bend*(B[0]-A[0]);
-  o[2]=A[2]+(B[2]-A[2])*e;o[3]=A[3]+(B[3]-A[3])*e;
+  for(let c=2;c<7;c++)o[c]=A[c]+(B[c]-A[c])*e;
 }
 // 장면 m의 전체 비중(0..1): 선 그리기·꼬리 길이에 사용
 function weight(sg,m){
@@ -311,7 +326,7 @@ function size(){const q=window.DSQ||1;cv.width=Math.round(BGW*q);cv.height=Math.
 function geom(){W=cv.width;H=cv.height;U=Math.min(W,H*1.15)*.36;PX=H/1080;HW=W/2/U;HH=H/2/U;}
 addEventListener('resize',()=>{size();if(paused)draw();});size();
 const K=12; // 꼬리 샘플 수
-const LVL=new Uint8Array(MAXN),XS=new Float32Array(MAXN*(K+1)),YS=new Float32Array(MAXN*(K+1)),SZ=new Float32Array(MAXN),AL=new Float32Array(MAXN);
+const LVL=new Uint8Array(MAXN),XS=new Float32Array(MAXN*(K+1)),YS=new Float32Array(MAXN*(K+1)),SZ=new Float32Array(MAXN),AL=new Float32Array(MAXN),CR=new Float32Array(MAXN),CG=new Float32Array(MAXN),CB=new Float32Array(MAXN);
 let tNow=0,paused=false,manual=false;const LF={};
 /* 메인 스크린 배경용: 크기 · 중심 · 속도를 주소 값과 부모 창 메시지로 제어 */
 (function oxTick(){BOX.x+=(BOX.tx-BOX.x)*.04;requestAnimationFrame(oxTick);})();
@@ -323,7 +338,7 @@ function draw(){
   const tint=TINTS[S.tint],[fr,fg,fb]=tint.fg,cx=W*BOX.x,cy=H*BOX.y;
   ctx.globalCompositeOperation='source-over';ctx.fillStyle=tint.bg;ctx.fillRect(0,0,W,H);
   const s0=seg(tNow);
-  LF.tail=0;const TI=-1,wT=SCN.reduce((a,x,m)=>a+(x.boost?weight(s0,m):0),0),N0=S.count|0,N=Math.max(N0,Math.round(MAXN*Math.min(1,wT))); // 웨이브 터널은 촘촘한 격자가 필요해 점을 자동으로 늘림
+  LF.tail=0;const TI=-1,wT=SCN.reduce((a,x,m)=>a+(x.boost?weight(s0,m):0),0),N0=S.count|0,wH=SCN.reduce((a,x,m)=>a+(x.k==='halftone'?weight(s0,m):0),0),wB=Math.max(wT,wH),N=Math.max(N0,Math.round(MAXN*Math.min(1,wT)),Math.round(HTN*Math.min(1,wH))); // 웨이브 터널은 촘촘한 격자가 필요해 점을 자동으로 늘림
   // 꼬리 길이: 장면 비중에 따라 부드럽게
   let tail=0;SCN.forEach((s,m)=>tail+=s.tail*weight(s0,m));tail*=S.trail;
   if(S.grid){ctx.fillStyle=`rgba(${fr},${fg},${fb},.16)`;const g=Math.round(54*PX),z=Math.max(1,Math.round(2*PX));for(let y=(H/2)%g;y<H;y+=g)for(let x=(W/2)%g;x<W;x+=g)ctx.fillRect(x-z/2,y-z/2,z,z);}
@@ -332,7 +347,7 @@ function draw(){
     for(let j=0;j<=Kn;j++){
       if(j>0&&tail<=0){XS[i*(K+1)+j]=XS[i*(K+1)];YS[i*(K+1)+j]=YS[i*(K+1)];continue;}
       posAt(i,segs[j],out);XS[i*(K+1)+j]=cx+out[0]*U;YS[i*(K+1)+j]=cy-out[1]*U;
-      if(j===0){SZ[i]=out[2];AL[i]=i<N0?out[3]:out[3]*wT;}
+      if(j===0){SZ[i]=out[2];AL[i]=i<N0?out[3]:out[3]*wB;CR[i]=out[4];CG[i]=out[5];CB[i]=out[6];}
     }
   }
   Object.assign(LF,{N,tail,s0,wT,TI});
@@ -374,7 +389,12 @@ function draw(){
     if(AL[i]<.01){LVL[i]=0;continue;}
     const a=Math.min(1,AL[i]*br*(.8+.2*Math.sin(tw*3+P[i].tw)));LVL[i]=Math.round(a*LV);
   }
-  for(let l=1;l<=LV;l++){
+  if(wH>.001){ // 하프톤 링이 보이는 동안: 점마다 제 색으로 그림
+    for(let i=0;i<N;i++){const l=LVL[i];if(!l)continue;
+      const r=SZ[i]*S.size*1.15*PX,x=XS[i*(K+1)],y=YS[i*(K+1)];
+      ctx.fillStyle=`rgba(${CR[i]|0},${CG[i]|0},${CB[i]|0},${l/LV})`;
+      if(r<1.6){const z=Math.max(1,r*1.3);ctx.fillRect(x-z/2,y-z/2,z,z);}else{ctx.beginPath();ctx.arc(x,y,r,0,TAU);ctx.fill();}}
+  }else for(let l=1;l<=LV;l++){
     ctx.fillStyle=`rgba(${fr},${fg},${fb},${l/LV})`;ctx.beginPath();let any=false;
     for(let i=0;i<N;i++){if(LVL[i]!==l)continue;any=true;
       const r=SZ[i]*S.size*1.15*PX,x=XS[i*(K+1)],y=YS[i*(K+1)];
