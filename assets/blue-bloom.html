@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="ko"><head><meta charset="utf-8">
 <title>Blue Bloom</title>
-<!-- 'Blue Bloom Gradient' 아티팩트(2026-11-23 버전)의 실크 흐름 셰이더를 그대로 옮긴 재생 전용 판.
+<!-- 'Blue Bloom Gradient' 아티팩트(2026-11-23 17:24 버전)의 실크 흐름 셰이더를 그대로 옮긴 재생 전용 판.
      패널 · 효과(FX) · 녹화 제거, 아티팩트 기본값(시퀀스 35초 · 속도 2 · 색 4종 + 민트 3%) 고정.
      부모가 postMessage('play' | 'pause')로 재생을 켜고 끔. 처음엔 멈춤. 성능을 위해 낮은 해상도로 그린 뒤 늘려 씀(부드러운 그라데이션이라 차이 없음). -->
 <style>html,body{margin:0;height:100%;background:#000;overflow:hidden}canvas{position:fixed;inset:0;width:100%;height:100%;display:block}</style>
@@ -62,7 +62,7 @@ gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,3,-1,-1,3]),gl.STATIC_DRAW
 gl.enableVertexAttribArray(0);gl.vertexAttribPointer(0,2,gl.FLOAT,false,0,0);
 const U={};['R','PH','C0','C1','C2','C3','ACC','AMT','WHITE','SCALE','WARP','CAM','SPEC','CREST','DARK','ZOOM'].forEach(n=>U[n]=gl.getUniformLocation(pr,n));
 /* 아티팩트 기본값 */
-const S={c0:'#2844cc',c1:'#1466ff',c2:'#52b8ff',c3:'#152061',acc:'#2ee6c8',amt:.03,seqlen:35,speed:2,scale:1,warp:.7,cam:.7,white:0,spec:0,crest:0};
+const S={c0:'#2844cc',c1:'#1466ff',c2:'#52b8ff',c3:'#1466ff',acc:'#2ee6c8',amt:.03,seqlen:35,speed:2,scale:1,warp:0,cam:.7,white:0,spec:0,crest:0};
 const hex=h=>[1,3,5].map(i=>parseInt(h.substr(i,2),16)/255);
 ['C0','C1','C2','C3'].forEach((n,i)=>gl.uniform3f(U[n],...hex(S['c'+i])));gl.uniform3f(U.ACC,...hex(S.acc));
 gl.uniform1f(U.SCALE,S.scale);gl.uniform1f(U.CAM,S.cam);gl.uniform1f(U.SPEC,S.spec);gl.uniform1f(U.CREST,0);
