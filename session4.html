@@ -516,7 +516,7 @@ html.embed,html.embed body,html.embed .stage{background:transparent}html.embed #
 
 /*K13fix*/
 /* K13 (11/23 22:15) 참고 이미지 하단 섹션 방식 — 전폭 3단, 세로 구분선, 가운데 정렬(번호 · 제목 강조색 · 설명 흰색), 아래 내용 도식 */
-#K13 .k13c{position:absolute;left:0;right:0;top:400px;bottom:0;display:grid;grid-template-columns:repeat(3,1fr);border-top:2px solid rgba(242,245,250,.1);background:linear-gradient(180deg,rgba(14,18,24,.75),rgba(8,11,15,.55))}
+#K13 .k13c{position:absolute;left:0;right:0;top:320px;bottom:0;display:grid;grid-template-columns:repeat(3,1fr);border-top:2px solid rgba(242,245,250,.1);background:linear-gradient(180deg,rgba(14,18,24,.75),rgba(8,11,15,.55))}
 #K13 .cl{position:relative;display:flex;flex-direction:column;align-items:center;text-align:center;padding:120px 80px 0}
 #K13 .cl+.cl{border-left:2px solid rgba(242,245,250,.1)}
 #K13 .cl .n{margin:0;font:300 56px/1 "Pretendard Variable";color:var(--sess);letter-spacing:.04em}
@@ -614,6 +614,93 @@ html.embed,html.embed body,html.embed .stage{background:transparent}html.embed #
 #K15 .col.hl{margin:-80px -8px -50px;padding-top:230px;border-top:0;border-radius:48px;background:linear-gradient(180deg,#1d3a7a 0%,#152a57 60%,#101d3a 100%);box-shadow:0 40px 120px rgba(0,0,0,.55),0 0 0 2px rgba(120,160,255,.18)}
 #K15 .col.hl .ms{position:absolute;left:40px;right:40px;top:36px;margin:0;height:116px;border-radius:24px;display:flex;align-items:center;justify-content:center;background:linear-gradient(90deg,#6f9cff,#3cc9c4);font:700 52px/1 "Pretendard Variable";color:#06121c;box-shadow:0 0 50px rgba(90,170,255,.45)}
 #K15 .col.hl .mo{color:#9fbcff;filter:none}
+
+/* K18b (11/23 23:10) 참고 이미지처럼 흰 휴대폰 2대를 기울여 겹침 — 뒤: 전자투표 앱(의안 카드에서 찬성 탭 → 다음 의안으로), 앞: KOSMOS 전자주총 LIVE(생중계 · AI 자막 · 의안 진행현황 · 표결 시트 → 찬성 → 완료). 화면은 390px 기준으로 그리고 1.5배 */
+#K18b .mp{position:absolute;width:590px;height:1226px;border-radius:90px;background:linear-gradient(145deg,#ffffff,#e9ecf2);box-shadow:0 60px 140px rgba(0,0,0,.55),inset 0 0 0 3px rgba(255,255,255,.9),inset 0 -6px 14px rgba(0,0,0,.06);padding:22px}
+#K18b .mp::after{content:"";position:absolute;left:50%;top:40px;width:120px;height:10px;margin-left:-60px;border-radius:6px;background:#d5d9e1;z-index:3}
+#K18b .mp .sc{width:100%;height:100%;border-radius:70px;overflow:hidden;background:#f5f6fa;position:relative}
+#K18b .mp .v{position:absolute;left:0;top:0;width:390px;height:844px;transform:scale(1.4);transform-origin:0 0;font-family:"Pretendard Variable",sans-serif;color:#191b22;letter-spacing:-.01em}
+#K18b .mp-v{left:2300px;top:250px;transform:rotate(-9deg)}
+#K18b .mp-l{left:3060px;top:110px;transform:rotate(-9deg)}
+#K18b .mp-v.fu,#K18b .mp-l.fu{transform:rotate(-9deg) translateY(36px)}
+#K18b.cur .mp-v.fu,#K18b.cur .mp-l.fu,.s.cur#K18b .mp.fu{transform:rotate(-9deg)}
+/* 전자투표 */
+#K18b .mp-v .sc{background:linear-gradient(180deg,#eaf1ff,#f5f6fa 40%)}
+#K18b .mp-v .tb{display:flex;align-items:center;gap:10px;padding:46px 20px 10px}
+#K18b .mp-v .tb .bk{width:10px;height:10px;border:solid #191b22;border-width:0 0 2.5px 2.5px;transform:rotate(45deg);margin-right:6px}
+#K18b .mp-v .tb b{font-size:17px;font-weight:700}
+#K18b .mp-v .tb .pg{margin-left:auto;font-size:13px;color:#6b7280}#K18b .mp-v .tb .pg em{font-style:normal;color:#0071f3;font-weight:700}
+#K18b .mp-v .pb{margin:4px 20px 0;height:6px;border-radius:3px;background:#dfe6f3;overflow:hidden}#K18b .mp-v .pb i{display:block;height:100%;width:33%;border-radius:3px;background:#0071f3;transition:width .6s}
+#K18b .mp-v .co{display:flex;align-items:center;gap:10px;margin:20px 20px 0}
+#K18b .mp-v .co img{width:40px;height:40px;border-radius:12px;background:#fff;object-fit:contain;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+#K18b .mp-v .co b{display:block;font-size:14px}#K18b .mp-v .co span{font-size:12px;color:#6b7280}
+#K18b .mp-v .cards{position:relative;margin:18px 16px 0;height:350px}
+#K18b .mp-v .cd{position:absolute;inset:0;border-radius:24px;background:#fff;box-shadow:0 10px 30px rgba(30,60,120,.1);padding:24px 20px;transition:transform .6s cubic-bezier(.2,.7,.2,1),opacity .6s}
+#K18b .mp-v .cd .no{font-size:13px;color:#0071f3;font-weight:700}#K18b .mp-v .cd .no i{font-style:normal;margin-left:6px;padding:2px 8px;border-radius:10px;background:#eef4ff;font-size:11px}
+#K18b .mp-v .cd .tt{margin-top:10px;font-size:22px;font-weight:700;line-height:1.35}
+#K18b .mp-v .cd .sh{margin-top:8px;font-size:13px;color:#6b7280}#K18b .mp-v .cd .sh b{color:#191b22}
+#K18b .mp .ch{display:grid;gap:10px;margin-top:26px}
+#K18b .mp .ch p{height:54px;border-radius:16px;border:1.5px solid #e3e7ee;display:flex;align-items:center;padding:0 18px;font-size:16px;font-weight:600;color:#374151;background:#fff;transition:all .3s;position:relative}
+#K18b .mp .ch p::after{content:"";position:absolute;right:18px;width:22px;height:22px;border-radius:50%;border:1.5px solid #cfd5df;transition:all .3s}
+#K18b .mp .ch p.sel.pro{border-color:#2563eb;background:#eef4ff;color:#2563eb}
+#K18b .mp .ch p.sel.pro::after{border-color:#2563eb;background:#2563eb;box-shadow:inset 0 0 0 5px #fff}
+#K18b .mp-v .c2{transform:translateX(110%);opacity:0}
+#K18b .mp-v[data-st="2"] .c1,#K18b .mp-v[data-st="3"] .c1{transform:translateX(-110%);opacity:0}
+#K18b .mp-v[data-st="2"] .c2,#K18b .mp-v[data-st="3"] .c2{transform:none;opacity:1}
+#K18b .mp-v[data-st="2"] .pb i,#K18b .mp-v[data-st="3"] .pb i{width:50%}
+#K18b .mp-v[data-st="2"] .tb .pg em::after{content:""}
+#K18b .mp-v .cta{position:absolute;left:16px;right:16px;bottom:30px;height:54px;border-radius:16px;background:#c9d3e3;color:#fff;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;transition:background .3s}
+#K18b .mp-v[data-st="1"] .cta,#K18b .mp-v[data-st="3"] .cta{background:#0071f3}
+/* 탭 표시 */
+#K18b .mp .tap{position:absolute;width:44px;height:44px;margin:-22px 0 0 -22px;border-radius:50%;background:rgba(37,99,235,.28);box-shadow:0 0 0 2px rgba(255,255,255,.9);opacity:0;pointer-events:none;transition:left .5s,top .5s}
+#K18b .mp .tap.on{animation:k18tap .7s ease-out}
+@keyframes k18tap{0%{opacity:0;transform:scale(.4)}30%{opacity:1;transform:scale(1)}100%{opacity:0;transform:scale(1.6)}}
+/* KOSMOS LIVE */
+#K18b .mp-l .hd{display:flex;align-items:center;justify-content:space-between;padding:46px 20px 12px;background:#fff}
+#K18b .mp-l .hd img{height:24px}
+#K18b .mp-l .lv{font-size:12px;font-weight:700;color:#fff;background:#e11d48;padding:4px 10px;border-radius:12px}
+#K18b .mp-l .vid{position:relative;width:390px;height:219px;background:#0b1220;overflow:hidden}
+#K18b .mp-l .vid video{width:100%;height:100%;object-fit:cover;display:block}
+#K18b .mp-l .vid .bd{position:absolute;left:12px;top:12px;font-size:11px;font-weight:700;color:#fff;background:#e11d48;padding:3px 8px;border-radius:6px}
+#K18b .mp-l .cap{position:absolute;left:14px;right:14px;bottom:12px;margin:0;height:26px;text-align:center}
+#K18b .mp-l .cap span{position:absolute;left:0;right:0;font-size:13px;color:#fff;background:rgba(0,0,0,.6);border-radius:6px;padding:4px 8px;width:max-content;max-width:100%;margin:0 auto;opacity:0;transition:opacity .4s}
+#K18b .mp-l[data-c="0"] .cap span:nth-child(1),#K18b .mp-l[data-c="1"] .cap span:nth-child(2){opacity:1}
+#K18b .mp-l .st{display:flex;gap:8px;padding:14px 16px 0}
+#K18b .mp-l .st span{font-size:12px;font-weight:600;padding:6px 10px;border-radius:12px}
+#K18b .mp-l .st .ok{background:#e7f8ef;color:#12935a}#K18b .mp-l .st .ai{background:#eef4ff;color:#2563eb}
+#K18b .mp-l .lh{margin:20px 16px 8px;font-size:16px;font-weight:700}#K18b .mp-l .lh b{color:#0071f3;margin-left:4px}
+#K18b .mp-l .ag{list-style:none;margin:0 16px;padding:0;background:#fff;border-radius:18px;box-shadow:0 6px 20px rgba(30,60,120,.06)}
+#K18b .mp-l .ag li{display:flex;align-items:center;gap:10px;height:56px;padding:0 14px;font-size:14px;border-top:1px solid #f0f2f6}
+#K18b .mp-l .ag li:first-child{border-top:0}
+#K18b .mp-l .ag li i{font-style:normal;width:24px;height:24px;border-radius:8px;background:#f0f2f6;font-size:12px;display:flex;align-items:center;justify-content:center;color:#6b7280}
+#K18b .mp-l .ag li em{margin-left:auto;font-style:normal;font-size:11px;font-weight:700;color:#9ca3af}
+#K18b .mp-l .ag li.done em{color:#2563eb}
+#K18b .mp-l .ag li.now{background:#fff5f7}#K18b .mp-l .ag li.now i{background:#e11d48;color:#fff}#K18b .mp-l .ag li.now em{color:#e11d48;animation:k18bl 1.2s infinite}
+@keyframes k18bl{50%{opacity:.35}}
+#K18b .mp-l .sh2{position:absolute;left:0;right:0;bottom:0;padding:22px 18px 34px;background:#fff;border-radius:26px 26px 0 0;box-shadow:0 -12px 40px rgba(0,0,0,.14);transform:translateY(105%);transition:transform .55s cubic-bezier(.2,.7,.2,1)}
+#K18b .mp-l .sh2 .t{margin:0;font-size:17px;font-weight:700}
+#K18b .mp-l .sh2 .ch{margin-top:16px}
+#K18b .mp-l .sh2 .dn{position:absolute;inset:0;margin:0;display:flex;align-items:center;justify-content:center;background:#fff;border-radius:26px 26px 0 0;font-size:18px;font-weight:700;color:#2563eb;opacity:0;transition:opacity .3s}
+#K18b .mp-l[data-st="1"] .sh2,#K18b .mp-l[data-st="2"] .sh2,#K18b .mp-l[data-st="3"] .sh2{transform:none}
+#K18b .mp-l[data-st="3"] .sh2 .dn{opacity:1}
+#K18b .mp-v .hist{margin:16px 16px 0;padding:14px 18px;border-radius:20px;background:#fff;box-shadow:0 6px 20px rgba(30,60,120,.06)}
+#K18b .mp-v .hist p{display:flex;align-items:center;justify-content:space-between;height:34px;margin:0;font-size:13px;color:#374151;transition:opacity .4s}
+#K18b .mp-v .hist .ht{height:24px;font-size:12px;font-weight:700;color:#6b7280}
+#K18b .mp-v .hist b{font-size:12px;color:#2563eb;padding:3px 8px;border-radius:8px;background:#eef4ff}
+#K18b .mp-v .hist .h2,#K18b .mp-v .hist .h3{opacity:.0}
+#K18b .mp-v[data-st="2"] .hist .h2,#K18b .mp-v[data-st="3"] .hist .h2{opacity:1}
+#K18b .mp-v[data-st="3"] .hist .h3{opacity:1}
+/* K14 (23:08) 아이콘 · 큰 판 삭제 — 판 없이 위 칩 머리 + 가로 구분선 행 */
+#K14 .k14p{left:300px;right:300px;top:250px;bottom:auto;border-radius:0;background:none;box-shadow:none;padding:0}
+#K14 .ti{display:none}
+#K14 .th,#K14 .tr{grid-template-columns:420px 1fr 1fr;column-gap:100px}
+#K14 .th{margin-bottom:50px}
+#K14 .tr{height:300px;border-top:2px solid rgba(242,245,250,.12)}
+#K14 .tr:last-child{border-bottom:2px solid rgba(242,245,250,.12)}
+#K14 .st b{font-size:72px}
+#K14 .k14p{top:300px}#K14 .tr{height:320px}
+/* K15 (23:08) 단계 머리 연도 · 단계명 흰색 */
+#K15 .ph .p0,#K15 .ph .p1,#K15 .ph .p0 b,#K15 .ph .p1 b{color:#F2F5FA}
 </style></head>
 <body>
 <div class="stage" id="stage">
@@ -783,8 +870,29 @@ html.embed,html.embed body,html.embed .stage{background:transparent}html.embed #
   <p class="tl fu" style="--i:2">주주의 참여로 완성되는<br>주주총회의 새로운 질서</p>
   <p class="ds fu" style="--i:3">'질서 있는 우주'를 뜻하는 그리스어 kósmos에서 착안.<br>안전하고 신뢰할 수 있는 절차로 주주의 출석과<br>의결권 행사를 지원하는 주주용 전자주주총회 서비스입니다.</p>
  </div>
- <div class="phone fu" style="--i:3;left:2500px;top:250px;width:520px;height:1100px;transform:rotate(-4deg)"><div class="scr"><img src="assets/s4/ks-5.webp" alt=""></div></div>
- <div class="phone fu" style="--i:4;left:3180px;top:330px;width:520px;height:1100px;transform:rotate(3deg)"><div class="scr"><img src="assets/s4/ks-2.webp" alt=""></div></div>
+ <div class="mp mp-v fu" style="--i:3"><div class="sc"><div class="v">
+  <div class="tb"><i class="bk"></i><b>전자투표</b><span class="pg"><em>2</em> / 6</span></div>
+  <div class="pb"><i></i></div>
+  <div class="co"><img src="assets/s4/kb-logo.png" alt=""><div><b>카카오뱅크</b><span>제10기 정기주주총회</span></div></div>
+  <div class="cards">
+   <div class="cd c1"><p class="no">제2호 의안 <i>특별결의</i></p><p class="tt">정관 일부 변경의 건</p><p class="sh">행사 가능 <b>1,200주</b></p>
+    <div class="ch"><p class="pro">찬성</p><p class="con">반대</p><p class="abs">기권</p></div></div>
+   <div class="cd c2"><p class="no">제3호 의안 <i>보통결의</i></p><p class="tt">선임 이사 수 결정의 건</p><p class="sh">행사 가능 <b>1,200주</b></p>
+    <div class="ch"><p class="pro">찬성</p><p class="con">반대</p><p class="abs">기권</p></div></div>
+  </div>
+  <div class="hist"><p class="ht">행사 내역</p><p><span>제1호 재무제표 승인의 건</span><b>찬성</b></p><p class="h2"><span>제2호 정관 일부 변경의 건</span><b>찬성</b></p><p class="h3"><span>제3호 선임 이사 수 결정의 건</span><b>찬성</b></p></div>
+  <i class="tap"></i>
+  <p class="cta">다음 의안</p>
+ </div></div></div>
+ <div class="mp mp-l fu" style="--i:4"><div class="sc"><div class="v">
+  <div class="hd"><img src="assets/s4/kosmos-color.svg" alt="KOSMOS"><span class="lv">● LIVE</span></div>
+  <div class="vid"><video src="assets/s4/kb-live.mp4" muted autoplay loop playsinline></video><span class="bd">LIVE</span><p class="cap"><span>제2호 의안 정관 일부 변경의 건을 상정합니다</span><span>표결을 시작하겠습니다</span></p></div>
+  <div class="st"><span class="ok">출석 완료 · 1,200주</span><span class="ai">AI 자막 ON</span></div>
+  <p class="lh">의안 진행현황 <b>2 / 6</b></p>
+  <ul class="ag"><li class="done"><i>1</i>재무제표 승인의 건<em>가결</em></li><li class="now"><i>2</i>정관 일부 변경의 건<em>표결 중</em></li><li><i>3</i>선임 이사 수 결정의 건<em>대기</em></li><li><i>4</i>이사 보수한도 승인의 건<em>대기</em></li></ul>
+  <div class="sh2"><p class="t">제2호 의안 표결이 시작되었습니다</p><div class="ch"><p class="pro">찬성</p><p class="con">반대</p><p class="abs">기권</p></div><p class="dn">✓ 투표가 완료되었습니다</p></div>
+  <i class="tap"></i>
+ </div></div></div>
 </section>
 
 <section class="s brand" id="K18c" data-t="CONEXUS 기업용" data-dim=".12" data-ox=".25">
@@ -1367,6 +1475,23 @@ let it=0;addEventListener('mousemove',()=>{document.body.classList.remove('idle'
 const h=location.hash.slice(1),hi=slides.findIndex(s=>s.id===h);
 slides[0].classList.add('cur');window.S4={go,next,prev,get i(){return idx},get step(){return step}};
 document.fonts.ready.then(()=>{go(hi>0?hi:0);up({s4:'ready'});});
+})();
+
+/* K18b 휴대폰 동작 루프 (11/23) */
+(function(){const S=document.getElementById('K18b');if(!S)return;const V=S.querySelector('.mp-v'),L=S.querySelector('.mp-l');
+ const tap=(ph,el)=>{const t=ph.querySelector('.tap'),v=ph.querySelector('.v').getBoundingClientRect(),r=el.getBoundingClientRect(),k=v.width?390/ (v.width/ (1)) :1;};
+ function tapAt(ph,el){const t=ph.querySelector('.tap'),v=ph.querySelector('.v');let x=0,y=0,n=el;while(n&&n!==v){x+=n.offsetLeft;y+=n.offsetTop;n=n.offsetParent;}t.style.left=(x+el.offsetWidth*.5)+'px';t.style.top=(y+el.offsetHeight*.5)+'px';t.classList.remove('on');void t.offsetWidth;t.classList.add('on');}
+ let tv=0,tl=0;
+ function stepV(){tv=(tv+1)%4;V.dataset.st=tv;const c1=V.querySelector('.c1 .pro'),c2=V.querySelector('.c2 .pro');
+  if(tv===0){c1.classList.remove('sel');c2.classList.remove('sel');}
+  if(tv===1){tapAt(V,c1);c1.classList.add('sel');}
+  if(tv===3){tapAt(V,c2);c2.classList.add('sel');}}
+ function stepL(){tl=(tl+1)%5;L.dataset.st=tl>3?0:tl;L.dataset.c=(tl>=1&&tl<=3)?1:0;const p=L.querySelector('.sh2 .pro');
+  if(tl===0||tl===4)p.classList.remove('sel');
+  if(tl===2){tapAt(L,p);p.classList.add('sel');}}
+ V.dataset.st=0;L.dataset.st=0;L.dataset.c=0;
+ setInterval(stepV,1800);setTimeout(()=>setInterval(stepL,1800),900);
+ L.querySelector('.v').style.position='absolute';
 })();
 </script>
 </body></html>
