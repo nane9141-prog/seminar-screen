@@ -103,8 +103,8 @@ function build(){
     g.fillStyle='rgba(255,255,255,.85)';g.font='700 54px '+FONT;g.textAlign='center';g.textBaseline='middle';g.fillText('LED',cw/2,ch/2);});
   [[-10.7,-1],[10.7,1]].forEach(p=>{const lw=3.1*M,ld=2.23*M,lh=4.17*M,grp=new THREE.Group();
     const body=new THREE.Mesh(new THREE.BoxGeometry(ld,lh,lw),new THREE.MeshStandardMaterial({color:0x08090c,roughness:.6}));body.position.y=lh/2;grp.add(body);
-    var scr=new THREE.Mesh(new THREE.PlaneGeometry(2.899*M,2.753*M),new THREE.MeshBasicMaterial({map:ledTex}));scr.rotation.y=Math.PI/2;scr.position.set(ld/2+.03,2.692*M,0);grp.add(scr);   // LED 화면: 래핑 시안의 흰 영역에 맞춤
-    (function(g2){var sk=window.SEAT_LED_SKIN;if(!sk)return;var im=new Image();im.onload=function(){var tx=new THREE.Texture(im);tx.anisotropy=8;tx.needsUpdate=true;var m=new THREE.Mesh(new THREE.PlaneGeometry(lw,lh),new THREE.MeshBasicMaterial({map:tx}));m.rotation.y=Math.PI/2;m.position.set(ld/2+.015,lh/2,0);g2.add(m);};im.src=sk;})(grp);   // 앞면 래핑(led-01.jpg)
+    var scr=new THREE.Mesh(new THREE.PlaneGeometry(2.897*M,2.248*M),new THREE.MeshBasicMaterial({map:ledTex}));scr.rotation.y=Math.PI/2;scr.position.set(ld/2+.03,2.944*M,0);grp.add(scr);   // LED 화면: 래핑 시안의 흰 영역에 맞춤
+    (function(g2){var sk=window.SEAT_LED_SKIN;if(!sk||!sk.length)return;[[sk[0],ld,0,lh/2,lw/2+.015,0],[sk[1],lw,ld/2+.015,lh/2,0,Math.PI/2],[sk[2],ld,0,lh/2,-lw/2-.015,Math.PI]].forEach(function(d){var im=new Image();im.onload=function(){var tx=new THREE.Texture(im);tx.anisotropy=8;tx.needsUpdate=true;var m=new THREE.Mesh(new THREE.PlaneGeometry(d[1],lh),new THREE.MeshBasicMaterial({map:tx}));m.rotation.y=d[5];m.position.set(d[2],d[3],d[4]);g2.add(m);};im.src=d[0];});})(grp);   // 래핑(LED.jpg): 좌측면 · 앞면 · 우측면
     grp.position.set(-25.1,0,p[0]);grp.rotation.y=p[1]*Math.PI*25/180;scene.add(grp);});
   /* 벽면 현수막: 1장 750×4200mm. 01~03 = 스크린을 바라볼 때 좌측 벽(C·D열 옆), 04·05 = 우측 벽(I·J열 옆). 벽을 마주 보고 왼쪽부터 번호순 */
   (function(){var B=window.SEAT_BANNERS;if(!B||!B.length)return;
