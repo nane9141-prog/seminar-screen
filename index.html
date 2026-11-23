@@ -320,8 +320,10 @@ body.idle{cursor:none}
 .stage .pin{zoom:.9}
 
 /* 이용 안내(M1-4) 카드: 행사 프로그램 카드(.pin .pc)와 같은 스타일 — 같은 zoom(.9) · 배경 · 둥글기 · 글꼴 위계 */
-.slide[data-no=M1-4] .lay2 .lay2-r .cards{gap:44px}
-.slide[data-no=M1-4] .lay2 .card{zoom:.9;background:rgba(27,31,38,.86);border:0;border-radius:48px;padding:56px 96px;box-shadow:none}
+.slide[data-no=M1-4] .lay2 .lay2-r .cards{gap:56px}
+.slide[data-no=M1-4] .lay2 .card{zoom:.9;background:rgba(27,31,38,.86);border:0;border-radius:48px;padding:80px 96px 84px;box-shadow:none}
+/* 카드 2장으로 줄어 블록이 가벼워진 만큼 카드 안 여백 · 카드 사이를 넓히고, 제목 글자 윗선을 첫 카드 라벨(주차) 글자 윗선에 맞춤 — M1-2(제목 ↔ 본문 글자 윗선 정렬)와 같은 규칙 */
+.slide[data-no=M1-4] .lay2 .lay2-l .head{margin-top:56px}
 .slide[data-no=M1-4] .card-k{font:700 66px/1.3 "KakaoBig",sans-serif;letter-spacing:0;color:#0081cc}
 .slide[data-no=M1-4] .card-t{margin-top:16px;font:700 63px/1.45 "KakaoBig",sans-serif;letter-spacing:0;color:#F2F5FA}
 .slide[data-no=M1-4] .card-b{margin-top:12px;font:300 48px/1.5 "KakaoSmall",sans-serif;color:#9AA3AF}
