@@ -21,7 +21,7 @@ body.idle{cursor:none}
 .ov.spk:not(.on){transition:opacity 1.4s ease}  /* 연사 글씨: 사진 · 점 · 선과 함께 1.4초 동안 사라짐 */
 .ov.spk{padding-left:150px}  /* 연사 글씨 영역(이전 120px → 오른쪽으로 110px) */
 .mt{position:absolute;left:0;right:0;top:50%;margin:0;transform:translateY(-50%);text-align:center;color:#fff;
-  font:300 26.7px/1 "LexendDeca";letter-spacing:.05em;white-space:nowrap;opacity:0;pointer-events:none}  /* 원본 38.15px의 70% */
+  font:300 26.7px/1 "Pretendard Variable";letter-spacing:.05em;white-space:nowrap;opacity:0;pointer-events:none}  /* 원본 38.15px의 70% */
 .mt i{font-style:normal}
 #ov-video.on .mt1{animation:mtx 4.5s ease-in-out 1s both}
 #ov-video.on .mt2{animation:mtx 4.5s ease-in-out 6.5s both}
@@ -33,16 +33,15 @@ body.idle{cursor:none}
 #ov-video,#ov-svc{padding:0;background:#000;transition:opacity 3.2s cubic-bezier(.4,0,.6,1)}#ov-video video,#ov-svc video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 @font-face{font-family:"KakaoBigSans";src:url(../assets/PretendardVariable.woff2) format("woff2");font-weight:45 920;font-display:block}
 
-@font-face{font-family:"LexendDeca";src:url(../assets/PretendardVariable.woff2) format("woff2");font-weight:45 920;font-display:block}
 @font-face{font-family:"KakaoSmallSansL";src:url(../assets/PretendardVariable.woff2) format("woff2");font-weight:45 920;font-display:block}
 #ov-title{padding:0}
 #ov-title p,#ov-title h1{position:absolute;margin:0;color:#fff;white-space:nowrap}#ov-title i{font-style:normal}  /* 원본 커닝(자간) 그대로. 타이틀 · 타이틀 2 · 로고는 원본의 90% (첫 줄 기준선 · 로고 왼쪽 위 고정) */
 .tt-h{left:189.2px;transition:opacity 1.8s ease}
 .tt1{font:700 97.3px/131.6px "KakaoBigSans";top:calc(276.5px - var(--b1))}
-.tt2{font:300 88.7px/106.5px "LexendDeca";top:calc(252.4px - var(--b2));opacity:0}
+.tt2{font:300 88.7px/106.5px "Pretendard Variable";top:calc(252.4px - var(--b2));opacity:0}
 #ov-title.b .tt1{opacity:0}#ov-title.b .tt2{opacity:1}
-.tt-sub{left:1470.0px;font:300 35.0px/47.7px "LexendDeca";top:calc(211.0px - var(--b3))}
-.tt-date{left:1470.0px;font:300 36.4px/1 "LexendDeca";top:calc(712.2px - var(--b4))}
+.tt-sub{left:1470.0px;font:300 35.0px/47.7px "Pretendard Variable";top:calc(211.0px - var(--b3))}
+.tt-date{left:1470.0px;font:300 36.4px/1 "Pretendard Variable";top:calc(712.2px - var(--b4))}
 .tt-venue{font:300 21.2px/1 "KakaoSmallSansL";color:#fcfdfd!important}
 .tt-lab{font:300 21.2px/1 "KakaoSmallSansL";color:#fcfdfd!important}
 .tt-venue{left:1470.0px;top:calc(753.5px - var(--b5))}
@@ -66,7 +65,7 @@ body.idle{cursor:none}
 .pwho{width:260px;flex:none;text-align:right;font-size:32px;font-weight:500;color:#9AA4B2}
 /* 세션 연사: 메인 스크린과 같은 slide layout.svg 8번 비율(세션명 54px 기준 ×2.9) */
 .spk .col{display:grid;grid-template-columns:172px auto;align-items:start}  /* Session N. 라벨 윗선을 세션명 첫 줄 윗선에 맞춤 */
-.eyebrow{font:300 26px/1.2 "LexendDeca",sans-serif;color:#0081cc;letter-spacing:0;white-space:nowrap;padding-top:10px}  /* 11/20: 6 → 10px, 강연명 윗선에 맞춤 */
+.eyebrow{font:300 26px/1.2 "Pretendard Variable",sans-serif;color:#0081cc;letter-spacing:0;white-space:nowrap;padding-top:10px}  /* 11/20: 6 → 10px, 강연명 윗선에 맞춤 */
 .talk{font-size:54px;font-weight:700;line-height:70.6px;letter-spacing:0;white-space:nowrap}
 .name{margin-top:40px;font:700 40.8px/1.2 "카카오 작은글씨",sans-serif;letter-spacing:.28em}
 .name.en{letter-spacing:0}
