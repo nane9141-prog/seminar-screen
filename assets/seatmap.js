@@ -19,7 +19,9 @@ for(let r=0;r<ROWS;r++){const x=ROW_X0+r*ROW_DX,L=String.fromCharCode(65+r);let 
 function seatKey(v){const m=/^([A-O])-?(\d{1,2})$/.exec(String(v||'').toUpperCase().replace(/\s/g,''));return m&&byId[m[1]+(+m[2])]?m[1]+(+m[2]):null;}
 
 /* ---------- 상태 ---------- */
-const RT={on:true,staff:true,mode:'before',tex:[],g:null};
+const RT={on:true,staff:true,mode:'before',tex:[],g:null,ban:0,fascia:null};
+function applyBan(){const b=$('smban');if(b)b.textContent='상단 현수막 '+(RT.ban+1)+'안';(RT.fascia||[]).forEach(f=>{const t=f.tex[RT.ban];if(t){f.mesh.material.map=t;f.mesh.material.color.setHex(0xffffff);f.mesh.material.needsUpdate=true;}});}
+
 const ROLES=[["before",[[1,"현장총괄"],[2,"화상미팅 관리"],[3,"사회자"],[4,"발표자"],[5,"외부 연사"],[6,"오퍼레이터"],[7,"커뮤니케이션"],[8,"프론터"],[9,"그리터"],[10,"Desk1 · 미등록·앱 이슈"],[11,"Desk2~7"],[12,"Gate·좌석 안내"],[13,"앱설치 지원"],[14,"기술지원"],[15,"인프라지원"],[16,"생중계"],[17,"스케치"],[18,"동시통역사"]]],["after",[[1,"현장총괄"],[2,"현장지원"],[3,"사회자"],[4,"발표자"],[5,"발표자(외부 연사)"],[6,"오퍼레이터"],[7,"커뮤니케이션"],[8,"프론터"],[10,"Desk1 · 추가 출입 안내"],[12,"발언 지원"],[13,"기술지원"],[14,"인프라지원"],[15,"생중계"],[16,"스케치"],[17,"통역자"]]]];
 function applyRoute(){const b=$('smroute');if(b){b.classList.toggle('sel',RT.on);b.textContent=RT.on?'방문객 동선 ON':'방문객 동선 OFF';}
   const sb=$('smstaffbtn');if(sb){sb.classList.toggle('sel',RT.staff);sb.textContent=RT.staff?'운영 인력 ON':'운영 인력 OFF';}
@@ -44,7 +46,7 @@ function loadLib(cb){
   if(window.THREE&&THREE.OrbitControls)return cb();
   if(libState===1)return;libState=1;
   const add=(src,next)=>{const s=document.createElement('script');s.src=src;s.onload=next;s.onerror=()=>{libState=0;$('smstage').insertAdjacentHTML('beforeend','<p class="mut" style="padding:40px">3D 라이브러리를 불러오지 못했습니다. 새로고침해 주세요.</p>');};document.head.appendChild(s);};
-  add('assets/three.min.js',()=>add('assets/OrbitControls.js',()=>add('assets/seat-screen.js',()=>add('assets/seat-banners.js',cb))));
+  add('assets/three.min.js',()=>add('assets/OrbitControls.js',()=>add('assets/seat-screen.js',()=>add('assets/seat-banners.js',()=>add('assets/seat-fascia.js',cb)))));
 }
 function ctex(w,h,draw){const c=document.createElement('canvas');c.width=w;c.height=h;draw(c.getContext('2d'),w,h);const t=new THREE.CanvasTexture(c);t.anisotropy=8;return t;}
 const FONT='"Pretendard Variable","Noto Sans KR",sans-serif';
@@ -233,12 +235,14 @@ function build(){
       var im=new Image();im.onload=function(){var tx=new THREE.Texture(im);tx.anisotropy=8;tx.needsUpdate=true;var m=new THREE.Mesh(new THREE.PlaneGeometry(bw,bh),new THREE.MeshBasicMaterial({map:tx}));m.position.set(0,y0+bh/2,0);gp.add(m);};im.src=B[i];
       gp.position.set(p[0],0,p[1]);gp.rotation.y=p[2];scene.add(gp);});
   })();
-  /* 포이어 끝 벽(에스컬레이터 내려오는 방향) 로비 LED: 5540(W)×1520(D)×3500(H)mm, 화면 4940×2900mm(하단 600 · 좌우 300 프레임), 블랙 패널. 벽 중앙 배치, 로비 스크린 화면을 화면 비율(약 1.7:1)에 맞춰 꽉 채움 */
-  (function(){var lw=5.54*M,ld=1.52*M,lh=3.5*M,cx=35.6-.13-ld/2,cz=(13.8+28.2)/2,fx=cx-ld/2;
-    box(ld,lh,lw,0x08090c,cx,lh/2,cz,{roughness:.6});
-    var bk=new THREE.Mesh(new THREE.PlaneGeometry(4.94*M,2.9*M),new THREE.MeshBasicMaterial({color:0x030407}));bk.rotation.y=-Math.PI/2;bk.position.set(fx-.02,(.6+1.45)*M,cz);scene.add(bk);
-    var src=window.SEAT_LOBBY_IMG;if(!src)return;var im=new Image();im.onload=function(){var tx=new THREE.Texture(im);tx.anisotropy=8;var rx=(4.94/2.9)/(16/9);tx.repeat.set(rx,1);tx.offset.set((1-rx)/2,0);tx.needsUpdate=true;
-      var pm=new THREE.Mesh(new THREE.PlaneGeometry(4.94*M,2.9*M),new THREE.MeshBasicMaterial({map:tx}));pm.rotation.y=-Math.PI/2;pm.position.set(fx-.04,(.6+1.45)*M,cz);scene.add(pm);};im.src=src;
+  /* 포이어 상단 띠 현수막(3면, 높이 1.2m): 볼룸 쪽 긴 면 + 에스컬레이터 상부 쪽 면 + 끝 벽 면. 1안/2안 전환 */
+  (function(){var F=window.SEAT_FASCIA,LN=window.SEAT_FASCIA_LEN;if(!F||!LN)return;var bh=1.2*M,y=7.8,zN=28.2-LN[2]*M,xE=35.6-.3,xW=xE-LN[1]*M,Lw=LN[0]*M,Ll=LN[1]*M,Le=LN[2]*M;
+    var dk=new THREE.MeshStandardMaterial({color:0x1d1f25,roughness:.8});
+    function slab(w,d,x,z){var m=new THREE.Mesh(new THREE.BoxGeometry(w,2.4,d),dk);m.position.set(x,y,z);scene.add(m);}
+    slab(Ll+.5,.5,(xW+xE)/2,zN-.27);slab(.5,Le,xE+.27,zN+Le/2);slab(.5,Lw,xW-.27,zN+Lw/2);
+    var defs=[[Lw,xW,zN+Lw/2,Math.PI/2],[Ll,(xW+xE)/2,zN,0],[Le,xE,zN+Le/2,-Math.PI/2]];   // 서쪽 면(동쪽을 봄) · 볼룸 쪽 긴 면 · 끝 벽 면
+    RT.fascia=defs.map(function(d){var m=new THREE.Mesh(new THREE.PlaneGeometry(d[0],bh),new THREE.MeshBasicMaterial({color:0x1d1f25}));m.position.set(d[1],y,d[2]);m.rotation.y=d[3];scene.add(m);return {mesh:m,tex:[null,null]};});
+    F.forEach(function(opt,o){opt.forEach(function(src,k){var im=new Image();im.onload=function(){var tx=new THREE.Texture(im);tx.anisotropy=8;tx.needsUpdate=true;RT.fascia[k].tex[o]=tx;applyBan();};im.src=src;});});
   })();
   /* 테이블 · 의자 */
   const n=tables.length;
@@ -387,7 +391,7 @@ function bind(){
   document.querySelectorAll('#smview [data-v]').forEach(b=>b.onclick=()=>{if(ready)setView(b.dataset.v);});
   $('smlabel').onclick=function(){big=!big;this.classList.toggle('on',big);this.textContent=big?'라벨 실제 크기':'라벨 확대';paint();};
   $('smroute').onclick=()=>{RT.on=!RT.on;applyRoute();};
-  document.querySelectorAll('#smentry [data-e]').forEach(b=>b.onclick=()=>{RT.mode=b.dataset.e;applyRoute();});$('smstaffbtn').onclick=()=>{RT.staff=!RT.staff;applyRoute();};applyRoute();
+  document.querySelectorAll('#smentry [data-e]').forEach(b=>b.onclick=()=>{RT.mode=b.dataset.e;applyRoute();});$('smstaffbtn').onclick=()=>{RT.staff=!RT.staff;applyRoute();};$('smban').onclick=()=>{RT.ban=1-RT.ban;applyBan();};applyBan();applyRoute();
   $('smreload').onclick=()=>{if(A()&&A().reload)A().reload();};
 }
 if($('smside'))bind();
