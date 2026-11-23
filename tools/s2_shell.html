@@ -218,6 +218,11 @@ html.embed .prog{display:none}
 #P07 .sh.pnl{top:640px!important;padding-top:20px!important}
 #P07 .tk{top:960px!important}
 #P07 .sh.foot{top:884px!important}
+/* 단계 장(대응 과제 등): 단계 머리 아래 글 상자 — 윗선 없이, 글 28px, 글머리 점 색은 그 칸 머리 선 색과 같게(파랑 · 마지막 초록) */
+.step+.sh.pnl{box-shadow:none!important;padding-top:26px!important}
+.step+.sh.pnl span{font-size:28px!important}
+.step+.sh.pnl .bu{color:#0081cc}
+.step.last+.sh.pnl .bu{color:#00ada9}
 </style></head>
 <body>
 <div class="stage" id="stage">
