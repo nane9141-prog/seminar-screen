@@ -499,6 +499,11 @@ body.idle{cursor:none}
 .pipl .pip-f .pip-tag{font-size:30px;left:22px;bottom:22px;padding:10px 18px}
 .pipl .pip-ev{left:3560px;width:600px;top:960px;height:540px}
 .pipl .pip-ev .pp-ev{font-size:56px;line-height:1.25}
+/* M7-4 (11/23 21:20): 왼쪽 아래 = 세미나 정보, 오른쪽 연사 얼굴 아래 = LIVE · 연사 이름 · 소속 (자리 맞바꿈) */
+.pipl .pp-l .pip-ev{left:0;width:540px;top:auto;bottom:100px;height:auto}
+.pipl .pip-sp{position:absolute;left:3560px;width:600px;top:960px;height:540px;display:flex;flex-direction:column;justify-content:flex-end}
+.pipl .pip-sp .pp-live{position:static}
+.pipl .pip-sp .pp-who{position:static;margin-top:48px}
 </style></head>
 <body>
 <div class="stage" id="scr" data-foot="full">
@@ -636,10 +641,10 @@ body.idle{cursor:none}
 </section>
 <section class="slide pipl" id="m7_4" data-no="M7-4" data-title="M7-4 Session 3 · Google Meet 화면 (가운데 16:9)" data-bg="B" data-foot="none" data-zoom="1" data-ox=".5" data-dim=".25" >
 <div class="zm pp">
-<div class="pp-l"><p class="pp-s fu" style="--i:0">Session 3.</p><h2 class="pp-t" data-words style="--i:1">Proxymity,<br>글로벌 의결권<br>행사 인프라의<br>혁신과 미래</h2><p class="pp-live fu" style="--i:3"><i></i>LIVE<span>via Google Meet</span></p>
-<div class="pp-who fu" style="--i:3"><p class="pp-n">Scott Oakland</p><p class="pp-ro">Proxymity,<br>Head of APAC</p></div></div>
+<div class="pp-l"><p class="pp-s fu" style="--i:0">Session 3.</p><h2 class="pp-t" data-words style="--i:1">Proxymity,<br>글로벌 의결권<br>행사 인프라의<br>혁신과 미래</h2><div class="pip-ev fu" style="--i:3"><p class="pp-en">Live Demo Briefing</p><p class="pp-ev">전자주주총회 플랫폼<br>시연 설명회</p><img class="pp-lg" src="assets/irk-white.svg" alt="IR KUDOS"></div>
+</div>
 <div class="zm-c pip-s fu" style="--i:1"><video class="zm-v" muted playsinline></video><p class="zm-ph">발표 슬라이드 · 16:9<br><small>V · C: 슬라이드 창 캡처 · 캡처보드 &nbsp;/&nbsp; Shift+V · Shift+C: 연사 얼굴 창 &nbsp;/&nbsp; X: 모두 해제</small></p><span class="pip-tag">Slides</span></div><div class="zm-c pip-f fu" style="--i:2"><img class="pip-bg" src="assets/speaker-scott.webp" alt=""><video class="zm-v" muted playsinline></video><span class="pip-tag"><i></i>Scott Oakland</span></div>
-<div class="pip-ev fu" style="--i:3"><p class="pp-en">Live Demo Briefing</p><p class="pp-ev">전자주주총회 플랫폼<br>시연 설명회</p><img class="pp-lg" src="assets/irk-white.svg" alt="IR KUDOS"></div>
+<div class="pip-sp fu" style="--i:3"><p class="pp-live" ><i></i>LIVE<span>via Google Meet</span></p><div class="pp-who" ><p class="pp-n">Scott Oakland</p><p class="pp-ro">Proxymity,<br>Head of APAC</p></div></div>
 </div>
 </section>
 <section class="slide" id="m7_5" data-no="M7-5" data-title="M7-5 Session 4 연사 소개 · 박성용" data-bg="B" data-foot="full" data-spk="speaker3-1">
