@@ -536,7 +536,7 @@ html.embed,html.embed body,html.embed .stage{background:transparent}html.embed #
 </section>
 
 <section class="s" id="K11" data-t="3월 집중일 · 지원 가능일" data-dim=".14" data-steps="2">
- <div class="top"><h2 class="h hm fu" style="--i:1" id="mart">2026년 3월 정기주총 개최일 분포</h2><p class="sub fu k11s" style="--i:2" id="marsub">의무화 212개사 중 3월 개최 211개사</p></div>
+ <div class="top"><h2 class="h hm fu" style="--i:1" id="mart">2026</h2><p class="sub fu k11s" style="--i:2" id="marsub">3월 정기주총 개최일 분포 · 의무화 212개사 중 3월 개최 211개사</p></div>
  <div class="lg fu" style="--i:2"><span class="chip"><i class="sw"></i><em class="t0">2026년 3월 개최일</em><em class="t1">2027년 3월 후보일</em></span><span class="chip w k11hot"><i style="width:30px;height:30px;border-radius:8px;background:rgba(255,183,77,.55)"></i>집중일</span></div>
  <div class="chart fu" style="--i:2" id="mar"></div>
 </section>
@@ -1084,7 +1084,7 @@ function count(s,sl=s){s.querySelectorAll('.cnt').forEach(el=>{const hb=el.close
    [[24,'FULL<br>BOOKING'],[29,'FULL<br>BOOKING']].map(([d,s])=>`<div class="full" data-b="2" style="left:${X(D27.findIndex(x=>x[0]===d))}px">${s}</div>`).join('')+
    [23,31].map(d=>`<div class="tri" data-b="2" style="left:${X(D27.findIndex(x=>x[0]===d))}px"><span>△</span></div>`).join(''));
 })();
-const MART=[['2026년 3월 정기주총 개최일 분포','의무화 212개사 중 3월 개최 211개사'],['2027년 3월 정기주총 개최 후보일 분포','143개사 중 76개사 후보 일정 확인 (복수 후보일 포함)'],['2027년 3월 전자주총 운영지원 가능일','IR큐더스 현재 기준']];
+const MART=[['2026','3월 정기주총 개최일 분포 · 의무화 212개사 중 3월 개최 211개사'],['2027','3월 정기주총 개최 후보일 분포 · 143개사 중 76개사 후보 일정 확인 (복수 후보일 포함)'],['2027 IR큐더스 현황','3월 전자주총 운영지원 가능일 · 현재 기준']];
 /* ── 캔버스 시각화 ── */
 const VIZ={};
 const C1=[0,129,204],C2=[0,173,169];const mix=(t)=>`rgb(${C1.map((c,i)=>Math.round(c+(C2[i]-c)*t)).join(',')})`;
