@@ -19,10 +19,13 @@ for(let r=0;r<ROWS;r++){const x=ROW_X0+r*ROW_DX,L=String.fromCharCode(65+r);let 
 function seatKey(v){const m=/^([A-O])-?(\d{1,2})$/.exec(String(v||'').toUpperCase().replace(/\s/g,''));return m&&byId[m[1]+(+m[2])]?m[1]+(+m[2]):null;}
 
 /* ---------- 상태 ---------- */
-const RT={on:true,mode:'before',tex:[],g:null};
-function applyRoute(){const b=$('smroute');if(b){b.classList.toggle('sel',RT.on);b.textContent=RT.on?'출입자 동선 ON':'출입자 동선 OFF';}
+const RT={on:true,staff:true,mode:'before',tex:[],g:null};
+const ROLES=[["before",[[1,"현장총괄"],[2,"화상미팅 관리"],[3,"사회자"],[4,"발표자"],[5,"외부 연사"],[6,"오퍼레이터"],[7,"커뮤니케이션"],[8,"프론터"],[9,"그리터"],[10,"Desk1 · 미등록·앱 이슈"],[11,"Desk2~7"],[12,"Gate·좌석 안내"],[13,"앱설치 지원"],[14,"기술지원"],[15,"인프라지원"],[16,"생중계"],[17,"스케치"],[18,"동시통역사"]]],["after",[[1,"현장총괄"],[2,"현장지원"],[3,"사회자"],[4,"발표자"],[5,"발표자(외부 연사)"],[6,"오퍼레이터"],[7,"커뮤니케이션"],[8,"프론터"],[10,"Desk1 · 추가 출입 안내"],[12,"발언 지원"],[13,"기술지원"],[14,"인프라지원"],[15,"생중계"],[16,"스케치"],[17,"통역자"]]]];
+function applyRoute(){const b=$('smroute');if(b){b.classList.toggle('sel',RT.on);b.textContent=RT.on?'방문객 동선 ON':'방문객 동선 OFF';}
+  const sb=$('smstaffbtn');if(sb){sb.classList.toggle('sel',RT.staff);sb.textContent=RT.staff?'운영 인력 ON':'운영 인력 OFF';}
   document.querySelectorAll('#smentry [data-e]').forEach(x=>x.classList.toggle('sel',x.dataset.e===RT.mode));
-  if(!RT.g)return;RT.g.visit.visible=RT.on;RT.g.before.visible=RT.mode==='before';RT.g.after.visible=RT.mode==='after';}
+  var el=$('smstaff');if(el){el.style.display=RT.staff?'':'none';el.textContent='';var hd=document.createElement('div');hd.className='hd';hd.textContent=(RT.mode==='before'?'시작 전 12:30~13:00':'시작 후 13:30~')+' · 운영 인력';el.appendChild(hd);(RT.mode==='before'?ROLES[0][1]:ROLES[1][1]).forEach(function(r){var d=document.createElement('div');var b=document.createElement('b');b.textContent=r[0];d.appendChild(b);d.appendChild(document.createTextNode(r[1]));el.appendChild(d);});}
+  if(!RT.g)return;var g=RT.g,bf=RT.mode==='before';g.vB.visible=RT.on&&bf;g.vA.visible=RT.on&&!bf;g.iB.visible=RT.on&&bf;g.iA.visible=RT.on&&!bf;g.sB.visible=RT.staff&&bf;g.sA.visible=RT.staff&&!bf;g.oB.visible=bf;g.oA.visible=!bf;}
 let R=[],S={},occ={},sel=null,moveFrom=null,q='',big=false,ready=false,libState=0,busy=false;
 let scene,camera,renderer,controls,tMesh,seatMesh,backMesh,hl,labels=[],dummy,tmpColor,held={};
 const A=()=>window.Attendees;
@@ -108,7 +111,7 @@ function build(){
       var m=new THREE.Mesh(new THREE.PlaneGeometry(bw,bh),new THREE.MeshBasicMaterial({map:tx}));m.position.set(p[0],by,p[1]*13.4);if(p[1]>0)m.rotation.y=Math.PI;scene.add(m);};im.src=B[i];});
   })();
   /* 출입문: 폐쇄 4곳, 사용 2곳 · 등록 데스크 */
-  [-14.9,-1.6,6.6,17.6].forEach(dx=>{box(2.2,1.2,.36,0x5a1f26,dx,.6,HD+.15);sprite('✕ 폐쇄',dx,2.1,HD+.2,'#ff6b6b',3.4);});
+  [-14.9,-1.6,6.6,17.6].forEach(dx=>{box(2.2,1.2,.36,0x5a1f26,dx,.6,HD+.15);if(dx!==-14.9)sprite('✕ 폐쇄',dx,2.1,HD+.2,'#ff6b6b',3.4);});
   box(2.2,1.2,.36,0x1f5a3c,25.4,.6,HD+.15);sprite('Gate',25.4,2.1,HD+.2,'#6dffb0',3.2);box(2.2,1.2,.36,0x2a2e3b,-21.1,.6,HD+.15);
   /* 행사장 밖 B1: 포이어·복도·부속실·리프트 (B1 평면도 배치 + 제공 치수, 단위 m). 부속실은 실제 높이를 반투명 볼륨으로 표시 */
   (function(){
@@ -192,16 +195,33 @@ function build(){
       var geo=new THREE.PlaneGeometry(len,.34),uv=geo.attributes.uv;for(var u=0;u<uv.count;u++)uv.setX(u,uv.getX(u)*len/.68);
       var m=new THREE.Mesh(geo,new THREE.MeshBasicMaterial({map:tex,transparent:true,depthWrite:false}));
       m.rotation.order='YXZ';m.rotation.y=-Math.atan2(ddz,ddx);m.rotation.x=-Math.PI/2;m.position.set((a[0]+b[0])/2,.07,(a[1]+b[1])/2);grp.add(m);}}
-    var tA=chev('#ffc24d'),tR=chev('#ff5a5a'),tB=chev('#7fd0ff');
-    var visit=new THREE.Group(),before=new THREE.Group(),after=new THREE.Group();
-    /* 출입자 동선(포이어): 게스트 리프트 · 에스컬레이터 · 리프트 → 포이어 아래쪽 → 데스크 D1~D7 → 대기선 → Gate */
-    path(visit,tA,[[46,-2.7],[32,-2.7],[32,22.6],[-15.2,22.6]]);path(visit,tA,[[27.3,25.7],[29.4,25.7],[29.4,23.1]]);path(visit,tA,[[-8.9,24.9],[-8.9,23.1]]);
-    for(i=0;i<7;i++){path(visit,tA,[[dx[i]-.7,22.2],[dx[i]-.7,17.3]]);path(visit,tR,[[dx[i]+.7,17.3],[dx[i]+.7,19.2]]);}
-    path(visit,tR,[[-13.8,19.6],[25.4,19.6],[25.4,14]]);
-    /* 행사장 출입 동선 — 시작 전: Gate → 후면 단상 앞 횡단 통로 → 네 통로로 무대 쪽까지 / 시작 후: 같은 횡단 통로 → 뒤쪽 줄(I열 부근)까지만 */
-    path(before,tB,[[25.4,13.4],[25.4,12.4],[23.95,12.4],[23.95,-12.4],[-16,-12.4]]);path(before,tB,[[23.6,12.4],[-16,12.4]]);path(before,tB,[[23.6,4.75],[-16,4.75]]);path(before,tB,[[23.6,-5.2],[-16,-5.2]]);
-    path(after,tB,[[25.4,13.4],[25.4,12.4],[23.95,12.4],[23.95,-5.2],[6,-5.2]]);path(after,tB,[[23.6,12.4],[6,12.4]]);path(after,tB,[[23.6,4.75],[6,4.75]]);
-    scene.add(visit,before,after);RT.g={visit:visit,before:before,after:after};applyRoute();
+    var tR=chev('#ff5a5a'),tB=chev('#7fd0ff');
+    function G(){var g=new THREE.Group();scene.add(g);return g;}
+    function sp2(grp,text,x,y,z,color,sc){sprite(text,x,y,z,color,sc);grp.add(scene.children[scene.children.length-1]);}
+    var vB=G(),vA=G(),iB=G(),iA=G(),sB=G(),sA=G(),oB=G(),oA=G();
+    /* 방문객 동선(빨강) — 행사기획안 V4(261123) 7p 시작 전 12:30~13:00: 게스트 리프트·에스컬레이터·리프트 → 포이어 아래쪽으로 다과 쪽 끝까지 → 데스크 앞 대기선 → Gate */
+    path(vB,tR,[[46,-2.7],[32,-2.7],[32,23],[-18.6,23],[-18.6,19.2],[25.4,19.2],[25.4,14]]);
+    path(vB,tR,[[27.3,25.7],[29.4,25.7],[29.4,23.4]]);path(vB,tR,[[-8.9,24.9],[-8.9,23.4]]);
+    for(i=0;i<7;i++){path(vB,tR,[[dx[i]-.7,18.8],[dx[i]-.7,17.3]]);path(vB,tR,[[dx[i]+.7,17.3],[dx[i]+.7,18.8]]);}
+    /* 8p 시작 후 13:30~: 도착 → 프론터(8) → Gate 옆 데스크(추가 출입 안내) → Gate */
+    path(vA,tR,[[46,-2.7],[32,-2.7],[32,22.3],[26.8,22.3]]);path(vA,tR,[[27.3,25.7],[29.4,25.7],[29.4,22.7]]);
+    path(vA,tR,[[-8.9,24.9],[-8.9,22.3],[24.2,22.3]]);
+    path(vA,tR,[[25.4,21.3],[25.4,14]]);path(vA,tR,[[25,18.4],[21.7,18.4]]);
+    /* 행사장 안 동선(파랑) — 시작 전: Gate → 후면 단상 앞 횡단 통로 → 네 통로로 무대 쪽까지 / 시작 후: 뒤쪽 줄(I열 부근)까지만 */
+    path(iB,tB,[[25.4,13.4],[25.4,12.4],[23.95,12.4],[23.95,-12.4],[-16,-12.4]]);path(iB,tB,[[23.6,12.4],[-16,12.4]]);path(iB,tB,[[23.6,4.75],[-16,4.75]]);path(iB,tB,[[23.6,-5.2],[-16,-5.2]]);
+    path(iA,tB,[[25.4,13.4],[25.4,12.4],[23.95,12.4],[23.95,-5.2],[6,-5.2]]);path(iA,tB,[[23.6,12.4],[6,12.4]]);path(iA,tB,[[23.6,4.75],[6,4.75]]);
+    /* 운영 인력(파란 번호) — 7p·8p 도면 위치 */
+    function staff(grp,n,x,z){var c=document.createElement('canvas');c.width=c.height=96;var g2=c.getContext('2d');g2.fillStyle='#1b3cff';g2.beginPath();g2.arc(48,48,44,0,6.2832);g2.fill();g2.lineWidth=5;g2.strokeStyle='#fff';g2.stroke();
+      g2.fillStyle='#fff';g2.font='700 '+(n>9?50:58)+'px Arial,sans-serif';g2.textAlign='center';g2.textBaseline='middle';g2.fillText(String(n),48,51);
+      var sp=new THREE.Sprite(new THREE.SpriteMaterial({map:new THREE.CanvasTexture(c),transparent:true,depthTest:false}));sp.scale.set(1.25,1.25,1);sp.position.set(x,2.9,z);grp.add(sp);
+      var p=new THREE.Mesh(new THREE.CylinderGeometry(.2,.3,2,12),new THREE.MeshStandardMaterial({color:0x2a4bff,emissive:0x10206a,emissiveIntensity:.7}));p.position.set(x,1,z);grp.add(p);}
+    var SB=[[1,23.9,-4.9],[2,-17.6,-7.3],[3,-22.3,8.9],[4,-25.1,-4.1],[5,-19.4,-8.4],[5,-19.4,1.6],[6,-19.4,6.3],[7,-7.9,12.4],[8,30.2,2.7],[8,-14.2,22.6],[8,6.8,22.6],[9,24.6,23.6],[10,dx[0],15.2],[12,21,12.4],[12,23.2,12.4],[12,25.4,12],[13,19.4,18.2],[14,-4.5,-12.4],[15,23.9,-9.2],[16,26.1,-3],[17,26.1,5.7],[18,24.5,-11]];
+    for(i=1;i<7;i++)SB.push([11,dx[i],15.2]);
+    var SA=[[1,2.3,-12.4],[2,20.8,-12.4],[13,14,-12.4],[14,17.4,-12.4],[3,-22.3,8.9],[4,-25.1,-6.7],[5,-25.1,-3.8],[6,-19.4,5.9],[7,-19.4,8.3],[8,25.9,22.3],[10,dx[0],15.2],[12,24.1,10.9],[15,26.1,2.2],[16,26.1,-2.6],[17,24.5,-11]];
+    SB.forEach(function(s){staff(sB,s[0],s[1],s[2]);});SA.forEach(function(s){staff(sA,s[0],s[1],s[2]);});
+    /* 무대 쪽 문 2곳: 시작 전에는 닫힘 표시, 시작 후에는 Gate(8p) */
+    sp2(oB,'✕ 폐쇄',-14.9,2.1,HD+.2,'#ff6b6b',3.4);sp2(oA,'Gate',-14.9,2.1,HD+.2,'#6dffb0',3.2);sp2(oA,'Gate',-21.1,2.1,HD+.2,'#6dffb0',3.2);
+    RT.g={vB:vB,vA:vA,iB:iB,iA:iA,sB:sB,sA:sA,oB:oB,oA:oA};applyRoute();
   })();
   /* 스탠딩 배너 600×1800mm: 06 = 1번 데스크 옆, 07 = Gate 오른쪽, 08 = 게스트 리프트 동선 벽면(볼룸 바깥벽) */
   (function(){var B=window.SEAT_STANDS;if(!B)return;var bw=.6*M,bh=1.8*M,y0=.15*M;
@@ -366,7 +386,7 @@ function bind(){
   document.querySelectorAll('#smview [data-v]').forEach(b=>b.onclick=()=>{if(ready)setView(b.dataset.v);});
   $('smlabel').onclick=function(){big=!big;this.classList.toggle('on',big);this.textContent=big?'라벨 실제 크기':'라벨 확대';paint();};
   $('smroute').onclick=()=>{RT.on=!RT.on;applyRoute();};
-  document.querySelectorAll('#smentry [data-e]').forEach(b=>b.onclick=()=>{RT.mode=RT.mode===b.dataset.e?'':b.dataset.e;applyRoute();});applyRoute();
+  document.querySelectorAll('#smentry [data-e]').forEach(b=>b.onclick=()=>{RT.mode=b.dataset.e;applyRoute();});$('smstaffbtn').onclick=()=>{RT.staff=!RT.staff;applyRoute();};applyRoute();
   $('smreload').onclick=()=>{if(A()&&A().reload)A().reload();};
 }
 if($('smside'))bind();
