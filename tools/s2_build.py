@@ -138,8 +138,8 @@ def save_img(blob, ext):
 def chart_html(ch, x, y, w, h):
     pl = ch.plots[0]; cats = list(pl.categories); ser = list(pl.series)
     vmax = max(max(v for v in s.values if v is not None) for s in ser) * 1.18
-    cols = ['rgba(242,245,250,.55)', 'linear-gradient(180deg,#0081cc,#00ada9)']
-    if len(ser) == 1: cols = ['linear-gradient(180deg,#0081cc,#00ada9)']
+    cols = ['rgba(242,245,250,.38)', '#0081cc']
+    if len(ser) == 1: cols = ['#0081cc']
     gw = w / len(cats); bw = min(46, gw * .7 / len(ser))
     ttl = CHART_TITLE.get(CUR[0])
     out = [f'<div class="chart{" t" if ttl else ""}" style="left:{x:.0f}px;top:{y:.0f}px;width:{w:.0f}px;height:{h:.0f}px">' + (f'<p class="ct">{esc(ttl)}</p>' if ttl else '')]
@@ -276,7 +276,9 @@ def shape_html(sh, tx=lambda x, y: (x, y), sx=1, sy=1, slide_no=0):
         if id(sh) in STEP_BODY: return f'<div class="sh stepb" style="{";".join(st)}">{inner}</div>'
         st.append(body_style(sh._element.find('.//' + P + 'txBody')))
     elif not bg and 'box-shadow' not in ';'.join(st): return ''
-    return f'<div class="sh" style="{";".join(st)}">{inner}</div>'
+    kc = ' hdr' if role else (' pnl' if bg else '')
+    if role: st.append(f'--rc:{role}')
+    return f'<div class="sh{kc}" style="{";".join(st)}">{inner}</div>'
 
 prs = Presentation(SRC)
 STEP_NEXT = set(); STEP_BODY = set()
