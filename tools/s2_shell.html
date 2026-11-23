@@ -146,7 +146,6 @@ html.embed .prog{display:none}
    파랑 = 구조(장 · 단계 · 항목), 초록 = 결론(핵심 · 대응), 주황 = 부담. 글자 · 내용은 그대로. ── */
 .stage{background:#0a1017}
 .hd .eb .rn{min-width:0;height:auto;padding:0 16px 0 0;border:0;border-radius:0;border-right:2px solid rgba(0,129,204,.45)}
-.hd h2 .tag{height:auto;padding:0 0 0 18px;border-radius:0;background:none;box-shadow:inset 4px 0 0 #0081cc;color:#0081cc;font-size:28px;font-weight:700;line-height:1.1}
 /* 색 면 머리글(기대 효과 · 예상 부담 · 읽는 법 · 경과규정 등) → 면 없이 역할색 윗선(단계 머리와 같은 방식) */
 .sh.hdr{background:none!important;border-radius:0!important;box-shadow:inset 0 3px 0 var(--rc,#0081cc)!important;clip-path:none!important}
 /* 머리글 글자는 왼쪽 정렬 — 아래 본문과 같은 시작선 */
@@ -159,12 +158,13 @@ html.embed .prog{display:none}
 .tk>b{padding:0;border:0;border-radius:0;font-size:30px;line-height:1.42;letter-spacing:-.02em;align-self:flex-start}
 /* 표: 결론 열의 옅은 초록 면 제거(흐린 '개정 전' 열과의 대비로 충분) */
 .tb td.hi{background:none;color:#fff}
-/* 단계: 탭 모양 회색 면 · 테두리 번호 · 원형 화살표 → 한 줄로 이어지는 파랑 선 위의 번호와 이름 */
-.step{background:none;border-radius:0;border-bottom:0;box-shadow:inset 0 3px 0 #0081cc;padding:10px 0 0 0;gap:14px}
+/* 단계: 머리 = 옅은 면 막대 + 위 3px 선(파랑, 마지막 단계 초록) · 번호는 글자만. 단계 사이는 막대 사이 간격에 작은 › 하나. 본문은 면 없이 아래 1.5px 선 하나로 칸 마감 */
+.step{background:rgba(255,255,255,.06);border-radius:0;border-bottom:0;box-shadow:inset 0 3px 0 #0081cc;padding:3px 22px 0;gap:14px}
 .step.last{box-shadow:inset 0 3px 0 #00ada9}
-.step .sn{padding:0;border:0;border-radius:0;font-weight:600}
-.step.nx:after{content:"";right:-26px;top:1px;width:26px;height:3px;margin:0;border-radius:0;background:#0081cc;box-shadow:none}
-.sh.stepb{background:none;border-radius:0;box-shadow:inset 1.5px 0 0 rgba(255,255,255,.12)}
+.step .sn{padding:0;border:0;border-radius:0;font-weight:700}
+.step.nx:after{content:"";position:absolute;right:-21px;top:50%;width:18px;height:18px;margin-top:-7px;border-radius:0;z-index:3;box-shadow:none;
+ background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M5.5 2.5 11 8l-5.5 5.5' fill='none' stroke='%230081cc' stroke-width='2.4' stroke-linecap='square'/%3E%3C/svg%3E") center/18px no-repeat}
+.sh.stepb{background:none;border-radius:0;box-shadow:inset 0 -1.5px 0 rgba(255,255,255,.14)}
 /* 차트: 둥근 막대 · 그라데이션 → 각진 단색 막대 */
 .chart .cb{border-radius:0}.chart .clg b{border-radius:0}
 /* 통계 상자 → 면 없이 */
