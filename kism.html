@@ -94,6 +94,27 @@ body.notes .s.cur .note b{color:#fff}
 #K4 b{display:block;margin-top:18px;padding-right:130px}
 #K4 .kw{margin-top:auto;padding-top:20px;font:400 26px/1.5 "Pretendard Variable";color:#AEB8C6}
 #K4 .kw i{font-style:normal;color:#0081cc;margin:0 12px}
+
+/* 11/23 레이아웃 개선: 공통 세로 격자 — 머리(제목 · 리드) 96~330 · 본문 360~890 · 결론 930~1000. 카드는 같은 높이, 세부 내용은 카드 아래에 붙여 줄 맞춤 */
+.lg{top:92px;height:40px}
+.c3{top:430px;gap:32px}
+.c3>div{display:flex;flex-direction:column;min-height:430px;padding:36px 36px 38px}
+.c3 b{margin-top:24px;font-size:37px;white-space:nowrap}
+.c3 ul{margin-top:auto;padding-top:26px;border-top:1px solid rgba(255,255,255,.1)}
+.c3 li{font-size:28px;line-height:1.8}
+.ms{top:350px;left:300px;right:300px;padding:34px 52px}
+.tree{top:560px;height:64px}
+.tree i:nth-child(1){height:32px!important}.tree i:nth-child(2){top:32px!important}.tree i:nth-child(n+3){top:32px!important;height:32px!important}
+.ar3{top:624px}
+.ar3>div{min-height:236px;display:flex;flex-direction:column}
+.ar3 p{margin-top:auto;padding-top:18px}
+.ar3 p.no{margin-top:0;padding-top:0;font:300 28px/1 "Pretendard Variable";color:#0081cc}
+.pr{bottom:76px}
+.g22{grid-auto-rows:252px}
+.g22>div{display:flex;flex-direction:column;min-height:0}
+.g22 .o{margin-top:auto}
+#K4 .g22>div{min-height:0}
+#K3 .g22,#K4 .g22{top:356px}
 </style></head>
 <body>
 <div class="stage" id="stage">
@@ -137,7 +158,7 @@ body.notes .s.cur .note b{color:#fff}
  <p class="pn">02<i> &nbsp;사명과 연구영역</i></p><img class="lg" src="assets/kism-white.svg" alt="">
  <h2>한국주주총회연구소의 사명과 연구영역</h2>
  <p class="lead">주주총회 제도의 합리적 발전과 주주권 행사의 실효성 제고를 위한 전문연구</p>
- <div class="ms"><img src="assets/kism-white.svg" alt="KISM"><p><small>사명</small>법률 · 제도에 대한 학술적 연구와 주주총회 운영 현장의 실증적 분석을 결합하여, 기업과 주주 모두에게 필요한 전문 지식과 연구 성과를 제공합니다.</p></div>
+ <div class="ms"><img src="assets/kism-white.svg" alt="KISM"><p><small>사명</small>법률 · 제도에 대한 학술적 연구와 주주총회 운영 현장의 실증적 분석을 결합하여,<br>기업과 주주 모두에게 필요한 전문 지식과 연구 성과를 제공합니다.</p></div>
  <div class="tree"><i style="left:50%;top:0;width:1.5px;height:35px"></i><i style="left:calc((100% - 80px)/6);right:calc((100% - 80px)/6);top:35px;height:1.5px"></i><i style="left:calc((100% - 80px)/6);top:35px;width:1.5px;height:35px"></i><i style="left:50%;top:35px;width:1.5px;height:35px"></i><i style="right:calc((100% - 80px)/6);top:35px;width:1.5px;height:35px"></i></div>
  <div class="ar3">
   <div><p class="no">01</p><b>법률 · 제도 및 판례 연구</b><p>상법 · 자본시장법<br>관련 판례 및 법리 · 국내외 제도 비교</p></div>
