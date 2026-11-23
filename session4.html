@@ -399,6 +399,10 @@ html.embed,html.embed body,html.embed .stage{background:transparent}html.embed #
 #K02 .gw:nth-child(1) .cc b,#K02 .gw:nth-child(4) .cc b{font-size:110px}
 #K02 .gw:nth-child(2) .cc b,#K02 .gw:nth-child(3) .cc b{font-size:72px}
 #K02 .gw:nth-child(2) .cc .cs,#K02 .gw:nth-child(3) .cc .cs{font-size:40px}
+/* K04 · K05 머리 문구: 흰색 Pretendard Medium */
+.eb.k5e{font:500 60px/1.2 "Pretendard Variable",sans-serif;color:#fff;letter-spacing:-.01em}
+/* K05: 제목 줄이 빠진 뒤 — 머리 문구 + 지표 묶음을 화면 세로 가운데로 */
+#K05 .cols{top:600px}
 </style></head>
 <body>
 <div class="stage" id="stage">
@@ -430,7 +434,7 @@ html.embed,html.embed body,html.embed .stage{background:transparent}html.embed #
 
 <section class="s" id="K04" data-t="의무화 기업 212개사" data-dim=".18" data-steps="1">
  <div class="ab" style="left:300px;top:300px;width:1500px">
-  <p class="eb fu" style="--i:0">전자주총 의무화 기업</p>
+  <p class="eb fu k5e" style="--i:0">전자주총 의무화 기업</p>
   <p class="num g fu" style="--i:1;font-size:560px;margin-top:60px"><span class="cnt" data-to="212">212</span><small style="font-family:KakaoBig;font-weight:700;font-size:130px;-webkit-text-fill-color:#F2F5FA">개사</small></p>
   <p class="sub fu" style="--i:2;margin-top:70px">'25년 말 기준 · '26.3Q 기준 200개</p>
   <div data-b="1" style="margin-top:90px;display:flex;gap:30px"><span class="chip"><i style="width:30px;height:30px;border-radius:50%;background:#0081cc"></i>코스피 <b>203</b> 96%</span><span class="chip"><i style="width:30px;height:30px;border-radius:50%;background:#00ada9"></i>코스닥 <b>9</b> 4%</span></div>
@@ -439,7 +443,7 @@ html.embed,html.embed body,html.embed .stage{background:transparent}html.embed #
 </section>
 
 <section class="s" id="K05" data-t="주요 지표" data-dim=".18">
- <div class="top"><p class="eb fu q" style="--i:0">의무화 기업 평균</p></div>
+ <div class="top" style="top:400px"><p class="eb fu k5e" style="--i:0">의무화 기업 평균</p></div>
  <div class="cols">
   <div class="col fu" style="--i:2"><p class="lab">평균 자산총액</p><p class="num g"><span class="cnt" data-to="20.7">20.7</span><small>조 원</small></p><p class="md">중앙값<b>6.9조 원</b></p></div>
   <div class="col fu" style="--i:3"><p class="lab">평균 소액주주 수</p><p class="num g temp"><span class="cnt" data-to="12.4">12.4</span><small>만 명</small></p><p class="md temp">중앙값<b>3.1만 명</b></p></div>
@@ -448,13 +452,13 @@ html.embed,html.embed body,html.embed .stage{background:transparent}html.embed #
  </div>
 </section>
 
-<section class="s" id="K06" data-t="의안" data-dim=".18" data-steps="1">
+<section class="s" id="K06" data-t="의안" data-dim=".18">
  <div class="top"></div>
- <div class="ab fu" style="--i:2;left:300px;top:480px"><p class="sub">'26년 정기주총 의안 총수</p><p class="num" style="font-size:380px;margin-top:30px"><span class="cnt" data-to="2251" data-fmt=",">2,251</span><small style="font-family:KakaoBig;font-weight:700">건</small></p></div>
- <canvas class="viz" data-viz="stream" style="left:1880px;top:500px;width:900px;height:520px" width="900" height="520"></canvas>
- <div class="ab fu" style="--i:3;left:2800px;top:480px"><p class="sub">'27년 정기주총 의안 예상</p><p class="num g" style="font-size:380px;margin-top:30px"><span class="cnt" data-to="2000" data-fmt=",">2,000</span><small style="font-family:KakaoBig;font-weight:700;-webkit-text-fill-color:#F2F5FA">건 미만</small></p></div>
- <div class="ab" data-b="1" style="left:300px;top:1110px"><span class="chip">가결률 <b>96%</b> · 2,165건</span></div>
- <div class="ab" data-b="1" style="left:2800px;top:1110px"><span class="chip">'26년 정관변경 <b>694</b>건 · 개정상법 대응</span></div>
+ <div class="ab fu" style="--i:2;left:300px;top:540px"><p class="sub">'26년 정기주총 의안 총수</p><p class="num" style="font-size:380px;margin-top:30px"><span class="cnt" data-to="2251" data-fmt=",">2,251</span><small style="font-family:KakaoBig;font-weight:700">건</small></p></div>
+ <canvas class="viz" data-viz="stream" style="left:1560px;top:560px;width:900px;height:520px" width="900" height="520"></canvas>
+ <div class="ab fu" style="--i:3;left:2560px;top:540px"><p class="sub">'27년 정기주총 의안 예상</p><p class="num g" style="font-size:380px;margin-top:30px"><span class="cnt" data-to="2000" data-fmt=",">2,000</span><small style="font-family:KakaoBig;font-weight:700;-webkit-text-fill-color:#F2F5FA">건 미만</small></p></div>
+ <div class="ab fu" style="--i:4;left:300px;top:1170px"><span class="chip">가결률 <b>96%</b> · 2,165건</span></div>
+ <div class="ab fu" style="--i:4;left:2560px;top:1170px"><span class="chip">'26년 정관변경 <b>694</b>건 · 개정상법 대응</span></div>
 </section>
 
 <section class="s" id="K07" data-t="주총 난이도 S · A · B · C" data-dim=".16">
