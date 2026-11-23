@@ -926,7 +926,7 @@ function go(n){n=Math.max(0,Math.min(slides.length-1,n));if(n===idx)return;const
     const v=prev.dataset.video&&document.getElementById(prev.dataset.video);if(v){v.pause();}}
   idx=n;if(!isMsg(s))home=n;void s.offsetWidth;s.classList.add('on','enter','tr-'+tr);counters(s);
   stage.dataset.foot=s.dataset.foot;stage.classList.toggle('nobg',s.dataset.bg==='N');tgt=LAY[s.dataset.bg]||LAY.B;bgSet(s);progScroll(s);if(s.dataset.spk)SPKPORT.show(s.dataset.spk);else SPKPORT.hide();
-  FS(prev,s);S3(prev,false);S3(s,true);PXA(prev,false);PXA(s,true);PDKin(prev,s);KI(prev,false);KI(s,true);
+  FS(prev,s);S3(prev,false);S3(s,true);PXA(prev,false);PXA(s,true);PDKin(prev,s);KI(prev,false);KI(s,true);if(typeof BGM!=='undefined'&&BGM)BGM.set(s);
   history.replaceState(null,'','#'+s.dataset.no);
   const v=s.dataset.video&&document.getElementById(s.dataset.video);
   if(v&&v.classList.contains('ok')){v.currentTime=0;v.play().catch(()=>{});}
@@ -1025,7 +1025,20 @@ function hud(){const e=document.getElementById('hud');if(!e.classList.contains('
 document.addEventListener('offline-state',e=>{hud();if(/완료/.test(e.detail))toast('오프라인 저장 완료');});
 document.getElementById('hud').addEventListener('click',e=>{const li=e.target.closest('li');if(li)go(+li.dataset.i);});
 setInterval(hud,15000);
+/* 대기 배경음악: M1(대기 · 착석 요청 · 시작 지연)에서만 재생, 나가면 2.5초 페이드아웃. 곡 끝(자체 페이드아웃) 7초 전에 같은 곡을 하나 더 겹쳐 시작해 끊김 없이 반복. M 음소거. 자동재생이 막히면 첫 키 · 클릭에 시작 */
+var BGM={src:'assets/sound/wait-bgm.mp3',vol:.6,a:[],i:0,want:false,muted:localStorage.getItem('scr-bgm-mute')==='1',
+ el(i){if(!this.a[i]){const x=new Audio(this.src);x.preload='auto';x.volume=0;x._t=null;this.a[i]=x;}return this.a[i];},
+ ramp(x,to,ms,end){clearInterval(x._t);const f=x.volume,t0=performance.now();x._t=setInterval(()=>{const k=Math.min(1,(performance.now()-t0)/ms);x.volume=Math.max(0,Math.min(1,f+(to-f)*k));if(k>=1){clearInterval(x._t);end&&end();}},40);},
+ start(x,fade){x.currentTime=0;x.volume=0;const p=x.play();if(p)p.catch(()=>{this.blocked=true;});this.ramp(x,this.muted?0:this.vol,fade);},
+ set(s){const w=!!(s&&/^M1-/i.test(s.dataset.no||''));if(w===this.want)return;this.want=w;
+  if(w){this.i=0;this.start(this.el(0),2000);clearInterval(this.tk);this.tk=setInterval(()=>this.tick(),250);}
+  else{clearInterval(this.tk);this.a.forEach(x=>{if(!x.paused)this.ramp(x,0,2500,()=>x.pause());});}},
+ tick(){const x=this.el(this.i);if(!x.duration||x.paused)return;if(x.currentTime>x.duration-7){const n=1-this.i;this.i=n;this.start(this.el(n),3000);}},
+ retry(){if(this.want&&this.blocked){this.blocked=false;this.a.forEach(x=>{if(x.paused&&x.volume>0)x.play().catch(()=>{});});const x=this.el(this.i);if(x.paused)this.start(x,1500);}},
+ mute(){this.muted=!this.muted;localStorage.setItem('scr-bgm-mute',this.muted?'1':'0');this.a.forEach(x=>{if(!x.paused)this.ramp(x,this.muted?0:this.vol,600);});toast('대기 배경음악 '+(this.muted?'끔':'켬'));}};
+window.BGM=BGM;addEventListener('pointerdown',()=>BGM.retry());
 addEventListener('keydown',e=>{const k=e.key;
+  BGM.retry();
   if(/^[0-9]$/.test(k)||(numbuf&&(k==='-'||k==='s'||k==='S'||k==='p'||k==='P'))){numbuf+=k.toUpperCase();toast('화면 번호: M'+numbuf);return;}
   if(k==='Enter'&&numbuf){const n=byNo('M'+numbuf);if(n>=0)go(n);else toast('없는 화면: M'+numbuf);numbuf='';return;}
   if(k==='Escape'&&numbuf){numbuf='';toast('취소');return;}
@@ -1037,6 +1050,7 @@ addEventListener('keydown',e=>{const k=e.key;
   else if(k==='ArrowLeft'||k==='PageUp'||k==='ArrowUp'){e.preventDefault();step(-1);}
   else if(k==='Home')go(0);else if(k==='End')go(slides.length-1);
   else if(k==='f'||k==='F'){if(document.fullscreenElement)document.exitFullscreen();else document.documentElement.requestFullscreen();}
+  else if(k==='m'||k==='M'){BGM.mute();}
   else if(k==='b'||k==='B'||k==='.'){document.getElementById('black').classList.toggle('on');}
   else if(k==='o'||k==='O'||k==='?'){CtrlPanel.toggle();}
   else if(k==='a'||k==='A'){auto=!auto;toast('대기화면 자동순환 '+(auto?'켜짐':'꺼짐'));const n=idx;idx=-1;slides[n].classList.remove('on');go(n);}
