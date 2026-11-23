@@ -335,6 +335,12 @@ body.idle{cursor:none}
   background:radial-gradient(60% 75% at 50% 112%,var(--glow) 0%,color-mix(in srgb,var(--glow) 55%,transparent) 32%,transparent 72%);
   transform:translateY(35%)}
 .slide.on[data-glow]::before{animation:glowIn 2.6s cubic-bezier(.2,.7,.2,1) .2s both,glowHue 9s ease-in-out 1.2s infinite alternate}
+/* Blue Bloom 적용: 기존 원형 글로우 대신 셰이더를 아래쪽에서 떠오르는 모양(같은 타원 마스크)으로 보여 줌 */
+.slide[data-glow]::before{display:none}
+.slide[data-glow] .bloom{position:absolute;left:0;right:0;bottom:0;height:100%;pointer-events:none;mix-blend-mode:screen;opacity:0;transform:translateY(35%);
+  -webkit-mask-image:radial-gradient(62% 82% at 50% 108%,#000 0%,rgba(0,0,0,.85) 30%,rgba(0,0,0,.35) 55%,transparent 78%);mask-image:radial-gradient(62% 82% at 50% 108%,#000 0%,rgba(0,0,0,.85) 30%,rgba(0,0,0,.35) 55%,transparent 78%)}
+.slide.on[data-glow] .bloom{animation:glowIn 2.6s cubic-bezier(.2,.7,.2,1) .2s both}
+.slide[data-glow] .bloom iframe{position:absolute;inset:0;width:100%;height:100%;border:0;background:#000;pointer-events:none}
 @keyframes glowIn{from{opacity:0;transform:translateY(35%)}to{opacity:.95;transform:none}}
 @keyframes glowHue{0%{--glow:#0081cc}50%{--glow:#1a8fd6}100%{--glow:#00ada9}}
 
@@ -634,6 +640,8 @@ body.idle{cursor:none}
 <script>
 (()=>{
 const stage=document.getElementById('scr'),slides=[...document.querySelectorAll('.slide')];
+/* 파트 첫 장(data-glow): 아래 그라데이션 = Blue Bloom 셰이더(assets/blue-bloom.html). 장에 들어올 때 FS()로 재생 · 나갈 때 멈춤 */
+slides.forEach(s=>{if(s.dataset.glow){const d=document.createElement('div');d.className='bloom';d.innerHTML='<iframe class="fs" data-src="assets/blue-bloom.html" tabindex="-1" title="" aria-hidden="true"></iframe>';s.prepend(d);}});
 const qp=new URLSearchParams(location.search);
 if(qp.get('lite'))stage.classList.add('lite');
 /* ---- 연사 초상(로비 lobby/index.html 와 같은 코드): 원본 사진이 나타나고, 인물 중심을 13개 점이 공전(점끼리 가까우면 선으로 이어짐). 사진 · 점 · 선 · 글씨가 함께 나타나고 함께 사라짐 ---- */
