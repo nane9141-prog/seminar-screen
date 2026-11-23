@@ -227,6 +227,21 @@ body.idle{cursor:none}
 .slide[data-ph=c][data-n="1"] .s3-gl{opacity:.95;transform:none}
 .slide[data-ph=a] .s3-gl{opacity:.45;transform:translateY(28%)}
 .slide[data-ph=e] .s3-gl{opacity:.95;transform:none}
+/* Blue Bloom(assets/blue-bloom.html, 시퀀스 시작점 .97 = 어둠): 카운트다운 동안 아래 타원으로 숫자마다 차오르고, ANYWHERE · 시작 장면에서 화면 전체로 번짐 */
+.s3-bl{position:absolute;inset:0;pointer-events:none;mix-blend-mode:screen;opacity:0;transform:translateY(45%);
+  -webkit-mask-image:radial-gradient(50% 100% at 50% 100%,#000 0%,rgba(0,0,0,.85) 35%,rgba(0,0,0,.35) 65%,transparent 100%);mask-image:radial-gradient(50% 100% at 50% 100%,#000 0%,rgba(0,0,0,.85) 35%,rgba(0,0,0,.35) 65%,transparent 100%);
+  -webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;-webkit-mask-position:50% 100%;mask-position:50% 100%;-webkit-mask-size:124% 82%;mask-size:124% 82%;
+  transition:opacity 1s cubic-bezier(.2,.7,.2,1),transform 1s cubic-bezier(.2,.7,.2,1),-webkit-mask-size 1.6s cubic-bezier(.2,.7,.2,1),mask-size 1.6s cubic-bezier(.2,.7,.2,1)}
+.s3-bl iframe{position:absolute;inset:0;width:100%;height:100%;border:0;background:#000}
+.slide[data-ph=c][data-n="5"] .s3-bl{opacity:.35;transform:translateY(40%)}
+.slide[data-ph=c][data-n="4"] .s3-bl{opacity:.5;transform:translateY(31%)}
+.slide[data-ph=c][data-n="3"] .s3-bl{opacity:.65;transform:translateY(22%)}
+.slide[data-ph=c][data-n="2"] .s3-bl{opacity:.8;transform:translateY(12%)}
+.slide[data-ph=c][data-n="1"] .s3-bl{opacity:.95;transform:none}
+.slide[data-ph=a] .s3-bl,.slide[data-ph=e] .s3-bl{opacity:1;transform:none;-webkit-mask-size:600% 700%;mask-size:600% 700%}
+/* 전체 화면 블룸 위에서는 그라데이션 · 파랑 글자가 묻히므로 흰색 */
+.slide[data-ph=a] .s3-en b,.slide[data-ph=a] .s3-en b .w,.slide[data-ph=e] .s3-e b,.slide[data-ph=e] .s3-e b .w{background:none;-webkit-background-clip:border-box;background-clip:border-box;color:#fff}
+.slide[data-ph=a] .s3-sub{color:#fff}
 .s3-en{margin:0;font:800 168px/1.1 "Pretendard Variable",sans-serif;color:#fff;letter-spacing:-.01em}
 .s3-en b,.s3-ko b,.s3-e b{background:linear-gradient(90deg,#0081cc,#00ada9);-webkit-background-clip:text;background-clip:text;color:transparent;font-weight:inherit}
 .s3-en b .w,.s3-ko b .w,.s3-e b .w{background:inherit;-webkit-background-clip:text;background-clip:text;color:transparent}
@@ -457,7 +472,7 @@ body.idle{cursor:none}
 </section>
 <section class="slide" id="m3_1" data-no="M3-1" data-title="M3-1 개회 타이틀 (5 · 4 · 3 · 2 · 1 → ANYWHERE → 시작)" data-bg="A" data-foot="logo" data-tr="zoom" data-s3="1" data-lay="center">
 <div class="s3">
-<div class="s3-gl"></div>
+<div class="s3-bl"><iframe class="fs" data-src="assets/blue-bloom.html?p=.97" tabindex="-1" title="" aria-hidden="true"></iframe></div>
 <div class="s3-l s3-c"><div class="s3-ring"><svg class="s3-rg" viewBox="-400 -400 800 800" aria-hidden="true"></svg><svg class="s3-dots" aria-hidden="true"></svg></div></div>
 <div class="s3-l s3-a"><h2 class="s3-en" data-words><b>ANYWHERE,</b> ALL SHAREHOLDERS</h2><p class="s3-sub">장소의 제약 없는 주주 참여, 2027년 전자주주총회</p></div>
 <div class="s3-l s3-e"><img class="s3-lg" src="assets/irk-white.svg" alt="IR KUDOS"><h1 class="title-m" data-words>전자주주총회 플랫폼 시연 설명회<br><b>지금 시작합니다.</b></h1></div>
@@ -744,7 +759,7 @@ function S3(s,on){if(!s||!s.dataset.s3)return;(s._t3||[]).forEach(clearTimeout);
   rg._c.forEach(e=>e.classList.remove('on'));
   const t0=performance.now()+400;s._iv3=setInterval(()=>{const el=(performance.now()-t0)/5000;if(el<0)return;const k=Math.min(N,Math.floor(el*N)+1);rg._c.forEach((e,i)=>e.classList.toggle('on',i<k));},40);
   [5,4,3,2,1].forEach((n,i)=>at(400+i*1000,()=>{s.dataset.ph='c';s.dataset.n=n;dotTimer(sv,String(n));}));
-  at(5500,()=>{s.dataset.ph='a';clearInterval(s._iv3);});at(9600,()=>{s.dataset.ph='e';});}
+  at(5500,()=>{s.dataset.ph='a';clearInterval(s._iv3);const c=document.getElementById('c');if(c)c.style.opacity=0;});at(9600,()=>{s.dataset.ph='e';});}
 /* four states (발표자료 오른쪽 아래): 들어오면 처음부터 재생, 나가면 멈춤. 처음 들어올 때 불러옴 */
 function FS(a,b){const pa=a&&a.querySelector('iframe.fs');if(pa&&pa.contentWindow)pa.contentWindow.postMessage('pause','*');const f=b&&b.querySelector('iframe.fs');if(!f)return;if(!f.getAttribute('src')){f.onload=()=>{if(slides[idx]===b)f.contentWindow.postMessage('play','*');};f.src=f.dataset.src;}else if(f.contentWindow)f.contentWindow.postMessage('play','*');}
 function go(n){n=Math.max(0,Math.min(slides.length-1,n));if(n===idx)return;const oi=idx;

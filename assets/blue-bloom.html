@@ -91,7 +91,8 @@ const RS=.35;
 function resize(){cv.width=Math.max(2,Math.round(innerWidth*RS));cv.height=Math.max(2,Math.round(innerHeight*RS));gl.viewport(0,0,cv.width,cv.height);gl.uniform2f(U.R,cv.width,cv.height);}
 addEventListener('resize',resize);resize();
 /* 0.15 = 떠오름(Emerge) 지점에서 시작 → 들어오자마자 빛이 차오름 */
-let phase=.15,last=performance.now(),playing=false,raf=0;
+const P0=(()=>{const v=parseFloat(new URLSearchParams(location.search).get('p'));return isNaN(v)?.15:v;})();  /* ?p= 시작 지점(0~1). 기본 .15 = 떠오름 */
+let phase=P0,last=performance.now(),playing=false,raf=0;
 function draw(){
   const ph=((phase%1)+1)%1,v=hermite(KEYS,ph*BASE);
   gl.uniform1f(U.PH,ph);gl.uniform1f(U.WHITE,S.white+v[0]);gl.uniform1f(U.ZOOM,v[1]);gl.uniform1f(U.WARP,S.warp*v[2]);
@@ -99,7 +100,7 @@ function draw(){
   gl.drawArrays(gl.TRIANGLES,0,3);
 }
 function tick(now){phase+=(now-last)/1000*S.speed/S.seqlen;last=now;draw();raf=playing?requestAnimationFrame(tick):0;}
-function play(){if(playing)return;playing=true;phase=.15;last=performance.now();raf=requestAnimationFrame(tick);}
+function play(){if(playing)return;playing=true;phase=P0;last=performance.now();raf=requestAnimationFrame(tick);}
 function pause(){playing=false;if(raf)cancelAnimationFrame(raf);raf=0;}
 addEventListener('message',e=>{if(e.data==='play')play();else if(e.data==='pause')pause();});
 draw();
