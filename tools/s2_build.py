@@ -18,16 +18,16 @@ os.makedirs(f'{OUT}/assets/s2', exist_ok=True)
 
 # ── 색 바꾸기: 원본(밝은 배경 · 주황/파랑) → 스크린 톤 ──
 FILL = {
- 'ED7D31': '#0d8f6f',      # 주황 태그 · 강조 박스 → 초록
- '4472C4': '#2a6fa3', '5B9BD5': '#2a6fa3',   # 파랑 → 스크린 파랑
+ 'ED7D31': '#00ada9',      # 주황 태그 · 강조 박스 → 초록
+ '4472C4': '#0081cc', '5B9BD5': '#0081cc',   # 파랑 → 스크린 파랑
  '1F3864': '#12263b',      # 남색
- 'CFDDEE': 'rgba(128,205,229,.14)', 'E9EFF7': 'rgba(255,255,255,.055)',
- 'FCE9DB': 'rgba(0,171,132,.13)', 'F2F2F2': 'rgba(255,255,255,.06)', 'FFFFFF': 'rgba(255,255,255,.06)',
+ 'CFDDEE': 'rgba(0,129,204,.14)', 'E9EFF7': 'rgba(255,255,255,.055)',
+ 'FCE9DB': 'rgba(0,173,169,.13)', 'F2F2F2': 'rgba(255,255,255,.06)', 'FFFFFF': 'rgba(255,255,255,.06)',
  '7F7F7F': '#3a414c', 'AAE571': '#2f7a4f',
 }
 TXT = {'262626': '#E6EBF2', '2B3A4D': '#E6EBF2', '1B2430': '#E6EBF2', 'FFFFFF': '#FFFFFF',
-       'ED7D31': '#3fd3aa', '4472C4': '#80cde5', '7F7F7F': '#8b95a5'}
-THEME_FILL = {'ACCENT_1 (5)': '#2a6fa3', 'BACKGROUND_2 (16)': 'rgba(255,255,255,.06)', 'BACKGROUND_1 (14)': 'rgba(255,255,255,.06)'}
+       'ED7D31': '#00ada9', '4472C4': '#0081cc', '7F7F7F': '#8b95a5'}
+THEME_FILL = {'ACCENT_1 (5)': '#0081cc', 'BACKGROUND_2 (16)': 'rgba(255,255,255,.06)', 'BACKGROUND_1 (14)': 'rgba(255,255,255,.06)'}
 THEME_TXT = {'BACKGROUND_1 (14)': '#FFFFFF', 'TEXT_1 (13)': '#E6EBF2'}
 
 def fcol(fill, default=None):
@@ -57,8 +57,8 @@ FORCE = [None]  # 역할 색(머리글 · 강조)을 강제할 때
 def rcol(f, dcol):
     if FORCE[0]: return FORCE[0]
     c = tcol(f, dcol)
-    if c == '#3fd3aa':  # 원본 주황 글자: 큰 숫자 · 결론은 초록, 그 밖(예상 부담 라벨 등)은 주황 경고색
-        c = '#3fd3aa' if (f.size and f.size.pt >= 18) else '#ffb74d'
+    if c == '#00ada9':  # 원본 주황 글자: 큰 숫자 · 결론은 초록, 그 밖(예상 부담 라벨 등)은 주황 경고색
+        c = '#00ada9' if (f.size and f.size.pt >= 18) else '#ffb74d'
     return c
 def runs_html(par, dcol):
     out = []
@@ -138,8 +138,8 @@ def save_img(blob, ext):
 def chart_html(ch, x, y, w, h):
     pl = ch.plots[0]; cats = list(pl.categories); ser = list(pl.series)
     vmax = max(max(v for v in s.values if v is not None) for s in ser) * 1.18
-    cols = ['rgba(242,245,250,.55)', 'linear-gradient(180deg,#5bade1,#00ab84)']
-    if len(ser) == 1: cols = ['linear-gradient(180deg,#5bade1,#00ab84)']
+    cols = ['rgba(242,245,250,.55)', 'linear-gradient(180deg,#0081cc,#00ada9)']
+    if len(ser) == 1: cols = ['linear-gradient(180deg,#0081cc,#00ada9)']
     gw = w / len(cats); bw = min(46, gw * .7 / len(ser))
     ttl = CHART_TITLE.get(CUR[0])
     out = [f'<div class="chart{" t" if ttl else ""}" style="left:{x:.0f}px;top:{y:.0f}px;width:{w:.0f}px;height:{h:.0f}px">' + (f'<p class="ct">{esc(ttl)}</p>' if ttl else '')]
@@ -186,7 +186,7 @@ def table_html(tb, x, y, w, h):
             hdr = r in STRONG
             first = (ci == 0 and not hdr and r in ('CFDDEE', 'E9EFF7', None) and len(colw) > 2)
             cls = 'th' if hdr else ('c1' if first else ('hi' if ci in hi else ('lo' if ci in lo else '')))
-            FORCE[0] = '#9AA6B5' if hdr else ('#80cde5' if first else None)
+            FORCE[0] = '#9AA6B5' if hdr else ('#0081cc' if first else None)
             tcPr = cell._tc.find(A + 'tcPr')
             anc = tcPr.get('anchor', 't') if tcPr is not None else 't'
             va = {'t': 'top', 'ctr': 'middle', 'b': 'bottom'}.get(anc, 'top')
@@ -247,7 +247,7 @@ def shape_html(sh, tx=lambda x, y: (x, y), sx=1, sy=1, slide_no=0):
     role = None
     if r in STRONG:   # 원본 색 면(머리글 · 단계 · 표지) → 같은 회색 면 + 역할 글자색
         bg = 'rgba(255,255,255,.075)'
-        role = {'ED7D31': '#ffb74d' if '부담' in txt else ('#3fd3aa' if re.search(r'개정 후|대응|경영상 변화', txt) else '#80cde5'), '1F3864': '#FFFFFF', '7F7F7F': '#9AA6B5'}.get(r, '#80cde5')
+        role = {'ED7D31': '#ffb74d' if '부담' in txt else ('#00ada9' if re.search(r'개정 후|대응|경영상 변화', txt) else '#0081cc'), '1F3864': '#FFFFFF', '7F7F7F': '#9AA6B5'}.get(r, '#0081cc')
     elif r is None: bg = None
     else: bg = {'CFDDEE': 'rgba(255,255,255,.035)', 'AAE571': 'rgba(255,255,255,.05)'}.get(r, 'rgba(255,255,255,.045)')
     prst = None
@@ -259,8 +259,8 @@ def shape_html(sh, tx=lambda x, y: (x, y), sx=1, sy=1, slide_no=0):
         ln = sh.line
         if ln.fill.type == MSO_FILL.SOLID:
             try: lc = FILL.get(str(ln.color.rgb), '#' + str(ln.color.rgb))
-            except Exception: lc = '#2a6fa3'
-            if lc.startswith('rgba'): lc = 'rgba(128,205,229,.35)'
+            except Exception: lc = '#0081cc'
+            if lc.startswith('rgba'): lc = 'rgba(0,129,204,.35)'
             st.append(f'box-shadow:inset 0 0 0 2px {lc}')
     except Exception: pass
     if prst == 'roundRect': st.append(f'border-radius:{min(w,h)*.18:.0f}px')
