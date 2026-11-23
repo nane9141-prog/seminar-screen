@@ -105,7 +105,7 @@ def tf_html(tf, dcol, dsize=None):
         marL = int(pPr.get('marL', 0)) if pPr is not None else 0
         ind = int(pPr.get('indent', 0)) if pPr is not None else 0
         if bu:
-            ml = max(marL * K, 22); st.append(f'padding-left:{ml:.0f}px;text-indent:{min(ind*K,-14) if ind else -18:.0f}px')
+            ml = max(marL * K, 22); st.append(f'padding-left:{ml:.0f}px;text-indent:-22px')  # 글머리 폭(22px)만큼 내어쓰기 → 둘째 줄이 첫 줄 글자에 맞음
         elif marL: st.append(f'padding-left:{marL*K:.0f}px')
         if par.space_before is not None: st.append(f'margin-top:{par.space_before.pt*2:.0f}px')
         if par.space_after is not None: st.append(f'margin-bottom:{par.space_after.pt*2:.0f}px')
