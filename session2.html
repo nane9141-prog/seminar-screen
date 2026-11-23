@@ -223,6 +223,12 @@ html.embed .prog{display:none}
 .step+.sh.pnl span{font-size:28px!important}
 .step+.sh.pnl .bu{color:#0081cc}
 .step.last+.sh.pnl .bu{color:#00ada9}
+/* 23장 아래 기간 흐름: 원본처럼 화살표 모양(오른쪽 뾰족) — 갈수록 진한 파랑 */
+#P23 .step{box-shadow:none;width:620px!important;clip-path:polygon(0 0,calc(100% - 36px) 0,100% 50%,calc(100% - 36px) 100%,0 100%,36px 50%);padding-left:40px}
+#P23 .step[style*="left:34px"]{clip-path:polygon(0 0,calc(100% - 36px) 0,100% 50%,calc(100% - 36px) 100%,0 100%);padding-left:0;background:rgba(0,129,204,.22)}
+#P23 .step[style*="left:664px"]{background:rgba(0,129,204,.42)}
+#P23 .step[style*="left:1295px"]{background:rgba(0,129,204,.7);width:591px!important}
+#P23 .step.nx:after{display:none}
 </style></head>
 <body>
 <div class="stage" id="stage">
