@@ -576,6 +576,44 @@ html.embed,html.embed body,html.embed .stage{background:transparent}html.embed #
 #K13 .rl .rh{margin:0 0 30px}
 #K13 .ev{padding-left:56px;padding-right:56px}#K13 .ev .btn{left:56px;right:56px}
 #K13 .rl ul{gap:20px}
+
+/* K14 (11/23 23:00) 참고 이미지(경쟁사 비교표) 방식 — 둥근 어두운 판 · 위 열 머리 칩(회사 회색 · 관리기관 무지개빛) · 행마다 단계 아이콘 타일 + 회사 역할(흰색) + 관리기관 역할(강조색 제목 + 흰색 설명). → 로 한 행씩 */
+#K14 .k14p{position:absolute;left:300px;right:300px;top:200px;bottom:150px;border-radius:64px;background:#14181f;box-shadow:inset 0 0 0 2px rgba(242,245,250,.05);padding:90px 110px 60px}
+#K14 .th,#K14 .tr{display:grid;grid-template-columns:600px 1fr 1fr;column-gap:80px;align-items:center}
+#K14 .th>div{display:flex;flex-direction:column;align-items:center;text-align:center}
+#K14 .chip{margin:0;min-width:620px;height:128px;padding:0 60px;border-radius:22px;display:flex;align-items:center;justify-content:center;background:#2a2f38;font:700 60px/1 "Pretendard Variable";color:#F2F5FA;letter-spacing:-.01em}
+#K14 .chip.ir{color:#0a1320;background:linear-gradient(100deg,#bfe9ff 0%,#9fd8ff 22%,#d9ccff 46%,#b8f3e6 72%,#e8fbff 100%);box-shadow:0 0 40px rgba(150,220,255,.25)}
+#K14 .th small{margin-top:26px;font:400 40px/1.35 "Pretendard Variable";color:var(--mut)}
+#K14 .tr{height:290px;border-top:2px solid rgba(242,245,250,.07)}
+#K14 .th{margin-bottom:30px}
+#K14 .st{display:flex;align-items:center;gap:40px}
+#K14 .ti{flex:none;width:150px;height:150px;border-radius:36px;display:flex;align-items:center;justify-content:center;color:#fff}
+#K14 .ti svg{width:76px;height:76px}
+#K14 .ti.t0{background:linear-gradient(140deg,#4677e6,#1d3f9e)}
+#K14 .ti.t1{background:linear-gradient(140deg,#3aa0ea,#0e6aa8)}
+#K14 .ti.t2{background:linear-gradient(140deg,#3cc9c4,#0d7f86)}
+#K14 .st b{font:700 66px/1.2 "Pretendard Variable";color:#F2F5FA}
+#K14 .co{margin:0;text-align:center;font:400 50px/1.45 "Pretendard Variable";color:rgba(242,245,250,.86)}
+#K14 .ag{display:flex;flex-direction:column;align-items:center;text-align:center;gap:16px}
+#K14 .ag b{font:700 58px/1.3 "Pretendard Variable";color:#6fd3f0}
+#K14 .ag span{font:400 44px/1.4 "Pretendard Variable";color:#F2F5FA}
+
+/* K15 (11/23 23:02) 참고 이미지(로드맵 열) 방식 — 위 단계 머리(연도 + 굵은 단계명, 단계 색), 아래 4열 패널(위 색 선 + 아래로 사라지는 색 면), 지금 열(12월)은 떠 있는 카드 + 「지금 시작」 칩 */
+#K15 .h .ac{background:linear-gradient(90deg,#3aa0ea,#3cc9c4);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent}
+#K15 .ph>div{position:absolute;top:400px}
+#K15 .ph span{display:block;font:300 72px/1 "Pretendard Variable";letter-spacing:-.01em}
+#K15 .ph b{display:block;margin-top:22px;font:700 88px/1 "Pretendard Variable";letter-spacing:-.02em}
+#K15 .ph .p0{color:#7fa2ef}#K15 .ph .p1{color:#6fc0f2}#K15 .ph .p2{color:#5fd8d3}
+#K15 .ph .p0 b{color:#6f95ee}#K15 .ph .p1 b{color:#4fb2ee}#K15 .ph .p2 b{color:#3cc9c4}
+#K15 .cols{position:absolute;left:180px;right:180px;top:720px;height:700px;display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+#K15 .col{position:relative;padding:150px 120px 0;border-top:6px solid var(--cc);background:linear-gradient(180deg,var(--cf) 0%,rgba(0,0,0,0) 78%)}
+#K15 .c0{--cc:#4677e6;--cf:rgba(70,119,230,.34)}#K15 .c1{--cc:#3aa0ea;--cf:rgba(58,160,234,.28)}#K15 .c2{--cc:#3cc9c4;--cf:rgba(60,201,196,.28)}
+#K15 .col .mo{margin:0;font:700 64px/1 "Pretendard Variable";color:var(--cc);filter:brightness(1.25)}
+#K15 .col .k{margin:56px 0 0;font:500 64px/1.4 "Pretendard Variable";color:#F2F5FA}
+#K15 .col .sb{margin:26px 0 0;font:400 50px/1.45 "Pretendard Variable";color:var(--mut)}
+#K15 .col.hl{margin:-80px -8px -50px;padding-top:230px;border-top:0;border-radius:48px;background:linear-gradient(180deg,#1d3a7a 0%,#152a57 60%,#101d3a 100%);box-shadow:0 40px 120px rgba(0,0,0,.55),0 0 0 2px rgba(120,160,255,.18)}
+#K15 .col.hl .ms{position:absolute;left:40px;right:40px;top:36px;margin:0;height:116px;border-radius:24px;display:flex;align-items:center;justify-content:center;background:linear-gradient(90deg,#6f9cff,#3cc9c4);font:700 52px/1 "Pretendard Variable";color:#06121c;box-shadow:0 0 50px rgba(90,170,255,.45)}
+#K15 .col.hl .mo{color:#9fbcff;filter:none}
 </style></head>
 <body>
 <div class="stage" id="stage">
@@ -700,23 +738,16 @@ html.embed,html.embed body,html.embed .stage{background:transparent}html.embed #
 </section>
 
 <section class="s" id="K14" data-t="회사와 관리기관의 역할" data-dim=".14" data-steps="3">
- <div class="top" style="top:150px"></div>
- <div class="hd fu" style="--i:1;left:300px;text-align:right"><b>회사</b><span>전자주총 운영규정 기반 · 주주총회의 실질적 운영 주체</span></div>
- <div class="hd fu" style="--i:1;right:300px"><b>전자주총관리기관</b><span>회사가 법 · 제도를 준수할 수 있도록 시스템 및 운영 지원</span></div>
- <div class="spine fu" style="--i:1"></div>
- <div class="row" data-b="1" style="top:660px"><div class="l">운영규정 제정 · 이사회 결의<br>소집통지 작성 및 발송</div><div class="m"><b>총회 전</b></div><div class="r">기업용 시스템 · 주주용 서비스 제공<br>담당자 교육 · 소집지 사전점검 · 모의전자주총 · 리허설</div></div>
- <div class="row" data-b="2" style="top:930px"><div class="l">총회 의사 진행 및<br>주주권 관련 최종 판단</div><div class="m"><b>총회 당일</b></div><div class="r">당일 현장 운영지원 · 생중계 운영<br>주주용 고객센터 운영</div></div>
- <div class="row" data-b="3" style="top:1200px"><div class="l">의사록 작성 · 기록보존 및 개인정보 최종 관리<br>주주 분쟁 · 결의하자 소송 대응</div><div class="m"><b>총회 후</b></div><div class="r">장애 감지 및 대응 내역<br>기록 인계</div></div>
+ <div class="k14p fu" style="--i:1">
+  <div class="th"><span></span><div><p class="chip">회사</p><small>전자주총 운영규정 기반 · 주주총회의 실질적 운영 주체</small></div><div><p class="chip ir">전자주총관리기관</p><small>회사가 법 · 제도를 준수할 수 있도록 시스템 및 운영 지원</small></div></div>
+  <div class="tr" data-b="1"><div class="st"><i class="ti t0"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="10" width="32" height="30" rx="5"/><path d="M8 19h32M17 6v8M31 6v8M16 27l5 5 10-10"/></svg></i><b>총회 전</b></div><p class="co">운영규정 제정 · 이사회 결의<br>소집통지 작성 및 발송</p><div class="ag"><b>기업용 시스템 · 주주용 서비스 제공</b><span>담당자 교육 · 소집지 사전점검 · 모의전자주총 · 리허설</span></div></div><div class="tr" data-b="2"><div class="st"><i class="ti t1"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><rect x="17" y="5" width="14" height="24" rx="7"/><path d="M10 23a14 14 0 0 0 28 0M24 37v6M16 43h16"/></svg></i><b>총회 당일</b></div><p class="co">총회 의사 진행 및<br>주주권 관련 최종 판단</p><div class="ag"><b>당일 현장 운영지원 · 생중계 운영</b><span>주주용 고객센터 운영</span></div></div><div class="tr" data-b="3"><div class="st"><i class="ti t2"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="9" width="34" height="10" rx="3"/><path d="M10 19v19a3 3 0 0 0 3 3h22a3 3 0 0 0 3-3V19M20 27h8"/></svg></i><b>총회 후</b></div><p class="co">의사록 작성 · 기록보존 및 개인정보 최종 관리<br>주주 분쟁 · 결의하자 소송 대응</p><div class="ag"><b>장애 감지 및 대응 내역</b><span>기록 인계</span></div></div>
+ </div>
 </section>
 
 <section class="s" id="K15" data-t="준비 로드맵 12월→3월" data-dim=".16">
- <div class="top"><h2 class="h hm fu" style="--i:1">운영규정부터 소집통지 · 리허설까지</h2></div>
- <div class="line fu" style="--i:2"></div>
- <div class="today fu" style="--i:2"><span>11.30 Today</span><i></i></div>
- <div class="m fu" style="--i:3;left:700px"><i class="dot"></i><p class="mo">12<small>월</small></p><ul><li class="k">운영규정 수립</li><li>이사회 결의</li><li>관리기관 선정 · 계약</li></ul></div>
- <div class="m fu" style="--i:4;left:1500px"><i class="dot"></i><p class="mo">1<small>월</small></p><ul><li class="k">소집지 점검</li><li>담당자 교육 · 테스트 모드</li><li>주총일 확정</li></ul></div>
- <div class="m fu" style="--i:5;left:2300px"><i class="dot"></i><p class="mo">2<small>월</small></p><ul><li class="k">명부 · 의안 확정</li><li>모의전자주총</li><li>소집통지 발송</li></ul></div>
- <div class="m fu" style="--i:6;left:3100px"><i class="dot" style="border-color:var(--c2)"></i><p class="mo">3<small>월</small></p><ul><li class="k">전날 리허설</li><li>정기주주총회</li><li>기록 인계 · 보존</li></ul></div>
+ <div class="top"><h2 class="h hm fu" style="--i:1">운영규정부터 <span class="ac">소집통지 · 리허설까지</span></h2></div>
+ <div class="ph fu" style="--i:2"><div class="p0" style="left:300px"><span>2026</span><b>기반 마련</b></div><div class="p1" style="left:1263px"><span>2027</span><b>준비 · 점검</b></div><div class="p2" style="left:3189px"><span>2027</span><b>정기주총</b></div></div>
+ <div class="cols"><div class="col c0 hl fu" style="--i:3"><p class="ms">지금 시작 · 11.30 Today</p><p class="mo">12월</p><p class="k">운영규정 수립<br>이사회 결의</p><p class="sb">관리기관 선정 · 계약</p></div><div class="col c1 fu" style="--i:4"><p class="mo">1월</p><p class="k">소집지 점검<br>주총일 확정</p><p class="sb">담당자 교육 · 테스트 모드</p></div><div class="col c1 fu" style="--i:5"><p class="mo">2월</p><p class="k">명부 · 의안 확정<br>모의전자주총</p><p class="sb">소집통지 발송</p></div><div class="col c2 fu" style="--i:6"><p class="mo">3월</p><p class="k">전날 리허설<br>정기주주총회</p><p class="sb">기록 인계 · 보존</p></div></div>
 </section>
 
 <!-- ═════════ 4. IR큐더스 ═════════ -->
