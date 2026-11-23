@@ -216,7 +216,7 @@ function build(){
     /* 운영 인력(파란 번호) — 7p·8p 도면 위치 */
     function staff(grp,n,x,z){var c=document.createElement('canvas');c.width=c.height=96;var g2=c.getContext('2d');g2.fillStyle='#1b3cff';g2.beginPath();g2.arc(48,48,44,0,6.2832);g2.fill();g2.lineWidth=5;g2.strokeStyle='#fff';g2.stroke();
       g2.fillStyle='#fff';g2.font='700 '+(n>9?50:58)+'px Arial,sans-serif';g2.textAlign='center';g2.textBaseline='middle';g2.fillText(String(n),48,51);
-      var sp=new THREE.Sprite(new THREE.SpriteMaterial({map:new THREE.CanvasTexture(c),transparent:true,depthTest:false}));sp.scale.set(.9,.9,1);sp.position.set(x,2.6,z);grp.add(sp);
+      var sp=new THREE.Sprite(new THREE.SpriteMaterial({map:new THREE.CanvasTexture(c),transparent:true,depthTest:false}));sp.scale.set(.45,.45,1);sp.position.set(x,2.35,z);grp.add(sp);
       var p=new THREE.Mesh(new THREE.CylinderGeometry(.2,.3,2,12),new THREE.MeshStandardMaterial({color:0x2a4bff,emissive:0x10206a,emissiveIntensity:.7}));p.position.set(x,1,z);grp.add(p);}
     var SB=[[1,23.9,-4.9],[2,-17.6,-7.3],[3,-22.3,8.9],[4,-25.1,-4.1],[5,-19.4,-8.4],[5,-19.4,1.6],[6,-19.4,6.3],[7,-7.9,12.4],[8,30.2,2.7],[8,-14.2,22.6],[8,6.8,22.6],[9,24.6,23.6],[10,dx[0],15.2],[12,21,12.4],[12,23.2,12.4],[12,25.4,12],[13,19.4,18.2],[14,-4.5,-12.4],[15,23.9,-9.2],[16,26.1,-3],[17,26.1,5.7],[18,24.5,-11]];
     for(i=1;i<7;i++)SB.push([11,dx[i],15.2]);
