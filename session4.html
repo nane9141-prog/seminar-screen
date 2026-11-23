@@ -512,6 +512,7 @@ html.embed,html.embed body,html.embed .stage{background:transparent}html.embed #
 #K07 .col:nth-child(2),#K07 .col:nth-child(3){background:radial-gradient(120% 80% at 80% 100%,#4677e6 0%,rgba(70,119,230,0) 60%),linear-gradient(170deg,#e9eef8 0%,#b8c9ee 100%)}
 #K07 .col:nth-child(2) .tg,#K07 .col:nth-child(3) .tg{background:#2f62d8}
 #K07 .col:nth-child(4),#K07 .col:nth-child(5){background:radial-gradient(120% 80% at 80% 100%,#64a8e6 0%,rgba(100,168,230,0) 60%),linear-gradient(170deg,#e8f1f8 0%,#b8d5ee 100%)}
+#K11 .tri{background:rgba(58,157,255,.12);border-top-color:#3a9dff}  /* △ 칸 윗선 · 면도 파랑 */
 </style></head>
 <body>
 <div class="stage" id="stage">
@@ -1200,7 +1201,7 @@ VIZ.seoul=(cv)=>{const g=cv.getContext('2d');let t0=0,st=0,ts=0;const W=cv.width
  const L1=document.createElement('canvas'),L2=document.createElement('canvas');L1.width=L2.width=W;L1.height=L2.height=H;const g1=L1.getContext('2d'),g2=L2.getContext('2d');g1.fillStyle=g2.fillStyle='#f2f5fa';
  for(let y=-10;y<H+10;y+=19)for(let x=((y+10)/19%2)*9.5-10;x<W+10;x+=19){const jx=x+(rnd()-.5)*5,jy=y+(rnd()-.5)*5;const[u,v]=toI(jx,jy);if(!land(u,v))continue;if(Math.abs(jy-rv(jx))<20)continue;
   const ins=inside(jx,jy),d=ins?0:dseg(jx,jy),core=ins?1:Math.exp(-Math.pow(d/320,1.1));
-  const vg=sm(0,320,jx)*sm(0,90,W-jx)*sm(0,70,Math.min(jy,H-jy));const a=.15*vg;if(a<.015)continue;
+  const vg=sm(0,320,jx)*sm(0,90,W-jx)*sm(0,240,Math.min(jy,H-jy));const a=.15*vg;if(a<.015)continue;
   const sharp=Math.min(vg*1.4,1);const r=4.6;
   if(sharp>.02){g1.globalAlpha=a*sharp;g1.beginPath();g1.arc(jx,jy,r,0,7);g1.fill();}
   if(sharp<.98){g2.globalAlpha=a*(1-sharp);g2.beginPath();g2.arc(jx,jy,r+.6,0,7);g2.fill();}}
