@@ -464,6 +464,17 @@ html.embed,html.embed body,html.embed .stage{background:transparent}html.embed #
 #K11 #marsub{color:#F2F5FA}  /* 설명은 K10 「2026년 기준」처럼 제목 위 회색 눈썹으로, 기준 줄은 제목 아래 흰색 */
 #K11 .m27 .bar.fb{transition:transform 1s cubic-bezier(.2,.7,.2,1),opacity .4s}#K11[data-step="2"] .m27 .bar.fb{opacity:0}  /* FULL BOOKING 뒤 이전 단계 막대 · 숫자 숨김 */
 #K11 .tri span{color:#3a9dff}  /* 세모 파란색 */
+/* K14 (11/23 20:25): 가운데 세로 축(단계 점) + 좌우 칸만 구분선, 단계 번호 삭제, 두 머리글 모두 흰색 */
+#K14 .hd{top:380px}
+#K14 .hd b{color:#F2F5FA;-webkit-text-fill-color:#F2F5FA}
+#K14 .hd span{display:block;margin-top:14px}
+#K14 .spine{position:absolute;left:2099px;top:600px;height:740px;width:2px;background:linear-gradient(180deg,rgba(0,129,204,0),rgba(0,129,204,.55) 12%,rgba(0,173,169,.55) 88%,rgba(0,173,169,0))}
+#K14 .row{height:270px;border-top:0;column-gap:0}
+#K14 .row .l,#K14 .row .r{align-self:stretch;display:flex;flex-direction:column;justify-content:center;border-top:3px solid var(--line)}
+#K14 .row .l{align-items:flex-end}
+#K14 .row .m{position:relative;display:flex;flex-direction:column;align-items:center;gap:22px;font-size:66px}
+#K14 .row .m::before{content:"";width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,#0081cc,#00ada9);box-shadow:0 0 0 10px rgba(0,0,0,.85),0 0 30px rgba(0,173,169,.6)}
+#K14 .row .m b{font:inherit;color:inherit;background:#000;padding:10px 26px;border-radius:12px}  /* 세로 축이 글자를 지나지 않게 */
 </style></head>
 <body>
 <div class="stage" id="stage">
@@ -587,10 +598,11 @@ html.embed,html.embed body,html.embed .stage{background:transparent}html.embed #
 <section class="s" id="K14" data-t="회사와 관리기관의 역할" data-dim=".14" data-steps="3">
  <div class="top" style="top:150px"></div>
  <div class="hd fu" style="--i:1;left:300px;text-align:right"><b>회사</b><span>전자주총 운영규정 기반 · 주주총회의 실질적 운영 주체</span></div>
- <div class="hd fu" style="--i:1;right:300px"><b class="g">전자주총관리기관</b><span>회사가 법 · 제도를 준수할 수 있도록 시스템 및 운영 지원</span></div>
- <div class="row" data-b="1" style="top:720px"><div class="l">운영규정 제정 · 이사회 결의<br>소집통지 작성 및 발송</div><div class="m"><small>❶</small>총회 전</div><div class="r">기업용 시스템 · 주주용 서비스 제공<br>담당자 교육 · 소집지 사전점검 · 모의전자주총 · 리허설</div></div>
- <div class="row" data-b="2" style="top:970px"><div class="l">총회 의사 진행 및<br>주주권 관련 최종 판단</div><div class="m"><small>❷</small>총회 당일</div><div class="r">당일 현장 운영지원 · 생중계 운영<br>주주용 고객센터 운영</div></div>
- <div class="row" data-b="3" style="top:1220px"><div class="l">의사록 작성 · 기록보존 및 개인정보 최종 관리<br>주주 분쟁 · 결의하자 소송 대응</div><div class="m"><small>❸</small>총회 후</div><div class="r">장애 감지 및 대응 내역<br>기록 인계</div></div>
+ <div class="hd fu" style="--i:1;right:300px"><b>전자주총관리기관</b><span>회사가 법 · 제도를 준수할 수 있도록 시스템 및 운영 지원</span></div>
+ <div class="spine fu" style="--i:1"></div>
+ <div class="row" data-b="1" style="top:660px"><div class="l">운영규정 제정 · 이사회 결의<br>소집통지 작성 및 발송</div><div class="m"><b>총회 전</b></div><div class="r">기업용 시스템 · 주주용 서비스 제공<br>담당자 교육 · 소집지 사전점검 · 모의전자주총 · 리허설</div></div>
+ <div class="row" data-b="2" style="top:930px"><div class="l">총회 의사 진행 및<br>주주권 관련 최종 판단</div><div class="m"><b>총회 당일</b></div><div class="r">당일 현장 운영지원 · 생중계 운영<br>주주용 고객센터 운영</div></div>
+ <div class="row" data-b="3" style="top:1200px"><div class="l">의사록 작성 · 기록보존 및 개인정보 최종 관리<br>주주 분쟁 · 결의하자 소송 대응</div><div class="m"><b>총회 후</b></div><div class="r">장애 감지 및 대응 내역<br>기록 인계</div></div>
 </section>
 
 <section class="s" id="K15" data-t="준비 로드맵 12월→3월" data-dim=".16">
