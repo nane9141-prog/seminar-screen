@@ -141,6 +141,8 @@ def chart_html(ch, x, y, w, h):
     cols = ['rgba(242,245,250,.38)', '#0081cc']
     if len(ser) == 1: cols = ['#0081cc']
     gw = w / len(cats); bw = min(46, gw * .7 / len(ser))
+    if CUR[0] == 10: bw = min(120, gw * .4)  # 10장: 막대 굵게
+    dec = max((len(f'{v:g}'.split('.')[1]) if '.' in f'{v:g}' else 0) for s in ser for v in s.values if v is not None)  # 한 차트 안 소수 자릿수 통일 (50 → 50.0)
     ttl = CHART_TITLE.get(CUR[0])
     out = [f'<div class="chart{" t" if ttl else ""}" style="left:{x:.0f}px;top:{y:.0f}px;width:{w:.0f}px;height:{h:.0f}px">' + (f'<p class="ct">{esc(ttl)}</p>' if ttl else '')]
     ph = h - 54 - (34 if len(ser) > 1 else 0) - (44 if ttl else 0)
@@ -149,7 +151,7 @@ def chart_html(ch, x, y, w, h):
         for j, s in enumerate(ser):
             v = s.values[i]; bh = v / vmax * ph
             bx = cx - bw * len(ser) / 2 + j * bw
-            lab = f'{v:g}' if v != int(v) else f'{int(v)}'
+            lab = f'{v:.{dec}f}'
             out.append(f'<div class="cb" style="left:{bx:.0f}px;width:{bw-4:.0f}px;height:{bh:.0f}px;bottom:44px;background:{cols[j%len(cols)]}"><i>{lab}</i></div>')
         out.append(f'<div class="cl" style="left:{gw*i:.0f}px;width:{gw:.0f}px">{esc(str(c))}</div>')
     if len(ser) > 1:
