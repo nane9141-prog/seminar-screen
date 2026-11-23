@@ -478,6 +478,21 @@ body.idle{cursor:none}
 @keyframes paU{from{opacity:0;transform:scaleX(0)}to{opacity:1;transform:none}}
 .pa-sb{margin:70px 0 0;font:400 64px/1 "Pretendard Variable",sans-serif;color:#A9B4C4;opacity:0}
 .slide[data-pp=d] .pa-sb{animation:fu .9s 1.1s cubic-bezier(.2,.7,.2,1) both}
+/* M7-4 (11/23 21:14): Meet 화면을 PIP 두 개로 — 왼쪽 큰 창 발표 슬라이드(16:9), 오른쪽 작은 창 연사 얼굴. 연결 전엔 연사 사진 */
+.pipl .zm-c.pip-s{left:700px;top:150px;width:2400px;height:1350px;border-radius:32px;box-shadow:0 0 0 3px rgba(0,129,204,.4),0 40px 120px rgba(0,0,0,.5)}
+.pipl .zm-c.pip-f{left:3160px;top:150px;width:950px;height:760px;border-radius:32px;box-shadow:0 0 0 3px rgba(0,173,169,.45),0 40px 120px rgba(0,0,0,.5)}
+.pipl .pip-f .zm-v{object-fit:cover}
+.pipl .pip-f .pip-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 18%;opacity:.55}
+.pipl .pip-f.on .pip-bg{display:none}
+.pipl .pip-f .zm-ph{justify-content:flex-end;padding-bottom:110px}
+.pipl .pip-f .zm-ph small{color:#9FB0C4;font-size:32px}
+.pipl .pip-tag{position:absolute;left:28px;top:28px;display:flex;align-items:center;gap:14px;padding:12px 22px;border-radius:999px;background:rgba(5,8,13,.72);font:500 34px/1 "Pretendard Variable",sans-serif;color:#fff;letter-spacing:.01em}
+.pipl .pip-tag i{width:16px;height:16px;border-radius:50%;background:#ff4d4f;animation:zmPulse 1.8s ease-out infinite}
+.pipl .pip-f .pip-tag{top:auto;bottom:28px}
+.pipl .pip-ev{position:absolute;left:3160px;width:950px;top:960px;height:540px;display:flex;flex-direction:column;justify-content:flex-end}
+.pipl .pip-ev .pp-en{margin:0}
+.pipl .pip-ev .pp-ev{margin:22px 0 0}
+.pipl .pip-ev .pp-lg{position:static;height:72px;width:auto;align-self:flex-start;margin-top:48px}
 </style></head>
 <body>
 <div class="stage" id="scr" data-foot="full">
@@ -613,12 +628,12 @@ body.idle{cursor:none}
 <div class="px-r fu" style="--i:2"><div><b>105+</b><span>서비스 시장</span></div><div><b>8<i>/</i>10</b><span>글로벌 10대 수탁은행</span></div><div><b>150%+</b><span>주주 참여 증가</span></div><div><b>4X</b><span>의결권 처리량 증가<small>전년 대비</small></span></div><p class="px-src">Source: proxymity.io</p></div>
 </div>
 </section>
-<section class="slide" id="m7_4" data-no="M7-4" data-title="M7-4 Session 3 · Google Meet 화면 (가운데 16:9)" data-bg="B" data-foot="none" data-zoom="1" data-ox=".5" data-dim=".25" >
+<section class="slide pipl" id="m7_4" data-no="M7-4" data-title="M7-4 Session 3 · Google Meet 화면 (가운데 16:9)" data-bg="B" data-foot="none" data-zoom="1" data-ox=".5" data-dim=".25" >
 <div class="zm pp">
 <div class="pp-l"><p class="pp-s fu" style="--i:0">Session 3.</p><h2 class="pp-t" data-words style="--i:1">Proxymity,<br>글로벌 의결권<br>행사 인프라의<br>혁신과 미래</h2><p class="pp-live fu" style="--i:3"><i></i>LIVE<span>via Google Meet</span></p>
 <div class="pp-who fu" style="--i:3"><p class="pp-n">Scott Oakland</p><p class="pp-ro">Proxymity,<br>Head of APAC</p></div></div>
-<div class="zm-c fu" style="--i:1"><video class="zm-v" muted playsinline></video><p class="zm-ph">MEET 화면 · 16:9<br><small>V: 이 PC의 Meet 창 캡처 · C: 캡처보드 입력 · X: 해제</small></p></div>
-<div class="pp-r"><p class="pp-en fu" style="--i:2">Live Demo Briefing</p><p class="pp-ev fu" style="--i:2">전자주주총회<br>플랫폼<br>시연 설명회</p><img class="pp-lg fu" style="--i:3" src="assets/irk-white.svg" alt="IR KUDOS"><div class="pp-ph fu" style="--i:3"><img src="assets/speaker-scott.webp" alt=""></div></div>
+<div class="zm-c pip-s fu" style="--i:1"><video class="zm-v" muted playsinline></video><p class="zm-ph">발표 슬라이드 · 16:9<br><small>V · C: 슬라이드 창 캡처 · 캡처보드 &nbsp;/&nbsp; Shift+V · Shift+C: 연사 얼굴 창 &nbsp;/&nbsp; X: 모두 해제</small></p><span class="pip-tag">Slides</span></div><div class="zm-c pip-f fu" style="--i:2"><img class="pip-bg" src="assets/speaker-scott.webp" alt=""><video class="zm-v" muted playsinline></video><span class="pip-tag"><i></i>Scott Oakland</span></div>
+<div class="pip-ev fu" style="--i:3"><p class="pp-en">Live Demo Briefing</p><p class="pp-ev">전자주주총회 플랫폼 시연 설명회</p><img class="pp-lg" src="assets/irk-white.svg" alt="IR KUDOS"></div>
 </div>
 </section>
 <section class="slide" id="m7_5" data-no="M7-5" data-title="M7-5 Session 4 연사 소개 · 박성용" data-bg="B" data-foot="full" data-spk="speaker3-1">
@@ -871,11 +886,12 @@ document.querySelectorAll('[data-words]').forEach(el=>{let w=0;[...el.childNodes
 document.querySelectorAll('[data-stagger]').forEach(el=>[...el.children].forEach((c,i)=>c.style.setProperty('--w',i)));
 
 
-// M7-4 Meet 화면: V = 이 PC 화면/창 캡처(Meet 창 선택), C = 캡처보드(카메라 장치) 입력, X = 해제
-let ZMS=null;async function zoomIn(m){const box=slides[idx].querySelector('.zm-c'),v=box.querySelector('video');
-  if(ZMS){ZMS.getTracks().forEach(t=>t.stop());ZMS=null;}v.srcObject=null;box.classList.remove('on');if(m==='x'){toast('Meet 입력 해제');return;}
-  try{ZMS=m==='v'?await navigator.mediaDevices.getDisplayMedia({video:{frameRate:30},audio:false}):await navigator.mediaDevices.getUserMedia({video:{width:{ideal:1920},height:{ideal:1080},frameRate:{ideal:30}},audio:false});
-    v.srcObject=ZMS;await v.play();box.classList.add('on');ZMS.getVideoTracks()[0].addEventListener('ended',()=>{box.classList.remove('on');ZMS=null;});toast(m==='v'?'화면 캡처 연결':'캡처보드 연결');}
+// M7-4 Meet 화면 (PIP 두 개): V · C = 발표 슬라이드 창(화면 캡처 · 캡처보드), Shift+V · Shift+C = 연사 얼굴 창, X = 모두 해제. 다른 발표자료 화면은 V · C · X 그대로
+async function zoomIn(m,sel){const sl=slides[idx];const stop=b=>{if(b._s){b._s.getTracks().forEach(t=>t.stop());b._s=null;}const v=b.querySelector('video');if(v)v.srcObject=null;b.classList.remove('on');};
+  if(m==='x'){sl.querySelectorAll('.zm-c').forEach(stop);toast('화면 입력 해제');return;}
+  const box=sl.querySelector(sel||'.zm-c'),v=box&&box.querySelector('video');if(!v)return;stop(box);
+  try{const S=m==='v'?await navigator.mediaDevices.getDisplayMedia({video:{frameRate:30},audio:false}):await navigator.mediaDevices.getUserMedia({video:{width:{ideal:1920},height:{ideal:1080},frameRate:{ideal:30}},audio:false});
+    box._s=S;v.srcObject=S;await v.play();box.classList.add('on');S.getVideoTracks()[0].addEventListener('ended',()=>{box.classList.remove('on');box._s=null;});toast((sel==='.pip-f'?'연사 화면 ':'')+(m==='v'?'화면 캡처 연결':'캡처보드 연결'));}
   catch(err){toast('입력 연결 실패: '+(err.name||err));}}
 function fillMeasure(){document.querySelectorAll('.slide[data-fill] h1[data-words]').forEach(h=>{const W=[...h.querySelectorAll('.w')];if(!W.length)return;
   const L=Math.min(...W.map(w=>w.offsetLeft)),Rr=Math.max(...W.map(w=>w.offsetLeft+w.offsetWidth));h.style.setProperty('--tw',(Rr-L)+'px');W.forEach(w=>w.style.setProperty('--wl',(w.offsetLeft-L)+'px'));});}
@@ -947,7 +963,7 @@ addEventListener('keydown',e=>{const k=e.key;
   if(k==='Enter'&&numbuf){const n=byNo('M'+numbuf);if(n>=0)go(n);else toast('없는 화면: M'+numbuf);numbuf='';return;}
   if(k==='Escape'&&numbuf){numbuf='';toast('취소');return;}
   numbuf='';
-  if(slides[idx]&&slides[idx].dataset.zoom&&/^[vVcCxX]$/.test(k)){e.preventDefault();zoomIn(k.toLowerCase());return;}
+  if(slides[idx]&&slides[idx].dataset.zoom&&/^[vVcCxX]$/.test(k)){e.preventDefault();const fp=e.shiftKey&&slides[idx].querySelector('.pip-f');zoomIn(k.toLowerCase(),fp?'.pip-f':null);return;}
   const qa=slides[idx]&&slides[idx].dataset.qa;
   if(qa&&(k==='ArrowRight'||k==='ArrowLeft')){e.preventDefault();if(QSRC==='online'){toast('온라인 질문 — control에서 넘겨 주세요');return;}qStep(k==='ArrowRight'?1:-1);return;}
   if(k==='ArrowRight'||k==='PageDown'||k===' '||k==='ArrowDown'){e.preventDefault();step(1);}
