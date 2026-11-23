@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#04070f">
+<title>사회자 대본 · 전자주주총회 플랫폼 시연 설명회</title>
+<style>
+@font-face{font-family:"Pretendard Variable";src:url(assets/PretendardVariable.woff2) format("woff2");font-weight:45 920;font-display:swap}
+:root{--bg:#04070f;--ink:#f2f5fa;--dim:rgba(242,245,250,.42);--faint:rgba(242,245,250,.14);--blue:#0081cc;--teal:#00ada9;--amber:#ffb547;--rose:#ff4d6d;--fs:40px}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:var(--bg);color:var(--ink);font-family:"Pretendard Variable",Pretendard,system-ui,sans-serif;letter-spacing:-.01em;-webkit-text-size-adjust:100%}
+body{display:grid;grid-template-rows:auto 1fr;overflow:hidden}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+/* 상단 */
+#top{display:grid;grid-template-columns:auto 1fr auto auto;align-items:center;gap:28px;padding:14px 24px;border-bottom:1px solid var(--faint)}
+#clock{font-size:34px;font-weight:600;font-variant-numeric:tabular-nums}
+#link{display:flex;align-items:center;gap:8px;font-size:14px;color:var(--dim);margin-top:2px}
+#link i{width:9px;height:9px;border-radius:50%;background:var(--rose)}
+#link.ok i{background:var(--teal)}
+#now{min-width:0}
+#now .no{font-size:15px;color:var(--dim)}
+#now .t{font-size:26px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#now .t small{font-size:18px;font-weight:500;color:var(--teal);margin-left:12px}
+#seg{text-align:right;font-variant-numeric:tabular-nums}
+#seg .a{font-size:15px;color:var(--dim)}
+#seg .b{font-size:22px;font-weight:600}
+#seg .b.late{color:var(--amber)}
+#tools{display:flex;gap:6px}
+#tools button{height:44px;min-width:44px;padding:0 14px;border:1px solid var(--faint);border-radius:6px;font-size:16px}
+#tools button.on{background:var(--blue);border-color:var(--blue)}
+/* 본문 */
+#main{display:grid;grid-template-columns:1fr 360px;min-height:0}
+#scroll{overflow-y:auto;padding:12vh 56px 60vh;scroll-behavior:smooth}
+#side{border-left:1px solid var(--faint);overflow-y:auto;padding:24px}
+h2{font-size:20px;font-weight:600;color:var(--dim);margin:72px 0 18px;display:flex;gap:14px;align-items:baseline}
+h2 span{font-weight:500;font-variant-numeric:tabular-nums}
+h2 span.mv{color:var(--amber)}
+section:first-child h2{margin-top:0}
+.cue{position:relative;padding:22px 0 22px 28px;border-left:4px solid transparent;opacity:.32;transition:opacity .3s}
+.cue.cur{opacity:1;border-left-color:var(--blue)}
+.cue.nx{opacity:.6}
+.cue:hover{opacity:.8}
+.cue.cur:hover{opacity:1}
+.mk{font-size:17px;font-weight:600;color:var(--blue);margin-bottom:12px;font-variant-numeric:tabular-nums}
+.mk b{color:var(--ink);font-weight:600;margin-left:10px}
+.cue:not(.cur) .mk{color:var(--dim)}
+.say{font-size:var(--fs);line-height:1.6;font-weight:500;margin:0 0 .55em;text-wrap:pretty;word-break:keep-all}
+.note{font-size:calc(var(--fs)*.58);line-height:1.5;color:var(--dim);margin:0 0 .8em;word-break:keep-all}
+.at{font-size:calc(var(--fs)*.5);font-weight:600;color:var(--dim);margin:.6em 0 .4em}
+.turn{display:flex;width:max-content;max-width:100%;align-items:center;gap:10px;font-size:calc(var(--fs)*.55);font-weight:600;color:var(--teal);margin:.2em 0 .8em}
+.turn::before{content:"";width:28px;height:2px;background:var(--teal)}
+.ph{color:var(--amber)}
+.en{font-style:italic}
+/* 질문 */
+.qa{border:1px solid var(--faint);border-radius:8px;padding:22px 26px;margin:0 0 .9em}
+.qa .k{font-size:16px;font-weight:600;color:var(--teal);margin-bottom:8px}
+.qa .k.pre{color:var(--blue)}
+.qa .x{font-size:calc(var(--fs)*.8);line-height:1.5;font-weight:500;word-break:keep-all}
+.qa .m{font-size:16px;color:var(--dim);margin-top:10px}
+.qa.idle .x{color:var(--dim);font-size:calc(var(--fs)*.55)}
+/* 사이드 */
+.sd-h{font-size:14px;font-weight:600;color:var(--dim);margin:0 0 10px}
+#next{margin-bottom:34px}
+#next .no{font-size:14px;color:var(--teal);font-weight:600}
+#next .t{font-size:20px;font-weight:600;margin:4px 0 8px}
+#next .p{font-size:16px;line-height:1.55;color:var(--dim);display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
+#sched{list-style:none;font-variant-numeric:tabular-nums}
+#sched li{display:grid;grid-template-columns:96px 1fr;gap:8px;padding:9px 0;border-top:1px solid var(--faint);font-size:15px;color:var(--dim)}
+#sched li.on{color:var(--ink)}
+#sched li.on b{color:var(--blue)}
+#sched li b{font-weight:600}
+#sched li em{font-style:normal;color:var(--amber)}
+/* 돌발 */
+#em{position:fixed;inset:0;background:rgba(4,7,15,.96);display:none;overflow-y:auto;padding:40px 56px}
+#em.open{display:block}
+#em h3{font-size:24px;margin-bottom:24px;display:flex;justify-content:space-between;align-items:center}
+#em h3 button{height:44px;padding:0 18px;border:1px solid var(--faint);border-radius:6px;font-size:16px}
+#em table{width:100%;border-collapse:collapse}
+#em td{padding:18px 12px;border-top:1px solid var(--faint);vertical-align:top;font-size:18px;color:var(--dim)}
+#em td:last-child{font-size:26px;line-height:1.5;color:var(--ink);font-weight:500;word-break:keep-all}
+#em tr.hit td{background:rgba(0,129,204,.16)}
+#em tr.hit td:first-child{box-shadow:inset 4px 0 var(--blue)}
+#emflag{display:none;margin:0 0 18px;padding:14px 18px;border:1px solid var(--blue);border-radius:8px;font-size:18px}
+#emflag.on{display:flex;justify-content:space-between;align-items:center;gap:16px}
+#emflag button{color:var(--blue);font-weight:600}
+:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
+@media (max-width:1100px){#main{grid-template-columns:1fr}#side{display:none}#scroll{padding:8vh 28px 60vh}#top{grid-template-columns:auto 1fr auto;gap:16px}#seg{display:none}}
+@media (prefers-reduced-motion:reduce){#scroll{scroll-behavior:auto}.cue{transition:none}}
+</style>
+</head>
+<body>
+<header id="top">
+ <div><div id="clock">--:--:--</div><div id="link"><i></i><span>연결 대기</span></div></div>
+ <div id="now"><div class="no" id="nno">메인 스크린</div><div class="t" id="nt">메인 스크린 신호를 기다리는 중</div></div>
+ <div id="seg"><div class="a" id="sa"></div><div class="b" id="sb"></div></div>
+ <div id="tools">
+  <button id="fm" aria-label="글자 작게">가−</button><button id="fp" aria-label="글자 크게">가+</button>
+  <button id="fol" class="on" aria-pressed="true">화면 따라가기</button>
+  <button id="emb">돌발 상황</button>
+ </div>
+</header>
+<div id="main">
+ <div id="scroll"><div id="emflag"><span id="emtx"></span><button id="emgo">돌발 멘트 보기</button></div><div id="doc"></div></div>
+ <aside id="side">
+  <div id="next"><div class="sd-h">다음 멘트</div><div class="no" id="xno"></div><div class="t" id="xt"></div><div class="p" id="xp"></div></div>
+  <div class="sd-h">진행 시간</div><ul id="sched"></ul>
+ </aside>
+</div>
+<div id="em" role="dialog" aria-label="돌발 상황 멘트"><h3>돌발 상황 멘트<button id="emx">닫기 (Esc)</button></h3><table id="emt"></table></div>
+
+<script src="assets/sched.js"></script>
+<script src="assets/supabase.min.js"></script>
+<script>
+/* 사회자 대본 — 원본: Claude 문서 「세미나 사회자 멘트」(11/23). 문구가 바뀌면 이 SCRIPT도 같이 고칩니다.
+   메인 스크린(index.html) 화면 번호를 받아 해당 멘트를 자동으로 가운데 표시합니다.
+   같은 PC · 같은 브라우저: BroadcastChannel(sched.js) / 다른 기기(태블릿 등): Supabase Realtime 'seminar-mc' (온라인일 때) */
+const ORDER=['M1-1','M1-2','M1-3','M1-4','M1-S1','M1-S2','M3-1','M3-2','M4-1','M4-2','M4-3','M4-4','M4-5','M4-6','M5-1','M5-2','M5-3','M5-4','M5-5','M6-1','M6-S1','M7-1','M7-2','M7-3','M7-4','M7-5','M8-1','M8-S1','M9-1','M9-2','M9-3','M10-1','M10-2','M11-1'];
+const TITLE={'M1-1':'대기 · 타이틀','M1-2':'대기 · 환영 및 좌석 안내','M1-3':'대기 · 프로그램','M1-4':'대기 · 안내사항','M1-S1':'착석 요청','M1-S2':'시작 지연','M3-1':'개회 타이틀','M3-2':'안내 말씀','M4-1':'파트 타이틀 · 축사 및 출범식','M4-2':'축사 · 김광록','M4-3':'축사 · 정우용','M4-4':'한국주주총회연구소 출범식','M4-5':'연구소장 임명 · 권재열','M4-6':'한국주주총회연구소 소개 발표','M5-1':'PART 1 타이틀','M5-2':'Session 1 연사 소개 · 김승준','M5-3':'Session 1 발표','M5-4':'Session 2 연사 소개 · 권재열','M5-5':'Session 2 발표','M6-1':'휴식 · 타이머','M6-S1':'재개 임박','M7-1':'PART 2 타이틀','M7-2':'Session 3 연사 소개 · Scott Oakland','M7-3':'Session 3 · Google Meet','M7-4':'Session 4 연사 소개 · 박성용','M7-5':'Session 4 키노트','M8-1':'휴식 · 타이머','M8-S1':'재개 임박','M9-1':'시연 타이틀 · PART 3','M9-2':'시연 주요 실무 사례','M9-3':'시연 라이브','M10-1':'Q&A 타이틀','M10-2':'질문 화면','M11-1':'폐회','M0-1':'기본 화면','M0-2':'기술 점검','M0-3':'일정 변경 공지'};
+/* 블록: [s 화면번호들, 제목] 새 멘트 시작 · [n 지시] · [a 시점] · [y 읽을 문장] · [t 화면 넘김] · [q 질문 칸]   {…}= 미정 */
+const SCRIPT=[
+ {h:'1. 등록 · 착석 안내',sid:'reg',b:[
+  ['s',['M1-1','M1-2','M1-3','M1-4'],'대기 화면 자동 순환'],['n','마이크 멘트 없이 대기. 필요하면 12:45에 한 번 안내.'],['a','12:45 (선택)'],
+  ['y','안녕하십니까. 전자주주총회 플랫폼 시연 설명회에 오신 것을 환영합니다. 설명회는 오후 1시에 시작합니다. 등록 데스크에서 안내받으신 좌석 번호로 이동하신 뒤, 테이블에 붙어 있는 좌석번호를 확인해주세요. 주차 지원은 등록 데스크에서 등록해주시고, 페어몬트 호텔 주차장만 지원됩니다.'],
+  ['s',['M1-S1'],'착석 요청 · 12:55'],['y','잠시 후 설명회가 시작됩니다. 로비에 계신 분들께서는 자리로 돌아와 주시고, 휴대폰은 무음으로 설정해주세요.'],
+  ['s',['M1-S2'],'시작 지연'],['n','13:00 이후 시작이 늦어지면'],['y','설명회는 잠시 후 시작합니다. 자리에 앉아 잠시만 기다려 주세요.']]},
+ {h:'2. 개회 · 안내 말씀',sid:'open',b:[
+  ['s',['M3-1'],'개회 타이틀'],['n','13:00 정각, 장내 조명 낮춤 후 운영자가 →. 카운트다운 5 → 1, ANYWHERE, ALL SHAREHOLDERS, “전자주주총회 플랫폼 시연 설명회 지금 시작합니다.”까지 약 10초. 마지막 문구가 멈추면 시작.'],
+  ['y','안녕하십니까. 바쁜 일정에도 전자주주총회 플랫폼 시연 설명회에 참석해 주신 여러분께 감사드립니다. 오늘 사회를 맡은 {사회자 소속 · 이름}입니다.'],
+  ['y','2027년부터 자산 2조 원 이상 상장회사는 전자주주총회를 병행 개최해야 합니다. 오늘은 제도와 법 개정의 핵심을 짚어 보고, 실제 플랫폼으로 주주총회 전 과정을 직접 확인하는 자리입니다.'],['t','M3-2'],
+  ['s',['M3-2'],'안내 말씀'],['y','본격적으로 시작하기 전에 몇 가지 안내드리겠습니다.'],['y','첫째, 휴대폰은 무음으로 설정해주세요.'],['y','둘째, 휴식은 2시 25분과 3시 40분, 두 차례 15분씩 있습니다.'],
+  ['y','셋째, 현장 질의는 명찰 뒷면의 QR코드로 남겨주세요. 사전 질문과 함께 질의응답 시간인 5시 30분에 답변드립니다.'],['y','넷째, 오늘 설명회는 오프라인으로만 진행되며, 온라인 생중계·다시보기와 발표자료는 제공되지 않습니다.'],
+  ['y','다섯째, 원활한 진행을 위해 영상 촬영은 삼가 주시기 바랍니다.'],['y','마지막으로, 행사가 끝난 뒤 설문 참여 안내를 이메일로 보내드립니다. 많은 참여 부탁드립니다.'],['t','M4-1']]},
+ {h:'3. 축사 · 출범식',sid:'cong',b:[
+  ['s',['M4-1'],'파트 타이틀 · 축사 및 출범식'],['y','먼저 오늘 자리를 축하해 주실 두 분의 축사를 듣겠습니다.'],['t','M4-2'],
+  ['s',['M4-2'],'축사 · 김광록'],['y','첫 번째 축사는 한국기업법학회 회장이시며 충북대학교 법학전문대학원 교수이신 김광록 회장님께서 해주시겠습니다. 큰 박수로 맞아 주십시오.'],['a','축사 후'],['y','김광록 회장님, 감사합니다.'],['t','M4-3'],
+  ['s',['M4-3'],'축사 · 정우용'],['y','다음은 전 한국상장회사협의회 정책부회장이시고, 현 한국상장회사정책연구원 원장이신 정우용 원장님의 축사가 있겠습니다. 박수 부탁드립니다.'],['a','축사 후'],['y','정우용 원장님, 감사합니다.'],['t','M4-4'],
+  ['s',['M4-4'],'한국주주총회연구소 출범식'],['y','이어서 뜻깊은 순서를 준비했습니다. 주주총회의 제도·운영·기술을 연구하고, 더 나은 주주총회와 기업·주주의 관계를 위한 방향을 제시할 한국주주총회연구소, KISM의 공식 출범을 알리는 자리입니다.'],['y','{세리머니 방식 확정 시 안내 한 줄}'],['t','M4-5'],
+  ['s',['M4-5'],'연구소장 임명 · 권재열'],['y','한국주주총회연구소의 초대 연구소장으로 경희대학교 법학전문대학원 권재열 교수님이 임명되셨습니다. 축하의 박수 부탁드립니다. 이어서 권재열 연구소장님께서 연구소를 직접 소개해 주시겠습니다.'],['t','M4-6'],
+  ['s',['M4-6'],'한국주주총회연구소 소개 발표'],['n','권재열 소장 발표 중. 발표자료 4장.'],['a','소개 후'],['y','권재열 연구소장님, 감사합니다. 한국주주총회연구소의 출범을 다시 한번 축하드립니다.'],['t','M5-1']]},
+ {h:'4. Part 1 · 의무화가 바꾸는 주주총회',sid:'s1',sid2:'s2',b:[
+  ['s',['M5-1'],'PART 1 타이틀'],['y','지금부터 첫 번째 파트, ‘의무화가 바꾸는 주주총회’를 시작하겠습니다.'],['t','M5-2'],
+  ['s',['M5-2'],'Session 1 연사 소개 · 김승준'],['y','첫 번째 세션은 ‘전자주주총회 제도 도입 및 진행 관련 주요 실무 쟁점’입니다. 김앤장 법률사무소 김승준 변호사님께서 발표해 주시겠습니다. 박수로 맞아 주십시오.'],['t','M5-3','연사가 단상에 오르면'],
+  ['s',['M5-3'],'Session 1 발표 중'],['a','발표 후 (13:55 무렵)'],['y','김승준 변호사님, 감사합니다. 제도 도입 단계에서 꼭 짚어야 할 실무 쟁점을 정리해 주셨습니다.'],['t','M5-4'],
+  ['s',['M5-4'],'Session 2 연사 소개 · 권재열'],['y','두 번째 세션은 ‘상법 개정과 전자주총이 몰고 올 기업 경영의 지각변동’입니다. 한국주주총회연구소장이시며 경희대학교 법학전문대학원 교수이신 권재열 연구소장님께서 발표해 주시겠습니다.'],['t','M5-5'],
+  ['s',['M5-5'],'Session 2 발표 중'],['a','발표 후 (14:25 무렵)'],['y','권재열 연구소장님, 감사합니다. 세 차례의 상법 개정이 경영에 어떤 변화를 가져올지 한눈에 살펴볼 수 있었습니다.'],['t','M6-1']]},
+ {h:'5. 휴식 1',sid:'brk1',b:[
+  ['s',['M6-1'],'휴식 · 타이머'],['y','지금부터 15분간 휴식하겠습니다. 로비에 간단한 다과와 음료가 마련되어 있습니다. 세션 3은 2시 40분에 시작합니다.'],
+  ['s',['M6-S1'],'재개 3분 전'],['n','화면이 재개 임박 문구로 바뀜'],['y','곧 세션 3이 시작됩니다. 자리로 돌아와 주시기 바랍니다.'],['t','M7-1']]},
+ {h:'6. Part 2 · 전자주주총회 및 의결권 행사의 미래',sid:'s3',sid2:'s4',b:[
+  ['s',['M7-1'],'PART 2 타이틀'],['y','자리를 정리해 주시기 바랍니다. 지금부터 두 번째 파트, ‘전자주주총회 및 의결권 행사의 미래’를 시작하겠습니다.'],['t','M7-2'],
+  ['s',['M7-2'],'Session 3 연사 소개 · Scott Oakland'],['y','세 번째 세션은 ‘Proxymity, 글로벌 의결권 행사 인프라의 혁신과 미래’입니다. Proxymity의 아시아태평 총괄, Scott Oakland님께서 온라인으로 연결해 발표해 주시겠습니다. 이 세션은 영어로 진행되며, {통역 방식 안내}.'],['t','M7-3','연결 확인 후'],
+  ['s',['M7-3'],'Session 3 · Google Meet'],['y','<span class="en">Scott, welcome. The floor is yours.</span>'],['a','발표 후 (15:10 무렵)'],['y','<span class="en">Thank you, Scott.</span> Scott Oakland님, 감사합니다. 이 세션에 주신 질문은 설명회가 끝난 뒤 메일로 답변드리겠습니다.'],['t','M7-4'],
+  ['s',['M7-4'],'Session 4 연사 소개 · 박성용'],['y','네 번째 세션은 ‘전자주주총회 도입·운영 방안 및 통합 솔루션 소개’입니다. IR큐더스 박성용 본부장님께서 발표해 주시겠습니다. 박수로 맞아 주십시오.'],['t','M7-5','연사가 클리커로 진행'],
+  ['s',['M7-5'],'Session 4 키노트 발표 중'],['a','발표 후 (15:40 무렵)'],['y','박성용 본부장님, 감사합니다. 잠시 후 시연에서 오늘 소개한 기능을 직접 보여드리겠습니다.'],['t','M8-1']]},
+ {h:'7. 휴식 2',sid:'brk2',b:[
+  ['s',['M8-1'],'휴식 · 타이머'],['y','15분간 두 번째 휴식을 갖겠습니다. 휴식 후 3시 55분부터 모의 전자주주총회 시연이 이어집니다.'],
+  ['s',['M8-S1'],'재개 3분 전'],['y','곧 모의 전자주주총회 시연이 시작됩니다. 자리로 돌아와 주세요. 입장하실 때 설치하신 {참여 앱}으로 모의 표결에 참여하실 수 있습니다.'],['t','M9-1']]},
+ {h:'8. 모의 전자주주총회 시연',sid:'demo',b:[
+  ['s',['M9-1'],'시연 타이틀 · PART 3'],['y','오늘의 하이라이트입니다. 모의 회사·주주·의안으로 주주총회 전 과정을 직접 진행하는 모의 전자주주총회 시연입니다. 총회 설정부터 사전 투표, 당일 출석·질의·표결·집계까지 차례대로 보여드립니다. 시연은 IR큐더스 박성용 본부장님께서 진행하십니다.'],['t','M9-2'],
+  ['s',['M9-2'],'시연에서 살펴볼 주요 실무 사례'],['y','시연에서는 결의요건 충족 여부와 가결 판정, 3% 의결권 제한, 수정동의, 집중투표처럼 실제 현장에서 까다로운 사례를 하나씩 살펴보겠습니다. 모의 표결에는 {참여 앱}으로 직접 참여하실 수 있습니다. 박성용 본부장님, 부탁드립니다.'],['t','M9-3','M0-1 거쳐'],
+  ['s',['M9-3'],'시연 라이브 화면'],['a','시연 후 (17:30 무렵)'],['y','박성용 본부장님, 감사합니다. 표결에 참여해 주신 여러분께도 감사드립니다.'],['t','M10-1']]},
+ {h:'9. 사전 질문 및 현장 질의응답',sid:'qna',b:[
+  ['s',['M10-1'],'Q&A 타이틀'],['n','패널 세 분 단상 착석'],['y','마지막 순서, 사전 질문 및 현장 질의응답입니다. 김앤장 법률사무소 김승준 변호사님, 한국주주총회연구소 권재열 연구소장님, IR큐더스 박성용 본부장님께서 답변해 주시겠습니다. 신청서에 남겨주신 사전 질문을 먼저 소개하고, 이어서 명찰 QR로 받은 현장 질문을 이어가겠습니다. Proxymity 세션에 주신 질문은 종료 후 메일로 답변드립니다.'],['t','M10-2','운영자가 첫 질문 송출'],
+  ['s',['M10-2'],'질문 화면 · 질문마다 반복'],['q'],['a','17:55 무렵, 마지막 질문 전'],['y','시간 관계상 다음 질문을 마지막으로 받겠습니다. 답변하지 못한 질문은 행사 후 메일로 답변드리겠습니다.'],['a','마치며'],['y','성실하게 답변해 주신 세 분께 다시 한번 큰 박수 부탁드립니다.'],['t','M11-1']]},
+ {h:'10. 폐회',sid:'qna',end:1,b:[
+  ['s',['M11-1'],'폐회 · 감사 인사'],['y','이것으로 전자주주총회 플랫폼 시연 설명회를 모두 마칩니다. 긴 시간 함께해 주신 여러분께 깊이 감사드립니다.'],
+  ['y','행사가 끝난 뒤 설문 참여 안내를 이메일로 보내드립니다. 전자주주총회 도입 상담은 agm@irkudos.co.kr, 또는 02-6011-2000으로 문의해 주십시오.'],
+  ['y','주차 지원이 필요하신 분은 나가시는 길에 등록 데스크에서 등록해주세요. 두고 가시는 물건 없이 안전하게 돌아가십시오. 감사합니다.'],['n','퇴장이 끝날 때까지 M11-1 유지.']]}
+];
+const EMER=[['화면 · 장비 점검','M0-2 기술 점검','잠시 화면을 점검하고 있습니다. 곧 이어서 진행하겠습니다. 양해 부탁드립니다.',['M0-2']],
+ ['연사 교체 · 연결 대기','M0-1 기본 화면','다음 발표를 준비하는 동안 잠시만 기다려 주십시오.',['M0-1']],
+ ['Session 3 온라인 연결 지연','M7-2 유지','해외 연사와 연결을 확인하고 있습니다. 잠시만 기다려 주십시오.',[]],
+ ['Session 3 연결 불가','M7-4로 넘김','해외 연결 사정으로 세션 3은 {대체 방식}으로 안내드리겠습니다. 이어서 세션 4를 먼저 진행하겠습니다.',[]],
+ ['일정 지연','M0-3 일정 변경 공지 · 휴식 타이머 조정','진행 사정으로 이후 일정이 약 {N}분 늦어집니다. 다음 순서는 {시각}에 시작합니다.',['M0-3']],
+ ['휴식 후 착석 지연','M6-1 · M8-1 유지','곧 다음 순서를 시작하겠습니다. 로비에 계신 분들께서는 자리로 돌아와 주십시오.',[]]];
+
+const $=id=>document.getElementById(id);
+const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const ph=s=>s.replace(/\{([^}]+)\}/g,'<span class="ph">[$1]</span>');
+/* 렌더 */
+const CUES=[];let html='';
+SCRIPT.forEach((sec,si)=>{html+='<section><h2 data-sec="'+si+'">'+esc(sec.h)+'<span></span></h2>';let open=false;
+ sec.b.forEach(b=>{const k=b[0];
+  if(k==='s'){if(open)html+='</div>';const id=CUES.length;CUES.push({no:b[1],title:b[2],sec:si});html+='<div class="cue" data-i="'+id+'" tabindex="0"><div class="mk">'+b[1].join(' · ')+'<b>'+esc(b[2])+'</b></div>';open=true;}
+  else if(k==='n')html+='<p class="note">'+ph(esc(b[1]))+'</p>';
+  else if(k==='a')html+='<p class="at">'+esc(b[1])+'</p>';
+  else if(k==='y')html+='<p class="say">'+ph(b[1])+'</p>';
+  else if(k==='t')html+='<div class="turn">'+b[1]+(TITLE[b[1]]?' '+esc(TITLE[b[1]]):'')+(b[2]?' · '+esc(b[2]):'')+'</div>';
+  else if(k==='q')html+='<div class="qa idle" id="qa"><div class="k" id="qk">질문 대기</div><div class="x" id="qx">운영자가 질문을 송출하면 여기에 표시됩니다.</div><div class="m" id="qm"></div></div><p class="say" id="qs">(사전 질문이면) 먼저 사전에 받은 질문입니다. / (현장 질문이면) 현장에서 주신 질문입니다. “<span class="ph">[화면의 질문 본문]</span>” 이 질문은 <span class="ph">[답변 연사]</span>께서 답변해 주시겠습니다.</p>';});
+ if(open)html+='</div>';html+='</section>';});
+$('doc').innerHTML=html;
+$('emt').innerHTML=EMER.map((r,i)=>'<tr data-e="'+i+'"><td>'+esc(r[0])+'</td><td>'+esc(r[1])+'</td><td>'+ph(esc(r[2]))+'</td></tr>').join('');
+const cueEls=[...document.querySelectorAll('.cue')];
+const pos=no=>ORDER.indexOf(String(no).toUpperCase());
+function cueFor(no){no=String(no||'').toUpperCase();let i=CUES.findIndex(c=>c.no.includes(no));if(i>=0)return i;const p=pos(no);if(p<0)return -1;
+ for(let j=CUES.length-1;j>=0;j--)if(Math.min(...CUES[j].no.map(pos))<=p)return j;return 0;}
+
+/* 상태 */
+let CUR=null,POS='',Q=null,FOLLOW=true,SEL=-1,SCH=null,lastRx=0,src='',NET=false;
+function setCue(i,scroll){SEL=i;cueEls.forEach((e,k)=>{e.classList.toggle('cur',k===i);e.classList.toggle('nx',k===i+1);});
+ if(i>=0&&scroll){const e=cueEls[i];$('scroll').scrollTo({top:e.offsetTop-$('scroll').clientHeight*.18});}
+ const n=CUES[i+1];if(n){$('xno').textContent=n.no.join(' · ');$('xt').textContent=n.title;const p=cueEls[i+1].querySelector('.say');$('xp').innerHTML=p?p.innerHTML:'';}else{$('xno').textContent='';$('xt').textContent='마지막 멘트';$('xp').textContent='';}}
+function apply(st,via){if(!st||!st.cur)return;lastRx=Date.now();src=via;const changed=st.cur!==CUR;CUR=st.cur;POS=st.pos||'';
+ if(st.sch)SCH=st.sch;if('q' in st){Q=st.q;drawQ();}
+ const t=TITLE[String(CUR).toUpperCase()]||CUR;$('nno').textContent='메인 스크린 '+(CUR==='시작 대기'?'':CUR);$('nt').innerHTML=esc(CUR==='시작 대기'?'시작 대기 (배경만 재생 중)':t)+(POS?'<small>'+esc(POS)+'</small>':'');
+ const e=EMER.findIndex(r=>r[3].includes(String(CUR).toUpperCase()));document.querySelectorAll('#emt tr').forEach((r,k)=>r.classList.toggle('hit',k===e));
+ $('emflag').classList.toggle('on',e>=0);if(e>=0)$('emtx').textContent='지금 메인 스크린: '+CUR+' '+t;
+ if(changed&&FOLLOW){const i=cueFor(CUR);if(i>=0)setCue(i,true);}drawSched();link();}
+function drawQ(){const box=$('qa');if(!box)return;if(!Q){box.classList.add('idle');$('qk').textContent='질문 대기';$('qk').className='k';$('qx').textContent='운영자가 질문을 송출하면 여기에 표시됩니다.';$('qm').textContent='';return;}
+ box.classList.remove('idle');const pre=Q.type==='pre';$('qk').textContent=pre?'사전 질문':'현장 질문';$('qk').className='k'+(pre?' pre':'');$('qx').textContent=Q.text||'';$('qm').textContent=[Q.meta,Q.who?'답변 '+Q.who:''].filter(Boolean).join('  ·  ');
+ $('qs').innerHTML=(pre?'먼저 사전에 받은 질문입니다.':'현장에서 주신 질문입니다.')+' “'+esc(Q.text||'')+'” '+(Q.who?'이 질문은 '+esc(Q.who)+'께서 답변해 주시겠습니다.':'<span class="ph">[답변 연사]</span>');}
+/* 진행 시간: 같은 PC면 control의 조정값, 다른 기기면 메인 스크린이 보낸 값 */
+function items(){const s=SCHED.load();let it=s.items;if(SCH&&src==='net'){const m=Object.fromEntries(SCH.map(r=>[r[0],r]));it=it.map(x=>m[x.id]?{...x,start:m[x.id][1],end:m[x.id][2]}:x);}return it;}
+function drawSched(){const it=items(),n=SCHED.nowMin(),F=SCHED.fmt;
+ $('sched').innerHTML=it.map(x=>{const on=n>=x.start&&n<x.end,mv=x.start!==x.ps;return '<li class="'+(on?'on':'')+'"><b>'+F(x.start)+'–'+F(x.end)+'</b><span>'+esc(x.tag||x.label)+(mv?' <em>예정 '+F(x.ps)+'</em>':'')+'</span></li>';}).join('');
+ document.querySelectorAll('h2[data-sec]').forEach(h=>{const sec=SCRIPT[+h.dataset.sec],a=it.find(x=>x.id===sec.sid),b=it.find(x=>x.id===(sec.sid2||sec.sid));if(!a)return;const sp=h.querySelector('span');
+  if(sec.end){sp.textContent=F(a.end);sp.className=a.end!==a.pe?'mv':'';return;}sp.textContent=F(a.start)+'~'+F(b.end);sp.className=(a.start!==a.ps||b.end!==b.pe)?'mv':'';});
+ const c=it.find(x=>n>=x.start&&n<x.end);if(c){const left=c.end-n;$('sa').textContent=(c.tag?c.tag+' ':'')+c.label.slice(0,14)+' · '+F(c.start)+'–'+F(c.end);$('sb').textContent=left+'분 남음';$('sb').classList.toggle('late',left<=3);}else{const x=it.find(y=>y.start>n);$('sa').textContent=x?'다음 '+(x.tag||x.label):'';$('sb').textContent=x?F(x.start)+' 시작':'';$('sb').classList.remove('late');}}
+function link(){const age=(Date.now()-lastRx)/1000,el=$('link');const ok=lastRx&&age<25;el.classList.toggle('ok',ok);
+ el.querySelector('span').textContent=!lastRx?(NET?'메인 스크린 신호 대기 · 온라인 연결됨':'메인 스크린 신호 대기'):ok?(src==='net'?'온라인 연동':'같은 PC 연동'):'신호 끊김 '+Math.round(age)+'초 · 직접 넘겨 보세요';}
+/* 같은 PC */
+SCHED.onState(v=>apply(v,'local'));SCHED.onSched(()=>drawSched());
+{const v=SCHED.getState();if(v&&v.cur){apply(v,'local');lastRx=0;link();}}
+/* 다른 기기: Supabase Realtime */
+try{if(typeof supabase!=='undefined'){const sb=supabase.createClient('https://zrhtqpzgubaqzsdaxhvt.supabase.co','sb_publishable_JwET6KLGmdYBkOIIttgOOQ_HEpCKLar',{auth:{persistSession:false}});
+ sb.channel('seminar-mc').on('broadcast',{event:'state'},({payload})=>apply(payload,'net')).subscribe(s=>{NET=s==='SUBSCRIBED';link();});}}catch(e){}
+/* 시계 */
+function tick(){const s=SCHED.nowSec(),p=n=>String(Math.floor(n)).padStart(2,'0');$('clock').textContent=p(s/3600)+':'+p(s/60%60)+':'+p(s%60);link();}
+setInterval(tick,1000);tick();setInterval(drawSched,15000);drawSched();
+/* 조작 */
+let FS=+(localStorage.getItem('mc-fs')||40);const setFS=v=>{FS=Math.max(26,Math.min(72,v));document.documentElement.style.setProperty('--fs',FS+'px');localStorage.setItem('mc-fs',FS);};setFS(FS);
+$('fm').onclick=()=>setFS(FS-4);$('fp').onclick=()=>setFS(FS+4);
+function setFollow(v){FOLLOW=v;$('fol').classList.toggle('on',v);$('fol').setAttribute('aria-pressed',v);if(v&&CUR){const i=cueFor(CUR);if(i>=0)setCue(i,true);}}
+$('fol').onclick=()=>setFollow(!FOLLOW);
+cueEls.forEach((e,i)=>e.onclick=()=>{setFollow(false);setCue(i,true);});
+const em=v=>$('em').classList.toggle('open',v);$('emb').onclick=()=>em(true);$('emx').onclick=()=>em(false);$('emgo').onclick=()=>em(true);
+addEventListener('keydown',e=>{if(e.key==='Escape')em(false);else if(e.key==='ArrowDown'||e.key==='PageDown'){e.preventDefault();setFollow(false);setCue(Math.min(CUES.length-1,SEL+1),true);}
+ else if(e.key==='ArrowUp'||e.key==='PageUp'){e.preventDefault();setFollow(false);setCue(Math.max(0,SEL-1),true);}else if(e.key==='f'||e.key==='F')setFollow(!FOLLOW);
+ else if(e.key==='+'||e.key==='=')setFS(FS+4);else if(e.key==='-')setFS(FS-4);else if(e.key==='e'||e.key==='E')em(!$('em').classList.contains('open'));});
+setCue(0,false);
+/* 태블릿 화면 꺼짐 방지 */
+let wl=null;const wake=async()=>{try{if('wakeLock' in navigator&&document.visibilityState==='visible')wl=await navigator.wakeLock.request('screen');}catch(e){}};wake();document.addEventListener('visibilitychange',wake);
+</script>
+</body>
+</html>

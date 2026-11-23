@@ -745,7 +745,13 @@ addEventListener('message',e=>{const d=e.data||{};if(!d.s4)return;const f=KN.fra
   if(d.s4==='ready'){f._r=true;if(f._q){KN.post(f,{s4:'enter',at:f._q});f._q=null;}}
   else if(d.s4==='edge'){if(cur)go(nextMain(idx,d.d));}
   else if(d.s4==='bg'){if(cur&&fs.dataset.kn){const c=document.getElementById('c');if(c)c.style.opacity=d.dim;dsPost({ds:'ox',v:d.ox});}}
-  else if(d.s4==='pos'){if(cur){KN.pos=d.label;if(window.CtrlPanel)CtrlPanel.draw();}}});
+  else if(d.s4==='pos'){if(cur){KN.pos=d.label;if(window.CtrlPanel)CtrlPanel.draw();MC.pub();}}});
+/* 사회자 화면(mc.html) 연동: 같은 PC는 SCHED(BroadcastChannel), 다른 기기는 Supabase Realtime 방송(온라인일 때). 8초마다 재전송 */
+var MC={st:null,q:null,
+ pub(o){if(o)this.st=o;if(!this.st)return;const s={...this.st,pos:(typeof KN!=='undefined'&&KN.pos)||'',q:this.q};SCHED.pub(s);
+  try{const sc=SCHED.load();fetch('https://zrhtqpzgubaqzsdaxhvt.supabase.co/realtime/v1/api/broadcast',{method:'POST',headers:{apikey:'sb_publishable_JwET6KLGmdYBkOIIttgOOQ_HEpCKLar','Content-Type':'application/json'},
+   body:JSON.stringify({messages:[{topic:'seminar-mc',event:'state',payload:{cur:s.cur,pos:s.pos,q:s.q,sch:sc.items.map(x=>[x.id,x.start,x.end]),t:Date.now()}}]})}).catch(()=>{});}catch(e){}}};
+setInterval(()=>MC.pub(),8000);
 const byNo=no=>slides.findIndex(s=>s.dataset.no.toUpperCase()===String(no).toUpperCase());
 /* M3-1 개회 시퀀스: 5 → 1 (1초씩, 점 링이 5초 동안 차오름) → ANYWHERE(4.1초) → 시작 문구에서 멈춤 */
 function S3(s,on){if(!s||!s.dataset.s3)return;(s._t3||[]).forEach(clearTimeout);clearInterval(s._iv3);s._t3=[];if(!on){s.dataset.ph='';return;}
@@ -778,7 +784,7 @@ function go(n){n=Math.max(0,Math.min(slides.length-1,n));if(n===idx)return;const
   clearTimeout(autoT);
   autoLen=0;if(s.dataset.auto&&auto){autoT0=performance.now();autoLen=+s.dataset.auto*1000/SPD;{const pn=s.querySelector('.pin');if(pn&&pn._a){pn._a.playbackRate=SPD;const tm=pn._a.effect.getTiming();autoLen=(tm.delay+tm.duration+3000)/SPD;}}  // 프로그램: 스크롤이 끝나고 3초 뒤 다음 화면
   autoT=setTimeout(()=>{const g=s.dataset.group;let m=idx+1;if(!slides[m]||slides[m].dataset.group!==g){m=slides.findIndex(x=>x.dataset.group===g);}go(m);},autoLen);}
-  hud();if(window.CtrlPanel)CtrlPanel.draw();SCHED.pub({cur:s.dataset.no,slides:slides.map(x=>({no:x.dataset.no,title:x.dataset.title.replace(/&amp;/g,'&'),msg:isMsg(x)?1:0,auto:x.dataset.auto?+x.dataset.auto:0,vid:(v=>v&&isFinite(v.duration)?Math.round(v.duration):0)(x.querySelector('video'))}))});
+  hud();if(window.CtrlPanel)CtrlPanel.draw();MC.pub({cur:s.dataset.no,slides:slides.map(x=>({no:x.dataset.no,title:x.dataset.title.replace(/&amp;/g,'&'),msg:isMsg(x)?1:0,auto:x.dataset.auto?+x.dataset.auto:0,vid:(v=>v&&isFinite(v.duration)?Math.round(v.duration):0)(x.querySelector('video'))}))});
 }
 // 상황 메시지(data-msg)는 순서 이동에서 건너뜀. 메시지에서 → 는 띄우기 전 화면의 다음, ← 는 띄우기 전 화면으로
 
@@ -786,7 +792,7 @@ function go(n){n=Math.max(0,Math.min(slides.length-1,n));if(n===idx)return;const
 const BOOT_MS=10000;let BOOT_T=0,bootTimer=null;
 function bootGo(){clearTimeout(bootTimer);bootTimer=null;if(idx<0)go(0);}
 function boot(){BOOT_T=performance.now()+BOOT_MS;const c=document.getElementById('c');if(c)c.style.opacity=1;bootTimer=setTimeout(bootGo,BOOT_MS);
-  SCHED.pub({cur:'시작 대기',slides:slides.map(x=>({no:x.dataset.no,title:x.dataset.title.replace(/&amp;/g,'&'),msg:isMsg(x)?1:0,auto:x.dataset.auto?+x.dataset.auto:0,vid:0}))});}
+  MC.pub({cur:'시작 대기',slides:slides.map(x=>({no:x.dataset.no,title:x.dataset.title.replace(/&amp;/g,'&'),msg:isMsg(x)?1:0,auto:x.dataset.auto?+x.dataset.auto:0,vid:0}))});}
 function step(d){if(idx<0){bootGo();return;}{const f=KN.of(slides[idx]);if(f&&f._r){KN.post(f,{s4:'nav',d});return;}}/* 세션 4 키노트: 키노트 안에서 넘기고, 처음/끝이면 키노트가 edge를 돌려줌 */if(isMsg(slides[idx])){go(d>0?nextMain(home,1):home);return;}go(nextMain(idx,d));}
 function nextMain(i,d){let j=i+d;while(slides[j]&&(isMsg(slides[j])||slides[j].dataset.skip))j+=d;return slides[j]?j:i;}/* 예비 화면(data-skip)도 건너뜀 */
 document.querySelectorAll('[data-words]').forEach(el=>{let w=0;[...el.childNodes].forEach(nd=>{if(nd.nodeType!==3)return;const f=document.createDocumentFragment();
@@ -847,7 +853,7 @@ async function pollOQ(){if(QSRC!=='online'||!location.protocol.startsWith('http'
     if(!r.ok)return;const d=await r.json(),k=JSON.stringify(d);if(k===oqKey)return;oqKey=k;
     OQ=d&&d.id?{type:d.kind,n:d.n,text:d.body,who:d.who,meta:[(d.company+' '+d.name).trim(),OQ_SL[d.session]].filter(Boolean).join('　·　')}:null;renderQ();}catch(e){}}
 setInterval(pollOQ,2000);pollOQ();
-function renderQ(){const q=QSRC==='online'?OQ:QA.list.find(x=>x.id===QA.cur),lab=document.getElementById('q-lab'),tx=document.getElementById('q-text'),meta=document.getElementById('q-meta'),ans=document.getElementById('q-ans'),ft=document.getElementById('q-ft');
+function renderQ(){const q=QSRC==='online'?OQ:QA.list.find(x=>x.id===QA.cur),lab=document.getElementById('q-lab'),tx=document.getElementById('q-text'),meta=document.getElementById('q-meta'),ans=document.getElementById('q-ans'),ft=document.getElementById('q-ft');if(typeof MC!=='undefined'){const m=q?{type:q.type,text:q.text,who:q.who||'',meta:q.meta||''}:null;if(JSON.stringify(m)!==JSON.stringify(MC.q)){MC.q=m;MC.pub();}}
   if(!q){lab.textContent='Q&A';lab.className='qa2-lab';tx.textContent='질문을 준비하고 있습니다.';tx.classList.add('idle');meta.textContent='';ans.innerHTML='';ft.classList.add('empty');fitQ();return;}
   lab.textContent=q.type==='pre'?'사전 질문':'현장 질문';lab.className='qa2-lab '+(q.type==='pre'?'pre':'live');  // Q번호는 표시하지 않음
   tx.textContent=q.text;tx.classList.remove('idle');meta.textContent=q.meta||'';ans.innerHTML=q.who?'답변<b></b>':'';if(q.who)ans.querySelector('b').textContent=q.who;
