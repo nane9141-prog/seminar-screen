@@ -88,7 +88,8 @@ function build(){
   const up=new THREE.Mesh(new THREE.BoxGeometry(W,6.3,.3),new THREE.MeshBasicMaterial({map:wallTex,color:0xc8c8c8}));up.position.set(0,4.45,-HD-.15);scene.add(up);
   box(.3,7.6,D+.6,0x12141c,-HW-.15,3.8,0);box(.3,.9,D+.6,0x1a1d28,HW+.15,.45,0);box(W,.9,.3,0x1a1d28,0,.45,HD+.15);
   /* 무대 + 스크린, 후면 단상 */
-  box(3.6,.8,16.2,0x1c1f2a,-25.1,.4,-.4);box(.12,5.2,13,0x23262f,-27.8,3.9,-.4,{emissive:0x1b2233,emissiveIntensity:.9});box(.6,1.6,.8,0x2a2e3b,-24.4,1.6,-.4);
+  box(3.6,.8,16.2,0x1c1f2a,-25.1,.4,-.4);box(.12,5.2,13,0x23262f,-27.8,3.9,-.4,{emissive:0x1b2233,emissiveIntensity:.9});box(.6,1.6,.8,0x2a2e3b,-24.4,1.6,-5.6);box(.75,.06,.95,0x3a3f4d,-24.4,2.43,-5.6);   /* 발표자 포디움: 무대 위, 4번(발표자) 오른쪽(객석 기준) */
+  box(.6,1.6,.8,0x2a2e3b,-21.5,.8,8.9);box(.75,.06,.95,0x3a3f4d,-21.5,1.63,8.9);   /* 사회자 포디움: 3번(사회자) 자리 */
   sprite('STAGE',-25.1,7.8,-.4,'#cfd8ff',7);
   /* 무대 스크린에 메인 스크린 화면(21:8) 표시 */
   if(window.SEAT_SCREEN_IMG){const im=new Image();im.onload=()=>{const tx=new THREE.Texture(im);tx.anisotropy=8;tx.needsUpdate=true;
