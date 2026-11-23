@@ -164,7 +164,7 @@ html.embed .prog{display:none}
 .step .sn{padding:0;border:0;border-radius:0;font-weight:700}
 .step.nx:after{content:"";position:absolute;right:-21px;top:50%;width:18px;height:18px;margin-top:-7px;border-radius:0;z-index:3;box-shadow:none;
  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M5.5 2.5 11 8l-5.5 5.5' fill='none' stroke='%230081cc' stroke-width='2.4' stroke-linecap='square'/%3E%3C/svg%3E") center/18px no-repeat}
-.sh.stepb{background:none;border-radius:0;box-shadow:inset 0 -1.5px 0 rgba(255,255,255,.14)}
+.sh.stepb{background:none;border-radius:0;box-shadow:none}
 /* 차트: 둥근 막대 · 그라데이션 → 각진 단색 막대 */
 .chart .cb{border-radius:0}.chart .clg b{border-radius:0}
 /* 통계 상자 → 면 없이 */
@@ -197,6 +197,22 @@ html.embed .prog{display:none}
 .p19l .lbl{margin-bottom:14px}
 .p19l p{font-size:25px;line-height:1.6}
 .tk.flat>div p,.tk.flat>div p+p{font:500 26px/1.55 "Pretendard Variable";color:#E6EBF2;margin:0}
+/* 2장: 1차 · 2차 · 3차 묶음 사이 선 진하게, 행 높이 크게 */
+#P02 .tb tr:not(:first-child){height:84px!important}
+#P02 .tb tr:has(td.c1):not(:nth-child(2)) td{border-top:2.5px solid rgba(255,255,255,.38)}
+/* 3장: 번호 빼고 설명 28px */
+.p3n{display:none}
+.p3d{font-size:28px}
+/* 4장: 본문 28px */
+.ba li{font-size:28px}.ba li:before{top:17px}
+.p4c p:last-child{font-size:28px}
+/* 6장: 아래 빈 곳 없이 — 칸 높이를 늘리고 항목 간격 · 글자를 키움 */
+.p6l,.p6r{height:700px}
+.p6u{padding:30px 0}.p6u b{font-size:30px;margin-bottom:10px}.p6u p{font-size:27px}
+.p6r li{padding:27px 0}.p6r li span{font-size:31px}.p6r li i{font-size:26px}
+.p6ar{top:600px}
+/* 8 · 11 · 15 · 20 · 24장 등: 머리글 바로 아래 글 상자 — 위 여백 */
+.sh.pnl{padding-top:36px!important}
 </style></head>
 <body>
 <div class="stage" id="stage">
