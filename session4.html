@@ -436,6 +436,7 @@ html.embed,html.embed body,html.embed .stage{background:transparent}html.embed #
 /* 19:02 — K06 숫자 위 문구 흰색, K09 머리 문구 옆 기준 회색 작게, K08 제목 삭제 뒤 링 묶음 위로 */
 #K06 .sub{color:#fff}
 .eb.k5e small{font:400 50px "KakaoSmall";color:var(--mut);margin-left:24px}
+#K04 .chip{border:0;background:none;padding:22px 30px 22px 0}  /* 코스피 · 코스닥 칩 테두리 없음 */
 </style></head>
 <body>
 <div class="stage" id="stage">
@@ -1063,9 +1064,9 @@ if(!EMB)document.getElementById('c').addEventListener('load',()=>{try{const o=JS
 /* ── 숫자 카운트업 ── */
 /* 1에서 목표 숫자까지 올라감. 소수 자릿수는 data-to를 따름, data-fmt="," 이면 천 단위 쉼표 */
 /* 숫자 카운트(18:47): 숫자 크기와 상관없이 오래 · 많이 바뀌어 보이게 — 2.4초. 앞 45%는 같은 자릿수의 숫자가 빠르게 돌고(작은 수도 움직임이 보이게), 나머지는 시작값에서 목표까지 올라감. 소수 자릿수 · 천 단위 쉼표 유지 */
-function count(s,sl=s){s.querySelectorAll('.cnt').forEach(el=>{const hb=el.closest('[data-b]');if(hb&&s===sl&&!hb.classList.contains('on'))return;const raw=el.dataset.to,to=+raw,dec=(raw.split('.')[1]||'').length,f=el.dataset.fmt===',',fr=el.dataset.from!=null?+el.dataset.from:Math.min(1,to),t0=performance.now()+(+el.dataset.delay||0),D=+el.dataset.dur||2400,SC=.45;
+function count(s,sl=s){s.querySelectorAll('.cnt').forEach(el=>{const hb=el.closest('[data-b]');if(hb&&s===sl&&!hb.classList.contains('on'))return;const raw=el.dataset.to,to=+raw,dec=(raw.split('.')[1]||'').length,f=el.dataset.fmt===',',fr=el.dataset.from!=null?+el.dataset.from:Math.min(1,to),t0=performance.now()+(+el.dataset.delay||0),D=+el.dataset.dur||2400,SC=(!dec&&to<20)?.45:0;  /* 작은 정수만 앞부분에 숫자 돌림, 큰 수 · 소수는 처음부터 차례로 올라감 */
   const out=v=>{const s2=v.toFixed(dec);return f?(+s2).toLocaleString('en-US',{minimumFractionDigits:dec,maximumFractionDigits:dec}):s2;};el.textContent=out(fr);
-  const hi=Math.max(9,to*1.3);let lt=0;
+  const hi=Math.max(9,to);let lt=0;
   (function tick(t){const p=Math.max(0,Math.min(1,(t-t0)/D));
    if(p<SC){if(t-lt>55){lt=t;const v=fr+Math.random()*(hi-fr)*(.35+.65*p/SC);el.textContent=out(dec?v:Math.round(v));}}
    else{const q=(p-SC)/(1-SC),e=1-Math.pow(1-q,3),v=fr+(to-fr)*e;el.textContent=out(dec?v:Math.round(v));}

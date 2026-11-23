@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>한국주주총회연구소 소개 (권재열) — M4-6</title>
+<style>
+@font-face{font-family:"Pretendard Variable";src:url(assets/PretendardVariable.woff2) format("woff2");font-weight:45 920;font-display:block}
+/* KISM 소개 4장 (16:9 · 1920×1080) — 메인 M4-6 가운데 창. 세션 2 덱과 같은 톤 · 조작(→ ← · embed) */
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:#000;overflow:hidden}
+body.idle{cursor:none}
+.stage{position:absolute;left:0;top:0;width:1920px;height:1080px;transform-origin:0 0;overflow:hidden;color:#E6EBF2;font-family:"Pretendard Variable","Malgun Gothic",sans-serif;word-break:keep-all;letter-spacing:-.01em;background:#0a1017}
+.s{position:absolute;inset:0;padding:96px 120px 0;opacity:0;visibility:hidden;transition:opacity .45s ease,visibility 0s .45s}
+.s.cur{opacity:1;visibility:visible;transition:opacity .45s ease}
+[data-b]{opacity:0;transform:translateY(14px);transition:opacity .5s,transform .5s}
+[data-b].on{opacity:1;transform:none}
+.lg{position:absolute;right:120px;top:100px;height:44px;opacity:.9}
+.pn{position:absolute;left:120px;top:104px;font:600 26px/1 "Pretendard Variable";color:#0081cc}
+.pn i{font-style:normal;color:rgba(230,235,242,.35);margin-left:10px}
+h2{margin-top:66px;font:700 66px/1.25 "Pretendard Variable";color:#fff;letter-spacing:-.02em}
+.lead{margin-top:28px;font:400 32px/1.55 "Pretendard Variable";color:#AEB8C6}
+.prog{position:absolute;left:0;bottom:0;height:5px;background:linear-gradient(90deg,#0081cc,#00ada9);transition:width .5s;opacity:.7;z-index:5}
+html.embed .prog{display:none}
+#black{position:fixed;inset:0;background:#000;z-index:50;display:none}body.black #black{display:block}
+#num{position:fixed;left:20px;bottom:20px;z-index:60;font:600 24px "Pretendard Variable";color:#fff;background:rgba(0,0,0,.7);padding:6px 14px;border-radius:8px;display:none}
+/* 1 왜 지금 */
+.ch{position:absolute;left:120px;right:120px;top:470px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:28px}
+.ch>div{padding:30px 0 0;box-shadow:inset 0 3px 0 #0081cc}
+.ch b{display:block;font:700 40px/1.3 "Pretendard Variable";color:#fff}
+.ch span{display:block;margin-top:12px;font:400 26px/1.5 "Pretendard Variable";color:#AEB8C6}
+.shift{position:absolute;left:120px;right:120px;top:720px;display:flex;align-items:center;gap:40px}
+.shift .from{font:500 36px/1.3 "Pretendard Variable";color:rgba(230,235,242,.45);text-decoration:line-through;text-decoration-thickness:2px}
+.shift .ar{width:90px;height:3px;background:linear-gradient(90deg,#0081cc,#00ada9);position:relative}
+.shift .ar:after{content:"";position:absolute;right:-2px;top:-8px;border:9px solid transparent;border-left:14px solid #00ada9;border-right:0}
+.shift .to{font:700 44px/1.3 "Pretendard Variable";color:#fff}
+.need{position:absolute;left:120px;right:120px;bottom:90px;display:flex;align-items:center;gap:22px;padding-top:28px;border-top:1.5px solid rgba(255,255,255,.14);font:500 30px/1.4 "Pretendard Variable";color:#E6EBF2}
+.need em{font-style:normal;color:#00ada9;font-weight:700}
+.need i{font-style:normal;color:rgba(230,235,242,.4)}
+/* 2 역할 */
+.hub{position:absolute;left:120px;top:400px;width:600px;height:520px}
+.hub .c{position:absolute;left:180px;top:150px;width:240px;height:240px;border-radius:50%;background:radial-gradient(circle at 50% 40%,#0a66a8 0%,#063a63 70%);box-shadow:0 0 0 2px rgba(0,129,204,.7),0 0 80px rgba(0,129,204,.35);display:flex;align-items:center;justify-content:center;text-align:center;font:700 34px/1.3 "Pretendard Variable";color:#fff}
+.hub .p{position:absolute;width:190px;text-align:center;font:700 32px/1.3 "Pretendard Variable";color:#fff}
+.hub .p small{display:block;margin-top:6px;font:400 22px "Pretendard Variable";color:#AEB8C6}
+.hub svg{position:absolute;inset:0;width:600px;height:520px}
+.hub svg line{stroke:rgba(0,129,204,.55);stroke-width:2.5;stroke-dasharray:4 8;stroke-linecap:round}
+.sc{position:absolute;left:820px;right:120px;top:410px}
+.sc .t{font:600 26px/1 "Pretendard Variable";color:#0081cc;margin-bottom:24px}
+.sc ul{list-style:none}
+.sc li{font:500 34px/1.4 "Pretendard Variable";color:#fff;padding:22px 0;border-top:1.5px solid rgba(255,255,255,.12)}
+.sc li:last-child{border-bottom:1.5px solid rgba(255,255,255,.12)}
+.bridge{position:absolute;left:120px;right:120px;bottom:80px;display:flex;align-items:center;gap:26px;font:500 30px/1.4 "Pretendard Variable"}
+.bridge span{color:#E6EBF2}.bridge i{font-style:normal;color:#0081cc;font-size:34px}.bridge b{color:#00ada9}
+/* 3 활동 */
+.acts{position:absolute;left:120px;right:120px;top:430px;display:grid;grid-template-columns:repeat(4,1fr);gap:36px}
+.acts>div{padding-top:34px;box-shadow:inset 0 3px 0 #0081cc;min-height:440px}
+.acts>div:last-child{box-shadow:inset 0 3px 0 #00ada9}
+.acts .n{font:300 72px/1 "Pretendard Variable";color:#0081cc}
+.acts>div:last-child .n{color:#00ada9}
+.acts b{display:block;margin-top:34px;font:700 40px/1.3 "Pretendard Variable";color:#fff}
+.acts p{margin-top:20px;font:400 27px/1.55 "Pretendard Variable";color:#AEB8C6}
+/* 4 2027 · 비전 */
+.y{position:absolute;left:120px;top:380px;width:780px}
+.y .yr{font:200 190px/1 "Pretendard Variable";letter-spacing:-.04em;background:linear-gradient(90deg,#0081cc,#00ada9);-webkit-background-clip:text;background-clip:text;color:transparent}
+.y .yt{margin-top:18px;font:600 32px/1.4 "Pretendard Variable";color:#fff}
+.y ul{list-style:none;margin-top:36px;display:grid;grid-template-columns:1fr 1fr;gap:14px 30px}
+.y li{font:500 30px/1.4 "Pretendard Variable";color:#E6EBF2;padding-left:26px;position:relative}
+.y li:before{content:"";position:absolute;left:0;top:16px;width:10px;height:10px;border-radius:50%;background:#0081cc}
+.v{position:absolute;left:1000px;right:120px;top:400px}
+.v .t{font:600 26px/1 "Pretendard Variable";color:#00ada9;margin-bottom:26px}
+.v .r{padding:30px 0;border-top:1.5px solid rgba(255,255,255,.14)}
+.v .r:last-of-type{border-bottom:1.5px solid rgba(255,255,255,.14)}
+.v .r small{display:block;font:500 26px "Pretendard Variable";color:#AEB8C6;margin-bottom:10px}
+.v .r b{font:700 42px/1.3 "Pretendard Variable";color:#fff}
+.goal{position:absolute;left:120px;right:120px;bottom:84px;font:600 34px/1.4 "Pretendard Variable";color:#fff;padding-top:26px;box-shadow:inset 0 3px 0 #00ada9}
+.goal span{color:#00ada9}
+</style></head>
+<body>
+<div class="stage" id="stage">
+
+<section class="s" id="K1" data-n="1">
+ <p class="pn">01<i>왜 지금</i></p><img class="lg" src="assets/kism-white.svg" alt="KISM 한국주주총회연구소">
+ <h2>왜 지금,<br>한국주주총회연구소인가?</h2>
+ <div class="ch">
+  <div><b>상법 개정</b><span>충실의무 · 집중투표 · 3% 룰 등<br>지배구조 규율 변화</span></div>
+  <div><b>전자주주총회 도입</b><span>2027년부터 대규모 상장회사<br>전자주총 병행 개최</span></div>
+  <div><b>주주권 행사 확대</b><span>주주 참여와 의결권 행사의<br>채널 · 범위 확대</span></div>
+ </div>
+ <div class="shift" data-b="1"><span class="from">형식적인 연례행사</span><i class="ar"></i><span class="to">기업과 주주가 소통하고 의사를 결정하는 장</span></div>
+ <p class="need" data-b="1">제도가 현장에서 구현되려면 <em>법률 검토</em><i>+</i><em>운영 실무</em><i>+</i><em>기술</em>의 종합 연구가 필요합니다</p>
+</section>
+
+<section class="s" id="K2" data-n="2">
+ <p class="pn">02<i>연구소의 역할</i></p><img class="lg" src="assets/kism-white.svg" alt="">
+ <h2>주주와 주주총회를 중심으로<br>법 · 실무 · 기술을 함께 연구합니다</h2>
+ <div class="hub">
+  <svg viewBox="0 0 600 520"><line x1="300" y1="270" x2="300" y2="60"/><line x1="300" y1="270" x2="80" y2="440"/><line x1="300" y1="270" x2="520" y2="440"/></svg>
+  <div class="c">주주 ·<br>주주총회</div>
+  <div class="p" style="left:205px;top:0">법률 · 제도</div>
+  <div class="p" style="left:-15px;top:440px">운영 실무</div>
+  <div class="p" style="left:425px;top:440px">기술</div>
+ </div>
+ <div class="sc" data-b="1"><p class="t">연구 범위</p><ul><li>상법 · 자본시장법 등 관련 법률과 제도</li><li>주주의 권리와 의결권 행사</li><li>주주총회 운영 절차</li><li>전자주주총회</li></ul></div>
+ <p class="bridge" data-b="1"><span>학문적 연구</span><i>⇄</i><span>기업 현장의 경험</span><i>→</i><b>현실적인 문제에 대한 합리적 해결 방향</b></p>
+</section>
+
+<section class="s" id="K3" data-n="3">
+ <p class="pn">03<i>주요 활동</i></p><img class="lg" src="assets/kism-white.svg" alt="">
+ <h2>네 가지 활동에 집중합니다</h2>
+ <div class="acts">
+  <div data-b="1"><p class="n">01</p><b>연구 · 실태조사</b><p>주주총회 관련 법률 · 제도와<br>국내외 운영 사례</p></div>
+  <div data-b="1"><p class="n">02</p><b>연구보고서 ·<br>실무 해설</b><p>주요 법률 쟁점과<br>운영상 문제 분석</p></div>
+  <div data-b="1"><p class="n">03</p><b>교육 · 세미나</b><p>기업 주주총회 담당자 대상,<br>연구 성과의 현장 활용</p></div>
+  <div data-b="1"><p class="n">04</p><b>전문가 협력</b><p>학계 · 법조계 · 기업 실무자와<br>전문적 논의의 장</p></div>
+ </div>
+</section>
+
+<section class="s" id="K4" data-n="4">
+ <p class="pn">04<i>첫 번째 과제와 비전</i></p><img class="lg" src="assets/kism-white.svg" alt="">
+ <h2>제도 도입을 넘어,<br>현장에 안정적으로 정착하도록</h2>
+ <div class="y"><p class="yr">2027</p><p class="yt">전자주주총회 본격 시행 — 주요 운영 쟁점 집중 연구</p>
+  <ul><li>전자적 출석</li><li>의결권 행사</li><li>질의와 발언</li><li>표결과 집계</li></ul></div>
+ <div class="v" data-b="1"><p class="t">연구소의 비전</p>
+  <div class="r"><small>기업에는</small><b>합리적인 운영 방향</b></div>
+  <div class="r"><small>주주에게는</small><b>실질적인 권리 행사와 참여</b></div></div>
+ <p class="goal" data-b="1">주주총회에 관한 전문 지식을 제공하는 <span>연구기관으로 성장</span>하겠습니다</p>
+</section>
+
+<div class="prog" id="prog"></div>
+</div>
+<div id="black"></div><div id="num"></div>
+<script>
+(()=>{
+const stage=document.getElementById('stage'),slides=[...document.querySelectorAll('.s')];let idx=-1;
+const Q=new URLSearchParams(location.search),EMB=Q.has('embed')&&parent!==window;if(EMB)document.documentElement.classList.add('embed');
+const up=m=>{if(EMB)parent.postMessage(m,'*');};
+function fit(){const s=Math.min(innerWidth/1920,innerHeight/1080);stage.style.transform=`translate(${(innerWidth-1920*s)/2}px,${(innerHeight-1080*s)/2}px) scale(${s})`;}
+addEventListener('resize',fit);fit();
+let step=0;const steps=s=>s.querySelectorAll('[data-b]').length?1:0;
+function apply(){slides[idx].querySelectorAll('[data-b]').forEach(e=>e.classList.toggle('on',+e.dataset.b<=step));}
+function go(n,st=0){n=Math.max(0,Math.min(slides.length-1,n));if(idx>=0)slides[idx].classList.remove('cur');idx=n;slides[n].classList.add('cur');step=st;apply();
+ document.getElementById('prog').style.width=(n/(slides.length-1)*100)+'%';if(!EMB)history.replaceState(null,'','#'+(n+1));up({s4:'pos',label:(n+1)+'/'+slides.length});}
+function next(){if(step<steps(slides[idx])){step++;apply();}else if(idx<slides.length-1)go(idx+1);else up({s4:'edge',d:1});}
+function prev(){if(step>0){step--;apply();}else if(idx>0)go(idx-1,steps(slides[idx-1]));else up({s4:'edge',d:-1});}
+addEventListener('message',e=>{const d=e.data||{};if(!EMB||e.source!==parent||!d.s4)return;
+ if(d.s4==='nav')d.d>0?next():prev();else if(d.s4==='enter'){const n=d.at==='last'?slides.length-1:0;go(n,d.at==='last'?steps(slides[n]):0);}});
+let buf='',bt=0;const nb=document.getElementById('num');
+addEventListener('keydown',e=>{const k=e.key;
+ if(/^[0-9]$/.test(k)){buf+=k;nb.textContent=buf;nb.style.display='block';clearTimeout(bt);bt=setTimeout(()=>{buf='';nb.style.display='none';},2500);return;}
+ if(k==='Enter'&&buf){go(+buf-1);buf='';nb.style.display='none';return;}
+ if(['ArrowRight',' ','PageDown','ArrowDown'].includes(k)){e.preventDefault();next();}
+ else if(['ArrowLeft','PageUp','ArrowUp','Backspace'].includes(k)){e.preventDefault();prev();}
+ else if(k==='Home')go(0);else if(k==='End')go(slides.length-1);
+ else if(k==='b'||k==='B'||k==='.')document.body.classList.toggle('black');
+ else if(k==='f'||k==='F'){document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen().catch(()=>{});}});
+let it=0;addEventListener('mousemove',()=>{document.body.classList.remove('idle');clearTimeout(it);it=setTimeout(()=>document.body.classList.add('idle'),2500);});
+window.S2={go,next,prev,get i(){return idx}};
+const h=+location.hash.slice(1);document.fonts.ready.then(()=>{go(h>0?h-1:0);up({s4:'ready'});});
+})();
+</script>
+</body></html>
+
