@@ -460,6 +460,7 @@ html.embed,html.embed body,html.embed .stage{background:transparent}html.embed #
 #K07 .col .n small{letter-spacing:-.01em;margin-left:18px}  /* 개사: 큰 숫자의 -.04em 자간을 물려받지 않게 */
 #K10 .r{grid-template-columns:300px 1fr 300px}#K10 .r .p{padding-right:0}#K10 .r .c{text-align:left;padding-left:34px}  /* % 를 개사 쪽으로 */
 #K11 .k11w{display:block;margin-top:14px;color:#F2F5FA}  /* 기준 줄은 다음 줄 · 흰색 */
+#K11 .chart{top:575px;height:845px}  /* 그래프 위쪽으로 키움 */
 </style></head>
 <body>
 <div class="stage" id="stage">
@@ -1098,7 +1099,7 @@ function count(s,sl=s){s.querySelectorAll('.cnt').forEach(el=>{const hb=el.close
 (function(){
  const D26=[[13,1],[16,0],[17,1],[18,7],[19,13],[20,20],[23,9],[24,30],[25,5],[26,91],[27,13],[30,2],[31,19]];
  const D27=[[15,0],[16,2],[17,6],[18,6],[19,7],[22,6],[23,17],[24,24],[25,3],[26,8],[29,25],[30,6],[31,17]];
- const el=document.getElementById('mar');if(!el)return;const W=3600,H=470,WD='일월화수목금토';
+ const el=document.getElementById('mar');if(!el)return;const W=3600,H=600,WD='일월화수목금토';
  function layer(y,D,hot,cls,extra){const cw=W/D.length,X=i=>cw*(i+.5),MAX=Math.max(...D.map(d=>d[1]));let h=`<div class="ml ${cls}"><div class="ax"></div>`;
   D.forEach(([d],i)=>{if(i&&new Date(y,2,d).getDay()<new Date(y,2,D[i-1][0]).getDay())h+=`<div class="wk" style="left:${cw*i}px"></div>`;});
   D.forEach(([d],i)=>{if(hot.includes(d))h+=`<div class="band" style="left:${X(i)-cw*.42}px;width:${cw*.84}px"><span>집중일</span></div>`;});
@@ -1123,11 +1124,11 @@ VIZ.grid=(cv)=>{const g=cv.getContext('2d'),C=18,R=12,N=212,gap=Math.min(cv.widt
   if(mode==='split'&&st>=1){const q=Math.min(1,Math.max(0,(t-ts-i*4)/500));col=i<203?`rgba(0,129,204,${.55+.45*q})`:`rgba(0,173,169,${.55+.45*q})`;}
   if(mode==='pick'){const on=i<151,q=Math.min(1,Math.max(0,(t-t0-900-i*7)/400));col=on?mix((i%C)/C):'rgba(242,245,250,.2)';if(on){a=a*(.35+.65*q);}else a*=.8;}
   g.globalAlpha=a;g.fillStyle=col;g.beginPath();g.arc(x,y,r,0,7);g.fill();});g.globalAlpha=1;}};};
-VIZ.rings=(cv)=>{const g=cv.getContext('2d');const R=[[93,198,'전자투표'],[36,76,'전자위임장'],[92,194,'자체 수행'],[13,28,'상대방이 모집'],[19,41,'외부 활용(대행)']];const cx=[360,1000,1840,2590,3300],cy=430,rad=270;let t0=0;
+VIZ.rings=(cv)=>{const g=cv.getContext('2d');const R=[[93,198,'전자투표'],[36,76,'전자위임장'],[92,194,'자체 수행'],[13,28,'상대방이 모집'],[19,41,'외부(대행) 활용']];const cx=[360,1000,1840,2590,3300],cy=430,rad=270;let t0=0;
  return{enter(){t0=performance.now();},
  draw(t){g.clearRect(0,0,cv.width,cv.height);R.forEach(([pct,n,l],j)=>{const N=100,k=Math.min(1,Math.max(0,(t-t0-400-j*220)/1600)),fill=Math.max(1,Math.round(pct*(1-Math.pow(1-k,3))));
   for(let i=0;i<N;i++){const a=-Math.PI/2+i/N*Math.PI*2,x=cx[j]+Math.cos(a)*rad,y=cy+Math.sin(a)*rad;g.fillStyle=i<fill?mix(i/N):'rgba(242,245,250,.16)';g.beginPath();g.arc(x,y,i<fill?10:7,0,7);g.fill();}
-  g.fillStyle=j===4?'rgba(242,245,250,.5)':'#F2F5FA';g.font='300 170px "Pretendard Variable"';g.textAlign='left';g.textBaseline='alphabetic';{const tx=fill+'%',m=g.measureText(tx);/* 글자 실제 윤곽 기준으로 원 가운데에 */g.fillText(tx,cx[j]-(m.actualBoundingBoxRight-m.actualBoundingBoxLeft)/2+m.actualBoundingBoxLeft,cy+(m.actualBoundingBoxAscent-m.actualBoundingBoxDescent)/2);}g.textAlign='center';g.textBaseline='middle';
+  g.fillStyle='#F2F5FA';g.font='300 170px "Pretendard Variable"';g.textAlign='left';g.textBaseline='alphabetic';{const tx=fill+'%',m=g.measureText(tx);/* 글자 실제 윤곽 기준으로 원 가운데에 */g.fillText(tx,cx[j]-(m.actualBoundingBoxRight-m.actualBoundingBoxLeft)/2+m.actualBoundingBoxLeft,cy+(m.actualBoundingBoxAscent-m.actualBoundingBoxDescent)/2);}g.textAlign='center';g.textBaseline='middle';
   g.font='700 62px KakaoBig';g.fillStyle='#F2F5FA';g.fillText(l,cx[j],cy+rad+110);g.font='400 50px KakaoSmall';g.fillStyle='rgba(242,245,250,.58)';g.fillText(n+'개사',cx[j],cy+rad+190);});
   g.strokeStyle='rgba(242,245,250,.16)';g.lineWidth=3;g.beginPath();g.moveTo(1420,80);g.lineTo(1420,880);g.stroke();}};};
 VIZ.stream=(cv)=>{const g=cv.getContext('2d'),P=[...Array(240)].map(()=>({p:Math.random(),y:(Math.random()-.5),s:.0015+Math.random()*.0025}));
