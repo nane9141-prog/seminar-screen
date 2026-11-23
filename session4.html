@@ -429,6 +429,10 @@ html.embed,html.embed body,html.embed .stage{background:transparent}html.embed #
 #K07 .col:nth-child(4) .gr,#K07 .col:nth-child(5) .gr{color:rgba(10,23,48,.07)}
 #K05 .lab{color:#fff}  /* 지표 이름(평균 자산총액 등) 흰색 */
 #K10 .r .c{text-align:right;padding-left:0}  /* 개사 열 오른쪽 끝 맞춤 */
+/* K11(18:54): 제목이 단계마다 바뀜(연도 · 내용) + 아래 기준 한 줄. 범례는 제목 오른쪽 위로 올려 그래프와 띄움 */
+#K11 .k11s{margin-top:24px;font-size:56px}
+#K11 .lg{top:250px}
+#K11 .chart{top:620px;height:800px}
 </style></head>
 <body>
 <div class="stage" id="stage">
@@ -529,10 +533,9 @@ html.embed,html.embed body,html.embed .stage{background:transparent}html.embed #
 </section>
 
 <section class="s" id="K11" data-t="3월 집중일 · 지원 가능일" data-dim=".14" data-steps="2">
- <div class="top"><p class="eb fu q" style="--i:0">정기주총 개최일 분포</p><h2 class="h hm fu" style="--i:1">3월, 같은 날에 몰립니다</h2></div>
+ <div class="top"><h2 class="h hm fu" style="--i:1" id="mart">2026년 3월 정기주총 개최일 분포</h2><p class="sub fu k11s" style="--i:2" id="marsub">의무화 212개사 중 3월 개최 211개사</p></div>
  <div class="lg fu" style="--i:2"><span class="chip"><i class="sw"></i><em class="t0">2026년 3월 개최일</em><em class="t1">2027년 3월 후보일</em></span><span class="chip w k11hot"><i style="width:30px;height:30px;border-radius:8px;background:rgba(255,183,77,.55)"></i>집중일</span></div>
  <div class="chart fu" style="--i:2" id="mar"></div>
- <p class="stepcap" id="marcap"></p>
 </section>
 
 <!-- ═════════ 3. 회사의 준비 과제 ═════════ -->
@@ -1078,7 +1081,7 @@ function count(s,sl=s){s.querySelectorAll('.cnt').forEach(el=>{const hb=el.close
    [[24,'FULL<br>BOOKING'],[29,'FULL<br>BOOKING']].map(([d,s])=>`<div class="full" data-b="2" style="left:${X(D27.findIndex(x=>x[0]===d))}px">${s}</div>`).join('')+
    [23,31].map(d=>`<div class="tri" data-b="2" style="left:${X(D27.findIndex(x=>x[0]===d))}px"><span>△</span></div>`).join(''));
 })();
-const MARCAP=['2026년 3월 정기주총 개최일 분포 · 의무화 212개사 중 3월 개최 211개사 (전체 711개사)','2027년 3월 정기주총 개최 후보일 분포 · 143개사 중 76개사 후보 일정 확인 (복수 후보일 포함)','2027년 3월 IR큐더스 전자주총 운영지원 가능일 (현재 기준) — FULL BOOKING · △ 일부 가능'];
+const MART=[['2026년 3월 정기주총 개최일 분포','의무화 212개사 중 3월 개최 211개사'],['2027년 3월 정기주총 개최 후보일 분포','143개사 중 76개사 후보 일정 확인 (복수 후보일 포함)'],['2027년 3월 전자주총 운영지원 가능일','IR큐더스 현재 기준']];
 /* ── 캔버스 시각화 ── */
 const VIZ={};
 const C1=[0,129,204],C2=[0,173,169];const mix=(t)=>`rgb(${C1.map((c,i)=>Math.round(c+(C2[i]-c)*t)).join(',')})`;
@@ -1131,7 +1134,7 @@ function loop(t){const s=slides[idx];s.querySelectorAll('canvas[data-viz]').forE
 const steps=s=>+(s.dataset.steps||0);
 function apply(s,cnt){s.dataset.step=step;s.querySelectorAll('[data-b]').forEach(e=>{const on=+e.dataset.b<=step;if(cnt&&on&&!e.classList.contains('on'))count(e,s);e.classList.toggle('on',on);});
  s.querySelectorAll('canvas[data-viz]').forEach(cv=>{const v=live.get(cv);v&&v.step&&v.step(step);});
- if(s.id==='K11'){document.getElementById('marcap').textContent=MARCAP[step];}}
+ if(s.id==='K11'){document.getElementById('mart').textContent=MART[step][0];document.getElementById('marsub').textContent=MART[step][1];}}
 let k30t=0,k01t=0,k01u=0;
 function go(n,st=0){n=Math.max(0,Math.min(slides.length-1,n));const a=slides[idx],b=slides[n];
  clearTimeout(k30t);clearTimeout(k01t);clearTimeout(k01u);if(b.id==='K01'){b.classList.remove('k1out');k01t=setTimeout(()=>{if(slides[idx]===b)b.classList.add('k1out');},3400);k01u=setTimeout(()=>{if(slides[idx]===b){HARD=true;go(idx+1);HARD=false;}},4400);}if(b.id==='K30'&&(a!==b||st===0)){b.classList.remove('p2');b.dataset.dim='.3';k30t=setTimeout(()=>{if(slides[idx]===b){b.classList.add('p2');b.dataset.dim='.06';bg(b);}},4200);}
