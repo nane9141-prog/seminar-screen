@@ -433,6 +433,9 @@ html.embed,html.embed body,html.embed .stage{background:transparent}html.embed #
 #K11 .k11s{margin-top:24px;font-size:56px}
 #K11 .lg{top:250px}
 #K11 .chart{top:620px;height:800px}
+/* 19:02 — K06 숫자 위 문구 흰색, K09 머리 문구 옆 기준 회색 작게, K08 제목 삭제 뒤 링 묶음 위로 */
+#K06 .sub{color:#fff}
+.eb.k5e small{font:400 50px "KakaoSmall";color:var(--mut);margin-left:24px}
 </style></head>
 <body>
 <div class="stage" id="stage">
@@ -473,7 +476,7 @@ html.embed,html.embed body,html.embed .stage{background:transparent}html.embed #
 </section>
 
 <section class="s" id="K05" data-t="주요 지표" data-dim=".18">
- <div class="top" style="top:400px"><p class="eb fu k5e" style="--i:0">의무화 기업 평균</p></div>
+ <div class="top" style="top:400px"><p class="eb fu k5e" style="--i:0">의무화 기업 주요지표</p></div>
  <div class="cols">
   <div class="col fu" style="--i:2"><p class="lab">평균 자산총액</p><p class="num g"><span class="cnt" data-to="20.7">20.7</span><small>조 원</small></p><p class="md">중앙값<b>6.9조 원</b></p></div>
   <div class="col fu" style="--i:3"><p class="lab">평균 소액주주 수</p><p class="num g temp"><span class="cnt" data-to="12.4">12.4</span><small>만 명</small></p><p class="md temp">중앙값<b>3.1만 명</b></p></div>
@@ -492,7 +495,7 @@ html.embed,html.embed body,html.embed .stage{background:transparent}html.embed #
 </section>
 
 <section class="s" id="K07" data-t="주총 난이도 S · A · B · C" data-dim=".16">
- <div class="top"><p class="eb fu q" style="--i:0">의무화 기업 중</p></div>
+ <div class="top"><p class="eb fu k5e" style="--i:0">의무화 기업 중</p></div>
  <div class="cols">
   <div class="col s1 fu" style="--i:2"><p class="tg">S</p><p class="n"><span class="cnt" data-from="0" data-to="4">4</span><small>개사</small></p><p class="l">경영권 분쟁</p></div>
   <div class="col fu" style="--i:3"><p class="tg">A</p><p class="n"><span class="cnt" data-from="0" data-to="26">26</span><small>개사</small></p><p class="l">기관투자자<br>Engagement</p></div>
@@ -503,15 +506,15 @@ html.embed,html.embed body,html.embed .stage{background:transparent}html.embed #
 </section>
 
 <section class="s" id="K08" data-t="의결권 행사 채널" data-dim=".16">
- <div class="top"><p class="eb fu q" style="--i:0">2026년 기준</p><h2 class="h fu" style="--i:1">전자투표는 기본, 권유는 직접</h2></div>
- <canvas class="viz" data-viz="rings" style="left:300px;top:560px;width:3600px;height:960px" width="3600" height="960"></canvas>
- <div class="ab fu k8h" style="--i:2;left:300px;top:470px;width:1340px">전자투표 · 전자위임장 이용 현황</div>
- <div class="ab fu k8h" style="--i:2;left:1780px;top:470px;width:2120px">의결권 대리행사 권유</div>
+ <div class="top"><p class="eb fu k5e" style="--i:0">2026년 기준</p></div>
+ <canvas class="viz" data-viz="rings" style="left:300px;top:500px;width:3600px;height:960px" width="3600" height="960"></canvas>
+ <div class="ab fu k8h" style="--i:2;left:300px;top:400px;width:1340px">전자투표 · 전자위임장 이용 현황</div>
+ <div class="ab fu k8h" style="--i:2;left:1780px;top:400px;width:2120px">의결권 대리행사 권유</div>
 </section>
 
 <section class="s" id="K09" data-t="관리기관 선정 현황" data-dim=".18">
  <div class="ab" style="left:300px;top:300px;width:1580px">
-  <p class="eb fu" style="--i:0">전자주총관리기관 선정 현황<small>현재일 기준</small></p>
+  <p class="eb fu k5e" style="--i:0">전자주총관리기관 선정 현황<small>현재일 기준</small></p>
   <h2 class="h hm fu" style="--i:1;margin-top:40px">151개사가<br>IR큐더스를 선택했습니다</h2>
   <p class="num g fu" style="--i:2;font-size:460px;margin-top:70px"><span class="cnt" data-to="72">72</span><small>%</small></p>
   
@@ -1100,7 +1103,7 @@ VIZ.rings=(cv)=>{const g=cv.getContext('2d');const R=[[93,198,'전자투표'],[3
  return{enter(){t0=performance.now();},
  draw(t){g.clearRect(0,0,cv.width,cv.height);R.forEach(([pct,n,l],j)=>{const N=100,k=Math.min(1,Math.max(0,(t-t0-400-j*220)/1600)),fill=Math.max(1,Math.round(pct*(1-Math.pow(1-k,3))));
   for(let i=0;i<N;i++){const a=-Math.PI/2+i/N*Math.PI*2,x=cx[j]+Math.cos(a)*rad,y=cy+Math.sin(a)*rad;g.fillStyle=i<fill?mix(i/N):'rgba(242,245,250,.16)';g.beginPath();g.arc(x,y,i<fill?10:7,0,7);g.fill();}
-  g.fillStyle=j===4?'#ffb74d':'#F2F5FA';g.font='300 170px "Pretendard Variable"';g.textAlign='left';g.textBaseline='alphabetic';{const tx=fill+'%',m=g.measureText(tx);/* 글자 실제 윤곽 기준으로 원 가운데에 */g.fillText(tx,cx[j]-(m.actualBoundingBoxRight-m.actualBoundingBoxLeft)/2+m.actualBoundingBoxLeft,cy+(m.actualBoundingBoxAscent-m.actualBoundingBoxDescent)/2);}g.textAlign='center';g.textBaseline='middle';
+  g.fillStyle=j===4?'rgba(242,245,250,.5)':'#F2F5FA';g.font='300 170px "Pretendard Variable"';g.textAlign='left';g.textBaseline='alphabetic';{const tx=fill+'%',m=g.measureText(tx);/* 글자 실제 윤곽 기준으로 원 가운데에 */g.fillText(tx,cx[j]-(m.actualBoundingBoxRight-m.actualBoundingBoxLeft)/2+m.actualBoundingBoxLeft,cy+(m.actualBoundingBoxAscent-m.actualBoundingBoxDescent)/2);}g.textAlign='center';g.textBaseline='middle';
   g.font='700 62px KakaoBig';g.fillStyle='#F2F5FA';g.fillText(l,cx[j],cy+rad+110);g.font='400 50px KakaoSmall';g.fillStyle='rgba(242,245,250,.58)';g.fillText(n+'개사',cx[j],cy+rad+190);});
   g.strokeStyle='rgba(242,245,250,.16)';g.lineWidth=3;g.beginPath();g.moveTo(1420,80);g.lineTo(1420,880);g.stroke();}};};
 VIZ.stream=(cv)=>{const g=cv.getContext('2d'),P=[...Array(240)].map(()=>({p:Math.random(),y:(Math.random()-.5),s:.0015+Math.random()*.0025}));
