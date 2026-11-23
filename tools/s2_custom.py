@@ -49,8 +49,8 @@ def p19(ctx):
     person = '<svg viewBox="0 0 40 40"><circle cx="20" cy="12" r="7"/><path d="M6 38c0-8 6-14 14-14s14 6 14 14z"/></svg>'
     cand = lambda c: f'<span class="cd {c}">{person}</span>'
     return f'''<div class="p19l">
- <div class="p19q"><p class="lbl">청구 요건</p><p>발행주식총수의 1% 이상 보유 주주</p><p>의결권 없는 주식을 제외한 발행주식총수 기준.<br>주주총회일 <b>6주 전까지</b> 서면 또는 전자문서로 청구</p></div>
  <div class="p19k"><p class="lbl">집중투표란</p><p>이사 선임 시 1주당 1표가 아니라 <b>선임할 이사 수만큼</b> 의결권을 주고, 특정 후보에게 몰아서 또는 나눠서 투표할 수 있게 하는 제도</p></div>
+ <div class="p19q"><p class="lbl">청구 요건</p><p>발행주식총수의 1% 이상 보유 주주</p><p>의결권 없는 주식을 제외한 발행주식총수 기준.<br>주주총회일 <b>6주 전까지</b> 서면 또는 전자문서로 청구</p></div>
 </div>
 <div class="p19d"><p class="p19dt">단순투표제와 집중투표제의 차이 <small>이사 3명 선임 · 소수주주 1주 기준</small></p>
  <div class="vt"><p class="vh">단순투표제 <small>후보마다 1표씩, 따로 표결</small></p>
