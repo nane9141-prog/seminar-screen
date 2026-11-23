@@ -119,23 +119,6 @@ canvas.viz{position:absolute;pointer-events:none}
 #K10 .mk small{font:400 48px "KakaoSmall";color:var(--mut);margin-left:16px}
 #K10 .river{position:absolute;font:400 44px "KakaoSmall";color:var(--dim)}
 #K11 .chart{position:absolute;left:300px;right:300px;top:600px;height:760px}
-#K11 .ax{position:absolute;left:0;right:0;bottom:180px;height:3px;background:var(--line)}
-#K11 .day{position:absolute;bottom:0;height:170px;width:180px;margin-left:-90px;text-align:center;font:300 64px/1 "Lexend";color:var(--mut);padding-top:18px}
-#K11 .day small{display:block;font:400 40px/1.25 "KakaoSmall";color:var(--dim);margin-top:8px;transition:color .6s,opacity .6s}
-#K11 .day .w26{color:var(--fg)}#K11 .day .w27{opacity:.45}
-#K11[data-step="1"] .day .w26,#K11[data-step="2"] .day .w26{color:var(--dim);opacity:.45}
-#K11[data-step="1"] .day .w27,#K11[data-step="2"] .day .w27{opacity:1;color:#00ada9}
-#K11 .bar{position:absolute;bottom:183px;width:64px;border-radius:14px 14px 4px 4px;transform-origin:bottom;transition:transform 1s cubic-bezier(.2,.7,.2,1),opacity .8s,background .6s}
-#K11 .bar i{position:absolute;left:50%;bottom:calc(100% + 14px);transform:translateX(-50%);font:400 50px "Lexend";font-style:normal;color:var(--mut);white-space:nowrap}
-#K11 .y26{background:rgba(242,245,250,.55)}
-#K11 .y27{background:var(--grad);transform:scaleY(0)}
-#K11 .y27.hot,#K11 .y26.hot{background:var(--warn)}
-#K11 .y27.hot i,#K11 .y26.hot i{color:var(--warn)}
-#K11[data-step="1"] .y26,#K11[data-step="2"] .y26{opacity:.16}
-#K11[data-step="1"] .y26 i,#K11[data-step="2"] .y26 i{opacity:0}
-#K11[data-step="1"] .y27,#K11[data-step="2"] .y27{transform:none}
-#K11 .full{position:absolute;bottom:183px;width:150px;margin-left:-75px;height:560px;border-radius:18px;background:repeating-linear-gradient(135deg,rgba(255,255,255,.08) 0 16px,rgba(255,255,255,0) 16px 32px),#05070a;border:3px solid rgba(255,255,255,.4);display:flex;align-items:flex-start;justify-content:center;padding-top:40px;font:400 44px/1.15 "Lexend";text-align:center;color:#fff}
-#K11 .tri{position:absolute;bottom:520px;margin-left:-60px;width:120px;text-align:center;font:400 90px/1 "Lexend";color:var(--warn)}
 #K11 .lg{position:absolute;left:300px;right:300px;top:440px;display:flex;gap:40px;justify-content:flex-end}
 #K11 .stepcap{position:absolute;left:300px;top:1490px;font:400 52px "KakaoSmall";color:var(--mut)}
 #K13 .tds{position:absolute;left:300px;right:300px;top:520px;display:grid;grid-template-columns:1fr 90px 1fr 90px 1fr;align-items:stretch}
@@ -223,16 +206,6 @@ canvas.viz{position:absolute;pointer-events:none}
 #K26 .cc img{width:700px;height:620px;object-fit:cover;border-radius:28px;display:block;margin-bottom:40px}
 #K27 .photo{position:absolute;inset:0;background:url(assets/s4/team.webp) center 30%/cover;opacity:.9}
 #K27 .shade{position:absolute;inset:0;background:linear-gradient(90deg,#000 0%,rgba(0,0,0,.92) 28%,rgba(0,0,0,.35) 60%,rgba(0,0,0,.15) 100%),linear-gradient(0deg,rgba(0,0,0,.6),transparent 40%)}
-#K28 .cards{position:absolute;left:300px;right:300px;top:470px;bottom:150px;display:grid;grid-template-columns:repeat(4,1fr);gap:48px}
-#K28 .card{border-radius:36px;background:rgba(12,16,22,.72);border:2px solid var(--line);padding:56px 56px 40px;display:flex;flex-direction:column}
-#K28 .card .no{font:300 110px/1 "Pretendard Variable";color:var(--sess)}
-#K28 .card b{display:block;font:700 74px/1.25 "KakaoBig";margin:36px 0 30px}
-#K28 .card p{font:400 50px/1.5 "KakaoSmall";color:var(--mut)}
-#K28 .card p em{font-style:normal;color:var(--fg)}
-#K28 .card .pic{margin-top:auto;height:300px;border-radius:22px;background-size:cover;background-position:center;opacity:.85}
-#K28 .dates{display:grid;grid-template-columns:1fr;gap:14px;margin-top:10px}
-#K28 .dates div{font:400 46px/1.3 "KakaoSmall";display:flex;justify-content:space-between;border-top:2px solid var(--line);padding-top:14px}
-#K28 .dates div span{color:var(--sess);font-family:"KakaoSmall"}
 #K29 .tiles{position:absolute;left:300px;right:300px;top:470px;display:grid;grid-template-columns:repeat(5,1fr);gap:48px}
 #K29 .tile{position:relative;border-radius:36px;background:linear-gradient(180deg,rgba(18,26,36,.82),rgba(10,14,20,.72));border:2px solid var(--line);padding:64px 52px 52px;height:900px;display:flex;flex-direction:column;align-items:flex-start;text-align:left;overflow:hidden}
 #K29 .tile::before{content:"";position:absolute;left:52px;right:52px;top:0;height:4px;border-radius:0 0 4px 4px;background:linear-gradient(90deg,#0081cc,#00ada9);opacity:.85}
@@ -262,15 +235,15 @@ html.embed,html.embed body,html.embed .stage{background:transparent}html.embed #
 #num{position:fixed;left:24px;bottom:24px;z-index:60;font:600 28px "Pretendard Variable";color:#fff;background:rgba(0,0,0,.7);padding:6px 14px;border-radius:8px;display:none}
 
 /* K31 의무화 기업 월 (자산총액 순) */
-#K31 .lgw{position:absolute;inset:0}
-#K31 .lg{position:absolute;width:var(--w);height:var(--h);display:flex;align-items:center;justify-content:center;opacity:0;transform:scale(.94);transition:opacity .8s ease var(--d),transform .8s cubic-bezier(.2,.7,.2,1) var(--d)}
-#K31 .lg::after{content:"";position:absolute;inset:10px 8px;border-radius:14px;border:1.5px solid rgba(242,245,250,.07);background:rgba(242,245,250,.015)}
-#K31 .lg i{font-style:normal;text-align:center;line-height:1.18;font-size:27px;font-family:"KakaoBig","Pretendard Variable",sans-serif;font-weight:700;color:#E6EBF2;white-space:nowrap;letter-spacing:-.01em}
-#K31 .lg img{max-width:calc(var(--w) - 52px);max-height:calc(var(--h) - 44px);filter:brightness(0) invert(1)}
-.s.cur#K31 .lg{opacity:var(--o);transform:none}
-#K31 .gr{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none}
-#K31 .gr-t{margin:0;font:300 150px/1 "Lexend",sans-serif;letter-spacing:-.01em;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;opacity:0;transform:translateY(30px);filter:blur(10px);transition:opacity 1.2s ease 1.6s,transform 1.2s cubic-bezier(.2,.7,.2,1) 1.6s,filter 1.2s 1.6s}
-.s.cur#K31 .gr-t{opacity:1;transform:none;filter:none}
+#K30 .lgw{position:absolute;inset:0}
+#K30 .lg{position:absolute;width:var(--w);height:var(--h);display:flex;align-items:center;justify-content:center;opacity:0;transform:scale(.94);transition:opacity .8s ease var(--d),transform .8s cubic-bezier(.2,.7,.2,1) var(--d)}
+#K30 .lg::after{content:"";position:absolute;inset:10px 8px;border-radius:14px;border:1.5px solid rgba(242,245,250,.07);background:rgba(242,245,250,.015)}
+#K30 .lg i{font-style:normal;text-align:center;line-height:1.18;font-size:27px;font-family:"KakaoBig","Pretendard Variable",sans-serif;font-weight:700;color:#E6EBF2;white-space:nowrap;letter-spacing:-.01em}
+#K30 .lg img{max-width:calc(var(--w) - 52px);max-height:calc(var(--h) - 44px);filter:brightness(0) invert(1)}
+.s.cur#K30.p2 .lg{opacity:var(--o);transform:none}
+#K30 .gr{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none}
+#K30 .gr-t{margin:0;font:300 150px/1 "Lexend",sans-serif;letter-spacing:-.01em;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;opacity:0;transform:translateY(30px);filter:blur(10px);transition:opacity 1.2s ease 1.6s,transform 1.2s cubic-bezier(.2,.7,.2,1) 1.6s,filter 1.2s 1.6s}
+.s.cur#K30.p2 .gr-t{opacity:1;transform:none;filter:none}
 
 /* 장 표지 (참고 이미지 레이아웃): 위 눈썹 로고줄 · 가운데 큰 제목 · 아래 장 번호 | 영문 · 궤도 선 그림 */
 .sec .au{position:absolute;inset:0;background:radial-gradient(48% 70% at 12% 100%,rgba(0,173,169,.20),transparent 70%),radial-gradient(42% 60% at 88% 0%,rgba(0,129,204,.18),transparent 70%),radial-gradient(30% 40% at 70% 85%,rgba(0,113,243,.10),transparent 70%)}
@@ -291,6 +264,96 @@ html.embed,html.embed body,html.embed .stage{background:transparent}html.embed #
 .sec-ft i{width:3px;height:58px;background:rgba(242,245,250,.45)}
 .sec-who{font-family:"KakaoSmall","Lexend",sans-serif;letter-spacing:0}.sec-who b{font:700 64px/1 "KakaoBig";letter-spacing:.2em;background:none;-webkit-background-clip:initial;background-clip:initial;color:var(--fg)}.sec-who span{font:400 58px/1 "KakaoSmall";color:var(--mut)}
 #K27.sec .shade{background:rgba(0,0,0,.72)}
+/* K02: 8가지 변화 같은 위계 */
+#K02 .cols{grid-template-columns:repeat(8,1fr);gap:44px}
+#K02 svg{width:132px;height:132px}
+#K02 .col b{font-size:70px}
+#K02 .col span{font-size:48px}
+#K05 .col{border-left:0;padding-left:0}
+#K05 .cols{top:520px}
+#K07 .cols{grid-template-columns:repeat(5,1fr);top:470px;bottom:230px;gap:44px}
+#K07 .col{padding:56px 52px}
+#K07 .n{font-size:210px}
+#K08 .k8h{text-align:center;font:700 62px/1 "KakaoBig";color:var(--fg);padding-bottom:28px;border-bottom:3px solid var(--line)}
+/* K10: % · 개사 열 맞춤(숫자 오른쪽 정렬 → % 끝선 일치, 개사는 같은 시작선) · 지도 표지는 점 군집 위로 띄우고 글자 뒤 그림자 */
+#K10 .r{display:grid;grid-template-columns:300px 660px 1fr;align-items:baseline;gap:0}
+#K10 .r .p{text-align:right;padding-right:40px}
+#K10 .r .c{padding-left:10px}
+#K10 .mk{text-shadow:0 0 18px #000,0 0 36px #000,0 0 6px #000}
+#K10 .mk span,#K10 .mk small{text-shadow:0 0 18px #000,0 0 6px #000}
+/* K11 3월: 해마다 따로 */
+#K11 .ml{position:absolute;inset:0;opacity:0;transition:opacity .7s}
+#K11[data-step="0"] .m26,#K11[data-step="1"] .m27,#K11[data-step="2"] .m27{opacity:1}
+#K11 .ax{position:absolute;left:0;right:0;bottom:180px;height:3px;background:var(--line)}
+#K11 .wk{position:absolute;top:40px;bottom:180px;border-left:3px dashed rgba(242,245,250,.14)}
+#K11 .band{position:absolute;top:0;bottom:0;background:rgba(255,183,77,.08);border-top:4px solid rgba(255,183,77,.6);transition:opacity .6s}
+#K11 .band span{position:absolute;left:0;right:0;top:18px;text-align:center;font:700 44px "KakaoBig";color:var(--warn)}
+#K11[data-step="2"] .m27 .band{opacity:0}
+#K11 .day{position:absolute;bottom:0;height:170px;width:200px;margin-left:-100px;text-align:center;font:300 66px/1 "Lexend";color:var(--fg);padding-top:22px}
+#K11 .day small{display:block;font:400 46px/1 "KakaoSmall";color:var(--mut);margin-top:14px}
+#K11 .bar{position:absolute;bottom:183px;width:96px;border-radius:12px 12px 2px 2px;transform-origin:bottom;transform:scaleY(0);transition:transform 1s cubic-bezier(.2,.7,.2,1)}
+#K11 .bar i{position:absolute;left:50%;bottom:calc(100% + 14px);transform:translateX(-50%);font:400 52px "Lexend";font-style:normal;color:var(--fg);white-space:nowrap}
+#K11 .m26 .bar{background:rgba(242,245,250,.6)}
+#K11 .m27 .bar{background:var(--grad)}
+#K11[data-step="0"] .m26 .bar,#K11[data-step="1"] .m27 .bar,#K11[data-step="2"] .m27 .bar{transform:none}
+#K11 .full{position:absolute;top:0;bottom:178px;width:240px;margin-left:-120px;background:repeating-linear-gradient(135deg,rgba(255,255,255,.07) 0 16px,rgba(255,255,255,0) 16px 32px),#05070a;border:3px solid rgba(255,255,255,.45);border-radius:14px;display:flex;align-items:flex-start;justify-content:center;padding-top:40px;text-align:center;font:600 46px/1.15 "Lexend";color:#fff;z-index:2}
+#K11 .tri{position:absolute;top:0;bottom:178px;width:240px;margin-left:-120px;background:rgba(255,183,77,.10);border-top:4px solid var(--warn)}
+#K11 .tri span{position:absolute;left:0;right:0;top:24px;text-align:center;font:400 84px/1 "Lexend";color:var(--warn)}
+#K11 .lg .sw{width:30px;height:30px;border-radius:8px;background:rgba(242,245,250,.6)}
+#K11 .lg .t1{display:none}#K11 .lg em{font-style:normal}
+#K11[data-step="1"] .lg .sw,#K11[data-step="2"] .lg .sw{background:var(--grad)}
+#K11[data-step="1"] .lg .t0,#K11[data-step="2"] .lg .t0{display:none}
+#K11[data-step="1"] .lg .t1,#K11[data-step="2"] .lg .t1{display:inline}
+#K11[data-step="2"] .k11hot{opacity:.3}
+#K11 .chart{top:560px;height:820px}
+#K11 .stepcap{top:1440px}
+/* K13: 카드 · 아이콘 상자 · 화살표 없이 세 칸 — 위 굵은 선, 큰 번호, 과제, 설명 */
+#K13 .tds{grid-template-columns:repeat(3,1fr);gap:120px;top:540px}
+#K13 .td{height:760px;border-radius:0;background:none;border:0;border-top:4px solid rgba(242,245,250,.22);padding:60px 0 0}
+#K13 .td::before{left:0;right:auto;width:200px;height:4px;top:-4px;border-radius:0}
+#K13 .no{font-weight:200;font-size:200px;background:none;-webkit-background-clip:border-box;background-clip:border-box;color:var(--sess)}
+#K13 b{margin:auto 0 34px}
+/* K23b 전자투표 · 전자위임장 */
+#K23b .k23r{margin-top:110px;padding-top:44px;border-top:3px solid var(--line)}
+#K23b .k23l{font:400 48px "KakaoSmall";color:var(--mut);margin:0 0 26px}
+#K23b .k23c{margin:0;display:flex;flex-wrap:wrap;align-items:center;gap:18px 22px;font:700 50px/1.3 "KakaoBig";color:var(--mut)}
+#K23b .k23n{margin:70px 0 0;font:400 52px/1.4 "KakaoSmall";color:var(--sess)}
+#K23b .k23c i{font:300 64px "Lexend";font-style:normal;color:var(--dim)}
+#K23b .k23c .on{color:var(--fg)}
+#K23b .k23t{position:absolute;margin:0;font:400 46px "KakaoSmall";color:var(--mut)}
+/* K27 운영지원 표지: 여섯 명이 보이게 — 사진 밝게, 글은 작게 아래로 */
+#K27 .photo{opacity:1;background-position:center 18%}
+#K27.sec .shade{background:linear-gradient(0deg,rgba(0,0,0,.92) 0%,rgba(0,0,0,.7) 22%,rgba(0,0,0,.12) 52%,rgba(0,0,0,.08) 100%)}
+#K27 .sec-c{justify-content:flex-end;padding-bottom:150px}
+#K27 .sec-h{font-size:112px;line-height:1.2}
+#K27 .sec-s{font-size:52px;margin-top:34px}
+/* K28a~d 운영지원: 원본처럼 단계마다 한 장, 사진 크게 */
+
+#K28a .k28two{position:absolute;left:300px;right:300px;top:470px;display:grid;grid-template-columns:1fr 1fr;gap:100px}
+#K28a .k28p{height:700px;border-radius:28px;background-size:cover;background-position:center;margin-bottom:56px}
+#K28a b{display:block;font:700 84px/1.2 "KakaoBig";margin-bottom:24px}
+#K28a p{margin:0;font:400 56px/1.5 "KakaoSmall";color:var(--mut)}
+#K28a p span{color:var(--sess)}
+#K28c .k28bg{position:absolute;inset:0;background:url(assets/s4/rehearsal.webp) right center/cover;opacity:.9}
+#K28c .k28bg::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,.96) 0%,rgba(0,0,0,.9) 46%,rgba(0,0,0,.35) 75%,rgba(0,0,0,.15) 100%)}
+#K28c .k28g{position:absolute;left:300px;top:500px;width:2700px;display:grid;grid-template-columns:1fr 1fr;gap:80px 110px}
+#K28c .k28g b{display:flex;align-items:baseline;gap:26px;font:700 72px/1.2 "KakaoBig";margin-bottom:22px}
+#K28c .k28g b i{font:300 72px/1 "Lexend";font-style:normal;color:var(--sess)}
+#K28c .k28g p{margin:0 0 18px;font:400 46px/1.55 "KakaoSmall";color:#D5DCE6}
+#K28c .k28g em{font:400 44px "KakaoSmall";font-style:normal;color:var(--sess)}
+#K28d .k28f{position:absolute;left:300px;right:300px;top:620px;margin:0;padding:0;list-style:none;display:grid;grid-template-columns:repeat(4,1fr);gap:0}
+#K28d .k28f li{position:relative;padding:70px 60px 0 0;border-top:4px solid var(--line)}
+#K28d .k28f li::before{content:"";position:absolute;left:0;top:-14px;width:24px;height:24px;border-radius:50%;background:var(--warn)}
+#K28d .k28f i{display:block;font:200 150px/1 "Pretendard Variable";font-style:normal;color:var(--warn);margin-bottom:40px}
+#K28d .k28f b{display:block;font:700 72px/1.25 "KakaoBig";margin-bottom:28px}
+#K28d .k28f p{margin:0;font:400 50px/1.5 "KakaoSmall";color:var(--mut)}
+/* K30: Get Ready 크게 → 약 4초 뒤 스스로 212개사 로고 벽으로 (가운데 작은 Get Ready.) */
+#K30 .k30a{position:absolute;inset:0;transition:opacity 1.1s ease,transform 1.4s cubic-bezier(.6,0,.2,1),filter 1.1s}
+#K30.p2 .k30a{opacity:0;transform:scale(.55);filter:blur(12px)}
+#K30 .gr-t{transition-delay:.9s}
+/* 제목 줄을 뺀 장: 내용을 위로 */
+#K05 .cols{top:420px}
+#K07 .cols{top:400px;bottom:260px}
 </style></head>
 <body>
 <div class="stage" id="stage">
@@ -299,20 +362,17 @@ html.embed,html.embed body,html.embed .stage{background:transparent}html.embed #
 <!-- ═════════ 0. 오프닝 ═════════ -->
 <section class="s ch sec" id="K00" data-t="세션 타이틀" data-dim=".3">
  <div class="au"></div>
- <p class="sec-eb fu" style="--i:0"><span>SESSION 4</span></p>
- <div class="sec-c"><h1 class="sec-h fu" style="--i:1">전자주주총회 도입 · 운영 방안<br>및 <span class="g">통합 솔루션</span> 소개</h1></div>
+ <div class="sec-c"><h1 class="sec-h fu" style="--i:1">전자주주총회 도입 · 운영 방안<br>및 통합 솔루션 소개</h1></div>
  <p class="sec-ft sec-who fu" style="--i:3"><b>박성용</b><i></i><span>IR큐더스, 본부장</span></p>
 </section>
 
 <!-- ═════════ 1. 주주총회, 어떻게 바뀌나 ═════════ -->
 <section class="s ch sec" id="K01" data-t="장 표지 · 주주총회, 어떻게 바뀌나" data-dim=".3">
  <div class="au"></div>
- <p class="sec-eb fu" style="--i:0"><span>SESSION 4</span></p>
  <div class="sec-c"><h2 class="sec-h fu" style="--i:1">주주총회, 어떻게 바뀌나</h2><p class="sec-s fu" style="--i:2">전자주총 시행에 따른 주주총회 운영의 변화</p></div>
- <p class="sec-ft fu" style="--i:3"><b>01</b><i></i><span>WHAT CHANGES</span></p>
 </section>
 
-<section class="s" id="K02" data-t="운영의 6가지 변화" data-dim=".2" data-steps="1">
+<section class="s" id="K02" data-t="운영의 8가지 변화" data-dim=".2">
  <div class="top"><p class="eb fu" style="--i:0">What changes</p><h2 class="h fu" style="--i:1">주주총회 운영이 이렇게 바뀝니다</h2></div>
  <div class="cols">
   <div class="col fu" style="--i:2"><svg viewBox="0 0 64 64"><rect x="6" y="10" width="52" height="34" rx="4"/><path d="M22 54h20M32 44v10"/><path class="a" d="M16 34l8-8 6 5 12-12"/></svg><b>디지털 전환</b><span>엑셀에서 시스템으로</span></div>
@@ -321,16 +381,16 @@ html.embed,html.embed body,html.embed .stage{background:transparent}html.embed #
   <div class="col fu" style="--i:5"><svg viewBox="0 0 64 64"><rect x="6" y="18" width="36" height="28" rx="4"/><path d="M42 26l16-8v28l-16-8"/><circle class="a" cx="15" cy="12" r="3"/><path class="a" d="M22 12h12"/></svg><b>실시간 중계</b><span>실시간 쌍방향 참여 · 기록</span></div>
   <div class="col fu" style="--i:6"><svg viewBox="0 0 64 64"><path d="M8 56h48"/><rect x="12" y="34" width="8" height="18"/><rect x="28" y="22" width="8" height="30"/><rect class="a" x="44" y="10" width="8" height="42"/></svg><b>정확한 집계</b><span>의결권 행사 · 결의 결과 검증</span></div>
   <div class="col fu" style="--i:7"><svg viewBox="0 0 64 64"><path d="M6 24L32 8l26 16"/><path d="M12 26v24M24 26v24M40 26v24M52 26v24M6 54h52"/><circle class="a" cx="32" cy="19" r="3"/></svg><b>관리기관</b><span>직접 운영 또는<br>관리기관 위탁</span></div>
+  <div class="col fu" style="--i:8"><svg viewBox="0 0 64 64"><path d="M32 8 58 54H6z"/><path class="a" d="M32 26v14"/><circle class="a" cx="32" cy="47" r="1.6"/></svg><b>장애 대응</b><span>통신장애 · 시스템 오류</span></div>
+  <div class="col fu" style="--i:9"><svg viewBox="0 0 64 64"><path d="M8 54h12V42h12V30h12V18h12"/><path class="a" d="M40 8h16v16M56 8 36 28"/></svg><b>난이도 상승</b><span>집중투표 · 3%룰 · 행동주의</span></div>
  </div>
- <div class="alert" data-b="1"><span class="lbl">그리고</span><span class="chip w"><b>장애 대응</b>통신장애 · 시스템 오류</span><span class="chip w"><b>난이도 상승</b>집중투표 · 3%룰 · 행동주의</span></div>
+ 
 </section>
 
 <!-- ═════════ 2. 2027 Preview ═════════ -->
 <section class="s ch sec fl" id="K03" data-t="장 표지 · 2027 Preview" data-dim=".3">
  <div class="au"></div>
- <p class="sec-eb fu" style="--i:0"><span>SESSION 4</span></p>
  <div class="sec-c"><h2 class="sec-h fu" style="--i:1"><span class="g">2027</span> Preview</h2><p class="sec-s fu" style="--i:2">숫자로 보는 의무화 첫해</p></div>
- <p class="sec-ft fu" style="--i:3"><b>02</b><i></i><span>PREVIEW</span></p>
 </section>
 
 <section class="s" id="K04" data-t="의무화 기업 212개사" data-dim=".18" data-steps="1">
@@ -344,46 +404,48 @@ html.embed,html.embed body,html.embed .stage{background:transparent}html.embed #
 </section>
 
 <section class="s" id="K05" data-t="주요 지표" data-dim=".18">
- <div class="top"><p class="eb fu" style="--i:0">Key figures<small>의무화 기업 평균</small></p><h2 class="h fu" style="--i:1">큰 회사, 많은 주주, 높은 외국인 비중</h2></div>
+ <div class="top"><p class="eb fu" style="--i:0">Key figures<small>의무화 기업 평균</small></p></div>
  <div class="cols">
-  <div class="col fu" style="--i:2"><p class="lab">평균 자산총액</p><p class="num g">20.7<small>조 원</small></p><p class="md">중앙값<b>6.9조 원</b></p></div>
-  <div class="col fu" style="--i:3"><p class="lab">평균 소액주주 수</p><p class="num g temp">12.4<small>만 명</small></p><p class="md temp">중앙값<b>3.1만 명</b></p></div>
-  <div class="col fu" style="--i:4"><p class="lab">평균 최대주주 등 지분율</p><p class="num g temp">41.2<small>%</small></p><p class="md temp">중앙값<b>40.5%</b></p></div>
-  <div class="col fu" style="--i:5"><p class="lab">평균 외국인 지분율</p><p class="num g temp">22.8<small>%</small></p><p class="md temp">중앙값<b>17.6%</b></p></div>
+  <div class="col fu" style="--i:2"><p class="lab">평균 자산총액</p><p class="num g"><span class="cnt" data-to="20.7">20.7</span><small>조 원</small></p><p class="md">중앙값<b>6.9조 원</b></p></div>
+  <div class="col fu" style="--i:3"><p class="lab">평균 소액주주 수</p><p class="num g temp"><span class="cnt" data-to="12.4">12.4</span><small>만 명</small></p><p class="md temp">중앙값<b>3.1만 명</b></p></div>
+  <div class="col fu" style="--i:4"><p class="lab">평균 최대주주 등 지분율</p><p class="num g temp"><span class="cnt" data-to="41.2">41.2</span><small>%</small></p><p class="md temp">중앙값<b>40.5%</b></p></div>
+  <div class="col fu" style="--i:5"><p class="lab">평균 외국인 지분율</p><p class="num g temp"><span class="cnt" data-to="22.8">22.8</span><small>%</small></p><p class="md temp">중앙값<b>17.6%</b></p></div>
  </div>
 </section>
 
 <section class="s" id="K06" data-t="의안" data-dim=".18" data-steps="1">
- <div class="top"><p class="eb fu" style="--i:0">Agenda</p><h2 class="h fu" style="--i:1">의안은 줄고, 한 건의 무게는 커집니다</h2></div>
- <div class="ab fu" style="--i:2;left:300px;top:620px"><p class="sub">'26년 정기주총 의안 총수</p><p class="num" style="font-size:380px;margin-top:30px"><span class="cnt" data-to="2251" data-fmt=",">2,251</span><small style="font-family:KakaoBig;font-weight:700">건</small></p></div>
- <canvas class="viz" data-viz="stream" style="left:1880px;top:640px;width:900px;height:520px" width="900" height="520"></canvas>
- <div class="ab fu" style="--i:3;left:2800px;top:620px"><p class="sub">'27년 정기주총 의안 예상</p><p class="num g" style="font-size:380px;margin-top:30px">2,000<small style="font-family:KakaoBig;font-weight:700;-webkit-text-fill-color:#F2F5FA">건 미만</small></p></div>
- <div class="ab" data-b="1" style="left:300px;top:1250px;display:flex;gap:36px"><span class="chip">'26년 정관변경 <b>694</b>건 · 개정상법 대응</span><span class="chip">가결률 <b>96%</b> · 2,165건</span></div>
+ <div class="top"><p class="eb fu" style="--i:0">Agenda</p></div>
+ <div class="ab fu" style="--i:2;left:300px;top:480px"><p class="sub">'26년 정기주총 의안 총수</p><p class="num" style="font-size:380px;margin-top:30px"><span class="cnt" data-to="2251" data-fmt=",">2,251</span><small style="font-family:KakaoBig;font-weight:700">건</small></p></div>
+ <canvas class="viz" data-viz="stream" style="left:1880px;top:500px;width:900px;height:520px" width="900" height="520"></canvas>
+ <div class="ab fu" style="--i:3;left:2800px;top:480px"><p class="sub">'27년 정기주총 의안 예상</p><p class="num g" style="font-size:380px;margin-top:30px"><span class="cnt" data-to="2000" data-fmt=",">2,000</span><small style="font-family:KakaoBig;font-weight:700;-webkit-text-fill-color:#F2F5FA">건 미만</small></p></div>
+ <div class="ab" data-b="1" style="left:300px;top:1110px"><span class="chip">가결률 <b>96%</b> · 2,165건</span></div>
+ <div class="ab" data-b="1" style="left:2800px;top:1110px"><span class="chip">'26년 정관변경 <b>694</b>건 · 개정상법 대응</span></div>
 </section>
 
 <section class="s" id="K07" data-t="주총 난이도 S · A · B · C" data-dim=".16">
- <div class="top"><p class="eb fu" style="--i:0">Difficulty<small>의무화 기업 중</small></p><h2 class="h fu" style="--i:1">모든 주총이 같은 난이도는 아닙니다</h2></div>
+ <div class="top"><p class="eb fu" style="--i:0">Difficulty<small>의무화 기업 중</small></p></div>
  <div class="cols">
-  <div class="col s1 fu" style="--i:2"><span class="gr">S</span><p class="tg">S</p><p class="n warn">4<small>개사</small></p><p class="l">경영권 분쟁</p></div>
-  <div class="col fu" style="--i:3"><span class="gr">A</span><p class="tg">A</p><p class="n">26<small>개사</small></p><p class="l">기관투자자<br>Engagement</p></div>
-  <div class="col fu" style="--i:4"><span class="gr">B</span><p class="tg">B</p><p class="n">56<small>개사</small></p><p class="l">소액주주 분쟁</p></div>
-  <div class="col fu" style="--i:5"><span class="gr">C</span><p class="tg">C</p><div class="two"><div><p class="n">68<small>개사</small></p><p class="l">노조 분쟁</p></div><div><p class="n">37<small>개사</small></p><p class="l">소액주주플랫폼<br>캠페인</p></div></div></div>
+  <div class="col s1 fu" style="--i:2"><span class="gr">S</span><p class="tg">S</p><p class="n warn"><span class="cnt" data-to="4">4</span><small>개사</small></p><p class="l">경영권 분쟁</p></div>
+  <div class="col fu" style="--i:3"><span class="gr">A</span><p class="tg">A</p><p class="n"><span class="cnt" data-to="26">26</span><small>개사</small></p><p class="l">기관투자자<br>Engagement</p></div>
+  <div class="col fu" style="--i:4"><span class="gr">B</span><p class="tg">B</p><p class="n"><span class="cnt" data-to="56">56</span><small>개사</small></p><p class="l">소액주주 분쟁</p></div>
+  <div class="col fu" style="--i:5"><span class="gr">C</span><p class="tg">C</p><p class="n"><span class="cnt" data-to="68">68</span><small>개사</small></p><p class="l">노조 분쟁</p></div>
+  <div class="col fu" style="--i:6"><span class="gr">C</span><p class="tg">C</p><p class="n"><span class="cnt" data-to="37">37</span><small>개사</small></p><p class="l">소액주주플랫폼<br>캠페인</p></div>
  </div>
 </section>
 
 <section class="s" id="K08" data-t="의결권 행사 채널" data-dim=".16">
  <div class="top"><p class="eb fu" style="--i:0">Voting channels<small>2026년 기준</small></p><h2 class="h fu" style="--i:1">전자투표는 기본, 권유는 직접</h2></div>
- <canvas class="viz" data-viz="rings" style="left:300px;top:470px;width:3600px;height:960px" width="3600" height="960"></canvas>
- <div class="ab fu" style="--i:2;left:300px;top:1500px;width:1340px;text-align:center;font:400 52px KakaoSmall;color:var(--mut)">전자투표 · 전자위임장 이용 현황</div>
- <div class="ab fu" style="--i:2;left:1780px;top:1500px;width:2120px;text-align:center;font:400 52px KakaoSmall;color:var(--mut)">의결권 대리행사 권유</div>
+ <canvas class="viz" data-viz="rings" style="left:300px;top:560px;width:3600px;height:960px" width="3600" height="960"></canvas>
+ <div class="ab fu k8h" style="--i:2;left:300px;top:470px;width:1340px">전자투표 · 전자위임장 이용 현황</div>
+ <div class="ab fu k8h" style="--i:2;left:1780px;top:470px;width:2120px">의결권 대리행사 권유</div>
 </section>
 
-<section class="s" id="K09" data-t="관리기관 선정 현황" data-dim=".18" data-steps="1">
+<section class="s" id="K09" data-t="관리기관 선정 현황" data-dim=".18">
  <div class="ab" style="left:300px;top:300px;width:1580px">
   <p class="eb fu" style="--i:0">전자주총관리기관 선정 현황<small>현재일 기준</small></p>
-  <h2 class="h hm fu" style="--i:1;margin-top:40px">143개사가<br>IR큐더스를 선택했습니다</h2>
-  <p class="num g fu" style="--i:2;font-size:460px;margin-top:70px"><span class="cnt" data-to="67">67</span><small>%</small></p>
-  <div data-b="1" style="margin-top:70px;display:flex;flex-direction:column;gap:26px;align-items:flex-start"><span class="chip"><i style="width:30px;height:30px;border-radius:50%;background:var(--grad)"></i>IR큐더스 <b>143</b> 67%</span><span class="chip"><i style="width:30px;height:30px;border-radius:50%;background:rgba(242,245,250,.28)"></i>미선정 · 기타 <b>69</b> 33%</span></div>
+  <h2 class="h hm fu" style="--i:1;margin-top:40px">151개사가<br>IR큐더스를 선택했습니다</h2>
+  <p class="num g fu" style="--i:2;font-size:460px;margin-top:70px"><span class="cnt" data-to="72">72</span><small>%</small></p>
+  
  </div>
  <canvas class="viz" data-viz="grid" data-mode="pick" style="left:1950px;top:180px;width:1950px;height:1240px" width="1950" height="1240"></canvas>
 </section>
@@ -391,20 +453,20 @@ html.embed,html.embed body,html.embed .stage{background:transparent}html.embed #
 <section class="s" id="K10" data-t="개최 지역" data-dim=".14" data-steps="1">
  <div class="top" style="right:auto;width:1600px"><p class="eb fu" style="--i:0">Venue<small>2026년 기준</small></p><h2 class="h hm fu" style="--i:1">주총은 세 곳에 모입니다</h2></div>
  <div class="rows">
-  <div class="r big fu" style="--i:2"><span class="k">서울</span><span class="p g">69%</span><span class="c">146개사</span></div>
-  <div class="r fu" style="--i:3"><span class="k">경기</span><span class="p">14%</span><span class="c">30개사</span></div>
-  <div class="r fu" style="--i:4"><span class="k">기타</span><span class="p">17%</span><span class="c">36개사</span></div>
+  <div class="r big fu" style="--i:2"><span class="k">서울</span><span class="p g"><span class="cnt" data-to="69">69</span>%</span><span class="c">146개사</span></div>
+  <div class="r fu" style="--i:3"><span class="k">경기</span><span class="p"><span class="cnt" data-to="14">14</span>%</span><span class="c">30개사</span></div>
+  <div class="r fu" style="--i:4"><span class="k">기타</span><span class="p"><span class="cnt" data-to="17">17</span>%</span><span class="c">36개사</span></div>
  </div>
  <canvas class="viz" data-viz="seoul" style="left:1950px;top:120px;width:1950px;height:1400px" width="1950" height="1400"></canvas>
- <div class="mk" data-b="1" style="left:2980px;top:520px"><b>중구 · 종로구</b><span>25%</span><small>53개사</small></div>
- <div class="mk" data-b="1" style="left:2370px;top:930px"><b>영등포구</b><span>12%</span><small>25개사</small></div>
- <div class="mk" data-b="1" style="left:3480px;top:1100px"><b>강남 · 서초 · 송파</b><span>16%</span><small>33개사</small></div>
+ <div class="mk" data-b="1" style="left:2983px;top:410px"><b>중구 · 종로구</b><span><span class="cnt" data-to="25" data-dur="1200">25</span>%</span><small>53개사</small></div>
+ <div class="mk" data-b="1" style="left:2379px;top:820px"><b>영등포구</b><span><span class="cnt" data-to="12" data-dur="1200">12</span>%</span><small>25개사</small></div>
+ <div class="mk" data-b="1" style="left:3490px;top:990px"><b>강남 · 서초 · 송파</b><span><span class="cnt" data-to="16" data-dur="1200">16</span>%</span><small>33개사</small></div>
  <p class="river fu" style="--i:3;left:3260px;top:860px">한강</p>
 </section>
 
 <section class="s" id="K11" data-t="3월 집중일 · 지원 가능일" data-dim=".14" data-steps="2">
  <div class="top"><p class="eb fu" style="--i:0">March<small>정기주총 개최일 분포</small></p><h2 class="h hm fu" style="--i:1">3월, 같은 날에 몰립니다</h2></div>
- <div class="lg fu" style="--i:2"><span class="chip"><i style="width:30px;height:30px;border-radius:8px;background:rgba(242,245,250,.55)"></i>2026년 3월 실제</span><span class="chip" data-b="1"><i style="width:30px;height:30px;border-radius:8px;background:var(--grad)"></i>2027년 3월 후보일</span><span class="chip w" data-b="1"><i style="width:30px;height:30px;border-radius:8px;background:var(--warn)"></i>집중일</span></div>
+ <div class="lg fu" style="--i:2"><span class="chip"><i class="sw"></i><em class="t0">2026년 3월 개최일</em><em class="t1">2027년 3월 후보일</em></span><span class="chip w k11hot"><i style="width:30px;height:30px;border-radius:8px;background:rgba(255,183,77,.55)"></i>집중일</span></div>
  <div class="chart fu" style="--i:2" id="mar"></div>
  <p class="stepcap" id="marcap"></p>
 </section>
@@ -412,19 +474,15 @@ html.embed,html.embed body,html.embed .stage{background:transparent}html.embed #
 <!-- ═════════ 3. 회사의 준비 과제 ═════════ -->
 <section class="s ch sec" id="K12" data-t="장 표지 · 회사의 준비 과제" data-dim=".3">
  <div class="au"></div>
- <p class="sec-eb fu" style="--i:0"><span>SESSION 4</span></p>
  <div class="sec-c"><h2 class="sec-h fu" style="--i:1">회사의 준비 과제</h2><p class="sec-s fu" style="--i:2">운영규정부터 소집통지 · 리허설까지</p></div>
- <p class="sec-ft fu" style="--i:3"><b>03</b><i></i><span>GET PREPARED</span></p>
 </section>
 
 <section class="s" id="K13" data-t="세 가지 과제" data-dim=".18">
  <div class="top"><p class="eb fu" style="--i:0">To-do</p><h2 class="h fu" style="--i:1">지금 정해야 할 세 가지</h2></div>
  <div class="tds">
-  <div class="td fu" style="--i:2"><div class="hd"><p class="no">01</p><div class="ic"><svg viewBox="0 0 120 120"><path stroke="url(#k29g)" fill="none" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" d="M30 14h42l20 20v72H30z"/><path stroke="url(#k29g)" fill="none" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" d="M72 14v20h20"/><path stroke="url(#k29g)" fill="none" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" d="M44 56h34M44 72h34M44 88h18"/></svg></div></div><b>운영규정 수립</b><span>출석 · 질의 · 표결 · 장애 대응 등<br>운영기준과 절차 마련</span></div>
-  <div class="ar fu" style="--i:2"><svg viewBox="0 0 60 60"><path d="m22 14 16 16-16 16" fill="none" stroke="rgba(0,129,204,.7)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-  <div class="td fu" style="--i:3"><div class="hd"><p class="no">02</p><div class="ic"><svg viewBox="0 0 120 120"><path stroke="url(#k29g)" fill="none" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" d="M16 104h88"/><path stroke="url(#k29g)" fill="none" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" d="M24 104V46l36-24 36 24v58"/><path stroke="url(#k29g)" fill="none" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" d="M42 104V62M60 104V62M78 104V62"/><path stroke="url(#k29g)" fill="none" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" d="M24 46h72"/></svg></div></div><b>관리기관 선정</b><span>시스템 · 운영 역량과<br>현장 지원 범위 검토</span></div>
-  <div class="ar fu" style="--i:3"><svg viewBox="0 0 60 60"><path d="m22 14 16 16-16 16" fill="none" stroke="rgba(0,129,204,.7)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-  <div class="td fu" style="--i:4"><div class="hd"><p class="no">03</p><div class="ic"><svg viewBox="0 0 120 120"><rect stroke="url(#k29g)" fill="none" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" x="16" y="24" width="88" height="80" rx="10"/><path stroke="url(#k29g)" fill="none" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" d="M16 46h88M40 14v20M80 14v20"/><path stroke="url(#k29g)" fill="none" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" d="m44 74 11 11 22-22"/></svg></div></div><b>개최일자 확정</b><span>주총일과 사전점검,<br>모의주총 · 리허설 일정 협의</span></div>
+  <div class="td fu" style="--i:2"><div class="hd"><p class="no">01</p></div><b>운영규정 수립</b><span>출석 · 질의 · 표결 · 장애 대응 등<br>운영기준과 절차 마련</span></div>
+  <div class="td fu" style="--i:3"><div class="hd"><p class="no">02</p></div><b>관리기관 선정</b><span>시스템 · 운영 역량과<br>현장 지원 범위 검토</span></div>
+  <div class="td fu" style="--i:4"><div class="hd"><p class="no">03</p></div><b>개최일자 확정</b><span>주총일과 사전점검,<br>모의주총 · 리허설 일정 협의</span></div>
  </div>
 </section>
 
@@ -450,9 +508,7 @@ html.embed,html.embed body,html.embed .stage{background:transparent}html.embed #
 <!-- ═════════ 4. IR큐더스 ═════════ -->
 <section class="s ch sec fl" id="K16" data-t="장 표지 · 전자주주총회관리기관 IR큐더스" data-dim=".3">
  <div class="au"></div>
- <p class="sec-eb fu" style="--i:0"><span>SESSION 4</span></p>
  <div class="sec-c"><h2 class="sec-h fu" style="--i:1">전자주주총회관리기관,<br><span class="g">IR큐더스</span></h2></div>
- <p class="sec-ft fu" style="--i:3"><b>04</b><i></i><span>IR KUDOS</span></p>
 </section>
 
 <section class="s" id="K17" data-t="통합 서비스 체계" data-dim=".16">
@@ -520,9 +576,7 @@ html.embed,html.embed body,html.embed .stage{background:transparent}html.embed #
 
 <section class="s ch sec fl" id="K21b" data-t="장 표지 · 시스템" data-dim=".3">
  <div class="au"></div>
- <p class="sec-eb fu" style="--i:0"><span>SESSION 4</span></p>
  <div class="sec-c"><h2 class="sec-h fu" style="--i:1">시스템</h2><p class="sec-s fu" style="--i:2">사전 의결권 행사부터 현장 · 전자주총, 생중계, 표결 · 집계까지</p></div>
- <p class="sec-ft fu" style="--i:3"><b>05</b><i></i><span>SYSTEM</span></p>
 </section>
 
 <section class="s" id="K22" data-t="하나의 DB로 — 업무 흐름" data-dim=".12" data-steps="3">
@@ -544,17 +598,27 @@ html.embed,html.embed body,html.embed .stage{background:transparent}html.embed #
  <div class="db fu" style="--i:2">하나의 통합 DB</div>
 </section>
 
-<section class="s" id="K23" data-t="CONEXUS 통합관리시스템" data-dim=".1" data-ox=".2" data-steps="2">
+<section class="s" id="K23" data-t="CONEXUS 통합관리시스템" data-dim=".1" data-ox=".2" >
  <div class="ab" style="left:300px;top:250px;width:1460px">
   <p class="eb fu" style="--i:0">CONEXUS<small>기업용 통합관리시스템</small></p>
   <h2 class="h hm fu" style="--i:1;margin-top:40px">사전 의결권 행사부터<br>현장 · 전자주총, 생중계,<br>표결 · 집계까지</h2>
   <p class="sub fu" style="--i:2;margin-top:50px">하나의 시스템으로 통합관리</p>
   <p class="fu" style="--i:3;margin-top:90px;display:flex;flex-wrap:wrap;gap:20px"><span class="chip">설정</span><span class="chip">사전투표</span><span class="chip">사전신청</span><span class="chip">출석</span><span class="chip">질의</span><span class="chip">표결</span><span class="chip">자동집계</span></p>
-  <p data-b="2" style="margin-top:60px;font:400 48px/1.5 KakaoSmall;color:var(--mut)">전자주총 시 전자투표관리기관은 자유롭게 선택 가능 · 전자투표 · 위임내역 실시간 연동</p>
  </div>
- <div class="frame web kb fu" style="--i:2;left:1900px;top:260px;width:2000px;height:1200px"><div class="bar3"><i></i><i></i><i></i></div><img src="assets/s4/cx-2.webp" alt=""></div>
- <div class="frame" data-b="1" style="left:2560px;top:640px;width:1240px;height:930px;border-radius:24px"><img src="assets/s4/cx-pop1.webp" alt="" style="object-fit:contain;background:#fff"></div>
+ <div class="frame web kb fu" style="--i:2;left:1900px;top:260px;width:2000px;height:1200px"><div class="bar3"><i></i><i></i><i></i></div><img src="assets/s4/cx-1.webp" alt=""></div>
 </section>
+<section class="s" id="K23b" data-t="전자투표 · 전자위임장" data-dim=".1" data-ox=".2" data-steps="1">
+ <div class="ab" style="left:300px;top:250px;width:1460px">
+  <p class="eb fu" style="--i:0">E-voting · E-proxy<small>전자투표 · 전자위임장</small></p>
+  <h2 class="h hm fu" style="--i:1;margin-top:40px">사전투표에서 현장 · 온라인까지<br>하나의 DB에서 통합</h2>
+  <p class="sub fu" style="--i:2;margin-top:50px">전자주총 시 전자투표관리기관은 자유롭게 선택 가능</p>
+  <div class="k23r fu" style="--i:3"><p class="k23l">참고</p><p class="k23c"><span>전자등록기관</span><i>≠</i><span>명의개서대행기관</span><i>≠</i><span>전자투표관리기관</span><i>≠</i><span class="on">전자주총관리기관</span></p></div>
+  <p class="k23n" data-b="1">전자주총 시 타 전자투표관리기관을 이용해도 무방</p>
+ </div>
+ <div class="frame web kb fu" style="--i:2;left:1900px;top:300px;width:2000px;height:1200px"><div class="bar3"><i></i><i></i><i></i></div><img src="assets/s4/cx-2.webp" alt=""></div>
+ <p class="k23t fu" style="--i:3;left:1900px;top:210px">전자투표 · 위임내역 실시간 연동</p>
+ <div class="frame" data-b="1" style="left:2560px;top:640px;width:1240px;height:930px;border-radius:24px"><img src="assets/s4/cx-pop1.webp" alt="" style="object-fit:contain;background:#fff"></div>
+</section> 
 
 <section class="s" id="K24a" data-t="서면위임장 · 권유" data-dim=".1" data-ox=".2">
  <div class="ab" style="left:300px;top:220px;width:1900px">
@@ -587,12 +651,11 @@ html.embed,html.embed body,html.embed .stage{background:transparent}html.embed #
  <div class="strip fu" style="--i:2" id="strip">
   <figure><img src="assets/s4/live-1.webp" alt=""><figcaption>S*</figcaption></figure><figure><img src="assets/s4/live-2.webp" alt=""><figcaption>카****</figcaption></figure><figure><img src="assets/s4/live-3.webp" alt=""><figcaption>L***</figcaption></figure><figure><img src="assets/s4/live-4.webp" alt=""><figcaption>J*****</figcaption></figure><figure><img src="assets/s4/live-5.webp" alt=""><figcaption>현***</figcaption></figure><figure><img src="assets/s4/live-6.webp" alt=""><figcaption>코***</figcaption></figure><figure><img src="assets/s4/live-7.webp" alt=""><figcaption>현*****</figcaption></figure><figure><img src="assets/s4/live-8.webp" alt=""><figcaption>S**</figcaption></figure>
  </div>
- <div class="ab fu" style="--i:3;left:300px;top:1380px;display:flex;gap:36px"><span class="chip">현장 영상 · 음성 실시간 송출</span><span class="chip">중계 지연 모니터링</span><span class="chip">의사진행 지원</span></div>
 </section>
 
-<section class="s" id="K25" data-t="주총 통합 제어 · 의장용" data-dim=".1" data-ox=".2" data-steps="1">
+<section class="s" id="K25" data-t="주총 통합 제어" data-dim=".1" data-ox=".2">
  <div class="ab" style="left:300px;top:240px;width:1500px">
-  <p class="eb fu" style="--i:0">Control</p>
+  <p class="eb fu" style="--i:0">Control<small>주총 통합 제어</small></p>
   <h2 class="h hm fu" style="--i:1;margin-top:36px">온 · 오프라인을<br>한 화면에서 제어</h2>
   <ul class="lst fu" style="--i:2;margin-top:70px">
    <li><b>출석</b>현장 + 온라인 출석 · 퇴장 실시간 집계</li>
@@ -600,11 +663,19 @@ html.embed,html.embed body,html.embed .stage{background:transparent}html.embed #
    <li><b>표결</b>의안상정 · 전자표결 · 표결마감 제어</li>
    <li><b>집계</b>다채널 실시간 집계, 의안별 · 주주별 조회</li>
   </ul>
-  <p data-b="1" style="margin-top:56px;font:400 52px/1.5 KakaoSmall;color:var(--sess)">사회자 · 의장용 시스템 — 개회부터 폐회까지 문안을<br>실시간 운영정보와 연계해 제공</p>
  </div>
  <div class="frame web fu" style="--i:2;left:1900px;top:260px;width:2000px;height:1200px"><div class="bar3"><i></i><i></i><i></i></div><img src="assets/s4/ctl-1.webp" alt=""></div>
- <div class="frame" data-b="1" style="left:2200px;top:520px;width:1700px;height:1012px;background:#000"><img src="assets/s4/chair-2.webp" alt=""></div>
 </section>
+<section class="s" id="K25b" data-t="사회자 · 의장용 시스템" data-dim=".1" data-ox=".2">
+ <div class="ab" style="left:300px;top:250px;width:1500px">
+  <p class="eb fu" style="--i:0">Chair<small>사회자용 · 의장용 시스템</small></p>
+  <h2 class="h hm fu" style="--i:1;margin-top:36px">사회자와 의장에게<br>실시간으로</h2>
+  <p class="sub fu" style="--i:2;margin-top:56px;line-height:1.5">개회 · 의안상정 · 질의응답 · 표결결과 · 폐회 문안을<br>실시간 운영정보와 연계하여 제공</p>
+ </div>
+ <div class="frame fu" style="--i:2;left:1900px;top:220px;width:1600px;height:952px;background:#000"><img src="assets/s4/chair-1.webp" alt=""></div>
+ <div class="frame fu" style="--i:3;left:2150px;top:470px;width:1600px;height:952px;background:#000"><img src="assets/s4/chair-2.webp" alt=""></div>
+ <div class="frame fu" style="--i:4;left:2400px;top:660px;width:1500px;height:893px;background:#000"><img src="assets/s4/chair-3.webp" alt=""></div>
+</section> 
 
 <section class="s" id="K26" data-t="주주용 서비스 KOSMOS" data-dim=".1">
  <div class="top" style="top:150px"><p class="eb fu" style="--i:0">KOSMOS<small>주주용 서비스</small></p><h2 class="h hm fu" style="--i:1">주주는 휴대폰 하나로 참여합니다</h2></div>
@@ -621,20 +692,43 @@ html.embed,html.embed body,html.embed .stage{background:transparent}html.embed #
 <!-- ═════════ 6. 운영지원 ═════════ -->
 <section class="s ch sec fl" id="K27" data-t="장 표지 · 운영지원" data-dim="0">
  <div class="photo"></div><div class="shade"></div><div class="au"></div>
- <p class="sec-eb fu" style="--i:0"><span>SESSION 4</span></p>
  <div class="sec-c"><h2 class="sec-h fu" style="--i:1">운영지원,<br>언제나 내 곁에</h2><p class="sec-s fu" style="--i:2">온보딩부터 당일 현장, 장애 대응까지</p></div>
- <p class="sec-ft fu" style="--i:3"><b>06</b><i></i><span>SUPPORT</span></p>
 </section>
 
-<section class="s" id="K28" data-t="4단계 지원" data-dim=".1" data-steps="4">
- <div class="top" style="top:150px"><p class="eb fu" style="--i:0">Support</p><h2 class="h hm fu" style="--i:1">처음부터 끝까지, 네 단계로 함께합니다</h2></div>
- <div class="cards">
-  <div class="card" data-b="1"><p class="no">01</p><b>온보딩</b><p><em>담당자 배정</em> — 계정발급부터 시스템 조작법까지 A to Z 상시지원<br><em>교육</em> — 광화문 · 강남 · 여의도 · 판교 단체교육, 개별 방문</p><div class="pic" style="background-image:url(assets/s4/onboard-2.webp)"></div></div>
-  <div class="card" data-b="2"><p class="no">02</p><b>테스트 모드</b><p>실제와 같은 환경에서<br>주총 설정부터 사전투표 · 출석 · 표결 · 집계까지 미리 연습</p><div class="pic" style="background-image:url(assets/s4/cx-3.webp);background-position:left top"></div></div>
-  <div class="card" data-b="3"><p class="no">03</p><b>사전점검 · 리허설<br>· 당일 현장지원</b><div class="dates"><div>소집지 점검<span>'27년 1월~</span></div><div>모의전자주총<span>'27년 2월~</span></div><div>전날 리허설<span>주총 전날 오후</span></div><div>당일 현장지원<span>개최 2시간 전~</span></div></div><div class="pic" style="background-image:url(assets/s4/rehearsal.webp);height:230px;margin-top:30px"></div></div>
-  <div class="card" data-b="4"><p class="no warn">04</p><b>장애 감지 · 복구<br>· 의사진행 판단 지원</b><p>장애 감지 및 영향범위 확인 →<br>영향범위 · 복구 전망 · 표결 가능 여부에 따른 <em>의사진행 판단 지원</em> →<br>시스템 복구 기술지원 →<br>상황안내 및 조치내역 기록</p></div>
+<section class="s" id="K28a" data-t="운영지원 1 · 온보딩" data-dim=".1">
+ <div class="top" style="top:150px"><p class="eb fu" style="--i:0">Support<small>01</small></p><h2 class="h hm fu" style="--i:1">온보딩</h2></div>
+ <div class="k28two">
+  <div class="fu" style="--i:2"><div class="k28p" style="background-image:url(assets/s4/callcenter.webp);background-position:center 20%"></div><b>담당자 배정</b><p>계정발급부터 시스템 조작법까지<br>A to Z 상시지원</p></div>
+  <div class="fu" style="--i:3"><div class="k28p" style="background-image:url(assets/s4/onboard-2.webp)"></div><b>교육</b><p>지역별 단체 오프라인 교육 및 개별 방문 교육<br><span>광화문 · 강남 · 여의도 · 판교</span></p></div>
  </div>
-</section>
+</section> 
+<section class="s" id="K28b" data-t="운영지원 2 · 테스트 모드" data-dim=".1" data-ox=".2">
+ <div class="ab" style="left:300px;top:250px;width:1460px">
+  <p class="eb fu" style="--i:0">Support<small>02</small></p>
+  <h2 class="h hm fu" style="--i:1;margin-top:40px">테스트 모드 제공</h2>
+  <p class="sub fu" style="--i:2;margin-top:50px;line-height:1.5">실제와 같은 환경에서<br>주총 설정부터 사전투표 · 출석 · 표결 · 집계까지<br>미리 연습</p>
+ </div>
+ <div class="frame web kb fu" style="--i:2;left:1900px;top:260px;width:2000px;height:1200px"><div class="bar3"><i></i><i></i><i></i></div><img src="assets/s4/cx-3.webp" alt=""></div>
+</section> 
+<section class="s" id="K28c" data-t="운영지원 3 · 사전점검 · 리허설 · 당일 현장지원" data-dim="0">
+ <div class="k28bg"></div>
+ <div class="top" style="top:150px"><p class="eb fu" style="--i:0">Support<small>03</small></p><h2 class="h hm fu" style="--i:1">사전점검 · 숙달프로그램 · 당일 현장지원</h2></div>
+ <div class="k28g">
+  <div class="fu" style="--i:2"><b><i>1</i>소집지 점검</b><p>네트워크 · 음향 등 사전점검</p><em>소집지 확정 시 ('27년 1월~)</em></div>
+  <div class="fu" style="--i:3"><b><i>2</i>사전 모의전자주총</b><p>실제 주총과 동일한 진행 · 회사 운영기준에 따른 시스템 검증<br>담당자별 역할 확정 및 운영교육 · 실제 총회 환경에서 전 과정 리허설<br>장애대응훈련 및 발견 오류 사전 보완</p><em>명부 및 의안 확정 시 ('27년 2월~)</em></div>
+  <div class="fu" style="--i:4"><b><i>3</i>전날 리허설</b><p>장비설치 및 최종 리허설 · 트래픽 증설 등 대응</p><em>주총 전날 오후 (오전 불가)</em></div>
+  <div class="fu" style="--i:5"><b><i>4</i>당일 현장지원</b><p>전문인력 현장지원 · 시스템 운영 지원 및 커뮤니케이션</p><em>개최 2시간 전~</em></div>
+ </div>
+</section> 
+<section class="s" id="K28d" data-t="운영지원 4 · 장애 감지 · 복구" data-dim=".1">
+ <div class="top" style="top:150px"><p class="eb fu" style="--i:0">Support<small>04</small></p><h2 class="h hm fu" style="--i:1">장애 감지 · 복구 및 의사진행 판단 지원</h2></div>
+ <ol class="k28f">
+  <li class="fu" style="--i:2"><i>1</i><b>장애 감지</b><p>장애발생 감지 및<br>영향범위 확인</p></li>
+  <li class="fu" style="--i:3"><i>2</i><b>의사진행 판단 지원</b><p>영향범위 · 복구 전망 · 표결 가능 여부에<br>따른 의사진행 절차 판단 지원</p></li>
+  <li class="fu" style="--i:4"><i>3</i><b>복구</b><p>시스템 복구<br>기술지원</p></li>
+  <li class="fu" style="--i:5"><i>4</i><b>기록</b><p>상황안내 및<br>조치내역 기록</p></li>
+ </ol>
+</section> 
 
 <section class="s" id="K29" data-t="상시 · 사후 — 신뢰 기반" data-dim=".14">
  <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><linearGradient id="k29g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0081cc"/><stop offset="1" stop-color="#00ada9"/></linearGradient></defs></svg>
@@ -649,14 +743,12 @@ html.embed,html.embed body,html.embed .stage{background:transparent}html.embed #
 </section>
 
 <!-- ═════════ 7. 클로징 ═════════ -->
-<section class="s ch" id="K30" data-t="New mandate, Get Ready" data-dim=".3">
+<section class="s ch" id="K30" data-t="New mandate, Get Ready → 의무화 기업 212개사 (자동 전환)" data-dim=".3">
+ <div class="k30a">
  <canvas class="viz" data-viz="text" data-text="Get Ready." data-font="400 560px Lexend" data-x="0" data-w="4200" style="left:0;top:180px;width:4200px;height:1100px" width="4200" height="1100"></canvas>
  <p class="ab fu" style="--i:0;left:0;right:0;top:250px;text-align:center;font:300 110px Lexend;color:var(--sess)">New mandate,</p>
  <p class="ab fu" style="--i:3;left:0;right:0;top:1330px;text-align:center" ><span class="sub">212개 의무화 기업의 첫 전자주주총회, IR큐더스가 함께 준비합니다.</span></p>
-</section>
-
-<!-- 의무화 기업 로고 월: 자산총액(AS25 별도) 순, 로고 파일이 오면 assets/s4/logos/종목코드.png 로 넣고 S4LOGO 목록에 코드 추가 -->
-<section class="s" id="K31" data-t="의무화 기업 212개사 (자산총액 순) — Get Ready" data-dim=".06">
+ </div>
  <div class="lgw" style="--w:211.6px;--h:118.3px">
 <div class="lg" style="left:90px;top:90px;--o:.62;--d:0ms" data-c="A024110"><i>기업은행</i></div>
 <div class="lg" style="left:302px;top:90px;--o:.62;--d:7ms" data-c="A005930"><i>삼성전자</i></div>
@@ -874,6 +966,9 @@ html.embed,html.embed body,html.embed .stage{background:transparent}html.embed #
  <div class="gr"><p class="gr-t">Get Ready.</p></div>
 </section>
 
+<!-- 의무화 기업 로고 월: 자산총액(AS25 별도) 순, 로고 파일이 오면 assets/s4/logos/종목코드.png 로 넣고 S4LOGO 목록에 코드 추가 -->
+
+
 <div class="prog" id="prog"></div>
 </div>
 <div id="black"></div>
@@ -889,32 +984,32 @@ const up=m=>{if(EMB)parent.postMessage(m,'*');};
 {const f=document.getElementById('c');if(EMB)f.remove();else f.src=f.dataset.src;}
 /* K31: 로고 파일이 있는 종목코드만 이름 대신 로고(흰색 단색)로 */
 const S4LOGO=[];
-document.querySelectorAll('#K31 .lg').forEach(e=>{if(S4LOGO.includes(e.dataset.c)){const n=e.querySelector('i').textContent.replace(/\n/g,'');e.innerHTML=`<img src="assets/s4/logos/${e.dataset.c}.png" alt="${n}">`;}});
+document.querySelectorAll('#K30 .lg').forEach(e=>{if(S4LOGO.includes(e.dataset.c)){const n=e.querySelector('i').textContent.replace(/\n/g,'');e.innerHTML=`<img src="assets/s4/logos/${e.dataset.c}.png" alt="${n}">`;}});
 function fit(){const s=Math.min(innerWidth/4200,innerHeight/1600);stage.style.transform=`translate(${(innerWidth-4200*s)/2}px,${(innerHeight-1600*s)/2}px) scale(${s})`;}
 addEventListener('resize',fit);fit();
 const ds=m=>{const f=document.getElementById('c');if(f&&f.contentWindow)f.contentWindow.postMessage(m,'*');};
 function bg(s){if(EMB){up({s4:'bg',dim:+(s.dataset.dim??.2),ox:+(s.dataset.ox||.5)});return;}const f=document.getElementById('c');f.style.opacity=s.dataset.dim??.2;ds({ds:'ox',v:+(s.dataset.ox||.5)});}
 if(!EMB)document.getElementById('c').addEventListener('load',()=>{try{const o=JSON.parse(localStorage.getItem('scr-ds')||'null');if(o)ds(Object.assign({ds:'set'},o));}catch(e){}bg(slides[idx]);});
 /* ── 숫자 카운트업 ── */
-function count(s){s.querySelectorAll('.cnt').forEach(el=>{const to=+el.dataset.to,f=el.dataset.fmt===',',t0=performance.now(),D=1600;
-  (function tick(t){const p=Math.min(1,(t-t0)/D),e=1-Math.pow(1-p,3),v=Math.round(to*e);el.textContent=f?v.toLocaleString('en-US'):v;if(p<1&&slides[idx]===s)requestAnimationFrame(tick);else el.textContent=f?to.toLocaleString('en-US'):to;})(t0+0);});}
-/* ── 3월 차트 ── */
+/* 1에서 목표 숫자까지 올라감. 소수 자릿수는 data-to를 따름, data-fmt="," 이면 천 단위 쉼표 */
+function count(s,sl=s){s.querySelectorAll('.cnt').forEach(el=>{const hb=el.closest('[data-b]');if(hb&&s===sl&&!hb.classList.contains('on'))return;const raw=el.dataset.to,to=+raw,dec=(raw.split('.')[1]||'').length,f=el.dataset.fmt===',',fr=Math.min(1,to),t0=performance.now()+(+el.dataset.delay||0),D=+el.dataset.dur||1600;
+  const out=v=>{const s2=v.toFixed(dec);return f?(+s2).toLocaleString('en-US',{minimumFractionDigits:dec,maximumFractionDigits:dec}):s2;};el.textContent=out(fr);
+  (function tick(t){const p=Math.max(0,Math.min(1,(t-t0)/D)),e=1-Math.pow(1-p,3),v=fr+(to-fr)*e;el.textContent=out(dec?v:Math.round(v));if(p<1&&slides[idx]===sl)requestAnimationFrame(tick);else el.textContent=out(to);})(performance.now());});}
+/* ── 3월 차트: 2026 · 2027을 따로(같은 자리에서 단계마다 바뀜). 날짜 칸마다 그 해 요일. 집중일은 칸 전체 띠 ── */
 (function(){
- // 원본 2026 차트 범주 순서: 13(금) 16(월) 17(화) 18(수) 19(목) 20(금) 23(월) 24(화) 25(수) 26(목) 27(금) 30(월) 31(화), 값 idx0=1, idx1 없음, idx2..12
- const c26=[[13,'금'],[16,'월'],[17,'화'],[18,'수'],[19,'목'],[20,'금'],[23,'월'],[24,'화'],[25,'수'],[26,'목'],[27,'금'],[30,'월'],[31,'화']],v26=[1,0,1,7,13,20,9,30,5,91,13,2,19];
- const c27=[[15,'월'],[16,'화'],[17,'수'],[18,'목'],[19,'금'],[22,'월'],[23,'화'],[24,'수'],[25,'목'],[26,'금'],[29,'월'],[30,'화'],[31,'수']],v27=[0,2,6,6,7,6,17,24,3,8,25,6,17];
- const el=document.getElementById('mar');if(!el)return;const W=3600,d0=12.5,d1=31.5,X=d=>(d-d0)/(d1-d0)*W,H=560,MAX=91;
- const hot26=[26,24,31],hot27=[23,26,22];let h='<div class="ax"></div>';
- const wd27={};c27.forEach(([d,w])=>wd27[d]=w);
- const WD='일월화수목금토',wd=(y,d)=>WD[new Date(y,2,d).getDay()];/* 같은 날짜 칸에 '26 · '27 요일을 위아래로, 설명 단계에 맞춰 해당 연도만 밝게 */
- for(let d=13;d<=31;d++){if(!wd27[d]&&!c26.find(x=>x[0]===d))continue;h+=`<div class="day" style="left:${X(d)}px">${d}<small class="w26">'26 ${wd(2026,d)}</small><small class="w27">'27 ${wd(2027,d)}</small></div>`;}
- c26.forEach(([d],i)=>{const v=v26[i];if(!v)return;h+=`<div class="bar y26${hot26.includes(d)?' hot':''}" data-hot="${hot26.includes(d)?1:0}" style="left:${X(d)-74}px;height:${Math.max(8,v/MAX*H)}px"><i>${v}</i></div>`;});
- c27.forEach(([d],i)=>{const v=v27[i];if(!v)return;h+=`<div class="bar y27${hot27.includes(d)?' hot':''}" style="left:${X(d)+10}px;height:${Math.max(8,v/MAX*H)}px;transition-delay:${i*.05}s"><i>${v}</i></div>`;});
- [[23,'FULL<br>BOOKING'],[26,'FULL<br>BOOKING']].forEach(([d,t])=>h+=`<div class="full" data-b="2" style="left:${X(d)+42}px">${t}</div>`);
- [24,29].forEach(d=>h+=`<div class="tri" data-b="2" style="left:${X(d)+42}px">△</div>`);
- el.innerHTML=h;
+ const D26=[[13,1],[16,0],[17,1],[18,7],[19,13],[20,20],[23,9],[24,30],[25,5],[26,91],[27,13],[30,2],[31,19]];
+ const D27=[[15,0],[16,2],[17,6],[18,6],[19,7],[22,6],[23,17],[24,24],[25,3],[26,8],[29,25],[30,6],[31,17]];
+ const el=document.getElementById('mar');if(!el)return;const W=3600,H=470,WD='일월화수목금토';
+ function layer(y,D,hot,cls,extra){const cw=W/D.length,X=i=>cw*(i+.5),MAX=Math.max(...D.map(d=>d[1]));let h=`<div class="ml ${cls}"><div class="ax"></div>`;
+  D.forEach(([d],i)=>{if(i&&new Date(y,2,d).getDay()<new Date(y,2,D[i-1][0]).getDay())h+=`<div class="wk" style="left:${cw*i}px"></div>`;});
+  D.forEach(([d],i)=>{if(hot.includes(d))h+=`<div class="band" style="left:${X(i)-cw*.42}px;width:${cw*.84}px"><span>집중일</span></div>`;});
+  D.forEach(([d,v],i)=>{h+=`<div class="day" style="left:${X(i)}px">${d}<small>${WD[new Date(y,2,d).getDay()]}</small></div>`;if(v)h+=`<div class="bar" style="left:${X(i)-48}px;height:${Math.max(8,v/MAX*H)}px;transition-delay:${i*.04}s"><i>${v}</i></div>`;});
+  if(extra)h+=extra(X);return h+'</div>';}
+ el.innerHTML=layer(2026,D26,[25,27,30],'m26')+layer(2027,D27,[25,26,30],'m27',X=>
+   [[24,'FULL<br>BOOKING'],[29,'FULL<br>BOOKING']].map(([d,s])=>`<div class="full" data-b="2" style="left:${X(D27.findIndex(x=>x[0]===d))}px">${s}</div>`).join('')+
+   [23,31].map(d=>`<div class="tri" data-b="2" style="left:${X(D27.findIndex(x=>x[0]===d))}px"><span>△</span></div>`).join(''));
 })();
-const MARCAP=['2026년 3월 · 의무화 212개사 중 211개사가 3월에 개최 (전체 711개사)','2027년 3월 후보일 · 143개사 중 76개사 확인 (복수 후보일 포함)','IR큐더스 전자주총 운영지원 가능일 (현재 기준) — 남은 날짜가 많지 않습니다'];
+const MARCAP=['2026년 3월 정기주총 개최일 분포 · 의무화 212개사 중 3월 개최 211개사 (전체 711개사)','2027년 3월 정기주총 개최 후보일 분포 · 143개사 중 76개사 후보 일정 확인 (복수 후보일 포함)','2027년 3월 IR큐더스 전자주총 운영지원 가능일 (현재 기준) — FULL BOOKING · △ 일부 가능'];
 /* ── 캔버스 시각화 ── */
 const VIZ={};
 const C1=[0,129,204],C2=[0,173,169];const mix=(t)=>`rgb(${C1.map((c,i)=>Math.round(c+(C2[i]-c)*t)).join(',')})`;
@@ -926,12 +1021,12 @@ VIZ.grid=(cv)=>{const g=cv.getContext('2d'),C=18,R=12,N=212,gap=Math.min(cv.widt
  const P=[...Array(N)].map((_,i)=>({x:ox+(i%C)*gap,y:oy+Math.floor(i/C)*gap,sx:Math.random()*cv.width,sy:Math.random()*cv.height,d:Math.random()*700}));
  return{enter(){t0=performance.now();st=0;},step(n){st=n;ts=performance.now();},
  draw(t){g.clearRect(0,0,cv.width,cv.height);const r=gap*.3;P.forEach((p,i)=>{let k=Math.min(1,Math.max(0,(t-t0-p.d)/1300));k=1-Math.pow(1-k,3);const x=p.sx+(p.x-p.sx)*k,y=p.sy+(p.y-p.sy)*k;let col='rgba(242,245,250,.55)',a=.3+.7*k;
-  if(mode==='split'&&st>=1){const q=Math.min(1,Math.max(0,(t-ts-i*4)/500));col=i<203?`rgba(0,129,204,${.55+.45*q})`:`rgba(0,173,169,${.55+.45*q})`;if(i>=203){g.fillStyle=`rgba(0,173,169,${.25*q})`;g.beginPath();g.arc(x,y,r*2.1,0,7);g.fill();}}
-  if(mode==='pick'){const on=i<143,q=Math.min(1,Math.max(0,(t-t0-900-i*7)/400));col=on?mix((i%C)/C):'rgba(242,245,250,.2)';if(on){a=a*(.35+.65*q);}else a*=st>=1?1:.8;}
+  if(mode==='split'&&st>=1){const q=Math.min(1,Math.max(0,(t-ts-i*4)/500));col=i<203?`rgba(0,129,204,${.55+.45*q})`:`rgba(0,173,169,${.55+.45*q})`;}
+  if(mode==='pick'){const on=i<151,q=Math.min(1,Math.max(0,(t-t0-900-i*7)/400));col=on?mix((i%C)/C):'rgba(242,245,250,.2)';if(on){a=a*(.35+.65*q);}else a*=.8;}
   g.globalAlpha=a;g.fillStyle=col;g.beginPath();g.arc(x,y,r,0,7);g.fill();});g.globalAlpha=1;}};};
 VIZ.rings=(cv)=>{const g=cv.getContext('2d');const R=[[93,198,'전자투표'],[36,76,'전자위임장'],[92,194,'자체 수행'],[13,28,'상대방이 모집'],[19,41,'외부 활용(대행)']];const cx=[360,1000,1840,2590,3300],cy=430,rad=270;let t0=0;
  return{enter(){t0=performance.now();},
- draw(t){g.clearRect(0,0,cv.width,cv.height);R.forEach(([pct,n,l],j)=>{const N=100,k=Math.min(1,Math.max(0,(t-t0-400-j*220)/1600)),fill=Math.round(pct*(1-Math.pow(1-k,3)));
+ draw(t){g.clearRect(0,0,cv.width,cv.height);R.forEach(([pct,n,l],j)=>{const N=100,k=Math.min(1,Math.max(0,(t-t0-400-j*220)/1600)),fill=Math.max(1,Math.round(pct*(1-Math.pow(1-k,3))));
   for(let i=0;i<N;i++){const a=-Math.PI/2+i/N*Math.PI*2,x=cx[j]+Math.cos(a)*rad,y=cy+Math.sin(a)*rad;g.fillStyle=i<fill?mix(i/N):'rgba(242,245,250,.16)';g.beginPath();g.arc(x,y,i<fill?10:7,0,7);g.fill();}
   g.fillStyle=j===4?'#ffb74d':'#F2F5FA';g.font='300 170px "Pretendard Variable"';g.textAlign='left';g.textBaseline='alphabetic';{const tx=fill+'%',m=g.measureText(tx);/* 글자 실제 윤곽 기준으로 원 가운데에 */g.fillText(tx,cx[j]-(m.actualBoundingBoxRight-m.actualBoundingBoxLeft)/2+m.actualBoundingBoxLeft,cy+(m.actualBoundingBoxAscent-m.actualBoundingBoxDescent)/2);}g.textAlign='center';g.textBaseline='middle';
   g.font='700 62px KakaoBig';g.fillStyle='#F2F5FA';g.fillText(l,cx[j],cy+rad+110);g.font='400 50px KakaoSmall';g.fillStyle='rgba(242,245,250,.58)';g.fillText(n+'개사',cx[j],cy+rad+190);});
@@ -961,11 +1056,12 @@ const live=new Map();slides.forEach(s=>s.querySelectorAll('canvas[data-viz]').fo
 function loop(t){const s=slides[idx];s.querySelectorAll('canvas[data-viz]').forEach(cv=>{const v=live.get(cv);v&&v.draw&&v.draw(t);});requestAnimationFrame(loop);}requestAnimationFrame(loop);
 /* ── 단계 · 이동 ── */
 const steps=s=>+(s.dataset.steps||0);
-function apply(s){s.dataset.step=step;s.querySelectorAll('[data-b]').forEach(e=>e.classList.toggle('on',+e.dataset.b<=step));
+function apply(s,cnt){s.dataset.step=step;s.querySelectorAll('[data-b]').forEach(e=>{const on=+e.dataset.b<=step;if(cnt&&on&&!e.classList.contains('on'))count(e,s);e.classList.toggle('on',on);});
  s.querySelectorAll('canvas[data-viz]').forEach(cv=>{const v=live.get(cv);v&&v.step&&v.step(step);});
- if(s.id==='K11'){document.getElementById('marcap').textContent=MARCAP[step];}
- if(s.id==='K25'){s.querySelector('.frame.web').style.opacity=step?.25:1;}}
+ if(s.id==='K11'){document.getElementById('marcap').textContent=MARCAP[step];}}
+let k30t=0;
 function go(n,st=0){n=Math.max(0,Math.min(slides.length-1,n));const a=slides[idx],b=slides[n];
+ clearTimeout(k30t);if(b.id==='K30'&&(a!==b||st===0)){b.classList.remove('p2');b.dataset.dim='.3';k30t=setTimeout(()=>{if(slides[idx]===b){b.classList.add('p2');b.dataset.dim='.06';bg(b);}},4200);}
  if(a!==b){const ch=b.classList.contains('ch');a.classList.remove('cur','in');if(!HARD)a.classList.add(ch?'zout':'out');setTimeout(()=>a.classList.remove('out','zout'),900);
   a.querySelectorAll('video').forEach(v=>v.pause());
   b.classList.remove('out','zout');b.classList.add('cur','in');idx=n;}
@@ -974,7 +1070,7 @@ function go(n,st=0){n=Math.max(0,Math.min(slides.length-1,n));const a=slides[idx
  if(b.id==='K24c'){const sp=document.getElementById('strip');sp.style.setProperty('--sw',-(sp.scrollWidth/2)+'px');}
  document.getElementById('prog').style.width=(idx/(slides.length-1)*100)+'%';up({s4:'pos',label:b.id+' ('+(idx+1)+'/'+slides.length+(steps(b)?' · 단계 '+step+'/'+steps(b):'')+')'});
  history.replaceState(null,'','#'+b.id);ov();}
-function next(){const s=slides[idx];if(step<steps(s)){step++;apply(s);pos();}else if(idx<slides.length-1)go(idx+1);else up({s4:'edge',d:1});}
+function next(){const s=slides[idx];if(step<steps(s)){step++;apply(s,1);pos();}else if(idx<slides.length-1)go(idx+1);else up({s4:'edge',d:1});}
 function prev(){const s=slides[idx];if(step>0){step--;apply(s);pos();}else if(idx>0){const p=slides[idx-1];go(idx-1,steps(p));}else up({s4:'edge',d:-1});}
 function pos(){const b=slides[idx];up({s4:'pos',label:b.id+' ('+(idx+1)+'/'+slides.length+(steps(b)?' · 단계 '+step+'/'+steps(b):'')+')'});}
 /* 메인 플레이어에서 오는 명령: nav(→←) · enter(first/last) · leave */
