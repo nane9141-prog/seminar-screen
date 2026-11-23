@@ -454,6 +454,28 @@ body.idle{cursor:none}
 .px-r small{display:block;font-size:32px;color:#6E7C90}
 .px-src{grid-column:1/3;margin:40px 0 0 56px;font:300 30px/1 "Pretendard Variable",sans-serif;color:#5E6B7E}
 
+/* M4-4 KISM 심볼 형성(참고: text animation/44626046 — 흰 빛 선이 윤곽을 그리며 카메라가 뒤로 빠짐 → 채움 · 은은한 빛 → 로고 자리로 이동) → 로고 · 제목 등장. 파란 빛은 쓰지 않고 흰빛 위주, 마지막에만 심볼 원래 색 */
+.slide[data-ki]{--base:3.4s}.slide[data-ki][data-kp=p]{--base:.1s}
+.slide[data-ki].on .kism{animation:kiO .5s ease both;animation-delay:var(--base)}
+@keyframes kiO{from{opacity:0}to{opacity:1}}
+.ki{position:absolute;inset:0;pointer-events:none;z-index:3;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.ki-w{position:relative;width:491px;height:720px;transition:transform 1s cubic-bezier(.65,0,.35,1)}
+.ki svg{display:block;width:100%;height:100%;overflow:visible;opacity:0;transform:scale(2.4) rotate(-10deg);filter:drop-shadow(0 0 10px rgba(255,255,255,.35))}
+.ki polygon{fill:#F2F5FA;fill-opacity:0;stroke:#F2F5FA;stroke-width:2.4;vector-effect:non-scaling-stroke;stroke-linejoin:round;stroke-dasharray:100;stroke-dashoffset:100}
+.slide[data-kp=a] .ki svg{animation:kiCam 2.3s cubic-bezier(.2,.6,.15,1) .1s both}
+@keyframes kiCam{0%{opacity:0;transform:scale(2.4) rotate(-10deg)}10%{opacity:1}100%{opacity:1;transform:none}}
+.slide[data-kp=a] .ki polygon{animation:kiD 1.5s cubic-bezier(.45,0,.2,1) both,kiF .6s ease 1.75s both;animation-delay:calc(.25s + var(--k)*.3s),1.75s}
+@keyframes kiD{to{stroke-dashoffset:0}}
+@keyframes kiF{to{fill-opacity:1}}
+.slide[data-kp=m] .ki svg{opacity:1;transform:none;filter:none;transition:filter .6s}
+.slide[data-kp=m] .ki polygon{stroke-dashoffset:0;fill-opacity:1;fill:#0071f3;stroke-opacity:0;transition:fill .9s ease .2s,stroke-opacity .5s}
+.slide[data-kp=p] .ki,.slide:not([data-kp]) .ki{display:none}
+.ki-s{position:absolute;left:50%;top:50%;width:2px;height:1500px;margin:-750px 0 0 -1px;background:linear-gradient(transparent,rgba(255,255,255,.55) 50%,transparent);opacity:0;transform:translateY(var(--y,0)) rotate(var(--r)) translateY(900px)}
+.slide[data-kp=a] .ki-s{animation:kiS 1.2s cubic-bezier(.3,0,.3,1) both;animation-delay:var(--d)}
+@keyframes kiS{0%{opacity:0;transform:translateY(var(--y,0)) rotate(var(--r)) translateY(900px)}30%{opacity:1}100%{opacity:0;transform:translateY(var(--y,0)) rotate(var(--r)) translateY(-900px)}}
+.ki-fl{position:absolute;left:50%;top:50%;width:1400px;height:1400px;margin:-700px 0 0 -700px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.42),rgba(255,255,255,.08) 35%,rgba(255,255,255,0) 62%);opacity:0;transform:scale(.4)}
+.slide[data-kp=a] .ki-fl{animation:kiL 1.1s ease-out 1.7s both}
+@keyframes kiL{35%{opacity:1;transform:scale(1)}100%{opacity:0;transform:scale(1.25)}}
 /* M7-3 앞단계 카피 애니메이션(참고: text animation 영상 — 타이핑 · 단어 등장 · 줄 쌓기 · 글자 펼침, 배경 패턴 없음) → Proxymity 로고에서 멈춤 (11/23 About Proxymity 장표 삭제) */
 .pa{position:absolute;inset:0;pointer-events:none;z-index:2}
 .pa>div{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;opacity:0;filter:blur(18px);transition:opacity .5s ease,filter .5s ease}
@@ -587,7 +609,9 @@ body.idle{cursor:none}
 <section class="slide" id="m4_3" data-no="M4-3" data-title="M4-3 축사 · 정우용" data-bg="B" data-foot="full" data-spk="cong2">
 <div class="cg"><p class="cg-e fu" style="--i:0">Opening<br>Remarks</p><div class="cg-b"><h2 class="cg-n ko" data-words style="--i:1">정우용</h2><p class="cg-r fu" style="--i:2">전 한국상장회사협의회 정책부회장<br>현 한국상장회사정책연구원 원장</p></div></div>
 </section>
-<section class="slide" id="m4_4" data-no="M4-4" data-title="M4-4 한국주주총회연구소 출범식" data-bg="A" data-foot="logo" data-lay="center">
+<section class="slide" id="m4_4" data-no="M4-4" data-title="M4-4 한국주주총회연구소 출범식 (KISM 심볼 형성 약 3.5초 → 로고 · 제목)" data-bg="A" data-foot="logo" data-lay="center" data-ki="1">
+<div class="ki" aria-hidden="true"><i class="ki-s" style="--r:-51deg;--d:.25s"></i><i class="ki-s" style="--r:51deg;--d:.5s"></i><i class="ki-s" style="--r:-51deg;--d:.75s;--y:160px"></i><i class="ki-fl"></i>
+<div class="ki-w"><svg viewBox="0 0 38.67 56.69"><polygon style="--k:0" pathLength="100" points="38.67 0 16.89 0 0 20.9 0 28.35 0 28.35 0 35.79 4.79 41.72 20.05 22.95 38.67 0"/><polygon style="--k:1" pathLength="100" points="5.99 43.21 16.89 56.69 38.67 56.69 16.87 29.83 5.99 43.21"/></svg></div></div>
 <img class="kism fu" style="--i:0" src="assets/kism-white.svg" alt="KISM 한국주주총회연구소">
 <h1 class="title-m" data-words style="--i:1">한국주주총회연구소 출범식</h1>
 </section>
@@ -870,6 +894,13 @@ function S3(s,on){if(!s||!s.dataset.s3)return;(s._t3||[]).forEach(clearTimeout);
   const t0=performance.now()+400;s._iv3=setInterval(()=>{const el=(performance.now()-t0)/5000;if(el<0)return;const k=Math.min(N,Math.floor(el*N)+1);rg._c.forEach((e,i)=>e.classList.toggle('on',i<k));},40);
   [5,4,3,2,1].forEach((n,i)=>at(400+i*1000,()=>{s.dataset.ph='c';s.dataset.n=n;dotTimer(sv,String(n));}));
   at(5500,()=>{s.dataset.ph='a';clearInterval(s._iv3);const c=document.getElementById('c');if(c)c.style.opacity=0;});at(9600,()=>{s.dataset.ph='e';});}
+/* M4-4 KISM 심볼 형성: a 윤곽 · 카메라 · 채움 → m 로고 자리로 이동하며 원래 색 → p 로고 · 제목. → 누르면 바로 p */
+function KI(s,on){if(!s||!s.dataset.ki)return;(s._tk||[]).forEach(clearTimeout);s._tk=[];const w=s.querySelector('.ki-w');w.style.transform='';if(!on){delete s.dataset.kp;return;}
+  const at=(ms,f)=>s._tk.push(setTimeout(f,ms));s.dataset.kp='a';
+  at(2450,()=>{const im=s.querySelector('.kism'),st=document.querySelector('.stage'),k=st.getBoundingClientRect().width/4200,a=im.getBoundingClientRect(),b=w.getBoundingClientRect();
+    const tw=a.width*38.67/160.13,sc=a.height/b.height,dx=(a.left+tw/2-(b.left+b.width/2))/k,dy=(a.top+a.height/2-(b.top+b.height/2))/k;
+    w.style.transform=`translate(${dx}px,${dy}px) scale(${sc})`;s.dataset.kp='m';});
+  at(3700,()=>{s.dataset.kp='p';});}
 /* M7-3 앞단계 카피 애니메이션: a 타이핑 → b 단어 등장 → c 줄 쌓기 → m 투자사 11곳 로고(n 정지) → j 가운데로 합쳐짐 → d Proxymity 로고에서 멈춤. → 누르면 소개 장표(i) */
 function PDK(dk,i){const im=dk.children,n=im.length;i=Math.max(0,Math.min(n-1,i));dk.dataset.i=i;[...im].forEach((e,k)=>e.classList.toggle('on',k===i));const c=dk.parentNode.querySelector('.pdk-n');if(c){c.textContent=(i+1)+' / '+n;c.classList.add('show');clearTimeout(c._t);c._t=setTimeout(()=>c.classList.remove('show'),1500);}}
 function PDKin(prev,s){const dk=s&&s.querySelector('.pdk');if(!dk)return;const back=prev&&slides.indexOf(prev)>slides.indexOf(s);PDK(dk,back?dk.children.length-1:0);}
@@ -895,7 +926,7 @@ function go(n){n=Math.max(0,Math.min(slides.length-1,n));if(n===idx)return;const
     const v=prev.dataset.video&&document.getElementById(prev.dataset.video);if(v){v.pause();}}
   idx=n;if(!isMsg(s))home=n;void s.offsetWidth;s.classList.add('on','enter','tr-'+tr);counters(s);
   stage.dataset.foot=s.dataset.foot;stage.classList.toggle('nobg',s.dataset.bg==='N');tgt=LAY[s.dataset.bg]||LAY.B;bgSet(s);progScroll(s);if(s.dataset.spk)SPKPORT.show(s.dataset.spk);else SPKPORT.hide();
-  FS(prev,s);S3(prev,false);S3(s,true);PXA(prev,false);PXA(s,true);PDKin(prev,s);
+  FS(prev,s);S3(prev,false);S3(s,true);PXA(prev,false);PXA(s,true);PDKin(prev,s);KI(prev,false);KI(s,true);
   history.replaceState(null,'','#'+s.dataset.no);
   const v=s.dataset.video&&document.getElementById(s.dataset.video);
   if(v&&v.classList.contains('ok')){v.currentTime=0;v.play().catch(()=>{});}
@@ -914,7 +945,7 @@ const BOOT_MS=10000;let BOOT_T=0,bootTimer=null;
 function bootGo(){clearTimeout(bootTimer);bootTimer=null;if(idx<0)go(0);}
 function boot(){BOOT_T=performance.now()+BOOT_MS;const c=document.getElementById('c');if(c)c.style.opacity=1;bootTimer=setTimeout(bootGo,BOOT_MS);
   MC.pub({cur:'시작 대기',slides:slides.map(x=>({no:x.dataset.no,title:x.dataset.title.replace(/&amp;/g,'&'),msg:isMsg(x)?1:0,auto:x.dataset.auto?+x.dataset.auto:0,vid:0}))});}
-function step(d){if(idx<0){bootGo();return;}{const c=slides[idx],dk=c.querySelector('.pdk');if(dk&&!dk.parentNode.classList.contains('on')){const i=+dk.dataset.i+d;if(i>=0&&i<dk.children.length){PDK(dk,i);return;}}}{const c=slides[idx];if(d>0&&c.dataset.pa&&c.dataset.pp!=='d'){(c._tp||[]).forEach(clearTimeout);clearInterval(c._ip);c.dataset.pp='d';return;}}{const f=KN.of(slides[idx]);if(f&&f._r){KN.post(f,{s4:'nav',d});return;}}/* 세션 4 키노트: 키노트 안에서 넘기고, 처음/끝이면 키노트가 edge를 돌려줌 */if(isMsg(slides[idx])){go(d>0?nextMain(home,1):home);return;}go(nextMain(idx,d));}
+function step(d){if(idx<0){bootGo();return;}{const c=slides[idx],dk=c.querySelector('.pdk');if(dk&&!dk.parentNode.classList.contains('on')){const i=+dk.dataset.i+d;if(i>=0&&i<dk.children.length){PDK(dk,i);return;}}}{const c=slides[idx];if(d>0&&c.dataset.ki&&c.dataset.kp!=='p'){(c._tk||[]).forEach(clearTimeout);c.dataset.kp='p';return;}if(d>0&&c.dataset.pa&&c.dataset.pp!=='d'){(c._tp||[]).forEach(clearTimeout);clearInterval(c._ip);c.dataset.pp='d';return;}}{const f=KN.of(slides[idx]);if(f&&f._r){KN.post(f,{s4:'nav',d});return;}}/* 세션 4 키노트: 키노트 안에서 넘기고, 처음/끝이면 키노트가 edge를 돌려줌 */if(isMsg(slides[idx])){go(d>0?nextMain(home,1):home);return;}go(nextMain(idx,d));}
 function nextMain(i,d){let j=i+d;while(slides[j]&&(isMsg(slides[j])||slides[j].dataset.skip))j+=d;return slides[j]?j:i;}/* 예비 화면(data-skip)도 건너뜀 */
 document.querySelectorAll('[data-words]').forEach(el=>{let w=0;[...el.childNodes].forEach(nd=>{if(nd.nodeType!==3)return;const f=document.createDocumentFragment();
   nd.textContent.split(/(\s+)/).forEach(t=>{if(!t)return;if(/^\s+$/.test(t)){f.appendChild(document.createTextNode(' '));return;}const sp=document.createElement('span');sp.className='w';sp.style.setProperty('--w',w++);sp.textContent=t;f.appendChild(sp);});
