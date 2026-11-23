@@ -485,6 +485,13 @@ html.embed,html.embed body,html.embed .stage{background:transparent}html.embed #
 #K15 .today span{position:absolute;left:-17px;bottom:52px;white-space:nowrap;font:400 46px "Pretendard Variable";color:#F2F5FA}
 #K15 .today i{position:absolute;left:-17px;top:-17px;width:34px;height:34px;margin:0;background:#F2F5FA;animation:k15p 1.8s infinite}
 @keyframes k15p{0%{box-shadow:0 0 0 0 rgba(242,245,250,.55)}70%{box-shadow:0 0 0 26px rgba(242,245,250,0)}100%{box-shadow:0 0 0 0 rgba(242,245,250,0)}}
+/* K23 (11/23 20:34): 참고 대시보드 레이아웃 — 오른쪽 · 아래로 잘려 나가는 큰 창 + 바깥 그라데이션 테두리, 안에 CONEXUS 실제 화면 5단계(클릭마다 전환) */
+#K23 .k23e{display:flex;align-items:center;gap:30px}
+#K23 .k23e img{height:44px;width:auto;opacity:.92}
+#K23 .cxw{position:absolute;left:1880px;top:230px;right:-80px;bottom:-80px;padding:22px;border-radius:72px 0 0 0;background:linear-gradient(135deg,rgba(0,129,204,.55),rgba(0,173,169,.35) 45%,rgba(255,255,255,.08));box-shadow:0 0 160px rgba(0,129,204,.22)}
+#K23 .cxin{position:relative;width:100%;height:100%;border-radius:52px 0 0 0;overflow:hidden;background:#f7f8fa;box-shadow:inset 0 0 0 2px rgba(255,255,255,.6)}
+#K23 .cxin img{position:absolute;left:0;top:0;width:2400px;height:auto;opacity:0;transform:translateY(24px) scale(1.01);transform-origin:0 0;transition:opacity .7s ease,transform .9s cubic-bezier(.2,.7,.2,1)}
+#K23[data-step="0"] .cxin .i0,#K23[data-step="1"] .cxin .i1,#K23[data-step="2"] .cxin .i2,#K23[data-step="3"] .cxin .i3,#K23[data-step="4"] .cxin .i4{opacity:1;transform:none}
 </style></head>
 <body>
 <div class="stage" id="stage">
@@ -718,14 +725,14 @@ html.embed,html.embed body,html.embed .stage{background:transparent}html.embed #
  <div class="db fu" style="--i:2">하나의 통합 DB</div>
 </section>
 
-<section class="s" id="K23" data-t="CONEXUS 통합관리시스템" data-dim=".1" data-ox=".2" >
+<section class="s" id="K23" data-t="CONEXUS 통합관리시스템" data-dim=".1" data-ox=".2" data-steps="4">
  <div class="ab" style="left:300px;top:250px;width:1460px">
-  <p class="eb fu q" style="--i:0">기업용 통합관리시스템</p>
+  <p class="eb fu q k23e" style="--i:0">기업용 통합관리시스템<img class="inv" src="assets/s4/conexus-word.webp" alt="CONEXUS"></p>
   <h2 class="h hm fu" style="--i:1;margin-top:40px">사전 의결권 행사부터<br>현장 · 전자주총, 생중계,<br>표결 · 집계까지</h2>
   <p class="sub fu" style="--i:2;margin-top:50px">하나의 시스템으로 통합관리</p>
   <p class="fu" style="--i:3;margin-top:90px;display:flex;flex-wrap:wrap;gap:20px"><span class="chip">설정</span><span class="chip">사전투표</span><span class="chip">사전신청</span><span class="chip">출석</span><span class="chip">질의</span><span class="chip">표결</span><span class="chip">자동집계</span></p>
  </div>
- <div class="frame web kb fu" style="--i:2;left:1900px;top:260px;width:2000px;height:1200px"><div class="bar3"><i></i><i></i><i></i></div><img src="assets/s4/cx-1.webp" alt=""></div>
+ <div class="cxw fu" style="--i:2"><div class="cxin"><img class="i0" src="assets/s4/cxs-1.webp" alt="CONEXUS 대시보드"><img class="i1" src="assets/s4/cxs-2.webp" alt="CONEXUS 사전 의결권 현황"><img class="i2" src="assets/s4/cxs-3.webp" alt="CONEXUS 참석자 관리"><img class="i3" src="assets/s4/cxs-4.webp" alt="CONEXUS 실시간 운영"><img class="i4" src="assets/s4/cxs-5.webp" alt="CONEXUS 질의 · 발언 관리"></div></div>
 </section>
 <section class="s" id="K23b" data-t="전자투표 · 전자위임장" data-dim=".1" data-ox=".2" data-steps="1">
  <div class="ab" style="left:300px;top:250px;width:1460px">
