@@ -27,7 +27,7 @@ function applyRoute(){const b=$('smroute');if(b){b.classList.toggle('sel',RT.on)
   const sb=$('smstaffbtn');if(sb){sb.classList.toggle('sel',RT.staff);sb.textContent=RT.staff?'운영 인력 ON':'운영 인력 OFF';}
   document.querySelectorAll('#smentry [data-e]').forEach(x=>x.classList.toggle('sel',x.dataset.e===RT.mode));
   var el=$('smstaff');if(el){el.style.display=RT.staff?'':'none';el.textContent='';var hd=document.createElement('div');hd.className='hd';hd.textContent=(RT.mode==='before'?'시작 전 12:30~13:00':'시작 후 13:30~')+' · 운영 인력';el.appendChild(hd);(RT.mode==='before'?ROLES[0][1]:ROLES[1][1]).forEach(function(r){var d=document.createElement('div');var b=document.createElement('b');b.textContent=r[0];d.appendChild(b);d.appendChild(document.createTextNode(r[1]));el.appendChild(d);});}
-  if(!RT.g)return;var g=RT.g,bf=RT.mode==='before';g.vB.visible=RT.on&&bf;g.vA.visible=RT.on&&!bf;g.iB.visible=RT.on&&bf;g.iA.visible=RT.on&&!bf;g.sB.visible=RT.staff&&bf;g.sA.visible=RT.staff&&!bf;g.oB.visible=bf;g.oA.visible=!bf;}
+  if(!RT.g)return;var g=RT.g,bf=RT.mode==='before';g.vB.visible=RT.on&&bf;g.vA.visible=RT.on&&!bf;g.iB.visible=RT.on&&bf;g.iA.visible=RT.on&&!bf;g.sB.visible=RT.staff&&bf;g.sA.visible=RT.staff&&!bf;g.oB.visible=bf;g.oA.visible=!bf;g.dR.visible=bf;}
 let R=[],S={},occ={},sel=null,moveFrom=null,q='',big=false,ready=false,libState=0,busy=false;
 let scene,camera,renderer,controls,tMesh,seatMesh,backMesh,hl,labels=[],dummy,tmpColor,held={};
 const A=()=>window.Attendees;
@@ -180,10 +180,11 @@ function build(){
   /* 포이어 집기(등록 데스크 D1~D7 · 다과 · 커피 · 주차 등록 단말기) · 통역 부스 · 동선 */
   (function(){
     var i,dx=[21.05,15.1,9.1,3.2,-2.6,-8.6,-14.5];
-    for(i=0;i<7;i++){box(2.62,T_H,.87,0x15171f,dx[i],T_H/2,16.3);sprite('D'+(i+1),dx[i],2.1,16.3,'#fff',2.6);
+    var dR=new THREE.Group();scene.add(dR);   // 데스크 2~7: 시작 후에는 숨김(8p — 1번만 유지)
+    for(i=0;i<7;i++){var n0=scene.children.length;box(2.62,T_H,.87,0x15171f,dx[i],T_H/2,16.3);sprite('D'+(i+1),dx[i],2.1,16.3,'#fff',2.6);
       /* 데스크 앞면(방문객 쪽) 번호 표지: A4(210×297mm) 실제 크기, 흰 바탕 검정 글씨 */
       (function(n,x){var c=document.createElement('canvas');c.width=256;c.height=362;var g=c.getContext('2d');g.fillStyle='#fff';g.fillRect(0,0,256,362);g.fillStyle='#000';g.font='900 250px "Pretendard Variable","Noto Sans KR",Arial,sans-serif';g.textAlign='center';g.textBaseline='middle';g.fillText(String(n),128,196);
-        var t=new THREE.CanvasTexture(c);t.anisotropy=8;var m=new THREE.Mesh(new THREE.PlaneGeometry(.210*M,.297*M),new THREE.MeshBasicMaterial({map:t}));m.position.set(x,T_H-.1485*M,16.3+.435+.012);scene.add(m);})(i+1,dx[i]);}   // 번호: 행사기획안대로 Gate 쪽이 1, 다과 쪽이 7 · 앞면 상단 끝선에 맞춤
+        var t=new THREE.CanvasTexture(c);t.anisotropy=8;var m=new THREE.Mesh(new THREE.PlaneGeometry(.210*M,.297*M),new THREE.MeshBasicMaterial({map:t}));m.position.set(x,T_H-.1485*M,16.3+.435+.012);scene.add(m);})(i+1,dx[i]);if(i>0)while(scene.children.length>n0)dR.add(scene.children[n0]);}   // 번호: 행사기획안대로 Gate 쪽이 1, 다과 쪽이 7 · 앞면 상단 끝선에 맞춤
     box(5.25,T_H,1.1,0xcfcfcf,-24.6,T_H/2,17.4);sprite('다과',-24.6,2.2,17.4,'#fff',3);
     box(2.62,T_H,.87,0xcfcfcf,-39.9,T_H/2,16.8);sprite('커피(소량)',-39.9,2.2,16.8,'#fff',3.6);
     box(2.62,T_H,.87,0xcfcfcf,-21.8,T_H/2,26.6);sprite('커피·티',-21.8,2.2,26.6,'#fff',3.2);
@@ -224,7 +225,7 @@ function build(){
     SB.forEach(function(s){staff(sB,s[0],s[1],s[2]);});SA.forEach(function(s){staff(sA,s[0],s[1],s[2]);});
     /* 무대 쪽 문 2곳: 시작 전에는 닫힘 표시, 시작 후에는 Gate(8p) */
     sp2(oB,'✕ 폐쇄',-14.9,2.1,HD+.2,'#ff6b6b',3.4);sp2(oA,'Gate',-14.9,2.1,HD+.2,'#6dffb0',3.2);sp2(oA,'Gate',-21.1,2.1,HD+.2,'#6dffb0',3.2);
-    RT.g={vB:vB,vA:vA,iB:iB,iA:iA,sB:sB,sA:sA,oB:oB,oA:oA};applyRoute();
+    RT.g={vB:vB,vA:vA,iB:iB,iA:iA,sB:sB,sA:sA,oB:oB,oA:oA,dR:dR};applyRoute();
   })();
   /* 스탠딩 배너 600×1800mm: 06 = 7번 데스크(다과 쪽 끝) 옆, 07 = Gate 오른쪽, 08 = 게스트 리프트 동선 벽면(볼룸 바깥벽) */
   (function(){var B=window.SEAT_STANDS;if(!B)return;var bw=.6*M,bh=1.8*M,y0=.15*M;
