@@ -909,7 +909,12 @@ const byNo=no=>slides.findIndex(s=>s.dataset.no.toUpperCase()===String(no).toUpp
 var TICK={a:null,t:null,
  play(){if(!this.a){this.a=new Audio('assets/sound/countdown-tick.mp3');this.a.preload='auto';}const x=this.a;clearInterval(this.t);x.volume=(typeof BGM!=='undefined'&&BGM.muted)?0:.9;try{x.currentTime=.12;}catch(e){}const p=x.play();if(p)p.catch(()=>{});},
  stop(ms){const x=this.a;if(!x||x.paused)return;clearInterval(this.t);const f=x.volume,t0=performance.now();this.t=setInterval(()=>{const k=Math.min(1,(performance.now()-t0)/(ms||200));x.volume=f*(1-k);if(k>=1){clearInterval(this.t);x.pause();}},30);}};window.TICK=TICK;
-function S3(s,on){if(!s||!s.dataset.s3)return;(s._t3||[]).forEach(clearTimeout);clearInterval(s._iv3);s._t3=[];if(!on){s.dataset.ph='';TICK.stop(150);return;}TICK.play();s._t3.push(setTimeout(()=>TICK.stop(250),5300));
+/* M3-1 ANYWHERE 효과음: cinematic piano hit(파일 0.4초에 정점) — ANYWHERE가 뜨는 5.5초에 정점이 오도록 5.1초에 재생, 화면을 나가면 짧게 페이드아웃, M 음소거면 무음 */
+var HIT={a:null,t:null,
+ play(){if(!this.a){this.a=new Audio('assets/sound/opening-hit.mp3');this.a.preload='auto';}const x=this.a;clearInterval(this.t);x.volume=(typeof BGM!=='undefined'&&BGM.muted)?0:.9;try{x.currentTime=0;}catch(e){}const p=x.play();if(p)p.catch(()=>{});},
+ stop(ms){const x=this.a;if(!x||x.paused)return;clearInterval(this.t);const f=x.volume,t0=performance.now();this.t=setInterval(()=>{const k=Math.min(1,(performance.now()-t0)/(ms||200));x.volume=f*(1-k);if(k>=1){clearInterval(this.t);x.pause();}},30);},
+ load(){if(!this.a){this.a=new Audio('assets/sound/opening-hit.mp3');this.a.preload='auto';}}};window.HIT=HIT;
+function S3(s,on){if(!s||!s.dataset.s3)return;(s._t3||[]).forEach(clearTimeout);clearInterval(s._iv3);s._t3=[];if(!on){s.dataset.ph='';TICK.stop(150);HIT.stop(300);return;}TICK.play();HIT.load();s._t3.push(setTimeout(()=>TICK.stop(250),5300));s._t3.push(setTimeout(()=>HIT.play(),5100));
   const sv=s.querySelector('.s3-dots'),at=(ms,f)=>s._t3.push(setTimeout(f,ms));s.dataset.ph='c';s.dataset.n='';sv._s=null;
   const rg=s.querySelector('.s3-rg'),N=60;
   if(!rg._c){const NS='http://www.w3.org/2000/svg',A=[0,129,204],B=[0,173,169];rg.innerHTML='<circle class="tr" r="352"/><circle class="tr" r="300"/>';rg._c=[];
