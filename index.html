@@ -436,18 +436,18 @@ body.idle{cursor:none}
 /* M7-3 Proxymity 소개: 연사 소개와 같은 왼쪽 기준선(604px) · 오른쪽 숫자 2×2 */
 .px{position:absolute;inset:0}
 .px-l{position:absolute;left:604px;top:0;bottom:0;width:2000px;display:flex;flex-direction:column;justify-content:center}
-.px-e{margin:0;font:300 63.5px/1 "Pretendard Variable",sans-serif;color:#0081cc;letter-spacing:0}
+.px-e{margin:0;font:300 63.5px/1 "Pretendard Variable",sans-serif;color:#a183bb;letter-spacing:0}
 .px-t{margin:60px 0 0;font:700 118px/1.36 "Pretendard Variable",sans-serif;color:#fff;letter-spacing:0;white-space:nowrap}
 .px-d{margin:56px 0 0;font:300 58px/1.5 "Pretendard Variable",sans-serif;color:#C7D0DD;white-space:nowrap}
 .px-s{list-style:none;margin:90px 0 0;padding:0;display:flex;gap:28px}
-.px-s li{padding:30px 44px;border:2px solid rgba(128,205,229,.28);border-radius:24px;background:rgba(10,20,36,.45);display:flex;flex-direction:column;gap:14px}
+.px-s li{padding:30px 44px;border:2px solid rgba(161,131,187,.38);border-radius:24px;background:rgba(30,20,48,.45);display:flex;flex-direction:column;gap:14px}
 .px-s b{font:600 46px/1 "Pretendard Variable",sans-serif;color:#fff;letter-spacing:0}
-.px-s span{font:400 36px/1 "Pretendard Variable",sans-serif;color:#80cde5}
+.px-s span{font:400 36px/1 "Pretendard Variable",sans-serif;color:#c4b0d8}
 .px-r{position:absolute;left:2680px;top:0;bottom:0;width:1180px;display:grid;grid-template-columns:1fr 1fr;align-content:center;row-gap:0}
 .px-r>div{padding:56px 0 56px 56px;border-left:2px solid rgba(255,255,255,.14)}
 .px-r>div:nth-child(-n+2){border-bottom:2px solid rgba(255,255,255,.14)}
 .px-r b{display:block;font:500 128px/1 "Pretendard Variable",sans-serif;color:#fff;letter-spacing:-.02em}
-.px-r b i{font-style:normal;color:#80cde5;margin:0 .06em}
+.px-r b i{font-style:normal;color:#c4b0d8;margin:0 .06em}
 .px-r span{display:block;margin-top:26px;font:400 42px/1.35 "Pretendard Variable",sans-serif;color:#A9B4C4}
 .px-r small{display:block;font-size:32px;color:#6E7C90}
 .px-src{grid-column:1/3;margin:40px 0 0 56px;font:300 30px/1 "Pretendard Variable",sans-serif;color:#5E6B7E}
@@ -457,7 +457,7 @@ body.idle{cursor:none}
 .pa>div{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;opacity:0;filter:blur(18px);transition:opacity .5s ease,filter .5s ease}
 .slide[data-pp=a] .pa-a,.slide[data-pp=b] .pa-b,.slide[data-pp=c] .pa-c,.slide[data-pp=m] .pa-m,.slide[data-pp=n] .pa-m,.slide[data-pp=j] .pa-m,.slide[data-pp=d] .pa-d{opacity:1;filter:none}
 /* m: 투자사 11곳 로고(발표자료 5p) 등장 → j: 가운데로 모여 합쳐짐 → d: Proxymity 로고 */
-.pa-me{position:absolute;left:0;right:0;top:-170px;text-align:center;margin:0;font:300 60px/1 "Pretendard Variable",sans-serif;color:#80cde5;letter-spacing:.02em;opacity:0;transition:opacity .5s ease}
+.pa-me{position:absolute;left:0;right:0;top:-170px;text-align:center;margin:0;font:300 60px/1 "Pretendard Variable",sans-serif;color:#c4b0d8;letter-spacing:.02em;opacity:0;transition:opacity .5s ease}
 .slide[data-pp=m] .pa-me{animation:fu .8s cubic-bezier(.2,.7,.2,1) both}.slide[data-pp=n] .pa-me{opacity:1}
 .slide[data-pp=n] .pa-li{opacity:1;transition:none}  /* n: 등장 애니메이션을 정지 상태로 고정해 j 이동이 transition으로 보이게 */
 .pa-lg{position:relative;width:3360px;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;row-gap:110px}
@@ -473,11 +473,11 @@ body.idle{cursor:none}
 .slide[data-pa] .px{opacity:0;transform:translateY(40px);transition:opacity 1s ease,transform 1s cubic-bezier(.2,.7,.2,1)}
 .slide[data-pa][data-pp=i] .px{opacity:1;transform:none}
 .pa-ty{margin:0;font:600 150px/1.3 "Pretendard Variable",sans-serif;color:#fff;letter-spacing:-.02em;text-align:center;white-space:nowrap}
-.pa-ty .g,.pa-st .gr,.pa-nm .g{background:linear-gradient(90deg,#0081cc,#00ada9);-webkit-background-clip:text;background-clip:text;color:transparent}
-.pa-cr{display:inline-block;width:10px;height:150px;margin-left:10px;vertical-align:-24px;background:#0081cc;animation:paBl .9s steps(1) infinite}
+.pa-ty .g,.pa-st .gr,.pa-nm .g{background:linear-gradient(90deg,#7c62b3,#a183bb);-webkit-background-clip:text;background-clip:text;color:transparent}
+.pa-cr{display:inline-block;width:10px;height:150px;margin-left:10px;vertical-align:-24px;background:#a183bb;animation:paBl .9s steps(1) infinite}
 @keyframes paBl{50%{opacity:0}}
 .pa-ws{margin:0;font:700 190px/1.2 "Pretendard Variable",sans-serif;color:#fff;letter-spacing:-.02em;white-space:nowrap}
-.pa-ws .w{display:inline-block;opacity:0}.pa-ws .dt{color:#0081cc;margin:0 .1em}
+.pa-ws .w{display:inline-block;opacity:0}.pa-ws .dt{color:#a183bb;margin:0 .1em}
 .slide[data-pp=b] .pa-ws .w{animation:paW .8s cubic-bezier(.2,.7,.2,1) both;animation-delay:calc(var(--w)*.26s)}
 @keyframes paW{from{opacity:0;filter:blur(28px);transform:translateY(40px) scale(.96)}to{opacity:1;filter:none;transform:none}}
 .pa-st{display:flex;flex-direction:column;align-items:flex-start}
@@ -639,7 +639,7 @@ body.idle{cursor:none}
 <section class="slide" id="m7_2" data-no="M7-2" data-title="M7-2 Session 3 연사 소개 · Scott Oakland" data-bg="B" data-foot="full" data-spk="speaker-scott">
 <div class="cg sp"><p class="cg-e fu" style="--i:0">Session 3.</p><div class="cg-b"><h2 class="sp-t" data-words style="--i:1">Proxymity, 글로벌 의결권 행사<br>인프라의 혁신과 미래</h2><p class="sp-n fu" style="--i:2">Scott Oakland</p><p class="sp-r fu" style="--i:3">Proxymity, Head of APAC</p></div></div>
 </section>
-<section class="slide" id="m7_3" data-no="M7-3" data-title="M7-3 Session 3 · Proxymity 소개 (카피 애니메이션 약 14초, 투자사 로고 → Proxymity 로고에서 멈춤 → 넘기면 소개 장표)" data-bg="B" data-foot="full" data-pa="1">
+<section class="slide" id="m7_3" data-no="M7-3" data-title="M7-3 Session 3 · Proxymity 소개 (카피 애니메이션 약 15초, 투자사 로고(2초 정지) → Proxymity 로고에서 멈춤 → 넘기면 소개 장표)" data-bg="B" data-foot="full" data-pa="1">
 <div class="pa" aria-hidden="true">
 <div class="pa-a"><p class="pa-ty"><span class="pa-t1"></span><br><span class="pa-t2"></span><i class="pa-cr"></i></p></div>
 <div class="pa-b"><p class="pa-ws"><span class="w" style="--w:0">발행회사</span> <span class="w dt" style="--w:1">·</span> <span class="w" style="--w:2">중개기관</span> <span class="w dt" style="--w:3">·</span> <span class="w" style="--w:4">투자자를</span></p></div>
@@ -877,9 +877,9 @@ function PXA(s,on){if(!s||!s.dataset.pa)return;(s._tp||[]).forEach(clearTimeout)
   at(6100,()=>{s.dataset.pp='c';const ps=[...s.querySelectorAll('.pa-st p')];ps.forEach((p,i)=>at(6300-6100+i*560,()=>{ps.forEach(q=>q.classList.remove('cur'));p.classList.add('on','cur');}));});
   const li=[...s.querySelectorAll('.pa-li')];li.forEach(e=>{e.style.removeProperty('--dx');e.style.removeProperty('--dy');});
   at(9000,()=>{s.dataset.pp='m';});
-  at(11700,()=>{s.dataset.pp='n';});
-  at(12000,()=>{const g=s.querySelector('.pa-lg'),cx=g.offsetWidth/2,cy=g.offsetHeight/2;li.forEach(e=>{e.style.setProperty('--dx',(cx-e.offsetLeft-e.offsetWidth/2)+'px');e.style.setProperty('--dy',(cy-e.offsetTop-e.offsetHeight/2)+'px');});s.dataset.pp='j';});
-  at(13200,()=>{s.dataset.pp='d';});}  /* 로고에서 끝. → 누르면 소개 장표 */
+  at(11100,()=>{s.dataset.pp='n';});
+  at(13100,()=>{const g=s.querySelector('.pa-lg'),cx=g.offsetWidth/2,cy=g.offsetHeight/2;li.forEach(e=>{e.style.setProperty('--dx',(cx-e.offsetLeft-e.offsetWidth/2)+'px');e.style.setProperty('--dy',(cy-e.offsetTop-e.offsetHeight/2)+'px');});s.dataset.pp='j';});
+  at(14300,()=>{s.dataset.pp='d';});}  /* 로고에서 끝. → 누르면 소개 장표 */
 /* four states (발표자료 오른쪽 아래): 들어오면 처음부터 재생, 나가면 멈춤. 처음 들어올 때 불러옴 */
 function FS(a,b){const pa=a&&a.querySelector('iframe.fs');if(pa&&pa.contentWindow)pa.contentWindow.postMessage('pause','*');const f=b&&b.querySelector('iframe.fs');if(!f)return;if(!f.getAttribute('src')){f.onload=()=>{if(slides[idx]===b)f.contentWindow.postMessage('play','*');};f.src=f.dataset.src;}else if(f.contentWindow)f.contentWindow.postMessage('play','*');}
 function go(n){n=Math.max(0,Math.min(slides.length-1,n));if(n===idx)return;const oi=idx;
