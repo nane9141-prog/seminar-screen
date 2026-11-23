@@ -1199,10 +1199,10 @@ VIZ.seoul=(cv)=>{const g=cv.getContext('2d');let t0=0,st=0,ts=0;const W=cv.width
  const HB={};KR.forEach(([x,y])=>{const k=(x/12|0)+','+(y/12|0);(HB[k]=HB[k]||[]).push([x,y]);});
  const land=(u,v)=>{const i=u/12|0,j=v/12|0;for(let a=-1;a<=1;a++)for(let b=-1;b<=1;b++){const L=HB[(i+a)+','+(j+b)];if(L)for(const[x,y]of L)if((x-u)**2+(y-v)**2<10.5*10.5)return true;}return false;};
  const L1=document.createElement('canvas'),L2=document.createElement('canvas');L1.width=L2.width=W;L1.height=L2.height=H;const g1=L1.getContext('2d'),g2=L2.getContext('2d');g1.fillStyle=g2.fillStyle='#f2f5fa';
- for(let y=-10;y<H+10;y+=19)for(let x=((y+10)/19%2)*9.5-10;x<W+10;x+=19){const jx=x+(rnd()-.5)*5,jy=y+(rnd()-.5)*5;const[u,v]=toI(jx,jy);if(!land(u,v))continue;if(Math.abs(jy-rv(jx))<20)continue;
+ for(let y=-10;y<H+10;y+=23)for(let x=((y+10)/23%2)*11.5-10;x<W+10;x+=23){const jx=x+(rnd()-.5)*5,jy=y+(rnd()-.5)*5;const[u,v]=toI(jx,jy);if(!land(u,v))continue;if(Math.abs(jy-rv(jx))<20)continue;
   const ins=inside(jx,jy),d=ins?0:dseg(jx,jy),core=ins?1:Math.exp(-Math.pow(d/320,1.1));
-  const vg=sm(0,320,jx)*sm(0,90,W-jx)*sm(0,240,Math.min(jy,H-jy));const a=.15*vg;if(a<.015)continue;
-  const sharp=Math.min(vg*1.4,1);const r=4.6;
+  const vg=sm(0,320,jx)*sm(0,90,W-jx)*sm(0,240,Math.min(jy,H-jy));const a=.1*vg;if(a<.015)continue;
+  const sharp=Math.min(vg*1.4,1);const r=6.2;
   if(sharp>.02){g1.globalAlpha=a*sharp;g1.beginPath();g1.arc(jx,jy,r,0,7);g1.fill();}
   if(sharp<.98){g2.globalAlpha=a*(1-sharp);g2.beginPath();g2.arc(jx,jy,r+.6,0,7);g2.fill();}}
  const L3=document.createElement('canvas');L3.width=W;L3.height=H;const g3=L3.getContext('2d');g3.filter='blur(2.8px)';g3.drawImage(L2,0,0);g3.filter='none';g3.drawImage(L1,0,0);
