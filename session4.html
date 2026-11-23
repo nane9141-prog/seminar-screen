@@ -462,6 +462,8 @@ html.embed,html.embed body,html.embed .stage{background:transparent}html.embed #
 #K11 .k11w{display:block;margin-top:14px;color:#F2F5FA}  /* 기준 줄은 다음 줄 · 흰색 */
 #K11 .chart{top:575px;height:845px}  /* 그래프 위쪽으로 키움 */
 #K11 #marsub{color:#F2F5FA}  /* 설명은 K10 「2026년 기준」처럼 제목 위 회색 눈썹으로, 기준 줄은 제목 아래 흰색 */
+#K11 .m27 .bar.fb{transition:transform 1s cubic-bezier(.2,.7,.2,1),opacity .4s}#K11[data-step="2"] .m27 .bar.fb{opacity:0}  /* FULL BOOKING 뒤 이전 단계 막대 · 숫자 숨김 */
+#K11 .tri span{color:#3a9dff}  /* 세모 파란색 */
 </style></head>
 <body>
 <div class="stage" id="stage">
@@ -1104,7 +1106,7 @@ function count(s,sl=s){s.querySelectorAll('.cnt').forEach(el=>{const hb=el.close
  function layer(y,D,hot,cls,extra){const cw=W/D.length,X=i=>cw*(i+.5),MAX=Math.max(...D.map(d=>d[1]));let h=`<div class="ml ${cls}"><div class="ax"></div>`;
   D.forEach(([d],i)=>{if(i&&new Date(y,2,d).getDay()<new Date(y,2,D[i-1][0]).getDay())h+=`<div class="wk" style="left:${cw*i}px"></div>`;});
   D.forEach(([d],i)=>{if(hot.includes(d))h+=`<div class="band" style="left:${X(i)-cw*.42}px;width:${cw*.84}px"><span>집중일</span></div>`;});
-  D.forEach(([d,v],i)=>{h+=`<div class="day" style="left:${X(i)}px">${d}<small>${WD[new Date(y,2,d).getDay()]}</small></div>`;if(v)h+=`<div class="bar" style="left:${X(i)-48}px;height:${Math.max(8,v/MAX*H)}px;transition-delay:${i*.04}s"><i>${v}</i></div>`;});
+  D.forEach(([d,v],i)=>{h+=`<div class="day" style="left:${X(i)}px">${d}<small>${WD[new Date(y,2,d).getDay()]}</small></div>`;if(v)h+=`<div class="bar${cls==='m27'&&[24,29].includes(d)?' fb':''}" style="left:${X(i)-48}px;height:${Math.max(8,v/MAX*H)}px;transition-delay:${i*.04}s"><i>${v}</i></div>`;});
   if(extra)h+=extra(X);return h+'</div>';}
  el.innerHTML=layer(2026,D26,[25,27,30],'m26')+layer(2027,D27,[25,26,30],'m27',X=>
    [[24,'FULL<br>BOOKING'],[29,'FULL<br>BOOKING']].map(([d,s])=>`<div class="full" data-b="2" style="left:${X(D27.findIndex(x=>x[0]===d))}px">${s}</div>`).join('')+
