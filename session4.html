@@ -513,6 +513,53 @@ html.embed,html.embed body,html.embed .stage{background:transparent}html.embed #
 #K07 .col:nth-child(2) .tg,#K07 .col:nth-child(3) .tg{background:#2f62d8}
 #K07 .col:nth-child(4),#K07 .col:nth-child(5){background:radial-gradient(120% 80% at 80% 100%,#64a8e6 0%,rgba(100,168,230,0) 60%),linear-gradient(170deg,#e8f1f8 0%,#b8d5ee 100%)}
 #K11 .tri{background:rgba(58,157,255,.12);border-top-color:#3a9dff}  /* △ 칸 윗선 · 면도 파랑 */
+
+/*K13fix*/
+/* K13 (11/23 22:15) 참고 이미지 하단 섹션 방식 — 전폭 3단, 세로 구분선, 가운데 정렬(번호 · 제목 강조색 · 설명 흰색), 아래 내용 도식 */
+#K13 .k13c{position:absolute;left:0;right:0;top:400px;bottom:0;display:grid;grid-template-columns:repeat(3,1fr);border-top:2px solid rgba(242,245,250,.1);background:linear-gradient(180deg,rgba(14,18,24,.75),rgba(8,11,15,.55))}
+#K13 .cl{position:relative;display:flex;flex-direction:column;align-items:center;text-align:center;padding:120px 80px 0}
+#K13 .cl+.cl{border-left:2px solid rgba(242,245,250,.1)}
+#K13 .cl .n{margin:0;font:300 56px/1 "Pretendard Variable";color:var(--sess);letter-spacing:.04em}
+#K13 .cl b{display:block;margin:34px 0 0;font:700 112px/1.15 "Pretendard Variable";letter-spacing:-.02em;background:linear-gradient(90deg,#3aa0ea,#3cc9c4);-webkit-background-clip:text;background-clip:text;color:transparent}
+#K13 .cl .d{margin:46px 0 0;font:500 58px/1.5 "Pretendard Variable";color:#F2F5FA}
+#K13 .dg{margin-top:auto;margin-bottom:110px;width:900px;height:450px;position:relative;font-family:"Pretendard Variable"}
+#K13 .rl{border-radius:36px;background:#141a22;box-shadow:inset 0 0 0 2px rgba(242,245,250,.08);padding:44px 56px;text-align:left}
+#K13 .rl .rh{margin:0 0 26px;font:600 40px/1 "Pretendard Variable";color:var(--mut)}
+#K13 .rl ul{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:22px 30px}
+#K13 .rl li{display:flex;align-items:center;gap:22px;height:104px;padding:0 28px;border-radius:22px;background:rgba(242,245,250,.04);font:500 44px/1 "Pretendard Variable";color:#F2F5FA}
+#K13 .rl li i{flex:none;width:44px;height:44px;border-radius:50%;background:var(--sess);position:relative}
+#K13 .rl li i::after{content:"";position:absolute;left:15px;top:9px;width:11px;height:20px;border:solid #fff;border-width:0 5px 5px 0;transform:rotate(45deg)}
+#K13 .ev{border-radius:36px;background:#141a22;box-shadow:inset 0 0 0 2px rgba(242,245,250,.08);padding:50px 60px 0}
+#K13 .ev .r{display:grid;grid-template-columns:230px 1fr;align-items:center;height:76px;text-align:left}
+#K13 .ev .r span{font:500 42px/1 "Pretendard Variable";color:var(--mut)}
+#K13 .ev .r em{display:block;height:18px;border-radius:9px;background:rgba(242,245,250,.08);position:relative;overflow:hidden}
+#K13 .ev .r em::after{content:"";position:absolute;left:0;top:0;bottom:0;width:calc(var(--w)*100%);border-radius:9px;background:var(--grad);transform-origin:0 50%;transform:scaleX(0);transition:transform 1.2s cubic-bezier(.2,.7,.2,1) .6s}
+#K13.cur .ev .r em::after,.s.cur#K13 .ev .r em::after{transform:none}
+#K13 .ev .btn{position:absolute;left:60px;right:60px;bottom:48px;margin:0;height:104px;border-radius:26px;background:linear-gradient(90deg,#3aa0ea,#3cc9c4);display:flex;align-items:center;justify-content:center;font:700 46px/1 "Pretendard Variable";color:#06121c}
+#K13 .cal{border-radius:36px;background:#141a22;box-shadow:inset 0 0 0 2px rgba(242,245,250,.08);padding:36px 50px 0}
+#K13 .cal .ch{margin:0;text-align:left;font:600 40px/1 "Pretendard Variable";color:var(--mut)}
+#K13 .cal .wk,#K13 .cal .dy{display:grid;grid-template-columns:repeat(7,1fr);margin-top:20px}
+#K13 .cal i{font-style:normal;height:62px;display:flex;align-items:center;justify-content:center;font:500 34px/1 "Pretendard Variable";color:rgba(242,245,250,.72);position:relative}
+#K13 .cal .wk i{height:auto;font-size:28px;color:var(--dim)}
+#K13 .cal .dy{margin-top:8px}
+#K13 .cal .dy i::before{content:"";position:absolute;left:50%;top:50%;width:56px;height:56px;margin:-28px 0 0 -28px;border-radius:50%;z-index:-1}
+#K13 .cal .dy i.pc::before{box-shadow:inset 0 0 0 3px #3cc9c4}
+#K13 .cal .dy i.rh::before{box-shadow:inset 0 0 0 3px #3aa0ea}
+#K13 .cal .dy i.dd{color:#06121c;font-weight:700}#K13 .cal .dy i.dd::before{background:linear-gradient(90deg,#3aa0ea,#3cc9c4)}
+#K13 .cal .dy i{z-index:0}
+#K13 .cal .lg{position:absolute;left:50px;right:50px;bottom:26px;margin:0;display:flex;justify-content:center;gap:40px;font:500 30px/1 "Pretendard Variable";color:var(--mut)}
+#K13 .cal .lg span{display:flex;align-items:center;gap:12px}
+#K13 .cal .lg span::before{content:"";width:22px;height:22px;border-radius:50%}
+#K13 .cal .lg .pc::before{box-shadow:inset 0 0 0 3px #3cc9c4}#K13 .cal .lg .rh::before{box-shadow:inset 0 0 0 3px #3aa0ea}#K13 .cal .lg .dd::before{background:linear-gradient(90deg,#3aa0ea,#3cc9c4)}
+#K13 .dg span{padding:0;border:0;font:inherit;color:inherit}
+#K13 .ev .r span{font:500 44px/1 "Pretendard Variable";color:var(--mut)}
+#K13 .ev{padding-top:40px}#K13 .ev .r{height:78px;grid-template-columns:250px 1fr}
+#K13 .ev .btn{height:96px;bottom:44px}
+#K13 .rl li{height:120px;font-size:46px}
+#K13 .rl .rh{margin-bottom:34px}
+#K13 .cal i{height:62px;font-size:36px}#K13 .cal .wk i{font-size:30px}
+#K13 .cal .dy i::before{width:64px;height:64px;margin:-32px 0 0 -32px}
+#K13 .cal .lg{bottom:24px;font:500 32px/1 "Pretendard Variable"}
 </style></head>
 <body>
 <div class="stage" id="stage">
@@ -626,10 +673,13 @@ html.embed,html.embed body,html.embed .stage{background:transparent}html.embed #
 
 <section class="s" id="K13" data-t="세 가지 과제" data-dim=".18">
  <div class="top"><h2 class="h fu" style="--i:1">지금 정해야 할 세 가지</h2></div>
- <div class="tds">
-  <div class="td fu" style="--i:2"><div class="hd"><p class="no">01</p></div><b>운영규정 수립</b><span>출석 · 질의 · 표결 · 장애 대응 등<br>운영기준과 절차 마련</span></div>
-  <div class="td fu" style="--i:3"><div class="hd"><p class="no">02</p></div><b>관리기관 선정</b><span>시스템 · 운영 역량과<br>현장 지원 범위 검토</span></div>
-  <div class="td fu" style="--i:4"><div class="hd"><p class="no">03</p></div><b>개최일자 확정</b><span>주총일과 사전점검,<br>모의주총 · 리허설 일정 협의</span></div>
+ <div class="k13c">
+  <div class="cl fu" style="--i:2"><p class="n">01</p><b>운영규정 수립</b><p class="d">출석 · 질의 · 표결 · 장애 대응 등<br>운영기준과 절차 마련</p>
+   <div class="dg rl"><p class="rh">전자주주총회 운영규정</p><ul><li><i></i>출석 · 인증</li><li><i></i>질의 · 발언</li><li><i></i>표결 · 집계</li><li><i></i>장애 대응</li></ul></div></div>
+  <div class="cl fu" style="--i:3"><p class="n">02</p><b>관리기관 선정</b><p class="d">시스템 · 운영 역량과<br>현장 지원 범위 검토</p>
+   <div class="dg ev"><div class="r"><span>시스템</span><em style="--w:.86"></em></div><div class="r"><span>운영 역량</span><em style="--w:.78"></em></div><div class="r"><span>현장 지원</span><em style="--w:.92"></em></div><p class="btn">관리기관 선정</p></div></div>
+  <div class="cl fu" style="--i:4"><p class="n">03</p><b>개최일자 확정</b><p class="d">주총일과 사전점검,<br>모의주총 · 리허설 일정 협의</p>
+   <div class="dg cal"><p class="ch">2027. 3</p><div class="wk"><i>월</i><i>화</i><i>수</i><i>목</i><i>금</i><i>토</i><i>일</i></div><div class="dy"><i class="">8</i><i class="">9</i><i class="">10</i><i class="">11</i><i class="pc">12</i><i class="">13</i><i class="">14</i><i class="">15</i><i class="">16</i><i class="">17</i><i class="">18</i><i class="rh">19</i><i class="">20</i><i class="">21</i><i class="">22</i><i class="">23</i><i class="">24</i><i class="">25</i><i class="dd">26</i><i class="">27</i><i class="">28</i></div><p class="lg"><span class="pc">사전점검</span><span class="rh">리허설</span><span class="dd">주총일</span></p></div></div>
  </div>
 </section>
 
