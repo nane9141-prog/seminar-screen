@@ -490,6 +490,14 @@ body.idle{cursor:none}
 @keyframes paU{from{opacity:0;transform:scaleX(0)}to{opacity:1;transform:none}}
 .pa-sb{margin:70px 0 0;font:400 64px/1 "Pretendard Variable",sans-serif;color:#A9B4C4;opacity:0}
 .slide[data-pp=d] .pa-sb{animation:fu .9s 1.1s cubic-bezier(.2,.7,.2,1) both}
+/* M7-4 세션 3 발표자료(세션3. IR Kudos Presentation .pdf 23장) — 슬라이드 창에 기본 표시, → ← 로 넘김. V · C(Meet 화면 공유 · 캡처보드)가 들어오면 그 위로 덮음, X 해제 시 다시 자료 */
+.pdk{position:absolute;inset:0;background:#000}
+.pdk img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;opacity:0;transition:opacity .35s ease}
+.pdk img.on{opacity:1}
+.pdk~.zm-ph{display:none}
+.zm-c.on .pdk,.zm-c.on .pdk-n{visibility:hidden}
+.pdk-n{position:absolute;right:28px;top:22px;margin:0;padding:8px 18px;border-radius:12px;background:rgba(0,0,0,.45);font:500 26px/1 "Pretendard Variable",sans-serif;color:rgba(255,255,255,.55);letter-spacing:.04em;opacity:0;transition:opacity .3s}
+.pdk-n.show{opacity:1}
 /* M7-4 (11/23 21:14): Meet 화면을 PIP 두 개로 — 왼쪽 큰 창 발표 슬라이드(16:9), 오른쪽 작은 창 연사 얼굴. 연결 전엔 연사 사진 */
 .pipl .zm-c.pip-s{left:700px;top:150px;width:2400px;height:1350px;border-radius:32px;box-shadow:0 0 0 3px rgba(0,129,204,.4),0 40px 120px rgba(0,0,0,.5)}
 .pipl .zm-c.pip-f{left:3160px;top:150px;width:950px;height:760px;border-radius:32px;box-shadow:0 0 0 3px rgba(0,173,169,.45),0 40px 120px rgba(0,0,0,.5)}
@@ -648,11 +656,11 @@ body.idle{cursor:none}
 <div class="pa-d"><p class="pa-nm"><img src="assets/proxymity-logo.png" alt="Proxymity"></p><p class="pa-sb">글로벌 디지털 의결권 플랫폼</p></div>
 </div>
 </section>
-<section class="slide pipl" id="m7_4" data-no="M7-4" data-title="M7-4 Session 3 · Google Meet 화면 (가운데 16:9)" data-bg="B" data-foot="none" data-zoom="1" data-ox=".5" data-dim=".25" >
+<section class="slide pipl" id="m7_4" data-no="M7-4" data-title="M7-4 Session 3 · Google Meet 화면 (슬라이드 창: 세션3 PDF 23장 → ←, V · C 화면 공유가 덮음)" data-bg="B" data-foot="none" data-zoom="1" data-ox=".5" data-dim=".25" >
 <div class="zm pp">
 <div class="pp-l"><p class="pp-s fu" style="--i:0">Session 3.</p><h2 class="pp-t" data-words style="--i:1">Proxymity,<br>글로벌 의결권<br>행사 인프라의<br>혁신과 미래</h2><div class="pip-ev fu" style="--i:3"><p class="pp-en">Live Demo Briefing</p><p class="pp-ev">전자주주총회 플랫폼<br>시연 설명회</p><img class="pp-lg" src="assets/irk-white.svg" alt="IR KUDOS"></div>
 </div>
-<div class="zm-c pip-s fu" style="--i:1"><video class="zm-v" muted playsinline></video><p class="zm-ph">발표 슬라이드 · 16:9<br><small>V · C: 슬라이드 창 캡처 · 캡처보드 &nbsp;/&nbsp; Shift+V · Shift+C: 연사 얼굴 창 &nbsp;/&nbsp; X: 모두 해제</small></p></div><div class="zm-c pip-f fu" style="--i:2"><img class="pip-bg" src="assets/speaker-scott.webp" alt=""><video class="zm-v" muted playsinline></video></div>
+<div class="zm-c pip-s fu" style="--i:1"><div class="pdk" data-i="0"><img src="assets/s3/p01.webp" alt="" class=on decoding="async"><img src="assets/s3/p02.webp" alt="" decoding="async"><img src="assets/s3/p03.webp" alt="" decoding="async"><img src="assets/s3/p04.webp" alt="" decoding="async"><img src="assets/s3/p05.webp" alt="" decoding="async"><img src="assets/s3/p06.webp" alt="" decoding="async"><img src="assets/s3/p07.webp" alt="" decoding="async"><img src="assets/s3/p08.webp" alt="" decoding="async"><img src="assets/s3/p09.webp" alt="" decoding="async"><img src="assets/s3/p10.webp" alt="" decoding="async"><img src="assets/s3/p11.webp" alt="" decoding="async"><img src="assets/s3/p12.webp" alt="" decoding="async"><img src="assets/s3/p13.webp" alt="" decoding="async"><img src="assets/s3/p14.webp" alt="" decoding="async"><img src="assets/s3/p15.webp" alt="" decoding="async"><img src="assets/s3/p16.webp" alt="" decoding="async"><img src="assets/s3/p17.webp" alt="" decoding="async"><img src="assets/s3/p18.webp" alt="" decoding="async"><img src="assets/s3/p19.webp" alt="" decoding="async"><img src="assets/s3/p20.webp" alt="" decoding="async"><img src="assets/s3/p21.webp" alt="" decoding="async"><img src="assets/s3/p22.webp" alt="" decoding="async"><img src="assets/s3/p23.webp" alt="" decoding="async"></div><p class="pdk-n">1 / 23</p><video class="zm-v" muted playsinline></video><p class="zm-ph">발표 슬라이드 · 16:9<br><small>V · C: 슬라이드 창 캡처 · 캡처보드 &nbsp;/&nbsp; Shift+V · Shift+C: 연사 얼굴 창 &nbsp;/&nbsp; X: 모두 해제</small></p></div><div class="zm-c pip-f fu" style="--i:2"><img class="pip-bg" src="assets/speaker-scott.webp" alt=""><video class="zm-v" muted playsinline></video></div>
 <div class="pip-sp fu" style="--i:3"><p class="pp-live" ><i></i>LIVE<span>via Google Meet</span></p><div class="pp-who" ><p class="pp-n">Scott Oakland</p><p class="pp-ro">Proxymity,<br>Head of APAC</p></div></div>
 </div>
 </section>
@@ -861,6 +869,8 @@ function S3(s,on){if(!s||!s.dataset.s3)return;(s._t3||[]).forEach(clearTimeout);
   [5,4,3,2,1].forEach((n,i)=>at(400+i*1000,()=>{s.dataset.ph='c';s.dataset.n=n;dotTimer(sv,String(n));}));
   at(5500,()=>{s.dataset.ph='a';clearInterval(s._iv3);const c=document.getElementById('c');if(c)c.style.opacity=0;});at(9600,()=>{s.dataset.ph='e';});}
 /* M7-3 앞단계 카피 애니메이션: a 타이핑 → b 단어 등장 → c 줄 쌓기 → m 투자사 11곳 로고(n 정지) → j 가운데로 합쳐짐 → d Proxymity 로고에서 멈춤. → 누르면 소개 장표(i) */
+function PDK(dk,i){const im=dk.children,n=im.length;i=Math.max(0,Math.min(n-1,i));dk.dataset.i=i;[...im].forEach((e,k)=>e.classList.toggle('on',k===i));const c=dk.parentNode.querySelector('.pdk-n');if(c){c.textContent=(i+1)+' / '+n;c.classList.add('show');clearTimeout(c._t);c._t=setTimeout(()=>c.classList.remove('show'),1500);}}
+function PDKin(prev,s){const dk=s&&s.querySelector('.pdk');if(!dk)return;const back=prev&&slides.indexOf(prev)>slides.indexOf(s);PDK(dk,back?dk.children.length-1:0);}
 function PXA(s,on){if(!s||!s.dataset.pa)return;(s._tp||[]).forEach(clearTimeout);clearInterval(s._ip);s._tp=[];if(!on){s.dataset.pp='';return;}
   const at=(ms,f)=>s._tp.push(setTimeout(f,ms)),t1=s.querySelector('.pa-t1'),t2=s.querySelector('.pa-t2'),L1='Investor communications',L2='for a connected world';
   const fmt=(t,n)=>t.length>3&&n<L1.length+L2.length?t.slice(0,-3)+'<span class="g">'+t.slice(-3)+'</span>':t;
@@ -883,7 +893,7 @@ function go(n){n=Math.max(0,Math.min(slides.length-1,n));if(n===idx)return;const
     const v=prev.dataset.video&&document.getElementById(prev.dataset.video);if(v){v.pause();}}
   idx=n;if(!isMsg(s))home=n;void s.offsetWidth;s.classList.add('on','enter','tr-'+tr);counters(s);
   stage.dataset.foot=s.dataset.foot;stage.classList.toggle('nobg',s.dataset.bg==='N');tgt=LAY[s.dataset.bg]||LAY.B;bgSet(s);progScroll(s);if(s.dataset.spk)SPKPORT.show(s.dataset.spk);else SPKPORT.hide();
-  FS(prev,s);S3(prev,false);S3(s,true);PXA(prev,false);PXA(s,true);
+  FS(prev,s);S3(prev,false);S3(s,true);PXA(prev,false);PXA(s,true);PDKin(prev,s);
   history.replaceState(null,'','#'+s.dataset.no);
   const v=s.dataset.video&&document.getElementById(s.dataset.video);
   if(v&&v.classList.contains('ok')){v.currentTime=0;v.play().catch(()=>{});}
@@ -902,7 +912,7 @@ const BOOT_MS=10000;let BOOT_T=0,bootTimer=null;
 function bootGo(){clearTimeout(bootTimer);bootTimer=null;if(idx<0)go(0);}
 function boot(){BOOT_T=performance.now()+BOOT_MS;const c=document.getElementById('c');if(c)c.style.opacity=1;bootTimer=setTimeout(bootGo,BOOT_MS);
   MC.pub({cur:'시작 대기',slides:slides.map(x=>({no:x.dataset.no,title:x.dataset.title.replace(/&amp;/g,'&'),msg:isMsg(x)?1:0,auto:x.dataset.auto?+x.dataset.auto:0,vid:0}))});}
-function step(d){if(idx<0){bootGo();return;}{const c=slides[idx];if(d>0&&c.dataset.pa&&c.dataset.pp!=='d'){(c._tp||[]).forEach(clearTimeout);clearInterval(c._ip);c.dataset.pp='d';return;}}{const f=KN.of(slides[idx]);if(f&&f._r){KN.post(f,{s4:'nav',d});return;}}/* 세션 4 키노트: 키노트 안에서 넘기고, 처음/끝이면 키노트가 edge를 돌려줌 */if(isMsg(slides[idx])){go(d>0?nextMain(home,1):home);return;}go(nextMain(idx,d));}
+function step(d){if(idx<0){bootGo();return;}{const c=slides[idx],dk=c.querySelector('.pdk');if(dk&&!dk.parentNode.classList.contains('on')){const i=+dk.dataset.i+d;if(i>=0&&i<dk.children.length){PDK(dk,i);return;}}}{const c=slides[idx];if(d>0&&c.dataset.pa&&c.dataset.pp!=='d'){(c._tp||[]).forEach(clearTimeout);clearInterval(c._ip);c.dataset.pp='d';return;}}{const f=KN.of(slides[idx]);if(f&&f._r){KN.post(f,{s4:'nav',d});return;}}/* 세션 4 키노트: 키노트 안에서 넘기고, 처음/끝이면 키노트가 edge를 돌려줌 */if(isMsg(slides[idx])){go(d>0?nextMain(home,1):home);return;}go(nextMain(idx,d));}
 function nextMain(i,d){let j=i+d;while(slides[j]&&(isMsg(slides[j])||slides[j].dataset.skip))j+=d;return slides[j]?j:i;}/* 예비 화면(data-skip)도 건너뜀 */
 document.querySelectorAll('[data-words]').forEach(el=>{let w=0;[...el.childNodes].forEach(nd=>{if(nd.nodeType!==3)return;const f=document.createDocumentFragment();
   nd.textContent.split(/(\s+)/).forEach(t=>{if(!t)return;if(/^\s+$/.test(t)){f.appendChild(document.createTextNode(' '));return;}const sp=document.createElement('span');sp.className='w';sp.style.setProperty('--w',w++);sp.textContent=t;f.appendChild(sp);});
