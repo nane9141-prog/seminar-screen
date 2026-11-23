@@ -437,6 +437,7 @@ html.embed,html.embed body,html.embed .stage{background:transparent}html.embed #
 #K06 .sub{color:#fff}
 .eb.k5e small{font:400 50px "KakaoSmall";color:var(--mut);margin-left:24px}
 #K04 .chip{border:0;background:none;padding:22px 30px 22px 0}  /* 코스피 · 코스닥 칩 테두리 없음 */
+#K06 .chip{border:0;background:none;padding:22px 30px 22px 0}  /* 가결률 · 정관변경 칩 테두리 없음 */
 </style></head>
 <body>
 <div class="stage" id="stage">
@@ -1109,7 +1110,7 @@ VIZ.rings=(cv)=>{const g=cv.getContext('2d');const R=[[93,198,'전자투표'],[3
   g.strokeStyle='rgba(242,245,250,.16)';g.lineWidth=3;g.beginPath();g.moveTo(1420,80);g.lineTo(1420,880);g.stroke();}};};
 VIZ.stream=(cv)=>{const g=cv.getContext('2d'),P=[...Array(240)].map(()=>({p:Math.random(),y:(Math.random()-.5),s:.0015+Math.random()*.0025}));
  return{enter(){},draw(t){g.clearRect(0,0,cv.width,cv.height);const H=cv.height;for(const q of P){q.p+=q.s;if(q.p>1)q.p=0;const w=1-q.p*.55,x=q.p*cv.width,y=H/2+q.y*H*.8*w;if(q.p>.88&&Math.abs(q.y)>.42){continue;}g.fillStyle=mix(q.p);g.globalAlpha=Math.sin(q.p*Math.PI)*.9;g.beginPath();g.arc(x,y,6,0,7);g.fill();}g.globalAlpha=1;
-  g.strokeStyle='rgba(242,245,250,.5)';g.lineWidth=4;g.beginPath();g.moveTo(cv.width-60,H/2-36);g.lineTo(cv.width-10,H/2);g.lineTo(cv.width-60,H/2+36);g.stroke();}};};
+  }};};
 VIZ.seoul=(cv)=>{const g=cv.getContext('2d');let t0=0,st=0,ts=0;const W=cv.width,H=cv.height,rnd=(a=>()=>(a=(a*16807)%2147483647)/2147483647)(7);
  // 서울 개념도(11/23): 서울 경계 윤곽(대략) 안을 점으로 채움 + 한강 + 세 군집. 정밀 지도 아님
  const BD=[[365.2, 610.8], [506.6, 543.9], [683.4, 477.0], [718.7, 321.0], [895.5, 142.6], [1072.2, 98.0], [1249.0, 142.6], [1390.4, 231.8], [1496.4, 410.1], [1461.1, 610.8], [1567.1, 700.0], [1708.5, 766.9], [1637.8, 900.7], [1567.1, 1079.0], [1425.7, 1168.2], [1284.3, 1257.4], [1072.2, 1302.0], [895.5, 1257.4], [718.7, 1212.8], [577.3, 1079.0], [435.9, 1034.4], [365.2, 900.7], [329.9, 766.9], [241.5, 677.7]],RV=[[259.2, 588.5], [435.9, 610.8], [612.7, 700.0], [718.7, 789.2], [860.1, 878.4], [1036.9, 931.9], [1178.3, 891.7], [1319.7, 856.1], [1425.7, 811.5], [1602.4, 753.5], [1743.8, 722.3]],CL=[[1019.2, 677.7, 53], [736.4, 891.7, 25], [1284.3, 989.9, 33]];
