@@ -4,7 +4,9 @@
 const $=id=>document.getElementById(id);
 const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const norm=s=>String(s||'').toLowerCase().replace(/\s|\(주\)|㈜|주식회사|-/g,'');
-let R=[],S={},flt='all',q='',pick=null,timer=null,loading=false,desk='all';
+let R=[],S={},flt='all',q='',pick=null,timer=null,loading=false,desk='all',sort={k:null,d:1};
+const SORTV={co:x=>x.company_name||'',name:x=>x.name||'',status:x=>x.status==='confirmed'?0:1,desk:x=>{const d=deskOf(S[x.id]);return d?(d==='VIP'?8:+d.slice(1)):'';},
+  seat:x=>{const v=String((S[x.id]||{}).seat||'').toUpperCase().replace(/[\s-]/g,''),m=/^([A-Z])(\d+)$/.exec(v);return m?(m[1].charCodeAt(0)-64)*100+(+m[2]):v;},arr:x=>x.status!=='confirmed'?'':(x.attended?0:1)};
 /* 안내 데스크 배정: seat_assign 에 전용 칸이 없어 메모(note) 앞에 "[D3] " 꼴 꼬리표로 저장합니다. 화면에서는 데스크와 메모를 따로 보여 줍니다. */
 const DESKS=[['D1','미등록자 · 현장등록'],['D2','ㄱ · ㄴ · ㄷ'],['D3','ㄹ · ㅁ · ㅂ · ㅅ'],['D4','ㅇ (아 · 에 · 엔)'],['D5','ㅇ (엘 · 우 · 유 · 이), ㅈ'],['D6','ㅋ · ㅌ · ㅍ, 하 · 한국'],['D7','한온 · 한진 · 한화 · 현대'],['VIP','VIP 별도']];
 const DRE=/^\[(D[1-7]|VIP)\]\s?/;
@@ -52,6 +54,9 @@ function draw(){
   if(flt==='noseat')L=L.filter(x=>!(S[x.id]||{}).seat);
   if(flt==='arr')L=L.filter(x=>x.status==='confirmed'&&x.attended);
   if(flt==='notarr')L=L.filter(x=>x.status==='confirmed'&&!x.attended);
+  if(sort.k){const f=SORTV[sort.k],ko=(a,b)=>String(a).localeCompare(String(b),'ko',{numeric:true});   // 헤더 정렬: 빈 값은 방향과 관계없이 맨 아래
+    L=L.map((x,i)=>[f(x),i,x]).sort((a,b)=>{const ea=a[0]===''||a[0]==null,eb=b[0]===''||b[0]==null;if(ea||eb)return ea&&eb?a[1]-b[1]:ea?1:-1;return (typeof a[0]==='number'?a[0]-b[0]:ko(a[0],b[0]))*sort.d||a[1]-b[1];}).map(a=>a[2]);}
+  document.querySelectorAll('#atth th[data-s]').forEach(th=>{th.classList.toggle('asc',sort.k===th.dataset.s&&sort.d===1);th.classList.toggle('desc',sort.k===th.dataset.s&&sort.d===-1);});
   $('atcnt').textContent=L.length+'명';
   const cos=[...new Set(R.map(x=>x.company_name))];if($('atcos').childElementCount!==cos.length)$('atcos').innerHTML=cos.map(c=>'<option value="'+esc(c)+'">').join('');
   const ae=document.activeElement,keep=ae&&ae.dataset&&ae.dataset.k?ae.dataset.k+':'+ae.closest('tr').dataset.id:null;
@@ -116,6 +121,7 @@ $('atq').addEventListener('keydown',e=>{if(e.key==='Escape'){e.target.value='';q
 document.querySelectorAll('#atflt [data-f]').forEach(b=>b.onclick=()=>{flt=b.dataset.f;draw();});
 $('atdesk').addEventListener('click',e=>{const b=e.target.closest('[data-d]');if(!b)return;desk=b.dataset.d;pick=null;draw();});
 $('atreload').onclick=()=>load();
+$('atth').addEventListener('click',e=>{const th=e.target.closest('th[data-s]');if(!th)return;const k=th.dataset.s;sort=sort.k!==k?{k,d:1}:sort.d===1?{k,d:-1}:{k:null,d:1};draw();});   // 오름차순 → 내림차순 → 원래 순서
 /* 데스크별 배정 표: 자리배치 엑셀 '06. 출입 데스크' 탭과 같은 구성(담당 범위 · 인원 · 회사 수 · 회사별 인원)을 현재 배정 기준으로 보여 줌 */
 function deskTable(){const by={};R.forEach(x=>{const d=deskOf(S[x.id])||'none',m=by[d]=by[d]||{};m[x.company_name]=(m[x.company_name]||0)+1;});
   const cols=DESKS.filter(d=>d[0]!=='VIP'||by.VIP).concat([['none','데스크 미배정']]);

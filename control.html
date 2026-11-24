@@ -155,6 +155,8 @@ details.adm .bar{margin:10px 0 0}
 .atcard .seatv.none{font-size:18px;color:var(--fg-3);font-weight:600}
 .attw{max-height:calc(100vh - 520px);min-height:220px;overflow:auto;margin-top:10px;border:1px solid var(--line);border-radius:12px}
 table.att thead th{position:sticky;top:0;z-index:1}
+table.att thead th[data-s]{cursor:pointer;user-select:none;white-space:nowrap}table.att thead th[data-s]:hover{color:var(--fg)}
+table.att thead th[data-s]::after{content:"↕";margin-left:5px;opacity:.3;font-size:11px}table.att thead th[data-s].asc::after{content:"▲";opacity:1;color:var(--warn)}table.att thead th[data-s].desc::after{content:"▼";opacity:1;color:var(--warn)}table.att thead th[data-s].asc,table.att thead th[data-s].desc{color:var(--fg)}
 table.att td{padding:8px 12px}
 table.att tbody tr{cursor:pointer}
 table.att tbody tr.sel{background:#232a38;box-shadow:inset 3px 0 var(--blue-2)}
@@ -316,7 +318,7 @@ html{overflow-x:hidden}
    <input type="search" id="atq" class="atq" placeholder="이름 · 회사 · 전화 끝 4자리 · 좌석으로 검색 (선택한 데스크 안에서)" autocomplete="off">
    <div class="atcard empty" id="atcard"></div>
    <div class="oq-head" style="margin-top:20px"><nav class="subtab" id="atflt"><button data-f="all">전체</button><button data-f="noseat">좌석 미지정</button><button data-f="notarr">미확인</button><button data-f="arr">참석</button></nav><div class="oq-flt"><span class="mut" id="atcnt"></span><span id="atmsg"></span></div></div>
-   <div class="attw"><table class="att"><thead><tr><th>회사</th><th>이름</th><th>전화</th><th>신청</th><th>데스크</th><th>좌석</th><th>메모</th><th>현장 참석</th></tr></thead><tbody id="attb"></tbody></table></div>
+   <div class="attw"><table class="att"><thead id="atth"><tr><th data-s="co">회사</th><th data-s="name">이름</th><th>전화</th><th data-s="status">신청</th><th data-s="desk">데스크</th><th data-s="seat">좌석</th><th>메모</th><th data-s="arr">현장 참석</th></tr></thead><tbody id="attb"></tbody></table></div>
    <dialog id="atdt" class="atdt"><div class="top"><h3>데스크별 배정 표</h3><span class="mut" id="atdtsum"></span><span class="sp"></span><button id="atdtclose">닫기</button></div><div id="atdtgrid"></div></dialog>
    <dialog id="atmr" class="atmr"><form id="atmrform" method="dialog">
     <h3>참석자 수동 등록</h3>
