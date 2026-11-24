@@ -65,6 +65,8 @@ function draw(){
     '<td>'+(x.status==='confirmed'?'<button data-a="arr" class="'+(x.attended?'arr on':'arr')+'">'+(x.attended?'참석 '+(x.attended_at?new Date(x.attended_at).toTimeString().slice(0,5):''):'미확인')+'</button>':'<span class="mut" title="관리자 페이지에서 확정하면 참석 체크할 수 있습니다">확정 후 가능</span>')+'</td></tr>';}).join('')
     :'<tr><td colspan="8" class="mut empty">'+(q?'"'+esc(q)+'"에 해당하는 신청자가 없습니다. 사전 신청하지 않은 분입니다 — 현장 등록 데스크로 안내하세요.':'목록이 비어 있습니다.')+'</td></tr>';
   if(keep){const [k,id]=keep.split(':');const el=document.querySelector('#attb tr[data-id="'+id+'"] [data-k="'+k+'"]');if(el){el.focus();if(el.setSelectionRange&&el.tagName==='INPUT'){const v=el.value;el.setSelectionRange(v.length,v.length);}}}
+  {const dl=$('atfreelist');if(dl)dl.innerHTML=freeSeats().map(s=>'<option value="'+s+'">').join('');}
+  if(SP.inp){const el=document.activeElement;if(el&&el.matches&&el.matches('#attb input.seat'))spOpen(el);else spClose();}
   card();
   document.dispatchEvent(new Event('att-data'));   // 좌석 배치 탭(seatmap.js) 갱신
 }
@@ -85,11 +87,27 @@ async function toggleArr(id){const c=sb(),x=R.find(r=>r.id===id);if(!c||!x)retur
   const {error}=await c.from('registrations').update({attended:!x.attended}).eq('id',id);if(error)return msg(error.message,true);
   x.attended=!x.attended;x.attended_at=x.attended?new Date().toISOString():null;msg(x.attended?x.name+'님 현장 참석 체크 (관리자 페이지에도 반영)':x.name+'님 참석 체크 해제');draw();}
 
-$('attb').addEventListener('change',e=>{const k=e.target.dataset.k;if(!k)return;const id=e.target.closest('tr').dataset.id,v=e.target.value.trim();
+/* 좌석 변경: 좌석 칸을 누르면 빈 자리(배정된 좌석 · VIP·연사 고정석 · 없는 좌석 제외)를 줄별로 보여 주고 눌러서 고릅니다. 직접 입력도 그대로 가능. */
+const SP={el:null,inp:null,skip:false};
+function freeSeats(){const key=window.SEAT_KEY,all=window.SEAT_IDS||[],FX=window.SEAT_FIXED||{};if(!key)return [];const used=new Set(R.map(x=>key((S[x.id]||{}).seat)).filter(Boolean));return all.filter(s=>!used.has(s)&&!FX[s]);}
+function spDraw(){const inp=SP.inp;if(!inp)return;const id=inp.closest('tr').dataset.id,cur=String((S[id]||{}).seat||''),t=inp.value.toUpperCase().replace(/[\s-]/g,''),f=t&&t!==cur.toUpperCase().replace(/[\s-]/g,'')?t:'';
+  const free=freeSeats(),L=free.filter(s=>!f||s.startsWith(f)),by={};L.forEach(s=>(by[s[0]]=by[s[0]]||[]).push(s));
+  SP.el.innerHTML='<div class="hd"><b>빈 좌석 '+free.length+'석</b><span class="mut">'+(f?'"'+esc(f)+'" 로 시작 '+L.length+'석':'눌러서 선택 · 직접 입력도 가능')+'</span>'+(cur?'<button data-s="">좌석 비우기</button>':'')+'</div>'+
+    (L.length?Object.keys(by).sort().map(r=>'<div class="rw"><i>'+r+'</i><div>'+by[r].sort((a,b)=>+a.slice(1)-+b.slice(1)).map(s=>'<button data-s="'+s+'">'+s.slice(1)+'</button>').join('')+'</div></div>').join(''):'<p class="mut">'+(free.length?'해당하는 빈 좌석이 없습니다.':(window.SEAT_KEY?'빈 좌석이 없습니다.':'좌석 정보를 불러오지 못했습니다.'))+'</p>');}
+function spOpen(inp){if(!SP.el){SP.el=document.createElement('div');SP.el.id='atseatpop';document.body.appendChild(SP.el);
+    SP.el.addEventListener('mousedown',e=>{e.preventDefault();const b=e.target.closest('[data-s]');if(!b||!SP.inp)return;const i=SP.inp,id=i.closest('tr').dataset.id,v=b.dataset.s;i.value=v;SP.skip=true;i.blur();SP.skip=false;spClose();saveSeat(id,{seat:v||null});});}
+  SP.inp=inp;spDraw();const r=inp.getBoundingClientRect(),w=Math.min(460,innerWidth-16);SP.el.style.display='block';SP.el.style.width=w+'px';SP.el.style.left=Math.max(8,Math.min(r.left,innerWidth-w-8))+scrollX+'px';
+  const h=SP.el.offsetHeight,below=innerHeight-r.bottom>h+12||r.top<h+12;SP.el.style.top=(below?r.bottom+6:r.top-h-6)+scrollY+'px';}
+function spClose(){if(SP.el)SP.el.style.display='none';SP.inp=null;}
+$('attb').addEventListener('focusin',e=>{if(e.target.matches('input.seat'))spOpen(e.target);});
+$('attb').addEventListener('mousedown',e=>{if(e.target.matches('input.seat')&&document.activeElement!==e.target){e.preventDefault();e.target.focus();e.target.select();}});   // 누르면 기존 값 전체 선택 → 바로 덮어쓰기
+$('attb').addEventListener('focusout',e=>{if(e.target.matches('input.seat')&&SP.inp===e.target)spClose();});
+$('attb').addEventListener('input',e=>{if(e.target===SP.inp)spOpen(e.target);});
+$('attb').addEventListener('change',e=>{if(SP.skip)return;const k=e.target.dataset.k;if(!k)return;const id=e.target.closest('tr').dataset.id,v=e.target.value.trim();
   if(k==='desk')return saveSeat(id,{note:pack(v,memoOf(S[id]))});          // 데스크 수정
   if(k==='note')return saveSeat(id,{note:pack(deskOf(S[id]),v)});
   saveSeat(id,{[k]:v||null});});
-$('attb').addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.dataset.k){e.preventDefault();e.target.blur();}});
+$('attb').addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.dataset.k){e.preventDefault();e.target.blur();}if(e.key==='Escape'&&e.target===SP.inp){e.target.value=(S[e.target.closest('tr').dataset.id]||{}).seat||'';e.target.blur();}});
 $('attb').addEventListener('click',e=>{const tr=e.target.closest('tr[data-id]');if(!tr)return;const id=tr.dataset.id;
   if(e.target.closest('[data-a=arr]'))return toggleArr(id);if(e.target.tagName==='INPUT'||e.target.tagName==='SELECT'||e.target.tagName==='OPTION')return;pick=pick===id?null:id;draw();});
 $('atcard').addEventListener('click',e=>{const b=e.target.closest('[data-a=arr]');if(b)toggleArr(b.dataset.id);});

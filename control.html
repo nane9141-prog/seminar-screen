@@ -161,6 +161,11 @@ table.att tbody tr.sel{background:#232a38;box-shadow:inset 3px 0 var(--blue-2)}
 table.att .nm{font-size:15px;font-weight:600}
 table.att .mut{font-size:12px}
 table.att .tn{font-variant-numeric:tabular-nums}
+#atseatpop{position:absolute;display:none;z-index:50;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 12px;box-shadow:0 14px 40px rgba(0,0,0,.6);max-height:340px;overflow:auto}
+#atseatpop .hd{display:flex;align-items:center;gap:8px;font-size:12px;margin-bottom:8px}#atseatpop .hd b{font-size:13px;color:var(--warn)}#atseatpop .hd button{margin-left:auto;min-height:0;width:auto;padding:4px 9px;font-size:11px}
+#atseatpop .rw{display:flex;gap:8px;align-items:flex-start;padding:3px 0}#atseatpop .rw i{font-style:normal;font-weight:800;width:16px;text-align:center;line-height:28px;color:var(--fg-2)}
+#atseatpop .rw>div{display:flex;flex-wrap:wrap;gap:4px;flex:1}#atseatpop .rw button{min-height:0;width:34px;height:28px;padding:0;font-size:12px;font-weight:700}
+#atseatpop .rw button:hover{background:var(--blue,#2f6bff);color:#fff}#atseatpop p{margin:6px 0;font-size:12px}
 table.att input.seat{width:110px;min-height:30px;font-weight:700;color:var(--warn)}
 table.att input.note{width:100%;min-width:140px;min-height:30px;border-color:transparent;background:transparent}
 table.att input.note:hover{border-color:#333}table.att input.note:focus{border-color:var(--blue);background:var(--field)}
@@ -319,7 +324,7 @@ html{overflow-x:hidden}
     <div class="two"><label>이름 <em>필수</em><input type="text" id="atmrname" maxlength="40" required minlength="2"></label><label>휴대폰 <em>필수</em><input type="tel" id="atmrphone" maxlength="13" placeholder="010-0000-0000" required></label></div>
     <div class="two"><label>부서<input type="text" id="atmrdept" maxlength="60"></label><label>직급<input type="text" id="atmrtitle" maxlength="40"></label></div>
     <label>이메일 <em>필수</em><input type="email" id="atmremail" maxlength="120" required></label>
-    <div class="two"><label>안내 데스크<select id="atmrdesk"><option value="">미배정</option><option value="D1">D1 (미등록자 · 현장등록)</option><option>D2</option><option>D3</option><option>D4</option><option>D5</option><option>D6</option><option>D7</option><option>VIP</option></select></label><label>좌석<input type="text" id="atmrseat" maxlength="20" placeholder="예: N1 (비워 두고 나중에 배정 가능)"></label></div>
+    <div class="two"><label>안내 데스크<select id="atmrdesk"><option value="">미배정</option><option value="D1">D1 (미등록자 · 현장등록)</option><option>D2</option><option>D3</option><option>D4</option><option>D5</option><option>D6</option><option>D7</option><option>VIP</option></select></label><label>좌석<input type="text" id="atmrseat" maxlength="20" placeholder="예: N1 (비워 두고 나중에 배정 가능)" list="atfreelist" autocomplete="off"><datalist id="atfreelist"></datalist></label></div>
     <label>메모<input type="text" id="atmrmemo" maxlength="200" placeholder="예: 현장 등록, 대리 참석"></label>
     <label class="chk"><input type="checkbox" id="atmrmail"> 참석 확정 메일 보내기</label>
     <div class="ft"><span id="atmrerr" class="late"></span><span class="sp"></span><button type="button" id="atmrclose">닫기</button><button class="pri" type="submit" id="atmrsave">등록하기</button></div>

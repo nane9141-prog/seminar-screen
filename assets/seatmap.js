@@ -22,7 +22,7 @@ for(let r=0;r<ROWS;r++){const x=ROW_X0+r*ROW_DX,L=String.fromCharCode(65+r);let 
   BLOCKS.forEach(b=>{for(let k=0;k<b.n;k++){const z=b.z+((b.n-1)/2-k)*T_LEN,t={row:L,x,z,i:tables.length,blockFirst:k===0};tables.push(t);
     for(let j=0;j<3;j++){num++;const s={id:L+num,row:L,num,x,z:z+(1-j)*PITCH,i:seats.length};seats.push(s);byId[s.id]=s;}}});}
 function seatKey(v){const m=/^([A-O])-?(\d{1,2})$/.exec(String(v||'').toUpperCase().replace(/\s/g,''));return m&&byId[m[1]+(+m[2])]?m[1]+(+m[2]):null;}
-window.SEAT_KEY=seatKey;window.SEAT_TOTAL=seats.length-Object.keys(NOSEAT).length;   // 참석자 관리의 잔여 좌석 집계에 사용
+window.SEAT_KEY=seatKey;window.SEAT_IDS=seats.filter(s=>!NOSEAT[s.id]).map(s=>s.id);window.SEAT_TOTAL=seats.length-Object.keys(NOSEAT).length;   // 참석자 관리의 잔여 좌석 집계에 사용
 
 /* ---------- 상태 ---------- */
 const RT={on:true,staff:true,mode:'before',tex:[],g:null,ban:0,fascia:null};
