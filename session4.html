@@ -167,11 +167,6 @@ canvas.viz{position:absolute;pointer-events:none}
 #K19 .half .b{font:700 84px/1.25 "KakaoBig";margin-bottom:36px}
 #K19 .half .d{font:400 52px/1.5 "Pretendard Variable";color:var(--mut)}
 #K19 .vr{position:absolute;left:2099px;top:500px;width:3px;height:820px;background:var(--line)}
-#K21 .nd{position:absolute;border-radius:36px;border:2px solid var(--line);background:rgba(10,14,20,.7);display:flex;align-items:center;justify-content:center;text-align:center;font:700 70px/1.25 "KakaoBig"}
-#K21 .nd.k{border-color:rgba(0,129,204,.6)}
-#K21 .stack{position:absolute;left:1600px;top:470px;width:1000px;display:flex;flex-direction:column;gap:26px}
-#K21 .stack div{height:126px;border-radius:24px;border:2px solid var(--line);background:rgba(10,14,20,.7);display:flex;align-items:center;justify-content:center;font:400 56px "KakaoSmall"}
-#K21 .stack div.hl{border-color:rgba(0,129,204,.75);font-family:"KakaoBig";font-weight:700;background:rgba(20,40,55,.7)}
 #K22 .col{position:absolute;top:470px;width:1080px}
 #K22 .col .ph{font:300 64px "Pretendard Variable";color:var(--sess);border-bottom:3px solid var(--line);padding-bottom:30px;margin-bottom:24px}
 #K22 .col .ph small{font:400 52px "KakaoSmall";color:var(--mut);margin-left:20px}
@@ -741,28 +736,6 @@ html.embed,html.embed body,html.embed .stage{background:transparent}html.embed #
 #K22s .sysd .lb.nt i{display:inline-flex;align-items:center;justify-content:center;flex:none;width:40px;height:40px;border-radius:50%;background:#4fc3e8;color:#06121c;font:700 24px/1 "Pretendard Variable";margin-right:12px;vertical-align:-6px}
 
 /* K21 (11/24 23:00) 원본 27p 구성 그대로 — 상장기업(전담 운영지원 및 현장지원 — 주주총회 통합관리시스템) ∞ 주주(서비스 5종 — 주주용 고객센터). 전환: 제목만 크게 가운데 → 제목이 위로 작아지며 서비스 이미지 카드들이 사방에서 날아와 모여 도식이 됨 → 연결선 · ∞ · 묶음 제목 */
-#K21 .k21t{position:absolute;left:0;right:0;top:120px;margin:0;text-align:center;font:700 104px/1.2 "Pretendard Variable";color:#F2F5FA;letter-spacing:-.02em;transform-origin:50% 0}
-#K21 .k21t em{font-style:normal;background:linear-gradient(90deg,#0081cc,#00ada9);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent}
-.s.cur#K21 .k21t{animation:k21T 2.2s cubic-bezier(.6,0,.2,1) both}
-@keyframes k21T{0%{opacity:0;transform:translateY(560px) scale(1.55)}18%,55%{opacity:1;transform:translateY(560px) scale(1.55)}100%{opacity:1;transform:none}}
-#K21 .k21g{position:absolute;top:330px;margin:0;text-align:center;font:600 56px/1 "Pretendard Variable";color:#AEB8C6;opacity:0}
-.s.cur#K21 .k21g{animation:k21F .7s ease 2.7s both}
-#K21 .cd{position:absolute;border-radius:32px;overflow:hidden;background:#0d141d;box-shadow:0 30px 90px rgba(0,0,0,.55),0 0 0 2px rgba(242,245,250,.1);opacity:0}
-#K21 .cd i{position:absolute;inset:0;background-size:cover;background-position:50% 50%;filter:saturate(.85)}
-#K21 .cd.pn i::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(6,10,16,.15) 0%,rgba(6,10,16,.55) 45%,rgba(6,10,16,.92) 100%)}
-#K21 .cd b{position:absolute;left:0;right:0;font:700 62px/1.3 "Pretendard Variable";color:#fff;text-align:center}
-#K21 .cd.pn b{bottom:80px}
-#K21 .cd.sv i{right:auto;width:300px}
-#K21 .cd.sv i::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(13,20,29,0) 40%,#0d141d)}
-#K21 .cd.sv b{left:300px;top:50%;transform:translateY(-50%);font-size:52px;text-align:left;padding-left:20px}
-.s.cur#K21 .cd{animation:k21C 1.1s cubic-bezier(.16,1,.3,1) var(--d) both}
-@keyframes k21C{from{opacity:0;transform:translate(var(--dx),var(--dy)) rotate(var(--r)) scale(.55);filter:blur(10px)}60%{opacity:1}to{opacity:1;transform:none;filter:none}}
-#K21 svg.k21l{position:absolute;left:0;top:0;opacity:0;overflow:visible}
-#K21 svg.k21l line{stroke:rgba(143,180,216,.7);stroke-width:4}
-#K21 svg.k21l .inf{fill:none;stroke:url(#k21g);stroke:#3aa0ea;stroke-width:8;stroke-linecap:round}
-.s.cur#K21 svg.k21l{animation:k21F .8s ease 2.6s both}
-@keyframes k21F{from{opacity:0}to{opacity:1}}
-#K21 .cd.sv i{width:260px}#K21 .cd.sv b{left:260px;font-size:50px;white-space:nowrap}
 
 /* K24a (11/24 23:10) 우측 서비스 화면 재구성 — 기존 에셋(ocr-1~5, cx-pop2). 에이전트 앱 5단계 화면이 3초씩 순환 + 오른쪽 단계 목록 동기 하이라이트 + 관리자 페이지 집계 팝업 */
 #K24a .k24p .scr{position:relative;background:#fff}
@@ -843,6 +816,36 @@ html.embed,html.embed body,html.embed .stage{background:transparent}html.embed #
 /* K10 (11/24 23:15) 군집 3색 — 중구 · 종로구 #0081cc, 영등포구 #5bade1, 강남 · 서초 · 송파 #00ada9. 라벨 블록 · % 색을 같은 색으로 */
 #K10 .mk.c1::before{background-color:#5bade1}#K10 .mk.c1>span{color:#2f8fcc}
 #K10 .mk.c2::before{background-color:#00ada9}#K10 .mk.c2>span{color:#008f8b}
+
+/* K21 (11/24 23:25) 제목 1.5초 정지 후 전환. 상장기업 · 주주 두 덩어리를 색 판(파랑 · 청록)으로 구분, 사진 없이 텍스트 카드. 가운데 ∞ */
+#K21 .k21t{position:absolute;left:0;right:0;top:110px;margin:0;text-align:center;font:700 104px/1.2 "Pretendard Variable";color:#F2F5FA;letter-spacing:-.02em}
+#K21 .k21t em{font-style:normal;background:linear-gradient(90deg,#0081cc,#00ada9);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.s.cur#K21 .k21t{animation:k21T 2.2s cubic-bezier(.6,0,.2,1) both}
+@keyframes k21T{0%{opacity:0;transform:translateY(560px) scale(1.55)}14%,68%{opacity:1;transform:translateY(560px) scale(1.55)}100%{opacity:1;transform:none}}
+#K21 .gp{position:absolute;border-radius:44px;opacity:0}
+#K21 .gp p{position:absolute;left:60px;top:44px;margin:0;font:700 64px/1 "Pretendard Variable";letter-spacing:-.02em}
+#K21 .ga{background:linear-gradient(180deg,rgba(0,129,204,.16),rgba(0,129,204,.05));box-shadow:inset 0 0 0 3px rgba(0,129,204,.55)}
+#K21 .ga p{color:#3aa0ea}
+#K21 .gb{background:linear-gradient(180deg,rgba(0,173,169,.16),rgba(0,173,169,.05));box-shadow:inset 0 0 0 3px rgba(0,173,169,.55)}
+#K21 .gb p{color:#1fc4bf}
+.s.cur#K21 .gp{animation:k21G .8s cubic-bezier(.16,1,.3,1) 1.75s both}
+@keyframes k21G{from{opacity:0;transform:scale(.96)}to{opacity:1;transform:none}}
+#K21 .cd{position:absolute;border-radius:28px;background:#0c121a;box-shadow:inset 0 0 0 2px rgba(242,245,250,.12),0 24px 60px rgba(0,0,0,.45);opacity:0;display:flex;flex-direction:column;justify-content:center}
+#K21 .cd b{font:700 64px/1.3 "Pretendard Variable";color:#F2F5FA;letter-spacing:-.02em}
+#K21 .cd small{margin-top:28px;font:500 40px/1.3 "Pretendard Variable";color:#8b95a3}
+#K21 .cd.pn{align-items:center;text-align:center;padding:0 40px}
+#K21 .cd.pn:nth-of-type(3){margin-left:0}
+#K21 .cd.sv{padding-left:56px}
+#K21 .cd.sv b{font-size:56px}
+#K21 .cd.sv::before{content:"";position:absolute;left:0;top:34px;bottom:34px;width:8px;border-radius:0 6px 6px 0;background:#00ada9}
+.s.cur#K21 .cd{animation:k21C 1s cubic-bezier(.16,1,.3,1) var(--d) both}
+@keyframes k21C{from{opacity:0;transform:translate(var(--dx),var(--dy)) rotate(var(--r)) scale(.6);filter:blur(10px)}60%{opacity:1}to{opacity:1;transform:none;filter:none}}
+#K21 svg.k21l{position:absolute;left:0;top:0;opacity:0;overflow:visible}
+#K21 svg.k21l .tl{stroke:rgba(31,196,191,.75);stroke-width:4}
+#K21 svg.k21l .inf{fill:none;stroke:#F2F5FA;stroke-width:9;stroke-linecap:round}
+.s.cur#K21 svg.k21l{animation:k21F .8s ease 3s both}
+@keyframes k21F{from{opacity:0}to{opacity:1}}
+#K21 svg.k21l .al{stroke:rgba(58,160,234,.8);stroke-width:4}
 </style></head>
 <body>
 <div class="stage" id="stage">
@@ -1052,12 +1055,13 @@ html.embed,html.embed body,html.embed .stage{background:transparent}html.embed #
 <!-- ═════════ 5. A to Z ═════════ -->
 <section class="s" id="K21" data-t="A to Z 구성도" data-dim=".16">
  <h2 class="k21t"><span>전자주주총회의 준비부터 운영까지, <em>A to Z</em></span></h2>
- <p class="k21g" style="left:300px;width:1500px">상장기업</p><p class="k21g" style="left:2260px;width:1640px">주주</p>
- <div class="cd pn" style="left:300px;top:430px;width:700px;height:1020px;--dx:-900px;--dy:-600px;--r:-12deg;--d:1.55s"><i style="background-image:url(assets/s4/rehearsal.webp)"></i><b>전담 운영지원<br>및 현장지원</b></div>
- <div class="cd pn" style="left:1100px;top:430px;width:700px;height:1020px;--dx:-300px;--dy:900px;--r:9deg;--d:1.65s"><i style="background-image:url(assets/s4/cxs-1.webp);background-position:0 0"></i><b>주주총회<br>통합관리시스템</b></div>
- <div class="cd sv" style="left:2260px;top:430px;width:860px;height:172px;--dx:-1400px;--dy:-700px;--r:-14deg;--d:1.75s"><i style="background-image:url(assets/s4/cx-pop1.webp)"></i><b>전자투표</b></div><div class="cd sv" style="left:2260px;top:642px;width:860px;height:172px;--dx:900px;--dy:-900px;--r:10deg;--d:1.84s"><i style="background-image:url(assets/s4/cx-vote.webp)"></i><b>전자위임장</b></div><div class="cd sv" style="left:2260px;top:854px;width:860px;height:172px;--dx:1300px;--dy:-200px;--r:-8deg;--d:1.93s"><i style="background-image:url(assets/s4/ocr-1.webp)"></i><b>의결권 대리행사 권유</b></div><div class="cd sv" style="left:2260px;top:1066px;width:860px;height:172px;--dx:1000px;--dy:700px;--r:12deg;--d:2.02s"><i style="background-image:url(assets/s4/live-1.webp)"></i><b>전자주주총회</b></div><div class="cd sv" style="left:2260px;top:1278px;width:860px;height:172px;--dx:-900px;--dy:900px;--r:-10deg;--d:2.11s"><i style="background-image:url(assets/s4/on-3.webp)"></i><b>현장전자표결</b></div>
- <div class="cd pn" style="left:3200px;top:430px;width:700px;height:1020px;--dx:900px;--dy:-500px;--r:12deg;--d:2.2s"><i style="background-image:url(assets/s4/callcenter.webp);background-position:50% 20%"></i><b>주주용<br>고객센터</b></div>
- <svg class="k21l" viewBox="0 0 4200 1600" width="4200" height="1600"><line x1="1000" y1="940" x2="1100" y2="940"/><line x1="3120" y1="516" x2="3200" y2="516"/><line x1="3120" y1="728" x2="3200" y2="728"/><line x1="3120" y1="940" x2="3200" y2="940"/><line x1="3120" y1="1152" x2="3200" y2="1152"/><line x1="3120" y1="1364" x2="3200" y2="1364"/><path class="inf" d="M1900 940c40-70 120-70 150 0s110 70 150 0-110-70-150 0-110 70-150 0z"/></svg>
+ <div class="gp ga" style="left:240px;top:320px;width:1640px;height:1180px"><p>상장기업</p></div>
+ <div class="gp gb" style="left:2220px;top:320px;width:1740px;height:1180px"><p>주주</p></div>
+ <div class="cd pn" style="left:300px;top:480px;width:680px;height:940px;--dx:-700px;--dy:-500px;--r:-10deg;--d:2.0s"><b>전담 운영지원<br>및 현장지원</b><small>사전 준비부터 당일 현장까지</small></div>
+ <div class="cd pn" style="left:1140px;top:480px;width:680px;height:940px;--dx:-200px;--dy:800px;--r:8deg;--d:2.08s"><b>주주총회<br>통합관리시스템</b><small>CONEXUS</small></div>
+ <div class="cd sv" style="left:2280px;top:480px;width:860px;height:164px;--dx:-500px;--dy:-700px;--r:-10deg;--d:2.15s"><b>전자투표</b></div><div class="cd sv" style="left:2280px;top:672px;width:860px;height:164px;--dx:700px;--dy:-800px;--r:8deg;--d:2.22s"><b>전자위임장</b></div><div class="cd sv" style="left:2280px;top:864px;width:860px;height:164px;--dx:1000px;--dy:-100px;--r:-6deg;--d:2.29s"><b>의결권 대리행사 권유</b></div><div class="cd sv" style="left:2280px;top:1056px;width:860px;height:164px;--dx:800px;--dy:600px;--r:9deg;--d:2.36s"><b>전자주주총회</b></div><div class="cd sv" style="left:2280px;top:1248px;width:860px;height:164px;--dx:-400px;--dy:800px;--r:-8deg;--d:2.43s"><b>현장전자표결</b></div>
+ <div class="cd pn pt" style="left:3260px;top:480px;width:640px;height:940px;--dx:700px;--dy:-400px;--r:10deg;--d:2.5s"><b>주주용<br>고객센터</b><small>이용문의 · 본인확인 · 장애접수</small></div>
+ <svg class="k21l" viewBox="0 0 4200 1600" width="4200" height="1600"><line class="al" x1="980" y1="950" x2="1140" y2="950"/><line class="tl" x1="3140" y1="562" x2="3260" y2="562"/><line class="tl" x1="3140" y1="754" x2="3260" y2="754"/><line class="tl" x1="3140" y1="946" x2="3260" y2="946"/><line class="tl" x1="3140" y1="1138" x2="3260" y2="1138"/><line class="tl" x1="3140" y1="1330" x2="3260" y2="1330"/><path class="inf" d="M1930 950c30-60 95-60 120 0s90 60 120 0-90-60-120 0-90 60-120 0z"/></svg>
 </section>
 
 <section class="s ch sec fl" id="K21b" data-t="장 표지 · 시스템" data-dim=".3">
