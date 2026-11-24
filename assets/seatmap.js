@@ -271,11 +271,11 @@ function build(){
     dummy.position.set(s.x+sx+.265*M,.46*M,s.z);dummy.updateMatrix();backMesh.setMatrixAt(s.i,dummy.matrix);});
   scene.add(seatMesh,backMesh);
   /* 테이블 번호: 블록 왼쪽 끝 테이블의 좌측면(+z 면) — A4(210×297mm) 실제 크기, 면의 좌측 상단에 맞춤 */
-  const MAGG=new THREE.CylinderGeometry(.010*M,.010*M,.002*M,20),MAGM=new THREE.MeshStandardMaterial({color:0x8d9198,metalness:.75,roughness:.3}),sideGeo=new THREE.PlaneGeometry(.210*M,.297*M),sideTex={};
+  const MAGG=new THREE.CylinderGeometry(.0025*M,.0025*M,.002*M,16),MAGM=new THREE.MeshStandardMaterial({color:0x8d9198,metalness:.75,roughness:.3}),sideGeo=new THREE.PlaneGeometry(.210*M,.297*M),sideTex={};
   tables.forEach(t=>{if(!t.blockFirst)return;
     if(!sideTex[t.no])sideTex[t.no]=ctex(256,362,g=>{g.fillStyle='#fff';g.fillRect(0,0,256,362);g.strokeStyle='#000';g.lineWidth=6;g.strokeRect(3,3,250,356);g.fillStyle='#000';g.font='900 '+(t.no<10?230:176)+'px '+FONT;g.textAlign='center';g.textBaseline='middle';g.fillText(t.no,128,196);});
     const m=new THREE.Mesh(sideGeo,new THREE.MeshBasicMaterial({map:sideTex[t.no]}));m.position.set(t.x-T_DEP/2+.105*M,T_H-.1485*M,t.z+T_LEN/2+.012);scene.add(m);
-    [-1,1].forEach(function(sg){var mg=new THREE.Mesh(MAGG,MAGM);mg.rotation.x=Math.PI/2;mg.position.set(t.x-T_DEP/2+(.105+sg*.080)*M,T_H-.020*M,t.z+T_LEN/2+.012+.0015*M);scene.add(mg);});   // 원형 자석 2개(지름 20mm·두께 2mm 가정): A4 위쪽 양 모서리
+    [-1,1].forEach(function(sg){var mg=new THREE.Mesh(MAGG,MAGM);mg.rotation.x=Math.PI/2;mg.position.set(t.x-T_DEP/2+(.105+sg*.0325)*M,T_H-.020*M,t.z+T_LEN/2+.012+.0015*M);scene.add(mg);});   // 원형 자석 2개(지름 5mm, 두 자석 중심 간격 65mm): A4 위쪽 가운데
   });
   /* 좌석별 라벨(테이블 상단면, 위쪽 끝): 의자 쪽에서 바로 읽히는 방향 */
   const lGeo=(function(){var w=LBL_W/2,h=LBL_H/2,e=.004,g=new THREE.BufferGeometry();   // 삽지 앞·뒤 양면(90×55mm)
