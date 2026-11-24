@@ -158,27 +158,9 @@ function build(){
       }
       rx=x0;});
     lift(-16,-11.5,25.2,28);lift(-6.3,-1.6,25.2,28);sprite('LIFT',-8.9,4.4,26.6,'#fff',3.4);
-    /* 에스컬레이터 2대(상행·하행): 유리 난간 · 검정 핸드레일 · 스틸 측판 · 노란 단 표시. 포이어 끝 벽 쪽이 B1 하차 지점, 반대쪽(-x)으로 올라감. 층고 약 5.5m · 경사 30° 가정 */
-    (function(){var RUN=13.9,RISE=8,L=Math.sqrt(RUN*RUN+RISE*RISE),th=Math.atan2(RISE,RUN),sn=Math.sin(th),cs=Math.cos(th),g=new THREE.Group();
-      var steel=new THREE.MeshStandardMaterial({color:0xa9adb4,metalness:.55,roughness:.38}),dark=new THREE.MeshStandardMaterial({color:0x1b1d22,roughness:.6}),
-          glass=new THREE.MeshBasicMaterial({color:0xa9d6e6,transparent:true,opacity:.2,depthWrite:false}),rail=new THREE.MeshStandardMaterial({color:0x0c0d10,roughness:.5});
-      var st=ctex(64,64,function(c){c.fillStyle='#8f9399';c.fillRect(0,0,64,64);c.fillStyle='#6c7076';for(var k=6;k<64;k+=5)c.fillRect(0,k,64,1);c.fillStyle='#24262a';c.fillRect(0,0,7,64);c.fillStyle='#e7c22f';c.fillRect(7,0,3,64);c.fillRect(0,0,64,4);c.fillRect(0,60,64,4);});
-      st.wrapS=THREE.RepeatWrapping;st.repeat.set(Math.round(L/.58),1);
-      var stepM=new THREE.MeshBasicMaterial({map:st});
-      function add(geo,mat,x,y,z,rz){var m=new THREE.Mesh(geo,mat);m.position.set(x,y,z);if(rz)m.rotation.z=rz;g.add(m);return m;}
-      function inc(geo,mat,off,z){add(geo,mat,2+RUN/2-sn*off,RISE/2+cs*off,z,th);}   // 경사면 기준 법선 방향 off 만큼 띄운 부재
-      [-1.2,1.2].forEach(function(zo){
-        inc(new THREE.BoxGeometry(L+.8,1.25,2.33),steel,-.68,zo);                       // 트러스·측판
-        inc(new THREE.BoxGeometry(L,.05,1.46),[dark,dark,stepM,dark,dark,dark],-.02,zo); // 디딤판
-        add(new THREE.BoxGeometry(2.7,.14,2.33),steel,.85,.07,zo);add(new THREE.BoxGeometry(3,.14,2.33),steel,2+RUN+1.3,RISE-.02,zo);   // 하부·상부 승강장
-        [-1.02,1.02].forEach(function(s){
-          inc(new THREE.BoxGeometry(L,1.25,.05),glass,.68,zo+s);inc(new THREE.BoxGeometry(L+.3,.13,.17),rail,1.37,zo+s);
-          add(new THREE.BoxGeometry(2.2,1.25,.05),glass,.9,.78,zo+s);add(new THREE.BoxGeometry(2.6,.13,.17),rail,.8,1.45,zo+s);
-          add(new THREE.BoxGeometry(2.6,1.25,.05),glass,2+RUN+1.3,RISE+.7,zo+s);add(new THREE.BoxGeometry(3,.13,.17),rail,2+RUN+1.4,RISE+1.37,zo+s);
-        });
-      });
-      add(new THREE.BoxGeometry(5,.5,6),dark,2+RUN+5.2,RISE-.27,0);    // 상부층 바닥 끝
-      g.position.set(35.6-6*M,0,25.72);g.rotation.y=Math.PI;scene.add(g);   // 끝 벽면에서 하차 지점까지 6m
+    /* 에스컬레이터: 시야를 가리지 않도록 자리만 바닥에 표시(2대 · 끝 벽면에서 하차 지점까지 6m). 실물 모델은 71196c1 참고 */
+    (function(){var x1=35.6-6*M,x0=x1-19.2,zc=25.72;[-1.2,1.2].forEach(function(zo){box(x1-x0,.1,2.2,0x2f333d,(x0+x1)/2,.05,zc+zo);box(x1-x0,.02,1.4,0x8f9399,(x0+x1)/2,.11,zc+zo);});
+      sprite('ESCALATOR',(x0+x1)/2,1.1,zc,'#fff',4.6);
     })();
     [[36.6,42.6],[43.2,49.2],[49.8,55.8]].forEach(function(p){lift(p[0],p[1],-11.8,-7.2);});
     [[40,46],[46.6,52.6]].forEach(function(p){lift(p[0],p[1],4,8.4);});
@@ -232,19 +214,29 @@ function build(){
     SB.forEach(function(s){staff(sB,s[0],s[1],s[2]);});SA.forEach(function(s){staff(sA,s[0],s[1],s[2]);});
     /* 무대 쪽 문 2곳: 시작 전에는 닫힘 표시, 시작 후에는 Gate(8p) */
     sp2(oB,'✕ 폐쇄',-14.9,2.1,HD+.2,'#ff6b6b',3.4);sp2(oA,'Gate',-14.9,2.1,HD+.2,'#6dffb0',3.2);sp2(oA,'Gate',-21.1,2.1,HD+.2,'#6dffb0',3.2);
+    /* 등록 데스크 가이드 라인(검정 벨트 차단봉): 포이어 통행 줄(z=23)과 데스크 앞 대기선(z=19.2) 사이를 길게 나누고, 데스크 사이마다 짧게 칸을 나눔. 시작 전에만 표시(dR) */
+    (function(){var pm=new THREE.MeshStandardMaterial({color:0x0a0a0c,roughness:.45,metalness:.3}),bm=new THREE.MeshStandardMaterial({color:0x111114,roughness:.8}),
+        pg=new THREE.CylinderGeometry(.035*M,.035*M,.95*M,10),fg=new THREE.CylinderGeometry(.17*M,.17*M,.03*M,16);
+      function line(x0,z0,x1,z1){var L=Math.sqrt((x1-x0)*(x1-x0)+(z1-z0)*(z1-z0)),n=Math.max(1,Math.round(L/2.9)),k,px,pz,p,f,b;
+        for(k=0;k<=n;k++){px=x0+(x1-x0)*k/n;pz=z0+(z1-z0)*k/n;p=new THREE.Mesh(pg,pm);p.position.set(px,.475*M,pz);dR.add(p);f=new THREE.Mesh(fg,pm);f.position.set(px,.015*M,pz);dR.add(f);}
+        b=new THREE.Mesh(new THREE.BoxGeometry(L,.05*M,.012),bm);b.position.set((x0+x1)/2,.9*M,(z0+z1)/2);b.rotation.y=-Math.atan2(z1-z0,x1-x0);dR.add(b);}
+      line(-17.3,21.1,30.6,21.1);
+      for(var k=0;k<8;k++){var gx=k===0?dx[0]+2.6:k===7?dx[6]-2.6:(dx[k-1]+dx[k])/2;line(gx,17.1,gx,18.5);}
+    })();
     RT.g={vB:vB,vA:vA,iB:iB,iA:iA,sB:sB,sA:sA,oB:oB,oA:oA,dR:dR};applyRoute();
   })();
-  /* DID(세로형 55인치, 약 685×1215mm) 3대: 포이어 쪽 볼룸 벽 — Gate 오른쪽부터 왼쪽으로 문 옆. 화면 이미지는 SEAT_DID(없으면 빈 화면) */
-  (function(){var w=.685*M,h=1.215*M,y=1.55*M,z=HD+.37,D=window.SEAT_DID||[];[27.25,19.35,8.35].forEach(function(x,i){
-    var pl=new THREE.Mesh(new THREE.BoxGeometry(1.0*M,2.9*M,.12),new THREE.MeshStandardMaterial({color:0x17181c}));pl.position.set(x,1.45*M,HD+.27);scene.add(pl);   // DID가 걸리는 검은 벽 패널
+  /* DID(세로형, 화면 약 685×1215mm) 3대: 포이어 쪽 볼룸 벽의 검은 패널 — Gate 왼쪽부터 문과 문 사이 2대, 마지막 1대는 마지막 문 왼쪽 벽. 위에 GRAND BALLROOM 1~3 표기. 화면은 3대 동일(SEAT_DID) */
+  (function(){var w=.685*M,h=1.215*M,y=1.38*M,z=HD+.37,src=window.SEAT_DID;[21.5,2.5,-23.1].forEach(function(x,i){
+    var pl=new THREE.Mesh(new THREE.BoxGeometry(1.0*M,2.9*M,.12),new THREE.MeshStandardMaterial({color:0x17181c}));pl.position.set(x,1.45*M,HD+.27);scene.add(pl);
     var f=new THREE.Mesh(new THREE.BoxGeometry(w+.09,h+.09,.07),new THREE.MeshStandardMaterial({color:0x050608}));f.position.set(x,y,z);scene.add(f);
-    var c=document.createElement('canvas');c.width=274;c.height=486;var g=c.getContext('2d');g.fillStyle='#10131c';g.fillRect(0,0,274,486);g.fillStyle='#5f6b8a';g.font='700 40px sans-serif';g.textAlign='center';g.fillText('DID '+(i+1),137,255);
-    var m=new THREE.Mesh(new THREE.PlaneGeometry(w,h),new THREE.MeshBasicMaterial({map:new THREE.CanvasTexture(c)}));m.position.set(x,y,z+.04);scene.add(m);
-    var src=D[i]||D[0];if(src){var im=new Image();im.onload=function(){var tx=new THREE.Texture(im);tx.anisotropy=8;tx.needsUpdate=true;m.material.map=tx;m.material.needsUpdate=true;};im.src=src;}
+    var m=new THREE.Mesh(new THREE.PlaneGeometry(w,h),new THREE.MeshBasicMaterial({color:0x10131c}));m.position.set(x,y,z+.04);scene.add(m);
+    if(src){var im=new Image();im.onload=function(){var tx=new THREE.Texture(im);tx.anisotropy=8;tx.needsUpdate=true;m.material.map=tx;m.material.color.set(0xffffff);m.material.needsUpdate=true;};im.src=src;}
+    var c=document.createElement('canvas');c.width=512;c.height=220;var g=c.getContext('2d');g.fillStyle='#17181c';g.fillRect(0,0,512,220);g.fillStyle='#c9b38a';g.textAlign='center';g.font='600 46px Georgia,serif';g.fillText('GRAND',256,62);g.fillText('BALLROOM',256,118);g.font='600 58px Georgia,serif';g.fillText(String(i+1),256,196);
+    var t=new THREE.Mesh(new THREE.PlaneGeometry(.62*M,.266*M),new THREE.MeshBasicMaterial({map:new THREE.CanvasTexture(c)}));t.position.set(x,y+h/2+.27*M,HD+.335);scene.add(t);
   });})();
   /* 스탠딩 배너 600×1800mm: 06 = 7번 데스크(다과 쪽 끝) 옆, 07 = Gate 오른쪽, 08 = 게스트 리프트 동선 벽면(볼룸 바깥벽) */
   (function(){var B=window.SEAT_STANDS;if(!B)return;var bw=.6*M,bh=1.8*M,y0=.15*M;
-    var P=[[-16.8,16.3,0],[28.35,14.5,0],[28.8,4,Math.PI/2]];   /* 07은 Gate 오른쪽 DID를 가리지 않게 DID 바로 옆으로 */   // [x, z, 방향]
+    var P=[[-16.8,16.3,0],[27.4,14.5,0],[28.8,4,Math.PI/2]];   // [x, z, 방향]
     P.forEach(function(p,i){if(!B[i])return;var gp=new THREE.Group();
       var bk=new THREE.Mesh(new THREE.BoxGeometry(bw,bh,.03),new THREE.MeshStandardMaterial({color:0x111216}));bk.position.set(0,y0+bh/2,-.02);gp.add(bk);
       var ft=new THREE.Mesh(new THREE.BoxGeometry(bw,.06,.55),new THREE.MeshStandardMaterial({color:0x2a2c31}));ft.position.set(0,.03,-.12);gp.add(ft);
