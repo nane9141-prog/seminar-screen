@@ -39,7 +39,9 @@ function match(x){if(!q)return true;const n=norm(q),d=q.replace(/\D/g,'');
   return norm(x.name).includes(n)||norm(x.company_name).includes(n)||(d.length>=3&&String(x.phone||'').replace(/\D/g,'').includes(d))||norm((S[x.id]||{}).seat).includes(n);}
 function draw(){
   const conf=R.filter(x=>x.status==='confirmed'),seat=R.filter(x=>(S[x.id]||{}).seat),arr=conf.filter(x=>x.attended);
-  $('atc-all').textContent=R.length;$('atc-conf').textContent=conf.length;$('atc-pend').textContent=R.length-conf.length;
+  /* 대상자 = 사전 신청 + VIP·연사 고정석(신청자가 앉지 않은 자리) */
+  const FX=window.SEAT_FIXED||{},taken=new Set(R.map(x=>String((S[x.id]||{}).seat||'').toUpperCase().replace(/[\s-]/g,''))),vip=Object.keys(FX).filter(k=>!taken.has(k)).length;
+  $('atc-all').textContent=R.length+vip;$('atc-reg').textContent=R.length;$('atc-vip').textContent=vip;$('atc-all').parentNode.title='신청 '+R.length+'명(확정 '+conf.length+' · 대기 '+(R.length-conf.length)+') + VIP·연사 '+vip+'석';
   $('atc-seat').textContent=seat.length;$('atc-noseat').textContent=R.length-seat.length;$('atc-arr').textContent=arr.length;
   document.querySelectorAll('#atflt [data-f]').forEach(b=>b.classList.toggle('sel',b.dataset.f===flt));
   const dc={};R.forEach(x=>{const d=deskOf(S[x.id])||'none';dc[d]=(dc[d]||0)+1;});
@@ -95,6 +97,32 @@ $('atq').addEventListener('keydown',e=>{if(e.key==='Escape'){e.target.value='';q
 document.querySelectorAll('#atflt [data-f]').forEach(b=>b.onclick=()=>{flt=b.dataset.f;draw();});
 $('atdesk').addEventListener('click',e=>{const b=e.target.closest('[data-d]');if(!b)return;desk=b.dataset.d;pick=null;draw();});
 $('atreload').onclick=()=>load();
+/* 데스크별 배정 표: 자리배치 엑셀 '06. 출입 데스크' 탭과 같은 구성(담당 범위 · 인원 · 회사 수 · 회사별 인원)을 현재 배정 기준으로 보여 줌 */
+function deskTable(){const by={};R.forEach(x=>{const d=deskOf(S[x.id])||'none',m=by[d]=by[d]||{};m[x.company_name]=(m[x.company_name]||0)+1;});
+  const cols=DESKS.filter(d=>d[0]!=='VIP'||by.VIP).concat([['none','데스크 미배정']]);
+  const tot=R.length,cos=new Set(R.map(x=>x.company_name)).size;
+  $('atdtsum').textContent='신청 '+tot+'명 · '+cos+'개사 — 현재 배정 기준 (데스크 이름을 누르면 그 데스크 목록으로 이동)';
+  $('atdtgrid').innerHTML=cols.map(d=>{const m=by[d[0]]||{},names=Object.keys(m).sort((a,b)=>a.localeCompare(b,'ko')),n=names.reduce((s,k)=>s+m[k],0);
+    return '<section><button data-d="'+d[0]+'" class="hd">'+(d[0]==='none'?'미배정':d[0])+'</button><div class="rg">'+esc(d[1])+'</div><div class="ct"><b>'+n+'</b>명 · '+names.length+'개사</div>'+
+      (names.length?'<ol>'+names.map(k=>'<li>'+esc(k)+' <span>('+m[k]+')</span></li>').join('')+'</ol>':'<div class="mut none">'+(d[0]==='D1'?'현장에서 수동 등록한 인원이 여기에 표시됩니다':'없음')+'</div>')+'</section>';}).join('');}
+$('atdeskview').onclick=()=>{deskTable();$('atdt').showModal();};
+$('atdtclose').onclick=()=>$('atdt').close();
+$('atdtgrid').addEventListener('click',e=>{const b=e.target.closest('[data-d]');if(!b)return;desk=b.dataset.d;pick=null;$('atdt').close();draw();});
+/* 수동 등록: 사전 신청 · VIP 가 아닌 예외 참석자를 현장에서 등록 (관리자 페이지의 수동 등록과 같은 admin_register 함수 — 바로 참석 확정) */
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+$('atmanual').onclick=()=>{$('atmrform').reset();$('atmrdesk').value='D1';$('atmrerr').textContent='';$('atmr').showModal();setTimeout(()=>$('atmrco').focus(),50);};
+$('atmrclose').onclick=()=>$('atmr').close();
+$('atmrphone').addEventListener('input',e=>{const d=e.target.value.replace(/\D/g,'').slice(0,11);e.target.value=d.replace(/^(\d{3})(\d{1,4})?(\d{1,4})?$/,(m,a,b,c)=>[a,b,c].filter(Boolean).join('-'));});
+$('atmrform').addEventListener('submit',async e=>{e.preventDefault();const c=sb();if(!c)return;const err=t=>{$('atmrerr').textContent=t||'';};
+  const p={company_id:null,company_name:$('atmrco').value.trim(),name:$('atmrname').value.trim(),dept:$('atmrdept').value.trim(),title:$('atmrtitle').value.trim(),phone:$('atmrphone').value,email:$('atmremail').value.trim(),memo:$('atmrmemo').value.trim()||'현장 수동 등록'};
+  const mail=$('atmrmail').checked,btn=$('atmrsave'),dk=$('atmrdesk').value,st=$('atmrseat').value.trim();btn.disabled=true;err('등록 중…');
+  try{let {data,error}=await c.rpc('admin_register',{p,p_send_mail:mail,p_force:false});
+    if(!error&&data&&!data.ok){if(!confirm(data.msg+'\n그래도 등록할까요?')){err('');return;}({data,error}=await c.rpc('admin_register',{p,p_send_mail:mail,p_force:true}));}
+    if(error){err(error.message);return;}
+    while(loading)await sleep(200);await load();
+    const x=R.find(r=>r.reg_no===data.reg_no);if(x&&(dk||st))await saveSeat(x.id,{seat:st||null,note:pack(dk,'')});
+    $('atmr').close();if(x){desk='all';q='';$('atq').value='';pick=x.id;draw();}msg('No. '+data.reg_no+' '+data.name+'님을 등록했습니다'+(mail?' · 확정 메일 발송':''));
+  }catch(ex){err('등록하지 못했습니다: '+(ex&&ex.message||ex));}finally{btn.disabled=false;}});
 $('atbulkgo').onclick=async()=>{const co=$('atbulkco').value.trim(),seat=$('atbulkseat').value.trim();if(!co||!seat)return msg('회사와 좌석을 입력하세요',true);
   const L=R.filter(x=>norm(x.company_name)===norm(co));if(!L.length)return msg('해당 회사 신청자가 없습니다',true);
   const empty=L.filter(x=>!(S[x.id]||{}).seat);const tgt=empty.length===L.length?L:(confirm(co+' '+L.length+'명 중 '+(L.length-empty.length)+'명은 이미 좌석이 있습니다. 모두 "'+seat+'"(으)로 바꿀까요? (취소 = 빈 사람만)')?L:empty);

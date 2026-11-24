@@ -9,6 +9,7 @@ const norm=s=>String(s||'').toLowerCase().replace(/\s|\(주\)|㈜|주식회사|-
 /* 1열 VIP·연사 고정석(자리배치 엑셀 '04. 좌석도' 기준) · 좌석 없음(5열 중앙 7~9번) */
 const FIXED={"A21": "축사 김광록", "A20": "축사 정우용", "A19": "연사 김승준", "A18": "연사 권재열", "A17": "연사 Scott", "A15": "김앤장 1", "A14": "김앤장 2", "A13": "김앤장 3", "A12": "상장협 전규향", "A11": "상장협 서지원", "A10": "IR협의회 1", "A9": "IR협의회 2", "A8": "코스닥협회 1", "A7": "코스닥협회 2", "A6": "IRK 1", "A5": "IRK 2", "A4": "IRK 3", "A3": "IRK 4", "A2": "IRK 5", "A1": "IRK 6"};
 const NOSEAT={E7:1,E8:1,E9:1};
+window.SEAT_FIXED=FIXED;   // 참석자 관리의 '대상자(신청 + VIP)' 집계에 사용
 const COL={vip:0xe2b04a,empty:0x3a3f4d,assigned:0x2f6bff,arrived:0x5ed39a,pending:0xffb74d,dup:0xff7a7a};
 
 /* ---------- 레이아웃 (1 unit = 0.686 m) ---------- */

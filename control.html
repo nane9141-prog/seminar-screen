@@ -177,6 +177,28 @@ button.arr.on{box-shadow:none;background:#1f6b46;color:#fff}button.arr.on:hover{
 #clock{font-variant-numeric:tabular-nums;font-size:20px;font-weight:800;color:var(--warn)}
 @media (max-width:960px){main{padding:16px}.top{padding:12px 16px}.atstat{grid-template-columns:repeat(2,minmax(0,1fr))}}
 
+/* 참석자 관리 — 데스크별 배정 표 */
+dialog.atdt,dialog.atmr{margin:auto}
+dialog.atmr input[type=tel],dialog.atmr input[type=email]{font:inherit;font-size:13px;min-height:36px;background:var(--field);color:var(--fg);border:1px solid var(--field-line);border-radius:8px;padding:0 10px;box-sizing:border-box}
+dialog.atdt{border:1px solid var(--line);border-radius:14px;background:var(--card);color:var(--fg);padding:20px 22px;width:min(1500px,96vw);max-height:92vh}
+dialog.atdt::backdrop{background:rgba(0,0,0,.6)}
+dialog.atdt .top{display:flex;align-items:center;gap:12px;margin-bottom:14px}dialog.atdt .top h3{margin:0;font-size:17px}dialog.atdt .top .sp{flex:1}dialog.atdt .top .mut{font-size:12px}
+#atdtgrid{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(150px,1fr);gap:10px;overflow:auto;max-height:calc(92vh - 110px);align-items:start}
+#atdtgrid section{background:var(--card-2);border:1px solid var(--line);border-radius:10px;padding:10px 12px;min-width:0}
+#atdtgrid .hd{width:100%;font-size:15px;font-weight:800;min-height:34px}
+#atdtgrid .rg{font-size:11px;color:var(--fg-3);margin:8px 0 2px;min-height:28px;line-height:1.35}
+#atdtgrid .ct{font-size:12px;color:var(--fg-2);padding-bottom:8px;border-bottom:1px solid var(--line)}#atdtgrid .ct b{font-size:17px;color:var(--warn)}
+#atdtgrid ol{margin:8px 0 0;padding-left:22px;font-size:12px;line-height:1.75}#atdtgrid ol li span{color:var(--fg-3)}#atdtgrid ol li::marker{color:var(--fg-3);font-size:10px}
+#atdtgrid .none{font-size:12px;margin-top:8px;line-height:1.5}
+/* 참석자 관리 — 수동 등록 대화상자 */
+dialog.atmr{border:1px solid var(--line);border-radius:14px;background:var(--card);color:var(--fg);padding:22px 24px;width:min(560px,92vw)}
+dialog.atmr::backdrop{background:rgba(0,0,0,.6)}
+dialog.atmr h3{margin:0 0 6px;font-size:17px}dialog.atmr p{margin:0 0 14px;font-size:13px;line-height:1.6}
+dialog.atmr label{display:block;font-size:12px;color:var(--fg-2);margin-bottom:10px}dialog.atmr label em{font-style:normal;color:var(--warn);font-size:11px;margin-left:4px}
+dialog.atmr label input[type=text],dialog.atmr label input[type=tel],dialog.atmr label input[type=email],dialog.atmr label select{display:block;width:100%;margin-top:4px}
+dialog.atmr .two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+dialog.atmr label.chk{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--fg)}
+dialog.atmr .ft{display:flex;align-items:center;gap:8px;margin-top:6px}dialog.atmr .ft .sp{flex:1}
 /* 참석자 관리 — 안내 데스크 선택 */
 .atdeskbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px}
 #atdesk button small{font-weight:500;opacity:.65;margin-left:2px}
@@ -259,12 +281,25 @@ html{overflow-x:hidden}
   <h2>참석자 관리 <span class="mut" style="font-weight:500;font-size:13px">사전 신청 확인 · 좌석 배치 · 현장 안내</span></h2>
   <form id="atlogin" hidden class="row" style="flex-wrap:wrap"><span class="mut" style="width:100%">관리자 페이지 계정으로 로그인하세요. (질의 관리와 같은 계정)</span><input type="text" id="atid" placeholder="아이디 (seminar01)" autocomplete="username" style="flex:0 0 200px"><input type="password" id="atpw" placeholder="비밀번호" autocomplete="current-password" style="flex:0 0 200px"><button class="pri" type="submit">로그인</button><span id="atlerr" class="late" style="width:100%"></span></form>
   <div id="atmain" hidden>
-   <div class="atdeskbar"><span class="mut">안내 데스크</span><nav class="subtab" id="atdesk"></nav><span class="mut" id="atdeskinfo"></span></div>
-   <div class="atstat"><div><span class="mut">신청</span><b id="atc-all">0</b><small>확정 <span id="atc-conf">0</span> · 대기 <span id="atc-pend">0</span></small></div><div><span class="mut">좌석 지정</span><b id="atc-seat">0</b><small>미지정 <span id="atc-noseat">0</span></small></div><div><span class="mut">현장 참석</span><b id="atc-arr">0</b></div><span class="sp"></span><span id="atnet" class="mut" style="font-size:12px"></span><button id="atreload">새로고침</button></div>
+   <div class="atdeskbar"><span class="mut">안내 데스크</span><nav class="subtab" id="atdesk"></nav><span class="mut" id="atdeskinfo"></span><span class="sp" style="flex:1"></span><button id="atdeskview" title="데스크별 담당 범위 · 인원 · 회사 목록을 한눈에 보기">데스크별 배정 표</button><button id="atmanual" class="pri" style="width:auto" title="사전 신청 · VIP 가 아닌 예외 참석자를 직접 등록">수동 등록</button></div>
+   <div class="atstat"><div><span class="mut">대상자</span><b id="atc-all">0</b><small>신청 <span id="atc-reg">0</span> · VIP <span id="atc-vip">0</span></small></div><div><span class="mut">좌석 지정</span><b id="atc-seat">0</b><small>미지정 <span id="atc-noseat">0</span></small></div><div><span class="mut">현장 참석</span><b id="atc-arr">0</b></div><span class="sp"></span><span id="atnet" class="mut" style="font-size:12px"></span><button id="atreload">새로고침</button></div>
    <input type="search" id="atq" class="atq" placeholder="이름 · 회사 · 전화 끝 4자리 · 좌석으로 검색 (선택한 데스크 안에서)" autocomplete="off">
    <div class="atcard empty" id="atcard"></div>
    <div class="oq-head" style="margin-top:20px"><nav class="subtab" id="atflt"><button data-f="all">전체</button><button data-f="noseat">좌석 미지정</button><button data-f="notarr">미확인</button><button data-f="arr">참석</button></nav><div class="oq-flt"><span class="mut" id="atcnt"></span><span id="atmsg"></span></div></div>
    <div class="attw"><table class="att"><thead><tr><th>회사</th><th>이름</th><th>전화</th><th>신청</th><th>데스크</th><th>좌석</th><th>메모</th><th>현장 참석</th></tr></thead><tbody id="attb"></tbody></table></div>
+   <dialog id="atdt" class="atdt"><div class="top"><h3>데스크별 배정 표</h3><span class="mut" id="atdtsum"></span><span class="sp"></span><button id="atdtclose">닫기</button></div><div id="atdtgrid"></div></dialog>
+   <dialog id="atmr" class="atmr"><form id="atmrform" method="dialog">
+    <h3>참석자 수동 등록</h3>
+    <p class="mut">사전 신청 명단에도 VIP에도 없는 예외 참석자를 등록합니다. 등록하면 바로 참석 확정되고 관리자 페이지에도 반영됩니다.</p>
+    <label>소속 회사 <em>필수</em><input type="text" id="atmrco" list="atcos" autocomplete="off" placeholder="회사명 검색 또는 직접 입력" required minlength="2"></label>
+    <div class="two"><label>이름 <em>필수</em><input type="text" id="atmrname" maxlength="40" required minlength="2"></label><label>휴대폰 <em>필수</em><input type="tel" id="atmrphone" maxlength="13" placeholder="010-0000-0000" required></label></div>
+    <div class="two"><label>부서<input type="text" id="atmrdept" maxlength="60"></label><label>직급<input type="text" id="atmrtitle" maxlength="40"></label></div>
+    <label>이메일 <em>필수</em><input type="email" id="atmremail" maxlength="120" required></label>
+    <div class="two"><label>안내 데스크<select id="atmrdesk"><option value="">미배정</option><option value="D1">D1 (미등록자 · 현장등록)</option><option>D2</option><option>D3</option><option>D4</option><option>D5</option><option>D6</option><option>D7</option><option>VIP</option></select></label><label>좌석<input type="text" id="atmrseat" maxlength="20" placeholder="예: N1 (비워 두고 나중에 배정 가능)"></label></div>
+    <label>메모<input type="text" id="atmrmemo" maxlength="200" placeholder="예: 현장 등록, 대리 참석"></label>
+    <label class="chk"><input type="checkbox" id="atmrmail"> 참석 확정 메일 보내기</label>
+    <div class="ft"><span id="atmrerr" class="late"></span><span class="sp"></span><button type="button" id="atmrclose">닫기</button><button class="pri" type="submit" id="atmrsave">등록하기</button></div>
+   </form></dialog>
    <details class="adm" style="margin-top:16px"><summary>좌석 일괄 입력 · 내보내기</summary>
     <div class="bar"><span class="mut">회사 전체 좌석</span><input type="text" id="atbulkco" list="atcos" placeholder="회사명" style="width:180px"><datalist id="atcos"></datalist><input type="text" id="atbulkseat" placeholder="좌석 (예: A1)" style="width:160px"><button id="atbulkgo">적용</button><span class="hint">같은 회사 신청자 모두에게 같은 좌석</span><span class="sp"></span><button id="atcsv">좌석 배치 CSV 내보내기</button></div>
    </details>
