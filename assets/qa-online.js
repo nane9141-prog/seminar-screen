@@ -9,7 +9,8 @@ const $=id=>document.getElementById(id);
 const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const tm=d=>{if(!d)return'';const x=new Date(d);return String(x.getHours()).padStart(2,'0')+':'+String(x.getMinutes()).padStart(2,'0');};
 const lab=q=>(q.kind==='pre'?'사전':'현장')+' Q'+String(q.n).padStart(2,'0');
-let sb=null,me=null,L=[],cur=null,tab=localStorage.getItem('qa-tab')||'pick',kind=localStorage.getItem('qa-kind')||'',ses='',sig='',timer=null,busy=false;
+if(!/^(all|pre|live|pick)$/.test(localStorage.getItem('qa-tab')||'all'))localStorage.setItem('qa-tab','all');   // 예전 탭(접수·숨김) 값 정리
+let sb=null,me=null,L=[],cur=null,tab=localStorage.getItem('qa-tab')||'all',stf=localStorage.getItem('qa-st')||'',ses='',sig='',timer=null,busy=false;
 const station=()=>localStorage.getItem('qa-station')||'';
 const by=()=>station()||(me||'').replace(DOMAIN,'');
 
@@ -47,7 +48,7 @@ async function poll(){
       sb.from('qa_state').select('cur,updated_by,updated_at').eq('id',1).single()]);
     if(q.error)throw q.error;
     L=q.data||[];cur=s.data?s.data.cur:null;
-    const g=JSON.stringify([L,s.data,tab,ses,kind]);
+    const g=JSON.stringify([L,s.data,tab,ses,stf]);
     $('oqnet').textContent='● 연결됨 '+tm(new Date());$('oqnet').style.color='#7FD6A0';
     if(g!==sig){sig=g;draw(s.data);}
   }catch(e){
@@ -59,25 +60,25 @@ async function poll(){
 const picked=()=>L.filter(x=>x.status==='picked').sort((a,b)=>(a.ord||0)-(b.ord||0));
 
 function draw(st){
-  const K=kind?L.filter(x=>x.kind===kind):L;
-  const P=picked().filter(x=>!kind||x.kind===kind),N=K.filter(x=>x.status==='new'),H=K.filter(x=>x.status==='hidden');
-  $('oqc-all').textContent=K.length;$('oqc-pick').textContent=P.length;$('oqc-new').textContent=N.length;$('oqc-hide').textContent=H.length;
-  const ko=$('oqkind').options;ko[0].text='사전 + 현장 ('+L.length+')';ko[1].text='사전 질의 ('+L.filter(x=>x.kind==='pre').length+')';ko[2].text='현장 질의 ('+L.filter(x=>x.kind==='live').length+')';$('oqkind').value=kind;
+  /* 왼쪽 탭: 전체 · 사전 · 현장 · 선택 목록. 앞의 세 탭은 상태(접수·선택·숨김)를 오른쪽 선택 상자로 좁혀 봅니다. */
+  const kind=tab==='pre'||tab==='live'?tab:'',K=kind?L.filter(x=>x.kind===kind):L,P=picked(),cnt=k=>(kind?K:L).filter(x=>x.status===k).length;
+  $('oqc-all').textContent=L.length;$('oqc-pre').textContent=L.filter(x=>x.kind==='pre').length;$('oqc-live').textContent=L.filter(x=>x.kind==='live').length;$('oqc-pick').textContent=P.length;
+  const so=$('oqstf').options;so[0].text='모든 상태 ('+K.length+')';so[1].text='접수 ('+cnt('new')+')';so[2].text='선택 ('+cnt('picked')+')';so[3].text='숨김 ('+cnt('hidden')+')';$('oqstf').value=stf;$('oqstf').disabled=tab==='pick';
   const mn=document.getElementById('mtabn');if(mn)mn.textContent=L.filter(x=>x.status==='new').length||'';
   document.querySelectorAll('#oqtabs [data-tab]').forEach(b=>b.classList.toggle('sel',b.dataset.tab===tab));
   // 현재 송출
   const c=L.find(x=>x.id===cur);
   $('oqair').classList.toggle('empty',!c);
   $('oqcur').innerHTML=c?lab(c)+' · '+esc(c.body)+'<div class="w">'+esc(c.company)+' '+esc(c.name)+' · '+SL[c.session]+(c.who?' · 답변 '+esc(c.who):'')+(st&&st.updated_by?' · 송출 '+esc(String(st.updated_by).replace(DOMAIN,''))+' '+tm(st.updated_at):'')+'</div>':'화면에 표시 중인 질문이 없습니다. 선택 목록에서 송출하거나 다음 ▶을 누르세요.';
-  let list=tab==='all'?K:tab==='pick'?P:tab==='new'?N:H;
+  const allm=tab!=='pick';let list=allm?(stf?K.filter(x=>x.status===stf):K):P;
   if(ses)list=list.filter(x=>x.session===ses||(ses==='s4'&&x.session==='demo'));
-  const act=q=>(tab==='all'?q.status==='picked':tab==='pick')
+  const act=q=>(allm?q.status==='picked':true)
     ?'<button data-a="show" class="'+(q.id===cur?'pri':'')+'">송출</button><button data-a="up">↑</button><button data-a="down">↓</button><button data-a="who">연사</button><button data-a="edit">수정</button><button data-a="unpick">빼기</button>'
-    :(tab==='all'?q.status==='new':tab==='new')?'<button data-a="pick" class="pri">선택</button><button data-a="edit">수정</button><button data-a="hide">숨김</button>'
+    :q.status==='new'?'<button data-a="pick" class="pri">선택</button><button data-a="edit">수정</button><button data-a="hide">숨김</button>'
     :'<button data-a="unhide">되돌리기</button><button data-a="del" class="warn">삭제</button>';
   $('oql').innerHTML=list.length?list.map(q=>'<div class="q'+(q.id===cur?' cur':'')+'" data-id="'+q.id+'"><div class="tag '+q.kind+'">'+lab(q)+'<div class="w">'+SL[q.session]+'</div></div>'+
-    '<div><div class="t">'+(tab==='all'?'<span class="st '+q.status+'">'+({new:'접수',picked:'선택',hidden:'숨김'})[q.status]+'</span>':'')+esc(q.body)+'</div><div class="w">'+esc(q.company)+' '+esc(q.name)+(q.email?' · <a href="mailto:'+esc(q.email)+'" style="color:#8FB8FF">'+esc(q.email)+'</a>':'')+' · '+tm(q.created_at)+(q.who?' · 답변 '+esc(q.who):'')+(q.picked_by&&q.status==='picked'?' · 선택 '+esc(q.picked_by):'')+(q.shown_at?' · <span style="color:#FFB84D">송출됨 '+tm(q.shown_at)+'</span>':'')+'</div></div>'+
-    '<div class="act">'+act(q)+'</div></div>').join(''):'<p class="mut empty">'+(kind==='pre'&&!K.length?'사전 질의가 없습니다. 사전 신청 때 받은 질문이 있으면 "사전 질문 가져오기"로 불러옵니다.':tab==='all'?'질문이 없습니다.':tab==='pick'?'선택한 질문이 없습니다. "접수" 탭에서 고르세요.':tab==='new'?'새 질문이 없습니다.':'숨긴 질문이 없습니다.')+'</p>';
+    '<div><div class="t">'+(allm?'<span class="st '+q.status+'">'+({new:'접수',picked:'선택',hidden:'숨김'})[q.status]+'</span>':'')+esc(q.body)+'</div><div class="w">'+esc(q.company)+' '+esc(q.name)+(q.email?' · <a href="mailto:'+esc(q.email)+'" style="color:#8FB8FF">'+esc(q.email)+'</a>':'')+' · '+tm(q.created_at)+(q.who?' · 답변 '+esc(q.who):'')+(q.picked_by&&q.status==='picked'?' · 선택 '+esc(q.picked_by):'')+(q.shown_at?' · <span style="color:#FFB84D">송출됨 '+tm(q.shown_at)+'</span>':'')+'</div></div>'+
+    '<div class="act">'+act(q)+'</div></div>').join(''):'<p class="mut empty">'+(kind==='pre'&&!K.length?'사전 질의가 없습니다. 사전 신청 때 받은 질문이 있으면 "사전 질문 가져오기"로 불러옵니다.':tab==='pick'?'선택한 질문이 없습니다. 전체 · 사전 · 현장 탭에서 "선택"을 누르세요.':stf?'해당 상태의 질문이 없습니다.':tab==='live'?'현장 질의가 없습니다.':'질문이 없습니다.')+'</p>';
 }
 async function upd(id,patch){const {error}=await sb.from('live_questions').update(patch).eq('id',id);if(error)msg(error.message,true);sig='';poll();}
 async function show(id){const {error}=await sb.rpc('admin_qa_show',{p_id:id,p_by:by()});if(error)msg(error.message,true);sig='';poll();}
@@ -99,7 +100,7 @@ function step(d){const P=picked();if(!P.length)return msg('선택한 질문이 �
 $('oqprev').onclick=()=>step(-1);$('oqnext').onclick=()=>step(1);
 $('oqclear').onclick=()=>show(null);
 document.querySelectorAll('#oqtabs [data-tab]').forEach(b=>b.onclick=()=>{tab=b.dataset.tab;localStorage.setItem('qa-tab',tab);sig='';draw();poll();});
-$('oqkind').onchange=e=>{kind=e.target.value;localStorage.setItem('qa-kind',kind);sig='';draw();poll();};
+$('oqstf').onchange=e=>{stf=e.target.value;localStorage.setItem('qa-st',stf);sig='';draw();poll();};
 $('oqses').onchange=e=>{ses=e.target.value;sig='';draw();};
 $('oqimport').onclick=async()=>{const {data,error}=await sb.rpc('admin_import_pre_questions');if(error)return msg(error.message,true);msg('사전 질문 '+data+'건을 접수 목록에 추가했습니다');sig='';poll();};
 $('oqadd').onclick=async()=>{const body=prompt('질문 내용 (종이 질문지 등)');if(!body||!body.trim())return;const company=prompt('회사','')||'-';const name=prompt('이름','')||'-';

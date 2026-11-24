@@ -372,8 +372,8 @@ html{overflow-x:hidden}
     <section class="oq-sec oq-list">
      <div class="bar oq-tools"><button id="oqadd" class="pri">+ 직접 추가</button><button id="oqimport">사전 질문 가져오기</button></div>
      <div class="oq-head">
-      <nav class="subtab" id="oqtabs"><button data-tab="pick">선택 목록 <b id="oqc-pick">0</b></button><button data-tab="new">접수 <b id="oqc-new">0</b></button><button data-tab="hide">숨김 <b id="oqc-hide">0</b></button><button data-tab="all">전체 <b id="oqc-all">0</b></button></nav>
-      <div class="oq-flt"><select id="oqkind" aria-label="구분"><option value="">사전 + 현장</option><option value="pre">사전 질의</option><option value="live">현장 질의</option></select>
+      <nav class="subtab" id="oqtabs"><button data-tab="all">전체 <b id="oqc-all">0</b></button><button data-tab="pre">사전 <b id="oqc-pre">0</b></button><button data-tab="live">현장 <b id="oqc-live">0</b></button><button data-tab="pick">선택 목록 <b id="oqc-pick">0</b></button></nav>
+      <div class="oq-flt"><select id="oqstf" aria-label="상태"><option value="">모든 상태</option><option value="new">접수</option><option value="picked">선택</option><option value="hidden">숨김</option></select>
        <select id="oqses" aria-label="세션"><option value="">모든 세션</option><option value="all">전체 · 공통</option><option value="s1">Session 1</option><option value="s2">Session 2</option><option value="s3">Session 3</option><option value="s4">Session 4 · 시연</option></select></div>
      </div>
      <div class="ql" id="oql"></div>
