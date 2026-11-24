@@ -168,7 +168,7 @@ function build(){
   })();
   /* 포이어 집기(등록 데스크 D1~D7 · 다과 · 커피 · 주차 등록 단말기) · 통역 부스 · 동선 */
   (function(){
-    var i,dx=[21.05,15.1,9.1,3.2,-2.6,-8.6,-14.5];
+    var i,dx=[19.3,15.1,9.1,3.2,-2.6,-8.6,-14.5];
     var dR=new THREE.Group();scene.add(dR);   // 데스크 2~7: 시작 후에는 숨김(8p — 1번만 유지)
     for(i=0;i<7;i++){var n0=scene.children.length;box(2.62,T_H,.87,0x15171f,dx[i],T_H/2,16.3);sprite('D'+(i+1),dx[i],2.1,16.3,'#fff',2.6);
       /* 데스크 앞면(방문객 쪽) 번호 표지: A4(210×297mm) 실제 크기, 흰 바탕 검정 글씨 */
@@ -199,7 +199,7 @@ function build(){
     /* 8p 시작 후 13:30~: 도착 → 프론터(8) → Gate 옆 데스크(추가 출입 안내) → Gate */
     path(vA,tR,[[46,-2.7],[32,-2.7],[32,22.3],[26.8,22.3]]);path(vA,tR,[[27.3,25.7],[29.4,25.7],[29.4,22.7]]);
     path(vA,tR,[[-8.9,24.9],[-8.9,22.3],[24.2,22.3]]);
-    path(vA,tR,[[25.4,21.3],[25.4,14]]);path(vA,tR,[[25,18.4],[21.7,18.4]]);
+    path(vA,tR,[[25.4,21.3],[25.4,14]]);path(vA,tR,[[25,18.4],[19.95,18.4]]);
     /* 행사장 안 동선(파랑) — 시작 전: Gate → 후면 단상 앞 횡단 통로 → 네 통로로 무대 쪽까지 / 시작 후: 뒤쪽 줄(I열 부근)까지만 */
     path(iB,tB,[[25.4,13.4],[25.4,12.4],[23.95,12.4],[23.95,-12.4],[-16,-12.4]]);path(iB,tB,[[23.6,12.4],[-16,12.4]]);path(iB,tB,[[23.6,4.75],[-16,4.75]]);path(iB,tB,[[23.6,-5.2],[-16,-5.2]]);
     path(iA,tB,[[25.4,13.4],[25.4,12.4],[23.95,12.4],[23.95,-5.2],[6,-5.2]]);path(iA,tB,[[23.6,12.4],[6,12.4]]);path(iA,tB,[[23.6,4.75],[6,4.75]]);
@@ -225,13 +225,13 @@ function build(){
     })();
     RT.g={vB:vB,vA:vA,iB:iB,iA:iA,sB:sB,sA:sA,oB:oB,oA:oA,dR:dR};applyRoute();
   })();
-  /* DID(세로형, 화면 약 685×1215mm) 3대: 포이어 쪽 볼룸 벽의 검은 패널 — Gate 왼쪽부터 문과 문 사이 2대, 마지막 1대는 마지막 문 왼쪽 벽. 위에 GRAND BALLROOM 1~3 표기. 화면은 3대 동일(SEAT_DID) */
+  /* DID(세로형, 화면 약 685×1215mm) 3대: 포이어 쪽 볼룸 벽의 검은 패널 — Gate 왼쪽부터 문과 문 사이 2대, 마지막 1대는 마지막 문 왼쪽 벽. 위에 GRAND BALLROOM 표기(Gate 쪽이 3, 무대 쪽이 1). 1번 데스크는 DID를 가리지 않게 왼쪽으로 옮김. 화면은 3대 동일(SEAT_DID) */
   (function(){var w=.685*M,h=1.215*M,y=1.38*M,z=HD+.37,src=window.SEAT_DID;[21.5,2.5,-23.1].forEach(function(x,i){
     var pl=new THREE.Mesh(new THREE.BoxGeometry(1.0*M,2.9*M,.12),new THREE.MeshStandardMaterial({color:0x17181c}));pl.position.set(x,1.45*M,HD+.27);scene.add(pl);
     var f=new THREE.Mesh(new THREE.BoxGeometry(w+.09,h+.09,.07),new THREE.MeshStandardMaterial({color:0x050608}));f.position.set(x,y,z);scene.add(f);
     var m=new THREE.Mesh(new THREE.PlaneGeometry(w,h),new THREE.MeshBasicMaterial({color:0x10131c}));m.position.set(x,y,z+.04);scene.add(m);
     if(src){var im=new Image();im.onload=function(){var tx=new THREE.Texture(im);tx.anisotropy=8;tx.needsUpdate=true;m.material.map=tx;m.material.color.set(0xffffff);m.material.needsUpdate=true;};im.src=src;}
-    var c=document.createElement('canvas');c.width=512;c.height=220;var g=c.getContext('2d');g.fillStyle='#17181c';g.fillRect(0,0,512,220);g.fillStyle='#c9b38a';g.textAlign='center';g.font='600 46px Georgia,serif';g.fillText('GRAND',256,62);g.fillText('BALLROOM',256,118);g.font='600 58px Georgia,serif';g.fillText(String(i+1),256,196);
+    var c=document.createElement('canvas');c.width=512;c.height=220;var g=c.getContext('2d');g.fillStyle='#17181c';g.fillRect(0,0,512,220);g.fillStyle='#c9b38a';g.textAlign='center';g.font='600 46px Georgia,serif';g.fillText('GRAND',256,62);g.fillText('BALLROOM',256,118);g.font='600 58px Georgia,serif';g.fillText(String(3-i),256,196);
     var t=new THREE.Mesh(new THREE.PlaneGeometry(.62*M,.266*M),new THREE.MeshBasicMaterial({map:new THREE.CanvasTexture(c)}));t.position.set(x,y+h/2+.27*M,HD+.335);scene.add(t);
   });})();
   /* 스탠딩 배너 600×1800mm: 06 = 7번 데스크(다과 쪽 끝) 옆, 07 = Gate 오른쪽, 08 = 게스트 리프트 동선 벽면(볼룸 바깥벽) */
