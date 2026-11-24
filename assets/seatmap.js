@@ -307,7 +307,7 @@ var PL={on:false,z:1,el:null};
 function planEsc(v){return String(v==null?'':v).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
 function planInit(host,full){
   var el=document.createElement('div');el.id='splan';
-  el.innerHTML='<div class="bar"><b>좌석도</b><span class="mut">◀ 무대는 왼쪽 · 칸을 누르면 좌석 선택</span><span class="sp"></span><button data-p="-" title="작게">－</button><span id="splz">100%</span><button data-p="+" title="크게">＋</button><button data-p="fit">맞춤</button>'+(full?'<button data-p="full">전체 화면</button>':'')+'<button data-p="3d">3D 평면 보기</button></div><div class="wrap"><div id="splgrid"></div></div>';
+  el.innerHTML='<div class="bar"><b>좌석도</b><span class="mut">◀ 무대는 왼쪽 · 칸을 누르면 좌석 선택</span><span class="sp"></span><button data-p="-" title="작게">－</button><span id="splz">100%</span><button data-p="+" title="크게">＋</button><button data-p="fit">맞춤</button>'+(full?'<button data-p="full">전체 화면</button>':'')+'<button data-p="3d">3D 평면 보기</button></div><div class="wrap"><div id="splgrid" class="splgrid"></div></div>';
   host.appendChild(el);PL.el=el;
   el.addEventListener('click',function(e){
     var b=e.target.closest('[data-p]');
@@ -319,9 +319,8 @@ function planInit(host,full){
   });
 }
 function planShow(){if(!PL.el)return;PL.el.classList.toggle('on',PL.on);document.body.classList.toggle('plan',PL.on);planDraw();}
-function planDraw(){
-  if(!PL.el||!PL.on)return;
-  var g=PL.el.querySelector('#splgrid'),h='<div class="h k">◀ 무대</div>',r,n,name;
+function planHTML(){
+  var h='<div class="h k">◀ 무대</div>',r,n,name;
   for(r=0;r<ROWS;r++)h+='<div class="h">'+String.fromCharCode(65+r)+'<small>'+(r+1)+'열</small></div>';
   for(n=21;n>=1;n--){
     name=n>15?'상단 '+(22-n)+'번':n>6?'중앙 '+(16-n)+'번':'하단 '+(7-n)+'번';
@@ -330,8 +329,10 @@ function planDraw(){
       h+='<div class="c '+f.cls+(f.sel?' sel':'')+'" data-s="'+id+'" title="'+planEsc(id+(f.a?' · '+f.a:'')+(f.b?' '+f.b:''))+'"><b>'+planEsc(f.a)+'</b>'+(f.b?'<span>'+planEsc(f.b)+'</span>':'')+'<i>'+id+'</i></div>';}
     if(n===16||n===7)h+='<div class="ai">통로</div>';
   }
-  g.style.setProperty('--z',PL.z);g.innerHTML=h;PL.el.querySelector('#splz').textContent=Math.round(PL.z*100)+'%';
+  return h;
 }
+function planDraw(){if(!PL.el||!PL.on)return;var g=PL.el.querySelector('#splgrid');g.style.setProperty('--z',PL.z);g.innerHTML=planHTML();PL.el.querySelector('#splz').textContent=Math.round(PL.z*100)+'%';}
+window.SeatPlan={html:planHTML};   // 참석자 관리의 '좌석배치도' 창에서도 같은 표를 씀
 function planInfo(id){const o=occ[id],sl=!!(sel&&sel.id===id);if(NOSEAT[id])return{cls:'x',a:'좌석 없음',b:''};
   if(!o)return{cls:FIXED[id]?'vip':'',a:FIXED[id]||'',b:'',sel:sl};
   return{cls:o.length>1?'dup':o[0].attended?'arr':o[0].status!=='confirmed'?'pend':'as',a:o[0].company_name||'',b:o.map(x=>x.name).join(', '),sel:sl};}

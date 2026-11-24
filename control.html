@@ -212,6 +212,8 @@ dialog.atdt .top{display:flex;align-items:center;gap:12px;margin-bottom:14px}dia
 #atdtgrid .ct{font-size:12px;color:var(--fg-2);padding-bottom:8px;border-bottom:1px solid var(--line)}#atdtgrid .ct b{font-size:17px;color:var(--warn)}
 #atdtgrid ol{margin:10px 0 0;padding-left:26px;font-size:16px;font-weight:600;line-height:1.7}#atdtgrid ol li span{color:var(--fg-3);font-weight:500;font-size:13px}#atdtgrid ol li::marker{color:var(--fg-3);font-size:11px;font-weight:500}
 #atdtgrid .none{font-size:12px;margin-top:8px;line-height:1.5}
+dialog.atsp{background:#101218;width:min(1760px,98vw)}dialog.atsp .top button{min-height:0;padding:6px 12px}
+#atspwrap{overflow:auto;max-height:calc(92vh - 110px)}#atspwrap .splgrid{padding-top:0}#atspwrap .splgrid .h{box-shadow:none}
 /* 참석자 관리 — 수동 등록 대화상자 */
 dialog.atmr{border:1px solid var(--line);border-radius:14px;background:var(--card);color:var(--fg);padding:22px 24px;width:min(560px,92vw)}
 dialog.atmr::backdrop{background:rgba(0,0,0,.6)}
@@ -238,23 +240,23 @@ table.att select.desk{min-height:32px;height:32px;min-width:78px;padding:0 6px}
 #splan .bar b{font-size:14px}#splan .bar .sp{flex:1}#splan .bar .mut{color:#8f96aa}#splan .bar #splz{min-width:38px;text-align:center;color:#c9cede}
 #splan .bar button{min-height:0;padding:5px 10px;font-size:12px;width:auto}
 #splan .wrap{flex:1;overflow:auto;padding:0 12px 56px}
-#splgrid{--z:1;font-size:calc(13px*var(--z));display:grid;grid-template-columns:4.6em repeat(15,minmax(5.6em,1fr));gap:.25em;min-width:min-content;padding-top:10px}
-#splgrid>*{border-radius:.35em;min-width:0}
-#splgrid .h{position:sticky;top:0;z-index:2;background:#1b1f2a;text-align:center;font-weight:800;padding:.4em 0;box-shadow:0 -12px 0 #101218}
-#splgrid .h small{font-weight:500;color:#8f96aa;margin-left:.3em}
-#splgrid .h.k{left:0;z-index:3;font-size:.85em;color:#e2b04a;display:flex;align-items:center;justify-content:center}
-#splgrid .l{position:sticky;left:0;z-index:1;background:#1b1f2a;display:flex;flex-direction:column;justify-content:center;align-items:center;font-size:.8em;color:#aab0c2;line-height:1.3}
-#splgrid .l b{font-size:1.3em;color:#fff}
-#splgrid .ai{grid-column:1/-1;text-align:center;font-size:.75em;color:#6f7689;letter-spacing:.5em;padding:.35em 0;border:1px dashed rgba(255,255,255,.12)}
-#splgrid .c{position:relative;min-height:4.4em;padding:.35em .45em 1.15em;background:#1a1d27;border:1px solid rgba(255,255,255,.07);cursor:pointer;line-height:1.25;overflow:hidden;word-break:break-all}
-#splgrid .c:hover{filter:brightness(1.25)}
-#splgrid .c b{display:block;font-weight:700}
-#splgrid .c span{display:block;color:#d5d9e6;font-size:.92em;margin-top:.1em}
-#splgrid .c i{position:absolute;right:.45em;bottom:.2em;font-style:normal;font-size:.72em;color:rgba(255,255,255,.5)}
-#splgrid .c.as{background:#1b2c57;border-color:#2f6bff}#splgrid .c.arr{background:#17432f;border-color:#5ed39a}#splgrid .c.vip{background:#45360f;border-color:#e2b04a}
-#splgrid .c.pend{background:#523b12;border-color:#ffb74d}#splgrid .c.dup{background:#552020;border-color:#ff7a7a}#splgrid .c.hold{background:#33265a;border-color:#a57bff}
-#splgrid .c.x{background:repeating-linear-gradient(45deg,#15171e,#15171e 6px,#1c1f28 6px,#1c1f28 12px);cursor:default;color:#6f7689}#splgrid .c.x:hover{filter:none}
-#splgrid .c.sel{outline:3px solid #fff;outline-offset:-2px}
+.splgrid{--z:1;font-size:calc(13px*var(--z));display:grid;grid-template-columns:4.6em repeat(15,minmax(5.6em,1fr));gap:.25em;min-width:min-content;padding-top:10px}
+.splgrid>*{border-radius:.35em;min-width:0}
+.splgrid .h{position:sticky;top:0;z-index:2;background:#1b1f2a;text-align:center;font-weight:800;padding:.4em 0;box-shadow:0 -12px 0 #101218}
+.splgrid .h small{font-weight:500;color:#8f96aa;margin-left:.3em}
+.splgrid .h.k{left:0;z-index:3;font-size:.85em;color:#e2b04a;display:flex;align-items:center;justify-content:center}
+.splgrid .l{position:sticky;left:0;z-index:1;background:#1b1f2a;display:flex;flex-direction:column;justify-content:center;align-items:center;font-size:.8em;color:#aab0c2;line-height:1.3}
+.splgrid .l b{font-size:1.3em;color:#fff}
+.splgrid .ai{grid-column:1/-1;text-align:center;font-size:.75em;color:#6f7689;letter-spacing:.5em;padding:.35em 0;border:1px dashed rgba(255,255,255,.12)}
+.splgrid .c{position:relative;min-height:4.4em;padding:.35em .45em 1.15em;background:#1a1d27;border:1px solid rgba(255,255,255,.07);cursor:pointer;line-height:1.25;overflow:hidden;word-break:break-all}
+.splgrid .c:hover{filter:brightness(1.25)}
+.splgrid .c b{display:block;font-weight:700}
+.splgrid .c span{display:block;color:#d5d9e6;font-size:.92em;margin-top:.1em}
+.splgrid .c i{position:absolute;right:.45em;bottom:.2em;font-style:normal;font-size:.72em;color:rgba(255,255,255,.5)}
+.splgrid .c.as{background:#1b2c57;border-color:#2f6bff}.splgrid .c.arr{background:#17432f;border-color:#5ed39a}.splgrid .c.vip{background:#45360f;border-color:#e2b04a}
+.splgrid .c.pend{background:#523b12;border-color:#ffb74d}.splgrid .c.dup{background:#552020;border-color:#ff7a7a}.splgrid .c.hold{background:#33265a;border-color:#a57bff}
+.splgrid .c.x{background:repeating-linear-gradient(45deg,#15171e,#15171e 6px,#1c1f28 6px,#1c1f28 12px);cursor:default;color:#6f7689}.splgrid .c.x:hover{filter:none}
+.splgrid .c.sel{outline:3px solid #fff;outline-offset:-2px}
 #smtip{position:absolute;display:none;pointer-events:none;background:rgba(0,0,0,.82);border:1px solid var(--line);padding:5px 9px;border-radius:6px;font-size:12px;white-space:nowrap;z-index:2}
 #smstaff{position:absolute;left:10px;top:10px;z-index:1;font-size:11px;line-height:1.75;color:var(--fg-2);background:rgba(18,18,18,.84);border:1px solid var(--line);border-radius:8px;padding:8px 10px;columns:2;column-gap:14px;max-width:340px;pointer-events:none}
 #smstaff .hd{column-span:all;font-weight:700;color:var(--fg);margin-bottom:2px}#smstaff div{break-inside:avoid;white-space:nowrap}
@@ -328,13 +330,14 @@ html{overflow-x:hidden}
   <h2>참석자 관리 <span class="mut" style="font-weight:500;font-size:13px">사전 신청 확인 · 좌석 배치 · 현장 안내</span></h2>
   <form id="atlogin" hidden class="row" style="flex-wrap:wrap"><span class="mut" style="width:100%">관리자 페이지 계정으로 로그인하세요. (질의 관리와 같은 계정)</span><input type="text" id="atid" placeholder="아이디 (seminar01)" autocomplete="username" style="flex:0 0 200px"><input type="password" id="atpw" placeholder="비밀번호" autocomplete="current-password" style="flex:0 0 200px"><button class="pri" type="submit">로그인</button><span id="atlerr" class="late" style="width:100%"></span></form>
   <div id="atmain" hidden>
-   <div class="atdeskbar"><span class="mut">안내 데스크</span><nav class="subtab" id="atdesk"></nav><span class="mut" id="atdeskinfo"></span><span class="sp" style="flex:1"></span><button id="atdeskview" title="데스크별 담당 범위 · 인원 · 회사 목록을 한눈에 보기">데스크별 배정 표</button><button id="atmanual" class="pri" style="width:auto" title="사전 신청 · VIP 가 아닌 예외 참석자를 직접 등록">수동 등록</button></div>
+   <div class="atdeskbar"><span class="mut">안내 데스크</span><nav class="subtab" id="atdesk"></nav><span class="mut" id="atdeskinfo"></span><span class="sp" style="flex:1"></span><button id="atdeskview" title="데스크별 담당 범위 · 인원 · 회사 목록을 한눈에 보기">데스크별 배정 표</button><button id="atseatview" title="엑셀 04. 좌석도와 같은 배치로 전체 자리배치를 한눈에 보기">좌석배치도</button><button id="atmanual" class="pri" style="width:auto" title="사전 신청 · VIP 가 아닌 예외 참석자를 직접 등록">수동 등록</button></div>
    <div class="atstat"><div><span class="mut">대상자</span><b id="atc-all">0</b><small>신청 <span id="atc-reg">0</span> · VIP <span id="atc-vip">0</span></small></div><div><span class="mut">좌석 지정</span><b id="atc-seat">0</b><small>미지정 <span id="atc-noseat">0</span> · <span>잔여 좌석 <span id="atc-left">–</span></span></small></div><div><span class="mut">현장 참석</span><b id="atc-arr">0</b></div><span class="sp"></span><span id="atnet" class="mut" style="font-size:12px"></span><button id="atreload">새로고침</button></div>
    <input type="search" id="atq" class="atq" placeholder="이름 · 회사 · 전화 끝 4자리 · 좌석으로 검색 (선택한 데스크 안에서)" autocomplete="off">
    <div class="atcard empty" id="atcard"></div>
    <div class="oq-head" style="margin-top:20px"><nav class="subtab" id="atflt"><button data-f="all">전체</button><button data-f="noseat">좌석 미지정</button><button data-f="notarr">미확인</button><button data-f="arr">참석</button></nav><div class="oq-flt"><span class="mut" id="atcnt"></span><span id="atmsg"></span></div></div>
    <div class="attw"><table class="att"><thead id="atth"><tr><th data-s="co">회사</th><th data-s="name">이름</th><th>전화</th><th data-s="status">신청</th><th data-s="desk">데스크</th><th data-s="seat">좌석</th><th>메모</th><th data-s="arr">현장 참석</th></tr></thead><tbody id="attb"></tbody></table></div>
    <dialog id="atdt" class="atdt"><div class="top"><h3>데스크별 배정 표</h3><span class="mut" id="atdtsum"></span><span class="sp"></span><button id="atdtclose">닫기</button></div><div id="atdtgrid"></div></dialog>
+   <dialog id="atsp" class="atdt atsp"><div class="top"><h3>좌석배치도</h3><span class="mut" id="atspsum"></span><span class="sp"></span><button data-z="-" title="작게">－</button><span id="atspz" class="mut">100%</span><button data-z="+" title="크게">＋</button><button id="atspclose">닫기</button></div><div id="atspwrap"><div class="splgrid" id="atspgrid"></div></div></dialog>
    <dialog id="atmr" class="atmr"><form id="atmrform" method="dialog">
     <h3>참석자 수동 등록</h3>
     <p class="mut">사전 신청 명단에도 VIP에도 없는 예외 참석자를 등록합니다. 등록하면 바로 참석 확정되고 관리자 페이지에도 반영됩니다.</p>

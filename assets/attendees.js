@@ -130,6 +130,16 @@ function deskTable(){const by={};R.forEach(x=>{const d=deskOf(S[x.id])||'none',m
   $('atdtgrid').innerHTML=cols.map(d=>{const m=by[d[0]]||{},names=Object.keys(m).sort((a,b)=>a.localeCompare(b,'ko')),n=names.reduce((s,k)=>s+m[k],0);
     return '<section><button data-d="'+d[0]+'" class="hd">'+(d[0]==='none'?'미배정':d[0])+'</button><div class="rg">'+esc(d[1])+'</div><div class="ct"><b>'+n+'</b>명 · '+names.length+'개사</div>'+
       (names.length?'<ol>'+names.map(k=>'<li>'+esc(k)+' <span>('+m[k]+')</span></li>').join('')+'</ol>':'<div class="mut none">'+(d[0]==='D1'?'현장에서 수동 등록한 인원이 여기에 표시됩니다':'없음')+'</div>')+'</section>';}).join('');}
+/* 좌석배치도: 좌석 배치 탭 평면 좌석도와 같은 표. 배정된 칸을 누르면 창을 닫고 그 참석자를 목록에서 보여 줌 */
+let spz=1;
+function seatPlan(){if(!window.SeatPlan)return;const g=$('atspgrid');g.style.setProperty('--z',spz);g.innerHTML=window.SeatPlan.html();$('atspz').textContent=Math.round(spz*100)+'%';
+  const key=window.SEAT_KEY,used=new Set(R.map(x=>key((S[x.id]||{}).seat)).filter(Boolean));$('atspsum').textContent='◀ 무대는 왼쪽 · 배정 '+used.size+'석 · 잔여 '+$('atc-left').textContent+'석 · 배정된 칸을 누르면 그 참석자로 이동';}
+$('atseatview').onclick=()=>{seatPlan();$('atsp').showModal();};
+$('atspclose').onclick=()=>$('atsp').close();
+$('atsp').addEventListener('click',e=>{const z=e.target.closest('[data-z]');if(z){spz=Math.max(.75,Math.min(3,spz+(z.dataset.z==='+'?.25:-.25)));return seatPlan();}
+  const c=e.target.closest('.c[data-s]');if(!c)return;const key=window.SEAT_KEY,x=R.find(r=>key((S[r.id]||{}).seat)===c.dataset.s);if(!x)return;
+  $('atsp').close();desk='all';flt='all';q='';$('atq').value='';pick=x.id;draw();const tr=document.querySelector('#attb tr.sel');if(tr)tr.scrollIntoView({block:'center'});});
+document.addEventListener('att-data',()=>{if($('atsp').open)setTimeout(seatPlan,0);});
 $('atdeskview').onclick=()=>{deskTable();$('atdt').showModal();};
 $('atdtclose').onclick=()=>$('atdt').close();
 $('atdtgrid').addEventListener('click',e=>{const b=e.target.closest('[data-d]');if(!b)return;desk=b.dataset.d;pick=null;$('atdt').close();draw();});
