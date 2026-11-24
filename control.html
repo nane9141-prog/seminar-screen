@@ -185,15 +185,15 @@ button.arr.on{box-shadow:none;background:#1f6b46;color:#fff}button.arr.on:hover{
 /* 참석자 관리 — 데스크별 배정 표 */
 dialog.atdt,dialog.atmr{margin:auto}
 dialog.atmr input[type=tel],dialog.atmr input[type=email]{font:inherit;font-size:13px;min-height:36px;background:var(--field);color:var(--fg);border:1px solid var(--field-line);border-radius:8px;padding:0 10px;box-sizing:border-box}
-dialog.atdt{border:1px solid var(--line);border-radius:14px;background:var(--card);color:var(--fg);padding:20px 22px;width:min(1500px,96vw);max-height:92vh}
+dialog.atdt{border:1px solid var(--line);border-radius:14px;background:var(--card);color:var(--fg);padding:20px 22px;width:min(1760px,98vw);max-height:92vh}
 dialog.atdt::backdrop{background:rgba(0,0,0,.6)}
 dialog.atdt .top{display:flex;align-items:center;gap:12px;margin-bottom:14px}dialog.atdt .top h3{margin:0;font-size:17px}dialog.atdt .top .sp{flex:1}dialog.atdt .top .mut{font-size:12px}
-#atdtgrid{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(150px,1fr);gap:10px;overflow:auto;max-height:calc(92vh - 110px);align-items:start}
+#atdtgrid{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(166px,1fr);gap:10px;overflow:auto;max-height:calc(92vh - 110px);align-items:start}
 #atdtgrid section{background:var(--card-2);border:1px solid var(--line);border-radius:10px;padding:10px 12px;min-width:0}
 #atdtgrid .hd{width:100%;font-size:15px;font-weight:800;min-height:34px}
 #atdtgrid .rg{font-size:11px;color:var(--fg-3);margin:8px 0 2px;min-height:28px;line-height:1.35}
 #atdtgrid .ct{font-size:12px;color:var(--fg-2);padding-bottom:8px;border-bottom:1px solid var(--line)}#atdtgrid .ct b{font-size:17px;color:var(--warn)}
-#atdtgrid ol{margin:8px 0 0;padding-left:22px;font-size:12px;line-height:1.75}#atdtgrid ol li span{color:var(--fg-3)}#atdtgrid ol li::marker{color:var(--fg-3);font-size:10px}
+#atdtgrid ol{margin:10px 0 0;padding-left:26px;font-size:16px;font-weight:600;line-height:1.7}#atdtgrid ol li span{color:var(--fg-3);font-weight:500;font-size:13px}#atdtgrid ol li::marker{color:var(--fg-3);font-size:11px;font-weight:500}
 #atdtgrid .none{font-size:12px;margin-top:8px;line-height:1.5}
 /* 참석자 관리 — 수동 등록 대화상자 */
 dialog.atmr{border:1px solid var(--line);border-radius:14px;background:var(--card);color:var(--fg);padding:22px 24px;width:min(560px,92vw)}
@@ -206,7 +206,8 @@ dialog.atmr label.chk{display:flex;align-items:center;gap:8px;font-size:13px;col
 dialog.atmr .ft{display:flex;align-items:center;gap:8px;margin-top:6px}dialog.atmr .ft .sp{flex:1}
 /* 참석자 관리 — 안내 데스크 선택 */
 .atdeskbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px}
-#atdesk button small{font-weight:500;opacity:.65;margin-left:2px}
+#atdesk{padding:5px;gap:6px;flex-wrap:wrap}#atdesk button{font-size:17px;font-weight:800;padding:12px 22px;min-width:76px;border-radius:9px}
+#atdesk button small{font-weight:600;font-size:13px;opacity:.7;margin-left:4px}
 #atdeskinfo{font-size:12px}
 table.att select.desk{min-height:32px;height:32px;min-width:78px;padding:0 6px}
 /* 좌석 배치 (3D) */
