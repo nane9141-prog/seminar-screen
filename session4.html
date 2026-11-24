@@ -861,6 +861,20 @@ html.embed,html.embed body,html.embed .stage{background:transparent}html.embed #
 @keyframes k22F{from{opacity:0}to{opacity:1}}
 @keyframes k22D{to{stroke-dashoffset:0}}
 @keyframes k22M{to{stroke-dashoffset:-40}}
+
+/* K22 (11/24 23:50) K15 로드맵 레이아웃처럼 — 위 단계 머리(영문 가늘게 + 국문 굵게), 아래 3열 패널(위 색 선 + 아래로 사라지는 색 면), 번호는 열 색. 열마다 → 로 등장(단계 유지) */
+#K22 .col{top:600px;width:1272px;height:720px;box-sizing:border-box;padding:70px 110px 0;border-top:6px solid var(--cc);background:linear-gradient(180deg,var(--cf) 0%,rgba(0,0,0,0) 80%)}
+#K22 .q0{--cc:#4677e6;--cf:rgba(70,119,230,.3)}#K22 .q1{--cc:#3aa0ea;--cf:rgba(58,160,234,.26)}#K22 .q2{--cc:#3cc9c4;--cf:rgba(60,201,196,.26)}
+#K22 .col .ph{position:absolute;left:0;top:-216px;margin:0;padding:0;border:0;color:#F2F5FA}
+#K22 .col .ph span{display:block;font:300 64px/1 "Pretendard Variable";letter-spacing:-.01em;color:#F2F5FA}
+#K22 .col .ph b{display:block;margin-top:20px;font:700 84px/1 "Pretendard Variable";letter-spacing:-.02em;color:#F2F5FA}
+#K22 .q2 .ph b{color:#3cc9c4}
+#K22 .it{gap:24px;padding:20px 0}
+#K22 .it i{width:130px;font:700 50px/1.4 "Pretendard Variable";color:var(--cc);filter:brightness(1.3)}
+#K22 .it b{font:600 58px/1.35 "Pretendard Variable";letter-spacing:-.02em;color:#F2F5FA}
+#K22 .it span{display:block;margin-top:6px;font:400 42px/1.4 "Pretendard Variable";color:var(--mut)}
+#K22 .db{top:1380px;left:180px;right:180px;height:110px;border-radius:24px;font:700 52px/1 "Pretendard Variable"}
+#K22 .col{top:680px;height:680px;padding:56px 110px 0}#K22 .col .ph{left:110px;top:-250px}#K22 .it{padding:14px 0}#K22 .it i{width:170px}#K22 .db{top:1400px;height:100px}
 </style></head>
 <body>
 <div class="stage" id="stage">
@@ -1090,18 +1104,18 @@ html.embed,html.embed body,html.embed .stage{background:transparent}html.embed #
 </section>
 
 <section class="s" id="K22" data-t="하나의 DB로 — 업무 흐름" data-dim=".12" data-steps="3">
- <div class="top" style="top:150px"><h2 class="h hm fu" style="--i:1">사전투표에서 현장 · 온라인까지 하나의 흐름</h2></div>
- <div class="col" data-b="1" style="left:300px"><p class="ph">Before<small>사전</small></p>
+ <div class="top"><h2 class="h hm fu" style="--i:1">사전투표에서 현장 · 온라인까지 하나의 흐름</h2></div>
+ <div class="col q0" data-b="1" style="left:180px"><p class="ph"><span>Before</span><b>사전</b></p>
   <div class="it"><i>01</i><div><b>주총 설정</b><span>주주명부 · 투표권자 확정 · 의안 · 의결권 제한</span></div></div>
   <div class="it"><i>02</i><div><b>사전투표 다채널 접수</b><span>전자투표 · 전자위임장 · 서면위임장 · 외국기관</span></div></div>
   <div class="it"><i>03</i><div><b>사전신청 접수</b><span>전자주총 출석 사전신청</span></div></div>
   <div class="it"><i>04·05</i><div><b>통합 DB화 · 중복내역 처리</b></div></div></div>
- <div class="col" data-b="2" style="left:1560px"><p class="ph">Meeting day<small>당일</small></p>
+ <div class="col q1" data-b="2" style="left:1464px"><p class="ph"><span>Meeting day</span><b>당일</b></p>
   <div class="it"><i>06</i><div><b>실시간 현장 영상 생중계</b></div></div>
   <div class="it"><i>07</i><div><b>한 곳만 출석인정 처리</b><span>현장출석과 전자출석 중복 방지</span></div></div>
   <div class="it"><i>08</i><div><b>질의답변</b><span>온라인 질의 · 현장 질의</span></div></div>
   <div class="it"><i>09</i><div><b>의안 · 의결권 제한내역</b><span>실시간 변경 적용</span></div></div></div>
- <div class="col" data-b="3" style="left:2820px"><p class="ph">Count<small>집계 · 보존</small></p>
+ <div class="col q2" data-b="3" style="left:2748px"><p class="ph"><span>Count</span><b>집계 · 보존</b></p>
   <div class="it"><i>10</i><div><b>집중투표 위임표 분배</b></div></div>
   <div class="it"><i>11</i><div><b>실시간 표결결과 집계</b><span>온라인 · 현장(전자) · 현장(서면) · 사전투표</span></div></div>
   <div class="it"><i>+</i><div><b>관련 서류 · 정보 보존</b></div></div></div>
