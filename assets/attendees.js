@@ -150,10 +150,11 @@ $('atmrclose').onclick=()=>$('atmr').close();
 $('atmrphone').addEventListener('input',e=>{const d=e.target.value.replace(/\D/g,'').slice(0,11);e.target.value=d.replace(/^(\d{3})(\d{1,4})?(\d{1,4})?$/,(m,a,b,c)=>[a,b,c].filter(Boolean).join('-'));});
 $('atmrform').addEventListener('submit',async e=>{e.preventDefault();const c=sb();if(!c)return;const err=t=>{$('atmrerr').textContent=t||'';};
   const p={company_id:null,company_name:$('atmrco').value.trim(),name:$('atmrname').value.trim(),dept:$('atmrdept').value.trim(),title:$('atmrtitle').value.trim(),phone:$('atmrphone').value,email:$('atmremail').value.trim(),memo:$('atmrmemo').value.trim()||'현장 수동 등록'};
-  const mail=$('atmrmail').checked,btn=$('atmrsave'),dk=$('atmrdesk').value,st=$('atmrseat').value.trim();btn.disabled=true;err('등록 중…');
+  const pd=p.phone.replace(/\D/g,'');if(pd&&!/^01[016789]\d{7,8}$/.test(pd))return err('휴대폰 번호를 확인해 주세요 (없으면 비워 두세요)');   // 이메일 · 휴대폰은 선택 — 입력했을 때만 확인
+  const mail=$('atmrmail').checked&&!!p.email,btn=$('atmrsave'),dk=$('atmrdesk').value,st=$('atmrseat').value.trim();btn.disabled=true;err('등록 중…');
   try{let {data,error}=await c.rpc('admin_register',{p,p_send_mail:mail,p_force:false});
     if(!error&&data&&!data.ok){if(!confirm(data.msg+'\n그래도 등록할까요?')){err('');return;}({data,error}=await c.rpc('admin_register',{p,p_send_mail:mail,p_force:true}));}
-    if(error){err(error.message);return;}
+    if(error){err((!p.email&&/이메일/.test(error.message))||(!pd&&/휴대폰/.test(error.message))||/null value/.test(error.message)?'이메일 · 휴대폰 없이 등록하려면 백엔드에 manual-register-optional-contact.sql 을 먼저 적용해야 합니다.':error.message);return;}
     while(loading)await sleep(200);await load();
     const x=R.find(r=>r.reg_no===data.reg_no);if(x&&(dk||st))await saveSeat(x.id,{seat:st||null,note:pack(dk,'')});
     $('atmr').close();if(x){desk='all';q='';$('atq').value='';pick=x.id;draw();}msg('No. '+data.reg_no+' '+data.name+'님을 등록했습니다'+(mail?' · 확정 메일 발송':''));
