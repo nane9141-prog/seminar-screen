@@ -221,7 +221,6 @@ dialog.atmr h3{margin:0 0 6px;font-size:17px}dialog.atmr p{margin:0 0 14px;font-
 dialog.atmr label{display:block;font-size:12px;color:var(--fg-2);margin-bottom:10px}dialog.atmr label em{font-style:normal;color:var(--warn);font-size:11px;margin-left:4px}
 dialog.atmr label input[type=text],dialog.atmr label input[type=tel],dialog.atmr label input[type=email],dialog.atmr label select{display:block;width:100%;margin-top:4px;box-sizing:border-box}
 dialog.atmr label select{display:flex}   /* 펼침 디자인(base-select)은 flex 여야 글자·화살표가 한 줄에 놓임 */
-dialog.atmr label em.opt{color:var(--fg-3)}
 dialog.atmr .two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 dialog.atmr label.chk{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--fg)}
 dialog.atmr .ft{display:flex;align-items:center;gap:8px;margin-top:6px}dialog.atmr .ft .sp{flex:1}
@@ -345,9 +344,9 @@ html{overflow-x:hidden}
     <h3>참석자 수동 등록</h3>
     <p class="mut">사전 신청 명단에도 VIP에도 없는 예외 참석자를 등록합니다. 등록하면 바로 참석 확정되고 관리자 페이지에도 반영됩니다.</p>
     <label>소속 회사 <em>필수</em><input type="text" id="atmrco" list="atcos" autocomplete="off" placeholder="회사명 검색 또는 직접 입력" required minlength="2"></label>
-    <div class="two"><label>이름 <em>필수</em><input type="text" id="atmrname" maxlength="40" required minlength="2"></label><label>휴대폰 <em class="opt">선택</em><input type="tel" id="atmrphone" maxlength="13" placeholder="010-0000-0000"></label></div>
+    <div class="two"><label>이름 <em>필수</em><input type="text" id="atmrname" maxlength="40" required minlength="2"></label><label>휴대폰 <em>필수</em><input type="tel" id="atmrphone" maxlength="13" placeholder="010-0000-0000" required></label></div>
     <div class="two"><label>부서<input type="text" id="atmrdept" maxlength="60"></label><label>직급<input type="text" id="atmrtitle" maxlength="40"></label></div>
-    <label>이메일 <em class="opt">선택</em><input type="email" id="atmremail" maxlength="120" placeholder="없으면 비워 두세요"></label>
+    <label>이메일 <em>필수</em><input type="email" id="atmremail" maxlength="120" required></label>
     <div class="two"><label>안내 데스크<select id="atmrdesk"><option value="">미배정</option><option value="D1">D1 (미등록자 · 현장등록)</option><option>D2</option><option>D3</option><option>D4</option><option>D5</option><option>D6</option><option>D7</option><option>VIP</option></select></label><label>좌석<input type="text" id="atmrseat" maxlength="20" placeholder="예: 16-3 (비워 두고 나중에 배정 가능)" list="atfreelist" autocomplete="off"><datalist id="atfreelist"></datalist></label></div>
     <label>메모<input type="text" id="atmrmemo" maxlength="200" placeholder="예: 현장 등록, 대리 참석"></label>
     <label class="chk"><input type="checkbox" id="atmrmail"> 참석 확정 메일 보내기</label>
