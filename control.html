@@ -180,8 +180,8 @@ table.att .mut{font-size:12px}
 table.att .tn{font-variant-numeric:tabular-nums}
 #atseatpop{position:absolute;display:none;z-index:50;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 12px;box-shadow:0 14px 40px rgba(0,0,0,.6);max-height:340px;overflow:auto}
 #atseatpop .hd{display:flex;align-items:center;gap:8px;font-size:12px;margin-bottom:8px}#atseatpop .hd b{font-size:13px;color:var(--warn)}#atseatpop .hd button{margin-left:auto;min-height:0;width:auto;padding:4px 9px;font-size:11px}
-#atseatpop .rw{display:flex;gap:8px;align-items:flex-start;padding:3px 0}#atseatpop .rw i{font-style:normal;font-weight:800;width:16px;text-align:center;line-height:28px;color:var(--fg-2)}
-#atseatpop .rw>div{display:flex;flex-wrap:wrap;gap:4px;flex:1}#atseatpop .rw button{min-height:0;width:34px;height:28px;padding:0;font-size:12px;font-weight:700}
+#atseatpop .rw{display:flex;gap:8px;align-items:flex-start;padding:3px 0}#atseatpop .rw i{font-style:normal;font-weight:800;width:26px;text-align:center;line-height:28px;color:var(--fg-2)}
+#atseatpop .rw>div{display:flex;flex-wrap:wrap;gap:4px;flex:1}#atseatpop .rw button{min-height:0;width:48px;height:28px;padding:0;font-size:12px;font-weight:700}
 #atseatpop .rw button:hover{background:var(--blue,#2f6bff);color:#fff}#atseatpop p{margin:6px 0;font-size:12px}
 table.att input.seat{width:110px;min-height:30px;font-weight:700;color:var(--warn)}
 table.att input.note{width:100%;min-width:140px;min-height:30px;border-color:transparent;background:transparent}
@@ -247,6 +247,7 @@ table.att select.desk{min-height:32px;height:32px;min-width:78px;padding:0 6px}
 .splgrid .h.k{left:0;z-index:3;font-size:.85em;color:#e2b04a;display:flex;align-items:center;justify-content:center}
 .splgrid .l{position:sticky;left:0;z-index:1;background:#1b1f2a;display:flex;flex-direction:column;justify-content:center;align-items:center;font-size:.8em;color:#aab0c2;line-height:1.3}
 .splgrid .l b{font-size:1.3em;color:#fff}
+.splgrid .tn{text-align:center;font-weight:800;font-size:.95em;color:#e2b04a;background:#1b1f2a;padding:.25em 0}.splgrid .l.tl{font-size:.75em;color:#e2b04a}
 .splgrid .ai{grid-column:1/-1;text-align:center;font-size:.75em;color:#6f7689;letter-spacing:.5em;padding:.35em 0;border:1px dashed rgba(255,255,255,.12)}
 .splgrid .c{position:relative;min-height:4.4em;padding:.35em .45em 1.15em;background:#1a1d27;border:1px solid rgba(255,255,255,.07);cursor:pointer;line-height:1.25;overflow:hidden;word-break:break-all}
 .splgrid .c:hover{filter:brightness(1.25)}
@@ -504,7 +505,7 @@ const ofs=()=>{$('offst').textContent=window.OFFLINE_STATE||'';$('offst').style.
 function scrFold(o){$('scrbody').hidden=!o;$('scrbox').classList.toggle('open',o);$('scrfold').setAttribute('aria-expanded',o);localStorage.setItem('ctl-scrfold',o?'1':'0');}
 $('scrfold').onclick=()=>scrFold($('scrbody').hidden);scrFold(localStorage.getItem('ctl-scrfold')==='1');
 // 메뉴 탭: 운영 관리 / 질의 관리
-const HINT={seat:'행사장 3D 도면에서 좌석(A1~O21)을 눌러 신청자를 배정합니다. 좌석 값은 참석자 관리의 좌석 칸과 같습니다. 운영자 노트북 어디서나 사용.',att:'사전 신청자 확인 · 좌석은 미리 입력해 두면 현장에서 검색으로 바로 안내할 수 있습니다. 운영자 노트북 어디서나 사용.',ops:'메인 스크린(index.html)과 같은 PC · 같은 브라우저에서 열어 주세요. 입력 즉시 반영됩니다.',qa:'운영자 노트북 어디서나 사용 · 관리자 계정으로 로그인 · 송출하면 메인 스크린에 2초 안에 표시됩니다.',qaLocal:'직접 입력은 메인 스크린과 같은 PC · 같은 브라우저에서만 반영됩니다.'};
+const HINT={seat:'행사장 3D 도면에서 좌석(테이블-좌석, 예: 16-3)을 눌러 신청자를 배정합니다. 좌석 값은 참석자 관리의 좌석 칸과 같습니다. 운영자 노트북 어디서나 사용.',att:'사전 신청자 확인 · 좌석은 미리 입력해 두면 현장에서 검색으로 바로 안내할 수 있습니다. 운영자 노트북 어디서나 사용.',ops:'메인 스크린(index.html)과 같은 PC · 같은 브라우저에서 열어 주세요. 입력 즉시 반영됩니다.',qa:'운영자 노트북 어디서나 사용 · 관리자 계정으로 로그인 · 송출하면 메인 스크린에 2초 안에 표시됩니다.',qaLocal:'직접 입력은 메인 스크린과 같은 PC · 같은 브라우저에서만 반영됩니다.'};
 function hint(){const m=document.body.dataset.m;$('hint').textContent=m==='qa'?(SCHED.getSrc()==='local'?HINT.qaLocal:HINT.qa):m==='att'?HINT.att:m==='seat'?HINT.seat:HINT.ops;}
 document.addEventListener('keydown',e=>{if(document.body.dataset.m!=='qa'||/INPUT|TEXTAREA|SELECT/.test(e.target.tagName)||e.target.isContentEditable)return;
   if(e.key!=='ArrowRight'&&e.key!=='ArrowLeft')return;e.preventDefault();const d=e.key==='ArrowRight'?1:-1;

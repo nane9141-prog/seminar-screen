@@ -17,11 +17,15 @@ const M=1/0.686,ROWS=15,PITCH=.6*M,ROW_X0=-15.7,ROW_DX=2.7,T_LEN=1.8*M,T_DEP=.45
 const ST={};   // 좌석 번호 아크릴 스탠드(받침·아크릴 판 인스턴스)
 const LBL_DX=-T_DEP/2+.03*M+LBL_H/2;            // 라벨: 테이블 위쪽 끝(무대 쪽)에서 30mm 여백
 const BLOCKS=[{z:8.6,n:2},{z:-.4,n:3},{z:-8.7,n:2}];
-const tables=[],seats=[],byId={};
+const tables=[],seats=[],byId={},OLD={};   // OLD: 예전 좌석 번호(A1~O21) → 새 번호
 for(let r=0;r<ROWS;r++){const x=ROW_X0+r*ROW_DX,L=String.fromCharCode(65+r);let num=0;
-  BLOCKS.forEach(b=>{for(let k=0;k<b.n;k++){const z=b.z+((b.n-1)/2-k)*T_LEN,t={row:L,x,z,i:tables.length,blockFirst:k===0};tables.push(t);
-    for(let j=0;j<3;j++){num++;const s={id:L+num,row:L,num,x,z:z+(1-j)*PITCH,i:seats.length};seats.push(s);byId[s.id]=s;}}});}
-function seatKey(v){const m=/^([A-O])-?(\d{1,2})$/.exec(String(v||'').toUpperCase().replace(/\s/g,''));return m&&byId[m[1]+(+m[2])]?m[1]+(+m[2]):null;}
+  /* 좌석 번호 = 테이블-좌석. 테이블은 스크린을 바라보고 왼쪽 블록 앞줄부터 1~15, 가운데 16~30, 오른쪽 31~45. 테이블 안 좌석은 왼쪽부터 1, 2, 3 … (좌·우 6석, 가운데 9석) */
+  BLOCKS.forEach((b,bi)=>{const no=bi*ROWS+r+1;let kk=0;for(let k=0;k<b.n;k++){const z=b.z+((b.n-1)/2-k)*T_LEN,t={row:L,no,x,z,i:tables.length,blockFirst:k===0};tables.push(t);
+    for(let j=0;j<3;j++){num++;kk++;const s={id:no+'-'+kk,old:L+num,tno:no,k:kk,row:L,num,x,z:z+(1-j)*PITCH,i:seats.length};seats.push(s);byId[s.id]=s;OLD[s.old]=s.id;}}});}
+[FIXED,NOSEAT].forEach(o=>Object.keys(o).forEach(k=>{if(OLD[k]){o[OLD[k]]=o[k];delete o[k];}}));   // 고정석·없는 좌석 표를 새 번호로
+function seatKey(v){const t=String(v||'').toUpperCase().replace(/\s/g,'');let m=/^(\d{1,2})-(\d)$/.exec(t);if(m){const id=(+m[1])+'-'+(+m[2]);return byId[id]?id:null;}
+  m=/^([A-O])-?(\d{1,2})$/.exec(t);return m&&OLD[m[1]+(+m[2])]||null;}   // 예전 번호(B3)로 저장·입력된 값도 새 번호로 읽음
+window.SEAT_OLD=OLD;
 window.SEAT_KEY=seatKey;window.SEAT_IDS=seats.filter(s=>!NOSEAT[s.id]).map(s=>s.id);window.SEAT_TOTAL=seats.length-Object.keys(NOSEAT).length;   // 참석자 관리의 잔여 좌석 집계에 사용
 
 /* ---------- 상태 ---------- */
@@ -61,11 +65,14 @@ function sprite(text,x,y,z,color,scale){
   const s=new THREE.Sprite(new THREE.SpriteMaterial({map:tex,transparent:true,depthTest:false}));s.scale.set(scale||5,(scale||5)/4,1);s.position.set(x,y,z);scene.add(s);
 }
 function box(w,h,d,color,x,y,z,opt){const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),new THREE.MeshStandardMaterial(Object.assign({color,roughness:.9},opt||{})));m.position.set(x,y,z);scene.add(m);return m;}
-function drawLabel(lb){
-  const g=lb.ctx,W=320,H=196,name=lb.text;
+function drawLabel(lb){   // 명패: 지정된 인원의 기업명만(좌석 번호 없음). 길면 줄이고, 그래도 넘치면 두 줄
+  const g=lb.ctx,W=320,H=196,name=lb.text,LF=FONT;
   g.fillStyle='#fff';g.fillRect(0,0,W,H);g.strokeStyle='#000';g.lineWidth=3;g.strokeRect(1.5,1.5,W-3,H-3);
-  g.fillStyle='#000';g.textAlign='center';g.textBaseline='alphabetic';g.font='900 106px '+FONT;g.fillText(lb.s.id,W/2,name?112:134);
-  if(name){let fs=31;g.font='700 '+fs+'px '+FONT;while(fs>14&&g.measureText(name).width>W-34){fs-=2;g.font='700 '+fs+'px '+FONT;}g.fillText(name,W/2,164);}
+  if(name){g.fillStyle='#000';g.textAlign='center';g.textBaseline='middle';
+    var lines=[name],fs=72,fit=function(){g.font='800 '+fs+'px '+LF;var w=0;lines.forEach(function(t){w=Math.max(w,g.measureText(t).width);});return w<=W-36;};
+    while(fs>40&&!fit())fs-=2;
+    if(!fit()){var mid=name.length/2,c=-1,i;for(i=1;i<name.length-1;i++)if(name[i]===' '&&(c<0||Math.abs(i-mid)<Math.abs(c-mid)))c=i;if(c<0)c=Math.ceil(mid);lines=[name.slice(0,c).trim(),name.slice(c).trim()];fs=62;while(fs>18&&!fit())fs-=2;}
+    lines.forEach(function(t,i){g.fillText(t,W/2,H/2+(i-(lines.length-1)/2)*fs*1.2+3);});}
   lb.tex.needsUpdate=true;
 }
 function build(){
@@ -263,11 +270,11 @@ function build(){
     dummy.position.set(s.x+sx,.225*M,s.z);dummy.updateMatrix();seatMesh.setMatrixAt(s.i,dummy.matrix);
     dummy.position.set(s.x+sx+.265*M,.46*M,s.z);dummy.updateMatrix();backMesh.setMatrixAt(s.i,dummy.matrix);});
   scene.add(seatMesh,backMesh);
-  /* 줄 문자: 블록 왼쪽 끝 테이블의 좌측면(+z 면) — A4(210×297mm) 실제 크기, 면의 좌측 상단에 맞춤 */
+  /* 테이블 번호: 블록 왼쪽 끝 테이블의 좌측면(+z 면) — A4(210×297mm) 실제 크기, 면의 좌측 상단에 맞춤 */
   const sideGeo=new THREE.PlaneGeometry(.210*M,.297*M),sideTex={};
   tables.forEach(t=>{if(!t.blockFirst)return;
-    if(!sideTex[t.row])sideTex[t.row]=ctex(256,362,g=>{g.fillStyle='#fff';g.fillRect(0,0,256,362);g.strokeStyle='#000';g.lineWidth=6;g.strokeRect(3,3,250,356);g.fillStyle='#000';g.font='900 230px '+FONT;g.textAlign='center';g.textBaseline='middle';g.fillText(t.row,128,196);});
-    const m=new THREE.Mesh(sideGeo,new THREE.MeshBasicMaterial({map:sideTex[t.row]}));m.position.set(t.x-T_DEP/2+.105*M,T_H-.1485*M,t.z+T_LEN/2+.012);scene.add(m);});
+    if(!sideTex[t.no])sideTex[t.no]=ctex(256,362,g=>{g.fillStyle='#fff';g.fillRect(0,0,256,362);g.strokeStyle='#000';g.lineWidth=6;g.strokeRect(3,3,250,356);g.fillStyle='#000';g.font='900 '+(t.no<10?230:176)+'px '+FONT;g.textAlign='center';g.textBaseline='middle';g.fillText(t.no,128,196);});
+    const m=new THREE.Mesh(sideGeo,new THREE.MeshBasicMaterial({map:sideTex[t.no]}));m.position.set(t.x-T_DEP/2+.105*M,T_H-.1485*M,t.z+T_LEN/2+.012);scene.add(m);});
   /* 좌석별 라벨(테이블 상단면, 위쪽 끝): 의자 쪽에서 바로 읽히는 방향 */
   const lGeo=(function(){var w=LBL_W/2,h=LBL_H/2,e=.004,g=new THREE.BufferGeometry();   // 삽지 앞·뒤 양면(90×55mm)
     g.setAttribute('position',new THREE.Float32BufferAttribute([-w,-h,e, w,-h,e, w,h,e, -w,h,e,  w,-h,-e, -w,-h,-e, -w,h,-e, w,h,-e],3));
@@ -320,12 +327,13 @@ function planInit(host,full){
 }
 function planShow(){if(!PL.el)return;PL.el.classList.toggle('on',PL.on);document.body.classList.toggle('plan',PL.on);planDraw();}
 function planHTML(){
-  var h='<div class="h k">◀ 무대</div>',r,n,name;
-  for(r=0;r<ROWS;r++)h+='<div class="h">'+String.fromCharCode(65+r)+'<small>'+(r+1)+'열</small></div>';
+  var h='<div class="h k">◀ 스크린</div>',r,n,k,bn,id,f;
+  for(r=0;r<ROWS;r++)h+='<div class="h">'+(r+1)+'<small>열</small></div>';
   for(n=21;n>=1;n--){
-    name=n>15?'상단 '+(22-n)+'번':n>6?'중앙 '+(16-n)+'번':'하단 '+(7-n)+'번';
-    h+='<div class="l"><b>'+n+'</b>'+name+'</div>';
-    for(r=0;r<ROWS;r++){var id=String.fromCharCode(65+r)+n,f=planInfo(id);
+    if(n===21||n===15||n===6){bn=n>15?2:n>6?1:0;h+='<div class="l tl">테이블</div>';for(r=0;r<ROWS;r++)h+='<div class="tn">'+(bn*ROWS+r+1)+'</div>';}
+    k=n>15?n-15:n>6?n-6:n;
+    h+='<div class="l"><b>'+k+'</b>'+(n>15?'우측':n>6?'중앙':'좌측')+'</div>';
+    for(r=0;r<ROWS;r++){id=OLD[String.fromCharCode(65+r)+n];f=planInfo(id);
       h+='<div class="c '+f.cls+(f.sel?' sel':'')+'" data-s="'+id+'" title="'+planEsc(id+(f.a?' · '+f.a:'')+(f.b?' '+f.b:''))+'"><b>'+planEsc(f.a)+'</b>'+(f.b?'<span>'+planEsc(f.b)+'</span>':'')+'<i>'+id+'</i></div>';}
     if(n===16||n===7)h+='<div class="ai">통로</div>';
   }
@@ -398,7 +406,7 @@ function side(){
   const c=$('smsel');
   if(!sel){c.className='smsel empty';c.innerHTML='<span class="mut">3D 화면에서 좌석을 클릭하세요. 빈 좌석이면 아래 미배정 인원에서 골라 배정합니다.</span>';}
   else{const o=occ[sel.id]||[];c.className='smsel';
-    c.innerHTML='<div class="sid">'+sel.id+'<small>'+sel.row+'줄 '+sel.num+'번</small></div>'+
+    c.innerHTML='<div class="sid">'+sel.id+'<small>'+sel.tno+'번 테이블 '+sel.k+'번 좌석</small></div>'+
       (o.length?o.map(x=>'<div class="occ"><div>'+who(x)+'<div class="mut">'+esc([x.dept,x.title].filter(Boolean).join(' · '))+'</div></div>'+
         '<div class="acts">'+(x.status==='confirmed'?'<button data-a="arr" data-id="'+x.id+'" class="'+(x.attended?'arr on':'')+'">'+(x.attended?'참석 체크됨':'참석 체크')+'</button>':'')+
         '<button data-a="move" data-id="'+x.id+'" class="'+(moveFrom&&moveFrom.reg===x.id?'on':'')+'">자리 이동</button><button data-a="un" data-id="'+x.id+'">배정 해제</button></div></div>').join('')+

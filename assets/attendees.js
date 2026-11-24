@@ -6,7 +6,7 @@ const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;',
 const norm=s=>String(s||'').toLowerCase().replace(/\s|\(주\)|㈜|주식회사|-/g,'');
 let R=[],S={},flt='all',q='',pick=null,timer=null,loading=false,desk='all',sort={k:null,d:1};
 const SORTV={co:x=>x.company_name||'',name:x=>x.name||'',status:x=>x.status==='confirmed'?0:1,desk:x=>{const d=deskOf(S[x.id]);return d?(d==='VIP'?8:+d.slice(1)):'';},
-  seat:x=>{const v=String((S[x.id]||{}).seat||'').toUpperCase().replace(/[\s-]/g,''),m=/^([A-Z])(\d+)$/.exec(v);return m?(m[1].charCodeAt(0)-64)*100+(+m[2]):v;},arr:x=>x.status!=='confirmed'?'':(x.attended?0:1)};
+  seat:x=>{const raw=String((S[x.id]||{}).seat||''),k=window.SEAT_KEY&&window.SEAT_KEY(raw),m=/^(\d+)-(\d+)$/.exec(k||'');return m?(+m[1])*100+(+m[2]):raw;},arr:x=>x.status!=='confirmed'?'':(x.attended?0:1)};
 /* 안내 데스크 배정: seat_assign 에 전용 칸이 없어 메모(note) 앞에 "[D3] " 꼴 꼬리표로 저장합니다. 화면에서는 데스크와 메모를 따로 보여 줍니다. */
 const DESKS=[['D1','미등록자 · 현장등록'],['D2','ㄱ · ㄴ · ㄷ'],['D3','ㄹ · ㅁ · ㅂ · ㅅ'],['D4','ㅇ (아 · 에 · 엔)'],['D5','ㅇ (엘 · 우 · 유 · 이), ㅈ'],['D6','ㅋ · ㅌ · ㅍ, 하 · 한국'],['D7','한온 · 한진 · 한화 · 현대'],['VIP','VIP 별도']];
 const DRE=/^\[(D[1-7]|VIP)\]\s?/;
@@ -95,10 +95,10 @@ async function toggleArr(id){const c=sb(),x=R.find(r=>r.id===id);if(!c||!x)retur
 /* 좌석 변경: 좌석 칸을 누르면 빈 자리(배정된 좌석 · VIP·연사 고정석 · 없는 좌석 제외)를 줄별로 보여 주고 눌러서 고릅니다. 직접 입력도 그대로 가능. */
 const SP={el:null,inp:null,skip:false};
 function freeSeats(){const key=window.SEAT_KEY,all=window.SEAT_IDS||[],FX=window.SEAT_FIXED||{};if(!key)return [];const used=new Set(R.map(x=>key((S[x.id]||{}).seat)).filter(Boolean));return all.filter(s=>!used.has(s)&&!FX[s]);}
-function spDraw(){const inp=SP.inp;if(!inp)return;const id=inp.closest('tr').dataset.id,cur=String((S[id]||{}).seat||''),t=inp.value.toUpperCase().replace(/[\s-]/g,''),f=t&&t!==cur.toUpperCase().replace(/[\s-]/g,'')?t:'';
-  const free=freeSeats(),L=free.filter(s=>!f||s.startsWith(f)),by={};L.forEach(s=>(by[s[0]]=by[s[0]]||[]).push(s));
+function spDraw(){const inp=SP.inp;if(!inp)return;const id=inp.closest('tr').dataset.id,cur=String((S[id]||{}).seat||''),t=inp.value.toUpperCase().replace(/\s/g,''),f=t&&t!==cur.toUpperCase().replace(/\s/g,'')?t:'';
+  const free=freeSeats(),L=free.filter(s=>!f||s.startsWith(f)),by={};L.forEach(s=>{const tn=s.split('-')[0];(by[tn]=by[tn]||[]).push(s);});
   SP.el.innerHTML='<div class="hd"><b>빈 좌석 '+free.length+'석</b><span class="mut">'+(f?'"'+esc(f)+'" 로 시작 '+L.length+'석':'눌러서 선택 · 직접 입력도 가능')+'</span>'+(cur?'<button data-s="">좌석 비우기</button>':'')+'</div>'+
-    (L.length?Object.keys(by).sort().map(r=>'<div class="rw"><i>'+r+'</i><div>'+by[r].sort((a,b)=>+a.slice(1)-+b.slice(1)).map(s=>'<button data-s="'+s+'">'+s.slice(1)+'</button>').join('')+'</div></div>').join(''):'<p class="mut">'+(free.length?'해당하는 빈 좌석이 없습니다.':(window.SEAT_KEY?'빈 좌석이 없습니다.':'좌석 정보를 불러오지 못했습니다.'))+'</p>');}
+    (L.length?Object.keys(by).sort((a,b)=>a-b).map(r=>'<div class="rw"><i>'+r+'</i><div>'+by[r].sort((a,b)=>a.split('-')[1]-b.split('-')[1]).map(s=>'<button data-s="'+s+'" title="'+s+'">'+s+'</button>').join('')+'</div></div>').join(''):'<p class="mut">'+(free.length?'해당하는 빈 좌석이 없습니다.':(window.SEAT_KEY?'빈 좌석이 없습니다.':'좌석 정보를 불러오지 못했습니다.'))+'</p>');}
 function spOpen(inp){if(!SP.el){SP.el=document.createElement('div');SP.el.id='atseatpop';document.body.appendChild(SP.el);
     SP.el.addEventListener('mousedown',e=>{e.preventDefault();const b=e.target.closest('[data-s]');if(!b||!SP.inp)return;const i=SP.inp,id=i.closest('tr').dataset.id,v=b.dataset.s;i.value=v;SP.skip=true;i.blur();SP.skip=false;spClose();saveSeat(id,{seat:v||null});});}
   SP.inp=inp;spDraw();const r=inp.getBoundingClientRect(),w=Math.min(460,innerWidth-16);SP.el.style.display='block';SP.el.style.width=w+'px';SP.el.style.left=Math.max(8,Math.min(r.left,innerWidth-w-8))+scrollX+'px';
