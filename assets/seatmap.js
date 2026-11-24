@@ -281,7 +281,7 @@ function build(){
     labels[s.i]={s,ctx:c.getContext('2d'),tex,mesh:m,text:null};});
   hl=new THREE.Mesh(new THREE.PlaneGeometry(T_DEP+1.9,PITCH),new THREE.MeshBasicMaterial({color:0xffffff,transparent:true,opacity:.3,depthWrite:false}));hl.rotation.x=-Math.PI/2;hl.visible=false;scene.add(hl);
 
-  setView('persp');ready=true;paint();
+  planInit($('smstage'),true);setView('persp');ready=true;paint();
   if(document.fonts&&document.fonts.ready)document.fonts.ready.then(()=>{labels.forEach(lb=>lb.text=null);paint();});
   if(window.ResizeObserver)new ResizeObserver(resize).observe(el);addEventListener('resize',resize);
   pointer();
@@ -300,10 +300,45 @@ function paint(){
     dummy.position.set(cx,T_H+k*.0405*M,s.z);dummy.updateMatrix();ST.acr.setMatrixAt(s.i,dummy.matrix);ST.base.instanceMatrix.needsUpdate=ST.acr.instanceMatrix.needsUpdate=true;});
   seatMesh.instanceColor.needsUpdate=backMesh.instanceColor.needsUpdate=true;
   if(sel){hl.visible=true;hl.position.set(sel.x+.6,.05,sel.z);}else hl.visible=false;
+  planDraw();
 }
+/* ---------- 평면 좌석도: '평면' 시점에서 엑셀 04. 좌석도와 같은 배치(무대 왼쪽 · 열 A~O가 가로 · 좌석 21→1이 세로)로 크게 보기 ---------- */
+var PL={on:false,z:1,el:null};
+function planEsc(v){return String(v==null?'':v).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+function planInit(host,full){
+  var el=document.createElement('div');el.id='splan';
+  el.innerHTML='<div class="bar"><b>좌석도</b><span class="mut">◀ 무대는 왼쪽 · 칸을 누르면 좌석 선택</span><span class="sp"></span><button data-p="-" title="작게">－</button><span id="splz">100%</span><button data-p="+" title="크게">＋</button><button data-p="fit">맞춤</button>'+(full?'<button data-p="full">전체 화면</button>':'')+'<button data-p="3d">3D 평면 보기</button></div><div class="wrap"><div id="splgrid"></div></div>';
+  host.appendChild(el);PL.el=el;
+  el.addEventListener('click',function(e){
+    var b=e.target.closest('[data-p]');
+    if(b){var p=b.dataset.p;
+      if(p==='3d'){PL.on=false;return planShow();}
+      if(p==='full'){try{if(document.fullscreenElement)document.exitFullscreen();else el.requestFullscreen();}catch(err){}return;}
+      PL.z=p==='fit'?1:Math.max(.75,Math.min(3,PL.z+(p==='+'?.25:-.25)));return planDraw();}
+    var c=e.target.closest('.c[data-s]');if(c)planPick(c.dataset.s);
+  });
+}
+function planShow(){if(!PL.el)return;PL.el.classList.toggle('on',PL.on);document.body.classList.toggle('plan',PL.on);planDraw();}
+function planDraw(){
+  if(!PL.el||!PL.on)return;
+  var g=PL.el.querySelector('#splgrid'),h='<div class="h k">◀ 무대</div>',r,n,name;
+  for(r=0;r<ROWS;r++)h+='<div class="h">'+String.fromCharCode(65+r)+'<small>'+(r+1)+'열</small></div>';
+  for(n=21;n>=1;n--){
+    name=n>15?'상단 '+(22-n)+'번':n>6?'중앙 '+(16-n)+'번':'하단 '+(7-n)+'번';
+    h+='<div class="l"><b>'+n+'</b>'+name+'</div>';
+    for(r=0;r<ROWS;r++){var id=String.fromCharCode(65+r)+n,f=planInfo(id);
+      h+='<div class="c '+f.cls+(f.sel?' sel':'')+'" data-s="'+id+'" title="'+planEsc(id+(f.a?' · '+f.a:'')+(f.b?' '+f.b:''))+'"><b>'+planEsc(f.a)+'</b>'+(f.b?'<span>'+planEsc(f.b)+'</span>':'')+'<i>'+id+'</i></div>';}
+    if(n===16||n===7)h+='<div class="ai">통로</div>';
+  }
+  g.style.setProperty('--z',PL.z);g.innerHTML=h;PL.el.querySelector('#splz').textContent=Math.round(PL.z*100)+'%';
+}
+function planInfo(id){const o=occ[id],sl=!!(sel&&sel.id===id);if(NOSEAT[id])return{cls:'x',a:'좌석 없음',b:''};
+  if(!o)return{cls:FIXED[id]?'vip':'',a:FIXED[id]||'',b:'',sel:sl};
+  return{cls:o.length>1?'dup':o[0].attended?'arr':o[0].status!=='confirmed'?'pend':'as',a:o[0].company_name||'',b:o.map(x=>x.name).join(', '),sel:sl};}
+function planPick(id){const s=byId[id];if(!s||NOSEAT[id])return;if(moveFrom)return doMove(moveFrom,s);select(s);}
 const VIEWS={persp:[[30,17,27],[2,0,0]],top:[[0,62,.01],[0,0,0]],stage:[[-23,4.6,-.4],[6,0,-.4]],back:[[33,10,-.4],[-6,0,-.4]],all:[[-20,88,96],[-20,0,10]]};
 function setView(v){const p=VIEWS[v];camera.position.set(p[0][0],p[0][1],p[0][2]);controls.target.set(p[1][0],p[1][1],p[1][2]);controls.update();
-  document.querySelectorAll('#smview [data-v]').forEach(b=>b.classList.toggle('sel',b.dataset.v===v));}
+  document.querySelectorAll('#smview [data-v]').forEach(b=>b.classList.toggle('sel',b.dataset.v===v));PL.on=v==='top';planShow();}
 function focus(s){if(!ready)return;const off=camera.position.clone().sub(controls.target);if(off.length()>16)off.setLength(16);controls.target.set(s.x,T_H,s.z);camera.position.copy(controls.target).add(off);}
 function pointer(){
   const ray=new THREE.Raycaster(),v=new THREE.Vector2(),cv=renderer.domElement,tip=$('smtip');let down=null;

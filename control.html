@@ -208,6 +208,30 @@ table.att select.desk{min-height:32px;height:32px;min-width:78px;padding:0 6px}
 .smwrap{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:14px}
 #smstage{position:relative;height:calc(100vh - 250px);min-height:420px;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#121212}
 #smstage canvas{display:block}
+/* 평면 좌석도 (엑셀 04. 좌석도와 같은 배치) */
+#splan{position:absolute;inset:0;z-index:4;background:#101218;display:none;flex-direction:column;color:#e9ebf2}
+#splan.on{display:flex}
+#splan .bar{display:flex;align-items:center;gap:8px;padding:8px 12px;border-bottom:1px solid rgba(255,255,255,.1);font-size:12px;flex:none;flex-wrap:wrap}
+#splan .bar b{font-size:14px}#splan .bar .sp{flex:1}#splan .bar .mut{color:#8f96aa}#splan .bar #splz{min-width:38px;text-align:center;color:#c9cede}
+#splan .bar button{min-height:0;padding:5px 10px;font-size:12px;width:auto}
+#splan .wrap{flex:1;overflow:auto;padding:0 12px 56px}
+#splgrid{--z:1;font-size:calc(13px*var(--z));display:grid;grid-template-columns:4.6em repeat(15,minmax(5.6em,1fr));gap:.25em;min-width:min-content;padding-top:10px}
+#splgrid>*{border-radius:.35em;min-width:0}
+#splgrid .h{position:sticky;top:0;z-index:2;background:#1b1f2a;text-align:center;font-weight:800;padding:.4em 0;box-shadow:0 -12px 0 #101218}
+#splgrid .h small{font-weight:500;color:#8f96aa;margin-left:.3em}
+#splgrid .h.k{left:0;z-index:3;font-size:.85em;color:#e2b04a;display:flex;align-items:center;justify-content:center}
+#splgrid .l{position:sticky;left:0;z-index:1;background:#1b1f2a;display:flex;flex-direction:column;justify-content:center;align-items:center;font-size:.8em;color:#aab0c2;line-height:1.3}
+#splgrid .l b{font-size:1.3em;color:#fff}
+#splgrid .ai{grid-column:1/-1;text-align:center;font-size:.75em;color:#6f7689;letter-spacing:.5em;padding:.35em 0;border:1px dashed rgba(255,255,255,.12)}
+#splgrid .c{position:relative;min-height:4.4em;padding:.35em .45em 1.15em;background:#1a1d27;border:1px solid rgba(255,255,255,.07);cursor:pointer;line-height:1.25;overflow:hidden;word-break:break-all}
+#splgrid .c:hover{filter:brightness(1.25)}
+#splgrid .c b{display:block;font-weight:700}
+#splgrid .c span{display:block;color:#d5d9e6;font-size:.92em;margin-top:.1em}
+#splgrid .c i{position:absolute;right:.45em;bottom:.2em;font-style:normal;font-size:.72em;color:rgba(255,255,255,.5)}
+#splgrid .c.as{background:#1b2c57;border-color:#2f6bff}#splgrid .c.arr{background:#17432f;border-color:#5ed39a}#splgrid .c.vip{background:#45360f;border-color:#e2b04a}
+#splgrid .c.pend{background:#523b12;border-color:#ffb74d}#splgrid .c.dup{background:#552020;border-color:#ff7a7a}#splgrid .c.hold{background:#33265a;border-color:#a57bff}
+#splgrid .c.x{background:repeating-linear-gradient(45deg,#15171e,#15171e 6px,#1c1f28 6px,#1c1f28 12px);cursor:default;color:#6f7689}#splgrid .c.x:hover{filter:none}
+#splgrid .c.sel{outline:3px solid #fff;outline-offset:-2px}
 #smtip{position:absolute;display:none;pointer-events:none;background:rgba(0,0,0,.82);border:1px solid var(--line);padding:5px 9px;border-radius:6px;font-size:12px;white-space:nowrap;z-index:2}
 #smstaff{position:absolute;left:10px;top:10px;z-index:1;font-size:11px;line-height:1.75;color:var(--fg-2);background:rgba(18,18,18,.84);border:1px solid var(--line);border-radius:8px;padding:8px 10px;columns:2;column-gap:14px;max-width:340px;pointer-events:none}
 #smstaff .hd{column-span:all;font-weight:700;color:var(--fg);margin-bottom:2px}#smstaff div{break-inside:avoid;white-space:nowrap}
@@ -309,7 +333,7 @@ html{overflow-x:hidden}
 <div id="colSeat">
  <div class="box">
   <h2><span>좌석 배치 <span class="mut" style="font-weight:500;font-size:13px">3D 도면 · 좌석을 클릭해 배정 · 참석자 관리와 같은 데이터</span></span>
-   <span style="display:flex;gap:8px;align-items:center"><span id="smmsg" style="font-size:12px;font-weight:500"></span><nav class="subtab" id="smview"><button data-v="persp">3D</button><button data-v="top">평면</button><button data-v="stage">무대에서</button><button data-v="back">뒤에서</button><button data-v="all">전체</button></nav><nav class="subtab" id="smentry" title="행사기획안 7p·8p 기준 — 방문객 동선과 운영 인력 배치가 함께 바뀝니다"><button data-e="before">시작 전</button><button data-e="after">시작 후</button></nav><nav class="subtab"><button id="smroute" title="방문객 동선 — 빨강: 포이어, 파랑: 행사장 안">방문객 동선 ON</button><button id="smstaffbtn" title="운영 인력 배치(파란 번호)">운영 인력 ON</button></nav><button id="smban" title="포이어 상단 띠 현수막 1안/2안 전환">상단 현수막 1안</button><button id="smlabel" title="라벨을 실제 크기(투명 아크릴 스탠드 약 110×75mm) / 4배 확대로 전환">라벨 확대</button><button id="smreload">새로고침</button></span></h2>
+   <span style="display:flex;gap:8px;align-items:center"><span id="smmsg" style="font-size:12px;font-weight:500"></span><nav class="subtab" id="smview"><button data-v="persp">3D</button><button data-v="top" title="엑셀 04. 좌석도와 같은 배치로 자리배치를 크게 보기">평면</button><button data-v="stage">무대에서</button><button data-v="back">뒤에서</button><button data-v="all">전체</button></nav><nav class="subtab" id="smentry" title="행사기획안 7p·8p 기준 — 방문객 동선과 운영 인력 배치가 함께 바뀝니다"><button data-e="before">시작 전</button><button data-e="after">시작 후</button></nav><nav class="subtab"><button id="smroute" title="방문객 동선 — 빨강: 포이어, 파랑: 행사장 안">방문객 동선 ON</button><button id="smstaffbtn" title="운영 인력 배치(파란 번호)">운영 인력 ON</button></nav><button id="smban" title="포이어 상단 띠 현수막 1안/2안 전환">상단 현수막 1안</button><button id="smlabel" title="라벨을 실제 크기(투명 아크릴 스탠드 약 110×75mm) / 4배 확대로 전환">라벨 확대</button><button id="smreload">새로고침</button></span></h2>
   <div class="smwrap">
    <div id="smstage"><div id="smtip"></div><div id="smstaff"></div>
     <div id="smkeys">WASD·방향키 이동 · Q/E 회전 · R/F 확대·축소 · PgUp/PgDn 기울기 · 1~5 시점 · L 라벨 · / 검색 · Esc 선택 해제</div>
