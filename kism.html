@@ -181,6 +181,12 @@ body.notes .s.cur .note b{color:#fff}
 #K0 .hx{top:40px}
 #K0 .hx-strip{top:820px}#K0 .hx-src{top:982px}
 #K0 .cv .r{padding:15px 0}
+/* 00 (11/24 14:38) 인물 컷아웃 대신 뉴스1 원본 사진을 자르지 않고 3:2 그대로(워터마크 유지) — 패널 위에 걸친 사진 액자가 아래에서 올라오며 선명해짐. 흑백 잔상(컷아웃) 삭제 */
+#K0 .hx-p{left:105px;top:280px;width:690px;height:460px;box-shadow:0 30px 80px rgba(0,0,0,.5),0 0 0 2px rgba(255,255,255,.18)}
+#K0 .hx-p img{left:0;top:0;bottom:auto;width:100%;height:100%;object-fit:contain;-webkit-mask:none;mask:none}
+#K0 .hx-gh{display:none}
+#K0 .hx-br.a{left:75px;top:136px}
+#K0 .hx-br.b{left:735px;top:680px}
 </style></head>
 <body>
 <div class="stage" id="stage">
@@ -191,7 +197,7 @@ body.notes .s.cur .note b{color:#fff}
   <div class="hx-pn"></div>
   <div class="hx-c"></div>
   <svg class="hx-ring" viewBox="-330 -330 660 660"><defs><path id="hxR" d="M0,-300 a300,300 0 1,1 0,600 a300,300 0 1,1 0,-600"/></defs><text><textPath href="#hxR" textLength="1870">KOREA INSTITUTE OF SHAREHOLDERS' MEETING · 한국주주총회연구소 · KISM · </textPath></text></svg>
-  <div class="hx-p"><img src="assets/kism/photo-main-cut.webp" alt="권재열 소장"></div>
+  <div class="hx-p"><img src="assets/kism/photo-main.webp" alt="권재열 소장 (사진 뉴스1)"></div>
   <i class="hx-br a"></i><i class="hx-br b"></i>
   <p class="hx-no">KISM<br>Director</p>
  </div>
