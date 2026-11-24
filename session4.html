@@ -739,6 +739,46 @@ html.embed,html.embed body,html.embed .stage{background:transparent}html.embed #
 #K22s .sysd svg.ln{position:absolute;left:0;top:0;overflow:visible}
 #K22s .sysd svg.ln line{stroke:#8fb4d8;stroke-width:3;stroke-opacity:.75}
 #K22s .sysd .lb.nt i{display:inline-flex;align-items:center;justify-content:center;flex:none;width:40px;height:40px;border-radius:50%;background:#4fc3e8;color:#06121c;font:700 24px/1 "Pretendard Variable";margin-right:12px;vertical-align:-6px}
+
+/* K21 (11/24 23:00) 원본 27p 구성 그대로 — 상장기업(전담 운영지원 및 현장지원 — 주주총회 통합관리시스템) ∞ 주주(서비스 5종 — 주주용 고객센터). 전환: 제목만 크게 가운데 → 제목이 위로 작아지며 서비스 이미지 카드들이 사방에서 날아와 모여 도식이 됨 → 연결선 · ∞ · 묶음 제목 */
+#K21 .k21t{position:absolute;left:0;right:0;top:120px;margin:0;text-align:center;font:700 104px/1.2 "Pretendard Variable";color:#F2F5FA;letter-spacing:-.02em;transform-origin:50% 0}
+#K21 .k21t em{font-style:normal;background:linear-gradient(90deg,#0081cc,#00ada9);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent}
+.s.cur#K21 .k21t{animation:k21T 2.2s cubic-bezier(.6,0,.2,1) both}
+@keyframes k21T{0%{opacity:0;transform:translateY(560px) scale(1.55)}18%,55%{opacity:1;transform:translateY(560px) scale(1.55)}100%{opacity:1;transform:none}}
+#K21 .k21g{position:absolute;top:330px;margin:0;text-align:center;font:600 56px/1 "Pretendard Variable";color:#AEB8C6;opacity:0}
+.s.cur#K21 .k21g{animation:k21F .7s ease 2.7s both}
+#K21 .cd{position:absolute;border-radius:32px;overflow:hidden;background:#0d141d;box-shadow:0 30px 90px rgba(0,0,0,.55),0 0 0 2px rgba(242,245,250,.1);opacity:0}
+#K21 .cd i{position:absolute;inset:0;background-size:cover;background-position:50% 50%;filter:saturate(.85)}
+#K21 .cd.pn i::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(6,10,16,.15) 0%,rgba(6,10,16,.55) 45%,rgba(6,10,16,.92) 100%)}
+#K21 .cd b{position:absolute;left:0;right:0;font:700 62px/1.3 "Pretendard Variable";color:#fff;text-align:center}
+#K21 .cd.pn b{bottom:80px}
+#K21 .cd.sv i{right:auto;width:300px}
+#K21 .cd.sv i::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(13,20,29,0) 40%,#0d141d)}
+#K21 .cd.sv b{left:300px;top:50%;transform:translateY(-50%);font-size:52px;text-align:left;padding-left:20px}
+.s.cur#K21 .cd{animation:k21C 1.1s cubic-bezier(.16,1,.3,1) var(--d) both}
+@keyframes k21C{from{opacity:0;transform:translate(var(--dx),var(--dy)) rotate(var(--r)) scale(.55);filter:blur(10px)}60%{opacity:1}to{opacity:1;transform:none;filter:none}}
+#K21 svg.k21l{position:absolute;left:0;top:0;opacity:0;overflow:visible}
+#K21 svg.k21l line{stroke:rgba(143,180,216,.7);stroke-width:4}
+#K21 svg.k21l .inf{fill:none;stroke:url(#k21g);stroke:#3aa0ea;stroke-width:8;stroke-linecap:round}
+.s.cur#K21 svg.k21l{animation:k21F .8s ease 2.6s both}
+@keyframes k21F{from{opacity:0}to{opacity:1}}
+#K21 .cd.sv i{width:260px}#K21 .cd.sv b{left:260px;font-size:50px;white-space:nowrap}
+
+/* K24a (11/24 23:10) 우측 서비스 화면 재구성 — 기존 에셋(ocr-1~5, cx-pop2). 에이전트 앱 5단계 화면이 3초씩 순환 + 오른쪽 단계 목록 동기 하이라이트 + 관리자 페이지 집계 팝업 */
+#K24a .k24p .scr{position:relative;background:#fff}
+#K24a .k24p .scr img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 0;opacity:0}
+.s.cur#K24a .k24p .scr img{animation:k24S 15s linear calc(.9s + var(--k)*3s) infinite both}
+@keyframes k24S{0%{opacity:0;transform:translateX(60px)}3%{opacity:1;transform:none}19%{opacity:1;transform:none}22%{opacity:0;transform:translateX(-60px)}100%{opacity:0}}
+#K24a .k24s{position:absolute;left:3060px;top:250px;width:880px;margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:14px}
+#K24a .k24s li{display:flex;align-items:center;gap:26px;height:84px;padding:0 30px;border-radius:20px;font:600 44px/1 "Pretendard Variable";color:#7d8794;background:rgba(242,245,250,.04);border:2px solid rgba(242,245,250,.08)}
+#K24a .k24s li i{font-style:normal;width:52px;height:52px;border-radius:50%;display:grid;place-items:center;font:700 28px/1 "Pretendard Variable";background:rgba(242,245,250,.1);color:#AEB8C6}
+.s.cur#K24a .k24s li{animation:k24H 15s linear calc(.9s + var(--k)*3s) infinite both}
+.s.cur#K24a .k24s li i{animation:k24I 15s linear calc(.9s + var(--k)*3s) infinite both}
+@keyframes k24H{0%,22%,100%{color:#7d8794;background:rgba(242,245,250,.04);border-color:rgba(242,245,250,.08)}3%,19%{color:#F2F5FA;background:rgba(0,113,243,.16);border-color:rgba(58,160,234,.7)}}
+@keyframes k24I{0%,22%,100%{background:rgba(242,245,250,.1);color:#AEB8C6}3%,19%{background:#0071f3;color:#fff}}
+#K24a .k24w{overflow:hidden;background:#fff;box-shadow:0 40px 100px rgba(0,0,0,.55)}
+#K24a .k24w img{width:100%;height:100%;object-fit:contain;display:block}
+#K24a .k24c{position:absolute;margin:0;text-align:center;font:600 36px/1 "Pretendard Variable";color:#AEB8C6}
 </style></head>
 <body>
 <div class="stage" id="stage">
@@ -946,14 +986,14 @@ html.embed,html.embed body,html.embed .stage{background:transparent}html.embed #
 </section>
 
 <!-- ═════════ 5. A to Z ═════════ -->
-<section class="s ch" id="K21" data-t="A to Z 구성도" data-dim=".2">
- <div class="top"><h2 class="h hm fu" style="--i:1">전자주주총회의 준비부터 운영까지, <span class="g">A to Z</span></h2></div>
- <canvas class="viz" data-viz="flow" data-links="a1>a2,a2>a3,a3>a4,a4>a5" style="left:0;top:0;width:4200px;height:1600px" width="4200" height="1600"></canvas>
- <div class="nd k fu" id="a1" style="--i:2;left:300px;top:760px;width:520px;height:300px">상장기업</div>
- <div class="nd fu" id="a2" style="--i:3;left:960px;top:720px;width:500px;height:380px">전담 운영지원<br>및 현장지원</div>
- <div class="stack fu" id="a3" style="--i:4"><div class="hl">주주총회 통합관리시스템</div><div>현장전자표결</div><div>전자투표</div><div>전자위임장</div><div>의결권 대리행사 권유</div><div class="hl">전자주주총회</div></div>
- <div class="nd fu" id="a4" style="--i:5;left:2740px;top:720px;width:500px;height:380px">주주용<br>고객센터</div>
- <div class="nd k fu" id="a5" style="--i:6;left:3380px;top:760px;width:520px;height:300px">주주</div>
+<section class="s" id="K21" data-t="A to Z 구성도" data-dim=".16">
+ <h2 class="k21t"><span>전자주주총회의 준비부터 운영까지, <em>A to Z</em></span></h2>
+ <p class="k21g" style="left:300px;width:1500px">상장기업</p><p class="k21g" style="left:2260px;width:1640px">주주</p>
+ <div class="cd pn" style="left:300px;top:430px;width:700px;height:1020px;--dx:-900px;--dy:-600px;--r:-12deg;--d:1.55s"><i style="background-image:url(assets/s4/rehearsal.webp)"></i><b>전담 운영지원<br>및 현장지원</b></div>
+ <div class="cd pn" style="left:1100px;top:430px;width:700px;height:1020px;--dx:-300px;--dy:900px;--r:9deg;--d:1.65s"><i style="background-image:url(assets/s4/cxs-1.webp);background-position:0 0"></i><b>주주총회<br>통합관리시스템</b></div>
+ <div class="cd sv" style="left:2260px;top:430px;width:860px;height:172px;--dx:-1400px;--dy:-700px;--r:-14deg;--d:1.75s"><i style="background-image:url(assets/s4/cx-pop1.webp)"></i><b>전자투표</b></div><div class="cd sv" style="left:2260px;top:642px;width:860px;height:172px;--dx:900px;--dy:-900px;--r:10deg;--d:1.84s"><i style="background-image:url(assets/s4/cx-vote.webp)"></i><b>전자위임장</b></div><div class="cd sv" style="left:2260px;top:854px;width:860px;height:172px;--dx:1300px;--dy:-200px;--r:-8deg;--d:1.93s"><i style="background-image:url(assets/s4/ocr-1.webp)"></i><b>의결권 대리행사 권유</b></div><div class="cd sv" style="left:2260px;top:1066px;width:860px;height:172px;--dx:1000px;--dy:700px;--r:12deg;--d:2.02s"><i style="background-image:url(assets/s4/live-1.webp)"></i><b>전자주주총회</b></div><div class="cd sv" style="left:2260px;top:1278px;width:860px;height:172px;--dx:-900px;--dy:900px;--r:-10deg;--d:2.11s"><i style="background-image:url(assets/s4/on-3.webp)"></i><b>현장전자표결</b></div>
+ <div class="cd pn" style="left:3200px;top:430px;width:700px;height:1020px;--dx:900px;--dy:-500px;--r:12deg;--d:2.2s"><i style="background-image:url(assets/s4/callcenter.webp);background-position:50% 20%"></i><b>주주용<br>고객센터</b></div>
+ <svg class="k21l" viewBox="0 0 4200 1600" width="4200" height="1600"><line x1="1000" y1="940" x2="1100" y2="940"/><line x1="3120" y1="516" x2="3200" y2="516"/><line x1="3120" y1="728" x2="3200" y2="728"/><line x1="3120" y1="940" x2="3200" y2="940"/><line x1="3120" y1="1152" x2="3200" y2="1152"/><line x1="3120" y1="1364" x2="3200" y2="1364"/><path class="inf" d="M1900 940c40-70 120-70 150 0s110 70 150 0-110-70-150 0-110 70-150 0z"/></svg>
 </section>
 
 <section class="s ch sec fl" id="K21b" data-t="장 표지 · 시스템" data-dim=".3">
@@ -1011,13 +1051,15 @@ html.embed,html.embed body,html.embed .stage{background:transparent}html.embed #
   <h2 class="h hm fu" style="--i:1;margin-top:36px">서면위임장 · 의결권 대리행사 권유</h2>
   <p class="sub fu" style="--i:2;margin-top:30px">주총 당일 대량의 서면위임장도 실시간 통합 집계</p>
   <p class="grp fu" style="--i:3">개인 주주<small>신분증 OCR · 진위 확인</small></p>
-  <ul class="lst fu" style="--i:3"><li>행안부 · 경찰청 · 외교부 등 신분증 진위여부 확인</li><li>고유식별정보 개인정보처리 동의</li><li>현장요원 개인 폰에 저장하지 않음</li></ul>
+  <ul class="lst fu" style="--i:3"><li>행안부 · 경찰청 · 외교부 등 신분증 진위여부 확인</li><li>고유식별정보 개인정보처리 동의</li><li>현장 에이전트 개인 폰에 저장하지 않음</li></ul>
   <p class="grp fu" style="--i:4">기관 주주<small>실질주주 분석 26년 업력</small></p>
   <ul class="lst fu" style="--i:4"><li>실질 기관주주 파악 및 타겟팅 · 커뮤니케이션 자료 제작</li><li>프록시 미팅 어레인지 · 행사내역 추적 및 결과분석</li></ul>
  </div>
- <img class="ab fu" style="--i:3;left:2380px;top:260px;height:1180px;filter:drop-shadow(0 40px 80px rgba(0,0,0,.6))" src="assets/s4/ocr-1.webp" alt="">
- <div class="phone fu" style="--i:4;left:3020px;top:300px;width:500px;height:1080px"><div class="scr"><img src="assets/s4/ocr-4.webp" alt=""></div></div>
- <div class="frame fu" style="--i:5;left:3260px;top:900px;width:700px;height:550px;border-radius:22px"><img src="assets/s4/cx-pop2.webp" alt="" style="object-fit:contain;background:#fff"></div>
+ <div class="phone fu k24p" style="--i:3;left:2400px;top:240px;width:520px;height:1110px"><div class="scr"><img src="assets/s4/ocr-4.webp" alt="" style="--k:0"><img src="assets/s4/ocr-2.webp" alt="" style="--k:1"><img src="assets/s4/ocr-1.webp" alt="" style="--k:2"><img src="assets/s4/ocr-5.webp" alt="" style="--k:3"><img src="assets/s4/ocr-3.webp" alt="" style="--k:4"></div></div>
+ <p class="k24c fu" style="--i:3;left:2400px;top:1390px;width:520px">에이전트 앱</p>
+ <ol class="k24s fu" style="--i:4"><li style="--k:0"><i>1</i>주주 목록 · 방문 동선</li><li style="--k:1"><i>2</i>개인정보 수집 동의</li><li style="--k:2"><i>3</i>신분증 촬영</li><li style="--k:3"><i>4</i>진위 확인 · 인증</li><li style="--k:4"><i>5</i>위임장 수집 완료</li></ol>
+ <div class="frame fu k24w" style="--i:5;left:3060px;top:760px;width:880px;height:690px;border-radius:22px"><img src="assets/s4/cx-pop2.webp" alt=""></div>
+ <p class="k24c fu" style="--i:5;left:3060px;top:1490px;width:880px">관리자 페이지 · 실시간 통합 집계</p>
 </section>
 
 <section class="s" id="K24b" data-t="현장 출석 · 표결의 전자화" data-dim=".1">
