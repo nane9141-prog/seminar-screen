@@ -234,9 +234,17 @@ function build(){
     sp2(oB,'✕ 폐쇄',-14.9,2.1,HD+.2,'#ff6b6b',3.4);sp2(oA,'Gate',-14.9,2.1,HD+.2,'#6dffb0',3.2);sp2(oA,'Gate',-21.1,2.1,HD+.2,'#6dffb0',3.2);
     RT.g={vB:vB,vA:vA,iB:iB,iA:iA,sB:sB,sA:sA,oB:oB,oA:oA,dR:dR};applyRoute();
   })();
+  /* DID(세로형 55인치, 약 685×1215mm) 3대: 포이어 쪽 볼룸 벽 — Gate 오른쪽부터 왼쪽으로 문 옆. 화면 이미지는 SEAT_DID(없으면 빈 화면) */
+  (function(){var w=.685*M,h=1.215*M,y=1.55*M,z=HD+.37,D=window.SEAT_DID||[];[27.25,19.35,8.35].forEach(function(x,i){
+    var pl=new THREE.Mesh(new THREE.BoxGeometry(1.0*M,2.9*M,.12),new THREE.MeshStandardMaterial({color:0x17181c}));pl.position.set(x,1.45*M,HD+.27);scene.add(pl);   // DID가 걸리는 검은 벽 패널
+    var f=new THREE.Mesh(new THREE.BoxGeometry(w+.09,h+.09,.07),new THREE.MeshStandardMaterial({color:0x050608}));f.position.set(x,y,z);scene.add(f);
+    var c=document.createElement('canvas');c.width=274;c.height=486;var g=c.getContext('2d');g.fillStyle='#10131c';g.fillRect(0,0,274,486);g.fillStyle='#5f6b8a';g.font='700 40px sans-serif';g.textAlign='center';g.fillText('DID '+(i+1),137,255);
+    var m=new THREE.Mesh(new THREE.PlaneGeometry(w,h),new THREE.MeshBasicMaterial({map:new THREE.CanvasTexture(c)}));m.position.set(x,y,z+.04);scene.add(m);
+    var src=D[i]||D[0];if(src){var im=new Image();im.onload=function(){var tx=new THREE.Texture(im);tx.anisotropy=8;tx.needsUpdate=true;m.material.map=tx;m.material.needsUpdate=true;};im.src=src;}
+  });})();
   /* 스탠딩 배너 600×1800mm: 06 = 7번 데스크(다과 쪽 끝) 옆, 07 = Gate 오른쪽, 08 = 게스트 리프트 동선 벽면(볼룸 바깥벽) */
   (function(){var B=window.SEAT_STANDS;if(!B)return;var bw=.6*M,bh=1.8*M,y0=.15*M;
-    var P=[[-16.8,16.3,0],[27.4,14.5,0],[28.8,4,Math.PI/2]];   // [x, z, 방향]
+    var P=[[-16.8,16.3,0],[28.35,14.5,0],[28.8,4,Math.PI/2]];   /* 07은 Gate 오른쪽 DID를 가리지 않게 DID 바로 옆으로 */   // [x, z, 방향]
     P.forEach(function(p,i){if(!B[i])return;var gp=new THREE.Group();
       var bk=new THREE.Mesh(new THREE.BoxGeometry(bw,bh,.03),new THREE.MeshStandardMaterial({color:0x111216}));bk.position.set(0,y0+bh/2,-.02);gp.add(bk);
       var ft=new THREE.Mesh(new THREE.BoxGeometry(bw,.06,.55),new THREE.MeshStandardMaterial({color:0x2a2c31}));ft.position.set(0,.03,-.12);gp.add(ft);
