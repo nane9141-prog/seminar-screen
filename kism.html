@@ -187,35 +187,62 @@ body.notes .s.cur .note b{color:#fff}
 #K0 .hx-gh{display:none}
 #K0 .hx-br.a{left:75px;top:136px}
 #K0 .hx-br.b{left:735px;top:680px}
+
+/* 00 (11/24 14:50) 전환: ① 뉴스1 사진 화면 전체(천천히 줌아웃) ② 「한국주주총회연구소 소장 / 권재열」 ③ 사진이 아래 띠 첫 칸으로 줄어들고, 아래 면 전체를 1단 사진 띠가 채워 흐름 ④ 그 위에 프로필(왼쪽 이름 · 직함 · 강조, 오른쪽 약력) 차례로 등장. 사진은 자르지 않음(띠는 높이 맞춤, 원 비율) */
+#K0 .k0h{position:absolute;left:0;top:0;width:1920px;height:1080px;z-index:5;overflow:hidden;pointer-events:none}
+#K0 .k0h img{width:100%;height:100%;object-fit:cover;display:block}
+#K0 .k0h::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(5,9,14,0) 40%,rgba(5,9,14,.88) 100%)}
+#K0 .k0h .cap{position:absolute;left:120px;bottom:110px;z-index:2}
+#K0 .k0h .cap .r{font:500 40px/1 "Pretendard Variable";color:rgba(255,255,255,.9)}
+#K0 .k0h .cap .n{margin-top:22px;font:700 160px/1 "Pretendard Variable";color:#fff;letter-spacing:.06em}
+.s.cur#K0 .k0h{animation:k0H 3.6s cubic-bezier(.65,0,.25,1) both}
+.s.cur#K0 .k0h img{animation:k0Z 3.6s ease-out both}
+.s.cur#K0 .k0h::after,.s.cur#K0 .k0h .cap{animation:k0C 3.6s ease both}
+@keyframes k0H{0%{opacity:0;left:0;top:0;width:1920px;height:1080px}10%,66%{opacity:1;left:0;top:0;width:1920px;height:1080px}92%{opacity:1;left:0;top:800px;width:420px;height:280px}100%{opacity:0;left:0;top:800px;width:420px;height:280px}}
+@keyframes k0Z{0%{transform:scale(1.1)}66%{transform:scale(1.02)}100%{transform:none}}
+@keyframes k0C{0%,14%{opacity:0}28%,58%{opacity:1}68%,100%{opacity:0}}
+#K0 .k0s{position:absolute;left:0;right:0;top:800px;height:280px;overflow:hidden;opacity:0}
+#K0 .k0s .tr{display:flex;gap:16px;width:max-content;height:100%}
+#K0 .k0s figure{margin:0;height:280px;flex:none;background:#0c131c}
+#K0 .k0s img{display:block;height:100%;width:auto;filter:saturate(.85) contrast(1.03) brightness(.92)}
+.s.cur#K0 .k0s{animation:k0F .01s linear 3.3s both}
+.s.cur#K0 .k0s .tr{animation:k0M 48s linear 3.8s infinite}
+@keyframes k0M{to{transform:translateX(calc(-50% - 8px))}}
+#K0 .k0src{position:absolute;right:120px;top:756px;font:400 16px/1 "Pretendard Variable";color:#5d6b7d;opacity:0}
+#K0 .k0l{position:absolute;left:120px;top:110px;width:760px}
+#K0 .k0l .pn{position:static}
+#K0 .k0l .nm{margin-top:40px;font:700 130px/1 "Pretendard Variable";color:#fff;letter-spacing:.06em}
+#K0 .k0l .ti{margin-top:30px;font:500 32px/1.5 "Pretendard Variable";color:#fff}
+#K0 .k0l .ti span{display:block;color:#AEB8C6;font-weight:400}
+#K0 .k0l .msg{margin-top:30px;padding-left:22px;border-left:3px solid #0081cc;font:400 27px/1.5 "Pretendard Variable";color:#C9D2DE}
+#K0 .k0r{position:absolute;left:960px;right:120px;top:126px;margin:0}
+#K0 .k0r .r:first-child{border-top:0;padding-top:0}
+#K0 .k0l>*,#K0 .k0r>*,#K0 .k0src{opacity:0}
+.s.cur#K0 .k0l>*,.s.cur#K0 .k0r>*,.s.cur#K0 .k0src{animation:k0F .8s cubic-bezier(.2,.7,.2,1) both}
+.s.cur#K0 .k0l>:nth-child(1){animation-delay:3.2s}.s.cur#K0 .k0l>:nth-child(2){animation-delay:3.3s}.s.cur#K0 .k0l>:nth-child(3){animation-delay:3.4s}.s.cur#K0 .k0l>:nth-child(4){animation-delay:3.5s}
+.s.cur#K0 .k0r>:nth-child(1){animation-delay:3.55s}.s.cur#K0 .k0r>:nth-child(2){animation-delay:3.65s}.s.cur#K0 .k0r>:nth-child(3){animation-delay:3.75s}.s.cur#K0 .k0src{animation-delay:3.9s}
+@keyframes k0F{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.s.cur#K0 *,.s.cur#K0 .k0h{animation-duration:.01s!important;animation-delay:0s!important}.s.cur#K0 .k0s .tr{animation:none}}
+#K0 .k0l{top:150px}#K0 .k0l .nm{font-size:150px;margin-top:44px}#K0 .k0l .ti{font-size:34px}#K0 .k0l .msg{font-size:29px}
+#K0 .k0r{top:166px}#K0 .k0r .r{padding:22px 0}#K0 .k0r li{font-size:30px}#K0 .k0r .r>p{font-size:26px}#K0 .k0r .hl b{font-size:32px}#K0 .k0r .hl span{font-size:24px}
 </style></head>
 <body>
 <div class="stage" id="stage">
 
 <section class="s" id="K0" data-n="0">
- <div class="hx">
-  <i class="hx-gh"></i>
-  <div class="hx-pn"></div>
-  <div class="hx-c"></div>
-  <svg class="hx-ring" viewBox="-330 -330 660 660"><defs><path id="hxR" d="M0,-300 a300,300 0 1,1 0,600 a300,300 0 1,1 0,-600"/></defs><text><textPath href="#hxR" textLength="1870">KOREA INSTITUTE OF SHAREHOLDERS' MEETING · 한국주주총회연구소 · KISM · </textPath></text></svg>
-  <div class="hx-p"><img src="assets/kism/photo-main.webp" alt="권재열 소장 (사진 뉴스1)"></div>
-  <i class="hx-br a"></i><i class="hx-br b"></i>
-  <p class="hx-no">KISM<br>Director</p>
- </div>
- <div class="hx-strip"><div class="hx-tr">
-  <figure><img src="assets/kism/photo-2.webp" alt=""></figure><figure><img src="assets/kism/photo-3.webp" alt=""></figure><figure><img src="assets/kism/photo-4.webp" alt=""></figure><figure><img src="assets/kism/photo-2.webp" alt=""></figure><figure><img src="assets/kism/photo-3.webp" alt=""></figure><figure><img src="assets/kism/photo-4.webp" alt=""></figure>
-  <figure><img src="assets/kism/photo-2.webp" alt=""></figure><figure><img src="assets/kism/photo-3.webp" alt=""></figure><figure><img src="assets/kism/photo-4.webp" alt=""></figure><figure><img src="assets/kism/photo-2.webp" alt=""></figure><figure><img src="assets/kism/photo-3.webp" alt=""></figure><figure><img src="assets/kism/photo-4.webp" alt=""></figure>
- </div></div>
- <p class="hx-src">사진 출처 · 뉴스1(news1.kr) · 시장경제(meconomynews.com) · 아이러브PC(ilovepc.co.kr)</p>
- <div class="pf">
+ <div class="k0h"><img src="assets/kism/photo-main.webp" alt="권재열 소장 (사진 뉴스1)"><div class="cap"><p class="r">한국주주총회연구소 소장</p><p class="n">권재열</p></div></div>
+ <div class="k0s"><div class="tr"><figure><img src="assets/kism/photo-main.webp" alt=""></figure><figure><img src="assets/kism/photo-2.webp" alt=""></figure><figure><img src="assets/kism/photo-3.webp" alt=""></figure><figure><img src="assets/kism/photo-4.webp" alt=""></figure><figure><img src="assets/kism/photo-main.webp" alt=""></figure><figure><img src="assets/kism/photo-2.webp" alt=""></figure><figure><img src="assets/kism/photo-3.webp" alt=""></figure><figure><img src="assets/kism/photo-4.webp" alt=""></figure></div></div>
+ <p class="k0src">사진 출처 · 뉴스1(news1.kr) · 시장경제(meconomynews.com) · 아이러브PC(ilovepc.co.kr)</p>
+ <div class="k0l">
   <p class="pn">00<i> &nbsp;연구소장 소개</i></p>
-  <p class="nm"><span style="--c:0">권</span><span style="--c:1">재</span><span style="--c:2">열</span></p>
+  <p class="nm">권재열</p>
   <p class="ti">한국주주총회연구소 소장<span>경희대학교 법학전문대학원 교수</span></p>
   <p class="msg">상법 · 회사법의 학문적 전문성과<br>전자주주총회 제도 · 실무 연구 경험</p>
-  <div class="cv">
-   <div class="r"><p>법제 · 사법</p><ul><li>법무부 상법 특별위원회 위원 역임</li><li>상법 시행령 제정 TF 위원장 역임</li><li>대법원 재판연구관 역임</li></ul></div>
-   <div class="r"><p>학계</p><ul><li>경희대학교 법학전문대학원 원장 역임</li><li>한국상사판례학회 회장 역임</li></ul></div>
-   <div class="r"><p>전자주주총회 연구</p><div class="hl"><b>「전자주주총회 운영실무 매뉴얼」 집필</b><span>한국상장회사협의회 · 2026</span></div></div>
-  </div>
+ </div>
+ <div class="k0r cv">
+  <div class="r"><p>법제 · 사법</p><ul><li>법무부 상법 특별위원회 위원 역임</li><li>상법 시행령 제정 TF 위원장 역임</li><li>대법원 재판연구관 역임</li></ul></div>
+  <div class="r"><p>학계</p><ul><li>경희대학교 법학전문대학원 원장 역임</li><li>한국상사판례학회 회장 역임</li></ul></div>
+  <div class="r"><p>전자주주총회 연구</p><div class="hl"><b>「전자주주총회 운영실무 매뉴얼」 집필</b><span>한국상장회사협의회 · 2026</span></div></div>
  </div>
 </section>
 
