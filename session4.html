@@ -840,6 +840,9 @@ html.embed,html.embed body,html.embed .stage{background:transparent}html.embed #
 #K24b .hi small{display:block;margin-bottom:6px;font:600 20px/1 "Pretendard Variable";color:#6b7280}
 #K24b .hi em{font-style:normal;padding:10px 20px;border-radius:14px;background:#e6f0ff;color:#0071f3;font:700 24px/1 "Pretendard Variable"}
 #K24b .sc b{color:#191b22}#K24b .pass b,#K24b .pass .nm{color:#fff}#K24b .k24bs{top:520px}#K24b .k24bs li{padding:26px 0}
+/* K10 (11/24 23:15) 군집 3색 — 중구 · 종로구 #0081cc, 영등포구 #5bade1, 강남 · 서초 · 송파 #00ada9. 라벨 블록 · % 색을 같은 색으로 */
+#K10 .mk.c1::before{background-color:#5bade1}#K10 .mk.c1>span{color:#2f8fcc}
+#K10 .mk.c2::before{background-color:#00ada9}#K10 .mk.c2>span{color:#008f8b}
 </style></head>
 <body>
 <div class="stage" id="stage">
@@ -934,9 +937,9 @@ html.embed,html.embed body,html.embed .stage{background:transparent}html.embed #
   <div class="r fu" style="--i:4"><span class="k">기타</span><span class="p"><span class="cnt" data-to="17">17</span>%</span><span class="c">36개사</span></div>
  </div>
  <canvas class="viz" data-viz="seoul" style="left:1900px;top:0;width:2300px;height:1600px" width="2300" height="1600"></canvas>
- <div class="mk" data-b="1" style="left:3330px;top:600px"><b>중구 · 종로구</b><span><span class="cnt" data-to="25" data-dur="1200">25</span>%</span><small>53개사</small></div>
- <div class="mk" data-b="1" style="left:2640px;top:1200px"><b>영등포구</b><span><span class="cnt" data-to="12" data-dur="1200">12</span>%</span><small>25개사</small></div>
- <div class="mk" data-b="1" style="left:3700px;top:1360px"><b>강남 · 서초 · 송파</b><span><span class="cnt" data-to="16" data-dur="1200">16</span>%</span><small>33개사</small></div>
+ <div class="mk c0" data-b="1" style="left:3330px;top:600px"><b>중구 · 종로구</b><span><span class="cnt" data-to="25" data-dur="1200">25</span>%</span><small>53개사</small></div>
+ <div class="mk c1" data-b="1" style="left:2640px;top:1200px"><b>영등포구</b><span><span class="cnt" data-to="12" data-dur="1200">12</span>%</span><small>25개사</small></div>
+ <div class="mk c2" data-b="1" style="left:3700px;top:1360px"><b>강남 · 서초 · 송파</b><span><span class="cnt" data-to="16" data-dur="1200">16</span>%</span><small>33개사</small></div>
 </section>
 
 <section class="s" id="K11" data-t="3월 집중일 · 지원 가능일" data-dim=".14" data-steps="2">
@@ -1552,7 +1555,7 @@ VIZ.seoul=(cv)=>{const g=cv.getContext('2d');let t0=0,st=0,ts=0;const W=cv.width
   const cx=Math.floor(px/P)*P+P/2,cy=Math.floor(py/P)*P+P/2,key=cx+','+cy;if(seen[key]||Math.abs(cy-rv(cx))<P*.55)continue;seen[key]=1;if(rnd()>.42)continue;hot.push([cx,cy,k,rnd()]);}});
  return{enter(){t0=performance.now();st=0;},step(n){st=n;ts=performance.now();},
  draw(t){g.clearRect(0,0,W,H);const k=Math.min(1,(t-t0)/1200);g.globalAlpha=k;g.drawImage(L3,0,0);g.globalAlpha=1;
-  if(st>=1){const q=t-ts;hot.forEach(([x,y,c,d],i)=>{const on=Math.min(1,Math.max(0,(q-d*900)/160));if(!on)return;const tw=.78+.22*Math.sin(t/420+i*1.7);g.fillStyle=c===2?`rgba(0,173,169,${on*tw})`:`rgba(0,129,204,${on*tw})`;g.fillRect(x-Q/2,y-Q/2,Q,Q);});
+  if(st>=1){const q=t-ts;hot.forEach(([x,y,c,d],i)=>{const on=Math.min(1,Math.max(0,(q-d*900)/160));if(!on)return;const tw=.78+.22*Math.sin(t/420+i*1.7);g.fillStyle=`rgba(${['0,129,204','91,173,225','0,173,169'][c]},${on*tw})`;g.fillRect(x-Q/2,y-Q/2,Q,Q);});
    const p=Math.min(1,q/900);g.strokeStyle=`rgba(242,245,250,${.55*p})`;g.lineWidth=2.5;[[1342, 759, 1430, 618], [1120, 960, 990, 1000], [1514, 1034, 1680, 1130]].forEach(([a,b,c,d])=>{g.beginPath();g.moveTo(a,b);g.lineTo(a+(c-a)*p,b+(d-b)*p);g.stroke();g.fillStyle=`rgba(242,245,250,${.9*p})`;g.fillRect(a-7,b-7,14,14);});}}};};
 VIZ.stars=(cv)=>{const g=cv.getContext('2d'),W=cv.width,H=cv.height,rnd=(a=>()=>(a=(a*16807)%2147483647)/2147483647)(11);const S=[...Array(180)].map(()=>({x:rnd()*W,y:rnd()*H,r:2+rnd()*5,p:rnd()*7}));const L=[];S.forEach((a,i)=>{let b=null,dm=1e9;S.forEach((c,j)=>{if(i===j)return;const d=(a.x-c.x)**2+(a.y-c.y)**2;if(d<dm){dm=d;b=j;}});if(dm<240*240)L.push([i,b]);});let t0=0;
  return{enter(){t0=performance.now();},draw(t){g.clearRect(0,0,W,H);const k=Math.min(1,(t-t0)/2000);g.lineWidth=2;L.forEach(([i,j],n)=>{const q=Math.min(1,Math.max(0,k*1.6-n/L.length));g.strokeStyle=`rgba(0,129,204,${.22*q})`;g.beginPath();g.moveTo(S[i].x,S[i].y);g.lineTo(S[i].x+(S[j].x-S[i].x)*q,S[i].y+(S[j].y-S[i].y)*q);g.stroke();});
