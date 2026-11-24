@@ -701,6 +701,23 @@ html.embed,html.embed body,html.embed .stage{background:transparent}html.embed #
 #K14 .k14p{top:300px}#K14 .tr{height:320px}
 /* K15 (23:08) 단계 머리 연도 · 단계명 흰색 */
 #K15 .ph .p0,#K15 .ph .p1,#K15 .ph .p0 b,#K15 .ph .p1 b{color:#F2F5FA}
+
+/* K18a · K18b · K18c (11/24 15:05) 참고 이미지(AI Tab) 2단 — 왼쪽 반 검정 바탕에 로고 · 제목 · 짧은 설명 가운데 정렬, 오른쪽 반 밝은 파스텔 면 위에 서비스 모션(KISM 인트로 영상 · KOSMOS 휴대폰 동작 · CONEXUS 데모 영상) */
+.sp2 .ab.lc{left:0;top:0;width:2100px;height:1600px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+.sp2 .ab.lc img{display:block}
+.sp2 .tl{font:700 96px/1.3 "Pretendard Variable";margin:70px 0 40px;letter-spacing:-.02em}
+.sp2 .ds{font:400 54px/1.5 "Pretendard Variable";color:var(--mut)}
+.sp2 .rp{position:absolute;left:2100px;top:0;width:2100px;height:1600px;overflow:hidden;background:radial-gradient(60% 50% at 20% 15%,#d9f6ff 0%,rgba(217,246,255,0) 70%),radial-gradient(55% 55% at 85% 20%,#efe4ff 0%,rgba(239,228,255,0) 70%),radial-gradient(60% 50% at 70% 95%,#dff3ff 0%,rgba(223,243,255,0) 70%),linear-gradient(180deg,#f7fbff,#f3f6ff)}
+.sp2 .card{position:absolute;left:200px;right:200px;top:50%;transform:translateY(-50%);border-radius:36px;overflow:hidden;background:#0d1117;box-shadow:0 50px 120px rgba(40,70,140,.28),0 0 0 2px rgba(255,255,255,.9)}
+.sp2 .card.fu{transform:translateY(calc(-50% + 36px))}.s.cur.sp2 .card.fu{transform:translateY(-50%)}
+.sp2 .card video{display:block;width:100%;height:100%;object-fit:cover}
+#K18c .card{background:#fff}
+#K18b .mp{box-shadow:0 50px 110px rgba(40,70,140,.32),inset 0 0 0 3px rgba(255,255,255,.9),inset 0 -6px 14px rgba(0,0,0,.06)}
+#K18b .mp-v{left:2560px;top:230px}
+#K18b .mp-l{left:3250px;top:150px}
+/* K13 번호 흰색 */
+#K13 .cl .n{color:#F2F5FA}
+#K18c .ab.lc img.inv{filter:brightness(0) invert(1)}
 </style></head>
 <body>
 <div class="stage" id="stage">
@@ -852,24 +869,18 @@ html.embed,html.embed body,html.embed .stage{background:transparent}html.embed #
  <p class="plus fu" style="--i:5"><b>+</b>전자투표 · 전자위임장 · 의결권 대리행사 권유</p>
 </section>
 
-<section class="s brand" id="K18a" data-t="KISM 한국주주총회연구소" data-dim=".12" data-ox=".3">
- <div class="ab" style="left:300px;top:250px;width:1500px">
-  
-  <img class="fu" style="--i:1;height:230px;margin-top:20px" src="assets/kism-white.svg" alt="KISM">
+<section class="s brand sp2" id="K18a" data-t="KISM 한국주주총회연구소" data-dim=".12" data-ox=".25">
+ <div class="ab lc"><img class="fu" style="--i:1;height:200px" src="assets/kism-white.svg" alt="KISM">
   <p class="tl fu" style="--i:2">더 나은 주주총회와<br>기업 · 주주의 관계를 위하여</p>
-  <p class="ds fu" style="--i:3">주주와 주주총회의 제도 · 운영 · 기술을 연구하고<br>합리적인 운영 방안과 발전 방향을 제시하는<br>주주총회 전문 연구소입니다.</p>
- </div>
- <div class="frame fu" style="--i:2;left:1900px;top:390px;width:2000px;height:762px"><video src="assets/kism-intro.mp4" muted playsinline loop preload="auto" style="width:100%;height:100%;object-fit:cover"></video></div>
+  <p class="ds fu" style="--i:3">주주총회의 제도 · 운영 · 기술을 연구하는<br>주주총회 전문 연구소</p></div>
+ <div class="rp"><div class="card fu" style="--i:2;aspect-ratio:2520/960"><video src="assets/kism-intro.mp4" muted playsinline loop preload="auto"></video></div></div>
 </section>
 
-<section class="s brand" id="K18b" data-t="KOSMOS 주주용" data-dim=".12" data-ox=".72">
- <canvas class="viz" data-viz="stars" style="left:1800px;top:0;width:2400px;height:1600px" width="2400" height="1600"></canvas>
- <div class="ab" style="left:300px;top:250px;width:1700px">
-  
-  <img class="fu" style="--i:1;height:230px;margin-top:20px" src="assets/s4/kosmos-white.png" alt="KOSMOS">
+<section class="s brand sp2" id="K18b" data-t="KOSMOS 주주용" data-dim=".12" data-ox=".25">
+ <div class="ab lc"><img class="fu" style="--i:1;height:200px" src="assets/s4/kosmos-white.png" alt="KOSMOS">
   <p class="tl fu" style="--i:2">주주의 참여로 완성되는<br>주주총회의 새로운 질서</p>
-  <p class="ds fu" style="--i:3">'질서 있는 우주'를 뜻하는 그리스어 kósmos에서 착안.<br>안전하고 신뢰할 수 있는 절차로 주주의 출석과<br>의결권 행사를 지원하는 주주용 전자주주총회 서비스입니다.</p>
- </div>
+  <p class="ds fu" style="--i:3">어디서나 안전하게 출석하고<br>의결권을 행사하는 주주용 서비스</p></div>
+ <div class="rp"></div>
  <div class="mp mp-v fu" style="--i:3"><div class="sc"><div class="v">
   <div class="tb"><i class="bk"></i><b>전자투표</b><span class="pg"><em>2</em> / 6</span></div>
   <div class="pb"><i></i></div>
@@ -895,14 +906,11 @@ html.embed,html.embed body,html.embed .stage{background:transparent}html.embed #
  </div></div></div>
 </section>
 
-<section class="s brand" id="K18c" data-t="CONEXUS 기업용" data-dim=".12" data-ox=".25">
- <div class="ab" style="left:300px;top:250px;width:1500px">
-  
-  <div class="fu" style="--i:1;margin:50px 0 10px"><img class="inv" style="height:150px;display:block" src="assets/s4/conexus-word.webp" alt="CONEXUS"></div>
+<section class="s brand sp2" id="K18c" data-t="CONEXUS 기업용" data-dim=".12" data-ox=".25">
+ <div class="ab lc"><img class="inv fu" style="--i:1;height:130px" src="assets/s4/conexus-word.webp" alt="CONEXUS">
   <p class="tl fu" style="--i:2">기업과 주주를 잇는<br>주주총회 운영의 중심</p>
-  <p class="ds fu" style="--i:3">'연결'과 '중심'의 의미를 담은 CONEXUS는<br>주주총회의 준비부터 운영 · 집계까지 하나의 흐름으로<br>연결하는 기업용 전자주주총회 서비스입니다.</p>
- </div>
- <div class="frame web kb fu" style="--i:2;left:1900px;top:300px;width:2000px;height:1210px"><div class="bar3"><i></i><i></i><i></i></div><img src="assets/s4/cx-1.webp" alt=""></div>
+  <p class="ds fu" style="--i:3">준비부터 운영 · 집계까지 하나로 잇는<br>기업용 전자주주총회 서비스</p></div>
+ <div class="rp"><div class="card fu" style="--i:2;aspect-ratio:16/9"><video src="assets/s4/cx-flow.mp4" muted playsinline loop preload="auto"></video></div></div>
 </section>
 
 <section class="s" id="K19" data-t="Partners" data-dim=".16">
