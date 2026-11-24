@@ -6,7 +6,10 @@
 const $=id=>document.getElementById(id);
 const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const norm=s=>String(s||'').toLowerCase().replace(/\s|\(주\)|㈜|주식회사|-/g,'');
-const COL={empty:0x3a3f4d,assigned:0x2f6bff,arrived:0x5ed39a,pending:0xffb74d,dup:0xff7a7a};
+/* 1열 VIP·연사 고정석(자리배치 엑셀 '04. 좌석도' 기준) · 좌석 없음(5열 중앙 7~9번) */
+const FIXED={"A21": "축사 김광룡", "A20": "축사 정우용", "A19": "연사 김승준", "A18": "연사 권재열", "A17": "연사 Scott", "A15": "김앤장 1", "A14": "김앤장 2", "A13": "김앤장 3", "A12": "상장협 전규향", "A11": "상장협 서지원", "A10": "IR협의회 1", "A9": "IR협의회 2", "A8": "코스닥협회 1", "A7": "코스닥협회 2", "A6": "IRK 1", "A5": "IRK 2", "A4": "IRK 3", "A3": "IRK 4", "A2": "IRK 5", "A1": "IRK 6"};
+const NOSEAT={E7:1,E8:1,E9:1};
+const COL={vip:0xe2b04a,empty:0x3a3f4d,assigned:0x2f6bff,arrived:0x5ed39a,pending:0xffb74d,dup:0xff7a7a};
 
 /* ---------- 레이아웃 (1 unit = 0.686 m) ---------- */
 const M=1/0.686,ROWS=15,PITCH=.6*M,ROW_X0=-15.7,ROW_DX=2.7,T_LEN=1.8*M,T_DEP=.45*M,T_H=.74*M,LBL_W=.105*M,LBL_H=.070*M;
@@ -40,7 +43,7 @@ function sync(){
   if(sel&&!byId[sel.id])sel=null;
   paint();side();
 }
-function seatColor(s){const o=occ[s.id];if(!o)return COL.empty;if(o.length>1)return COL.dup;if(o[0].attended)return COL.arrived;if(o[0].status!=='confirmed')return COL.pending;return COL.assigned;}
+function seatColor(s){const o=occ[s.id];if(!o)return FIXED[s.id]?COL.vip:COL.empty;if(o.length>1)return COL.dup;if(o[0].attended)return COL.arrived;if(o[0].status!=='confirmed')return COL.pending;return COL.assigned;}
 
 /* ---------- 3D ---------- */
 function loadLib(cb){
@@ -254,7 +257,7 @@ function build(){
   seatMesh=new THREE.InstancedMesh(new THREE.BoxGeometry(.45*M,.45*M,.48*M),new THREE.MeshStandardMaterial({color:0xffffff,roughness:.8}),n*3);
   backMesh=new THREE.InstancedMesh(new THREE.BoxGeometry(.08*M,.92*M,.48*M),new THREE.MeshStandardMaterial({color:0xffffff,roughness:.8}),n*3);
   const sx=T_DEP/2+.12*M+.225*M;
-  seats.forEach(s=>{dummy.rotation.set(0,0,0);dummy.scale.set(1,1,1);
+  seats.forEach(s=>{dummy.rotation.set(0,0,0);const q0=NOSEAT[s.id]?0:1;dummy.scale.set(q0,q0,q0);
     dummy.position.set(s.x+sx,.225*M,s.z);dummy.updateMatrix();seatMesh.setMatrixAt(s.i,dummy.matrix);
     dummy.position.set(s.x+sx+.265*M,.46*M,s.z);dummy.updateMatrix();backMesh.setMatrixAt(s.i,dummy.matrix);});
   scene.add(seatMesh,backMesh);
@@ -288,9 +291,9 @@ function resize(){if(!ready)return;const el=$('smstage'),w=el.clientWidth,h=el.c
 function paint(){
   if(!ready)return;
   seats.forEach(s=>{tmpColor.setHex(seatColor(s));seatMesh.setColorAt(s.i,tmpColor);backMesh.setColorAt(s.i,tmpColor);
-    const o=occ[s.id],lb=labels[s.i],text=o?o[0].company_name||'':'';
+    const o=occ[s.id],lb=labels[s.i],text=o?o[0].company_name||'':(FIXED[s.id]||'');
     if(lb.text!==text){lb.text=text;drawLabel(lb);}
-    const k=big?4:1,cx=s.x-T_DEP/2+(.03+.02*k)*M;lb.mesh.scale.set(k,k,k);lb.mesh.position.set(cx,T_H+k*.0405*M,s.z);
+    const k=NOSEAT[s.id]?0:(big?4:1),cx=s.x-T_DEP/2+(.03+.02*k)*M;lb.mesh.scale.set(k,k,k);lb.mesh.position.set(cx,T_H+k*.0405*M,s.z);
     dummy.rotation.set(0,0,0);dummy.scale.set(k,k,k);dummy.position.set(cx,T_H+k*.0015*M,s.z);dummy.updateMatrix();ST.base.setMatrixAt(s.i,dummy.matrix);
     dummy.position.set(cx,T_H+k*.0405*M,s.z);dummy.updateMatrix();ST.acr.setMatrixAt(s.i,dummy.matrix);ST.base.instanceMatrix.needsUpdate=ST.acr.instanceMatrix.needsUpdate=true;});
   seatMesh.instanceColor.needsUpdate=backMesh.instanceColor.needsUpdate=true;
@@ -304,13 +307,13 @@ function pointer(){
   const ray=new THREE.Raycaster(),v=new THREE.Vector2(),cv=renderer.domElement,tip=$('smtip');let down=null;
   function pick(e){const r=cv.getBoundingClientRect();v.set((e.clientX-r.left)/r.width*2-1,-((e.clientY-r.top)/r.height)*2+1);ray.setFromCamera(v,camera);
     const hit=ray.intersectObjects([tMesh,seatMesh,backMesh])[0];if(!hit||hit.instanceId==null)return null;
-    if(hit.object!==tMesh)return seats[hit.instanceId];
-    let best=null,bd=1e9;for(let k=0;k<3;k++){const s=seats[hit.instanceId*3+k],dd=Math.abs(s.z-hit.point.z);if(dd<bd){bd=dd;best=s;}}return best;}
+    if(hit.object!==tMesh)return NOSEAT[seats[hit.instanceId].id]?null:seats[hit.instanceId];
+    let best=null,bd=1e9;for(let k=0;k<3;k++){const s=seats[hit.instanceId*3+k],dd=Math.abs(s.z-hit.point.z);if(!NOSEAT[s.id]&&dd<bd){bd=dd;best=s;}}return best;}
   cv.addEventListener('pointerdown',e=>{down={x:e.clientX,y:e.clientY};});
   cv.addEventListener('pointermove',e=>{if(e.pointerType==='touch'||e.buttons){tip.style.display='none';return;}
     const s=pick(e);if(!s){tip.style.display='none';cv.style.cursor='';return;}cv.style.cursor='pointer';
     const o=occ[s.id],r=$('smstage').getBoundingClientRect();
-    tip.textContent=s.id+(o?' · '+o.map(x=>x.company_name+' '+x.name).join(', '):' · 빈 좌석');
+    tip.textContent=s.id+(o?' · '+o.map(x=>x.company_name+' '+x.name).join(', '):(FIXED[s.id]?' · '+FIXED[s.id]+' (고정석)':' · 빈 좌석'));
     tip.style.left=(e.clientX-r.left+14)+'px';tip.style.top=(e.clientY-r.top+14)+'px';tip.style.display='block';});
   cv.addEventListener('pointerleave',()=>tip.style.display='none');
   cv.addEventListener('pointerup',e=>{if(!down||Math.abs(e.clientX-down.x)+Math.abs(e.clientY-down.y)>6){down=null;return;}down=null;
@@ -351,7 +354,7 @@ function side(){
   if(!$('smstat'))return;
   const logged=!!(window.QAOnline&&QAOnline.client&&QAOnline.client());
   const placed=R.filter(x=>seatKey((S[x.id]||{}).seat)),un=R.filter(x=>!seatKey((S[x.id]||{}).seat)),dup=Object.keys(occ).filter(k=>occ[k].length>1);
-  $('smstat').innerHTML='<div><span class="mut">좌석</span><b>'+seats.length+'</b></div><div><span class="mut">배정</span><b>'+Object.keys(occ).length+'</b></div><div><span class="mut">잔여</span><b>'+(seats.length-Object.keys(occ).length)+'</b></div><div><span class="mut">미배정 인원</span><b>'+un.length+'</b></div>';
+  $('smstat').innerHTML='<div><span class="mut">좌석</span><b>'+(seats.length-Object.keys(NOSEAT).length)+'</b></div><div><span class="mut">배정</span><b>'+Object.keys(occ).length+'</b></div><div><span class="mut">잔여</span><b>'+(seats.length-Object.keys(NOSEAT).length-Object.keys(occ).length-Object.keys(FIXED).filter(k=>!occ[k]).length)+'</b></div><div><span class="mut">미배정 인원</span><b>'+un.length+'</b></div>';
   $('smwarn').innerHTML=!logged?'<span class="late">참석자 관리 탭에서 로그인하면 신청자와 좌석 배정이 표시됩니다.</span>':(dup.length?'<span class="late">같은 좌석에 2명 이상: '+dup.map(esc).join(', ')+'</span>':'');
   /* 선택 좌석 카드 */
   const c=$('smsel');
@@ -362,7 +365,7 @@ function side(){
         '<div class="acts">'+(x.status==='confirmed'?'<button data-a="arr" data-id="'+x.id+'" class="'+(x.attended?'arr on':'')+'">'+(x.attended?'참석 체크됨':'참석 체크')+'</button>':'')+
         '<button data-a="move" data-id="'+x.id+'" class="'+(moveFrom&&moveFrom.reg===x.id?'on':'')+'">자리 이동</button><button data-a="un" data-id="'+x.id+'">배정 해제</button></div></div>').join('')+
         (moveFrom?'<div class="hintm">옮길 좌석을 클릭하세요. 사람이 있으면 서로 맞바꿉니다. (Esc 취소)</div>':'')
-       :'<div class="mut">빈 좌석 — 아래 목록에서 배정할 사람을 고르세요.</div>');}
+       :(FIXED[sel.id]?'<div class="occ"><b>'+esc(FIXED[sel.id])+'</b> <span class="pill wait">고정석</span><div class="mut">VIP·연사석 — 신청자를 배정하면 그 이름으로 바뀝니다.</div></div>':'<div class="mut">빈 좌석 — 아래 목록에서 배정할 사람을 고르세요.</div>'));}
   /* 목록 */
   const n=norm(q),assignMode=sel&&!(occ[sel.id]||[]).length;
   let L=(assignMode?un:R).filter(x=>!n||norm(x.name).includes(n)||norm(x.company_name).includes(n)||norm((S[x.id]||{}).seat).includes(n));
