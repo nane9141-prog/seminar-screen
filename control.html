@@ -177,6 +177,11 @@ button.arr.on{box-shadow:none;background:#1f6b46;color:#fff}button.arr.on:hover{
 #clock{font-variant-numeric:tabular-nums;font-size:20px;font-weight:800;color:var(--warn)}
 @media (max-width:960px){main{padding:16px}.top{padding:12px 16px}.atstat{grid-template-columns:repeat(2,minmax(0,1fr))}}
 
+/* 참석자 관리 — 안내 데스크 선택 */
+.atdeskbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+#atdesk button small{font-weight:500;opacity:.65;margin-left:2px}
+#atdeskinfo{font-size:12px}
+table.att select.desk{min-height:32px;height:32px;min-width:78px;padding:0 6px}
 /* 좌석 배치 (3D) */
 .smwrap{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:14px}
 #smstage{position:relative;height:calc(100vh - 250px);min-height:420px;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#121212}
@@ -254,11 +259,12 @@ html{overflow-x:hidden}
   <h2>참석자 관리 <span class="mut" style="font-weight:500;font-size:13px">사전 신청 확인 · 좌석 배치 · 현장 안내</span></h2>
   <form id="atlogin" hidden class="row" style="flex-wrap:wrap"><span class="mut" style="width:100%">관리자 페이지 계정으로 로그인하세요. (질의 관리와 같은 계정)</span><input type="text" id="atid" placeholder="아이디 (seminar01)" autocomplete="username" style="flex:0 0 200px"><input type="password" id="atpw" placeholder="비밀번호" autocomplete="current-password" style="flex:0 0 200px"><button class="pri" type="submit">로그인</button><span id="atlerr" class="late" style="width:100%"></span></form>
   <div id="atmain" hidden>
+   <div class="atdeskbar"><span class="mut">안내 데스크</span><nav class="subtab" id="atdesk"></nav><span class="mut" id="atdeskinfo"></span></div>
    <div class="atstat"><div><span class="mut">신청</span><b id="atc-all">0</b><small>확정 <span id="atc-conf">0</span> · 대기 <span id="atc-pend">0</span></small></div><div><span class="mut">좌석 지정</span><b id="atc-seat">0</b><small>미지정 <span id="atc-noseat">0</span></small></div><div><span class="mut">현장 참석</span><b id="atc-arr">0</b></div><span class="sp"></span><span id="atnet" class="mut" style="font-size:12px"></span><button id="atreload">새로고침</button></div>
-   <input type="search" id="atq" class="atq" placeholder="이름 · 회사 · 전화 끝 4자리 · 좌석으로 검색" autocomplete="off">
+   <input type="search" id="atq" class="atq" placeholder="이름 · 회사 · 전화 끝 4자리 · 좌석으로 검색 (선택한 데스크 안에서)" autocomplete="off">
    <div class="atcard empty" id="atcard"></div>
    <div class="oq-head" style="margin-top:20px"><nav class="subtab" id="atflt"><button data-f="all">전체</button><button data-f="noseat">좌석 미지정</button><button data-f="notarr">미확인</button><button data-f="arr">참석</button></nav><div class="oq-flt"><span class="mut" id="atcnt"></span><span id="atmsg"></span></div></div>
-   <div class="attw"><table class="att"><thead><tr><th>회사</th><th>이름</th><th>전화</th><th>신청</th><th>좌석</th><th>메모</th><th>현장 참석</th></tr></thead><tbody id="attb"></tbody></table></div>
+   <div class="attw"><table class="att"><thead><tr><th>회사</th><th>이름</th><th>전화</th><th>신청</th><th>데스크</th><th>좌석</th><th>메모</th><th>현장 참석</th></tr></thead><tbody id="attb"></tbody></table></div>
    <details class="adm" style="margin-top:16px"><summary>좌석 일괄 입력 · 내보내기</summary>
     <div class="bar"><span class="mut">회사 전체 좌석</span><input type="text" id="atbulkco" list="atcos" placeholder="회사명" style="width:180px"><datalist id="atcos"></datalist><input type="text" id="atbulkseat" placeholder="좌석 (예: A1)" style="width:160px"><button id="atbulkgo">적용</button><span class="hint">같은 회사 신청자 모두에게 같은 좌석</span><span class="sp"></span><button id="atcsv">좌석 배치 CSV 내보내기</button></div>
    </details>

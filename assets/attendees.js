@@ -4,7 +4,14 @@
 const $=id=>document.getElementById(id);
 const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const norm=s=>String(s||'').toLowerCase().replace(/\s|\(주\)|㈜|주식회사|-/g,'');
-let R=[],S={},flt='all',q='',pick=null,timer=null,loading=false;
+let R=[],S={},flt='all',q='',pick=null,timer=null,loading=false,desk='all';
+/* 안내 데스크 배정: seat_assign 에 전용 칸이 없어 메모(note) 앞에 "[D3] " 꼴 꼬리표로 저장합니다. 화면에서는 데스크와 메모를 따로 보여 줍니다. */
+const DESKS=[['D1','미등록자 · 현장등록'],['D2','ㄱ · ㄴ · ㄷ'],['D3','ㄹ · ㅁ · ㅂ · ㅅ'],['D4','ㅇ (아 · 에 · 엔)'],['D5','ㅇ (엘 · 우 · 유 · 이), ㅈ'],['D6','ㅋ · ㅌ · ㅍ, 하 · 한국'],['D7','한온 · 한진 · 한화 · 현대'],['VIP','VIP 별도']];
+const DRE=/^\[(D[1-7]|VIP)\]\s?/;
+const deskOf=a=>{const m=DRE.exec((a&&a.note)||'');return m?m[1]:'';};
+const memoOf=a=>String((a&&a.note)||'').replace(DRE,'');
+const pack=(d,memo)=>{const t=(d?'['+d+'] ':'')+String(memo||'').trim();return t.trim()||null;};
+const inDesk=x=>desk==='all'||(desk==='none'?!deskOf(S[x.id]):deskOf(S[x.id])===desk);
 
 function sb(){return window.QAOnline&&QAOnline.client();}
 function msg(t,bad){const e=$('atmsg');e.textContent=t;e.style.color=bad?'#FF8A7A':'#7FD6A0';clearTimeout(e._t);e._t=setTimeout(()=>e.textContent='',bad?6000:2000);}
@@ -35,7 +42,10 @@ function draw(){
   $('atc-all').textContent=R.length;$('atc-conf').textContent=conf.length;$('atc-pend').textContent=R.length-conf.length;
   $('atc-seat').textContent=seat.length;$('atc-noseat').textContent=R.length-seat.length;$('atc-arr').textContent=arr.length;
   document.querySelectorAll('#atflt [data-f]').forEach(b=>b.classList.toggle('sel',b.dataset.f===flt));
-  let L=R.filter(match);
+  const dc={};R.forEach(x=>{const d=deskOf(S[x.id])||'none';dc[d]=(dc[d]||0)+1;});
+  $('atdesk').innerHTML='<button data-d="all" class="'+(desk==='all'?'sel':'')+'">전체 <small>'+R.length+'</small></button>'+DESKS.map(d=>'<button data-d="'+d[0]+'" title="'+esc(d[1])+'" class="'+(desk===d[0]?'sel':'')+'">'+d[0]+' <small>'+(dc[d[0]]||0)+'</small></button>').join('')+'<button data-d="none" class="'+(desk==='none'?'sel':'')+'">미배정 <small>'+(dc.none||0)+'</small></button>';
+  $('atdeskinfo').textContent=desk==='all'?'':(desk==='none'?'데스크 미배정 인원':(DESKS.find(d=>d[0]===desk)||[])[1]||'');
+  let L=R.filter(inDesk).filter(match);
   if(flt==='noseat')L=L.filter(x=>!(S[x.id]||{}).seat);
   if(flt==='arr')L=L.filter(x=>x.status==='confirmed'&&x.attended);
   if(flt==='notarr')L=L.filter(x=>x.status==='confirmed'&&!x.attended);
@@ -46,21 +56,23 @@ function draw(){
     '<td><b>'+esc(x.company_name)+'</b></td><td><b class="nm">'+esc(x.name)+'</b><div class="mut">'+esc([x.dept,x.title].filter(Boolean).join(' · '))+'</div></td>'+
     '<td class="mut tn">'+(last4(x.phone)?'···'+last4(x.phone):'')+'</td>'+
     '<td>'+(x.status==='confirmed'?'<span class="pill ok">확정</span>':'<span class="pill wait">대기</span>')+'</td>'+
+    '<td><select class="desk" data-k="desk">'+'<option value="">미배정</option>'+DESKS.map(d=>'<option value="'+d[0]+'"'+(deskOf(a)===d[0]?' selected':'')+'>'+d[0]+'</option>').join('')+'</select></td>'+
     '<td><input type="text" class="seat" data-k="seat" value="'+esc(a.seat||'')+'" placeholder="좌석" maxlength="20"></td>'+
-    '<td><input type="text" class="note" data-k="note" value="'+esc(a.note||'')+'" placeholder="메모" maxlength="100"></td>'+
+    '<td><input type="text" class="note" data-k="note" value="'+esc(memoOf(a))+'" placeholder="메모" maxlength="90"></td>'+
     '<td>'+(x.status==='confirmed'?'<button data-a="arr" class="'+(x.attended?'arr on':'arr')+'">'+(x.attended?'참석 '+(x.attended_at?new Date(x.attended_at).toTimeString().slice(0,5):''):'미확인')+'</button>':'<span class="mut" title="관리자 페이지에서 확정하면 참석 체크할 수 있습니다">확정 후 가능</span>')+'</td></tr>';}).join('')
-    :'<tr><td colspan="7" class="mut empty">'+(q?'"'+esc(q)+'"에 해당하는 신청자가 없습니다. 사전 신청하지 않은 분입니다 — 현장 등록 데스크로 안내하세요.':'목록이 비어 있습니다.')+'</td></tr>';
-  if(keep){const [k,id]=keep.split(':');const el=document.querySelector('#attb tr[data-id="'+id+'"] [data-k="'+k+'"]');if(el){el.focus();const v=el.value;el.setSelectionRange(v.length,v.length);}}
+    :'<tr><td colspan="8" class="mut empty">'+(q?'"'+esc(q)+'"에 해당하는 신청자가 없습니다. 사전 신청하지 않은 분입니다 — 현장 등록 데스크로 안내하세요.':'목록이 비어 있습니다.')+'</td></tr>';
+  if(keep){const [k,id]=keep.split(':');const el=document.querySelector('#attb tr[data-id="'+id+'"] [data-k="'+k+'"]');if(el){el.focus();if(el.setSelectionRange&&el.tagName==='INPUT'){const v=el.value;el.setSelectionRange(v.length,v.length);}}}
   card();
   document.dispatchEvent(new Event('att-data'));   // 좌석 배치 탭(seatmap.js) 갱신
 }
 function card(){
-  const x=R.find(r=>r.id===pick)||(q&&R.filter(match).length===1?R.filter(match)[0]:null),el=$('atcard');
-  if(!x&&q&&!R.some(match)){el.className='atcard none';el.innerHTML='<div><div class="big">사전 신청 내역 없음</div><div class="mut">"'+esc(q)+'" — 이름 철자 · 회사명을 다시 확인하고, 없으면 현장 등록 데스크로 안내하세요.</div></div>';return;}
+  const P=R.filter(inDesk),x=R.find(r=>r.id===pick)||(q&&P.filter(match).length===1?P.filter(match)[0]:null),el=$('atcard');
+  if(!x&&q&&!P.some(match)){el.className='atcard none';el.innerHTML='<div><div class="big">사전 신청 내역 없음</div><div class="mut">"'+esc(q)+'"'+(desk==='all'?'':' ('+(desk==='none'?'미배정':desk)+' 안에서 검색)')+' — 이름 철자 · 회사명을 다시 확인하고, 없으면 현장 등록 데스크로 안내하세요.</div></div>';return;}
   if(!x){el.className='atcard empty';el.innerHTML='<span class="mut">이름 · 회사 · 전화 끝 4자리로 검색하거나 목록에서 사람을 누르면 좌석 안내가 여기에 크게 표시됩니다.</span>';return;}
   const a=S[x.id]||{};
   el.className='atcard';
-  el.innerHTML='<div><div class="mut">'+esc(x.company_name)+(x.status!=='confirmed'?' · <span style="color:#FFB84D">신청 대기</span>':' · 사전 신청 확정')+'</div><div class="big">'+esc(x.name)+' <small>'+esc([x.dept,x.title].filter(Boolean).join(' · '))+'</small></div>'+(a.note?'<div class="nt">'+esc(a.note)+'</div>':'')+'</div>'+
+  el.innerHTML='<div><div class="mut">'+esc(x.company_name)+(x.status!=='confirmed'?' · <span style="color:#FFB84D">신청 대기</span>':' · 사전 신청 확정')+'</div><div class="big">'+esc(x.name)+' <small>'+esc([x.dept,x.title].filter(Boolean).join(' · '))+'</small></div>'+(memoOf(a)?'<div class="nt">'+esc(memoOf(a))+'</div>':'')+'</div>'+
+    '<div class="st"><div class="mut">데스크</div><div class="seatv'+(deskOf(a)?'':' none')+'">'+(deskOf(a)||'미배정')+'</div></div>'+
     '<div class="st"><div class="mut">좌석</div><div class="seatv'+(a.seat?'':' none')+'">'+(a.seat?esc(a.seat):'미지정')+'</div></div>'+
     (x.status==='confirmed'?'<div><button data-a="arr" data-id="'+x.id+'" class="'+(x.attended?'arr on':'arr pri')+'">'+(x.attended?'현장 참석 체크됨':'현장 참석 체크')+'</button></div>':'<div class="mut" style="max-width:180px;font-size:12px">신청 대기 상태입니다. 관리자 페이지에서 확정한 뒤 참석 체크하세요.</div>');
 }
@@ -70,26 +82,30 @@ async function toggleArr(id){const c=sb(),x=R.find(r=>r.id===id);if(!c||!x)retur
   const {error}=await c.from('registrations').update({attended:!x.attended}).eq('id',id);if(error)return msg(error.message,true);
   x.attended=!x.attended;x.attended_at=x.attended?new Date().toISOString():null;msg(x.attended?x.name+'님 현장 참석 체크 (관리자 페이지에도 반영)':x.name+'님 참석 체크 해제');draw();}
 
-$('attb').addEventListener('change',e=>{const k=e.target.dataset.k;if(!k)return;const id=e.target.closest('tr').dataset.id;saveSeat(id,{[k]:e.target.value.trim()||null});});
+$('attb').addEventListener('change',e=>{const k=e.target.dataset.k;if(!k)return;const id=e.target.closest('tr').dataset.id,v=e.target.value.trim();
+  if(k==='desk')return saveSeat(id,{note:pack(v,memoOf(S[id]))});          // 데스크 수정
+  if(k==='note')return saveSeat(id,{note:pack(deskOf(S[id]),v)});
+  saveSeat(id,{[k]:v||null});});
 $('attb').addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.dataset.k){e.preventDefault();e.target.blur();}});
 $('attb').addEventListener('click',e=>{const tr=e.target.closest('tr[data-id]');if(!tr)return;const id=tr.dataset.id;
-  if(e.target.closest('[data-a=arr]'))return toggleArr(id);if(e.target.tagName==='INPUT')return;pick=pick===id?null:id;draw();});
+  if(e.target.closest('[data-a=arr]'))return toggleArr(id);if(e.target.tagName==='INPUT'||e.target.tagName==='SELECT'||e.target.tagName==='OPTION')return;pick=pick===id?null:id;draw();});
 $('atcard').addEventListener('click',e=>{const b=e.target.closest('[data-a=arr]');if(b)toggleArr(b.dataset.id);});
 $('atq').addEventListener('input',e=>{q=e.target.value.trim();pick=null;draw();});
 $('atq').addEventListener('keydown',e=>{if(e.key==='Escape'){e.target.value='';q='';pick=null;draw();}});
 document.querySelectorAll('#atflt [data-f]').forEach(b=>b.onclick=()=>{flt=b.dataset.f;draw();});
+$('atdesk').addEventListener('click',e=>{const b=e.target.closest('[data-d]');if(!b)return;desk=b.dataset.d;pick=null;draw();});
 $('atreload').onclick=()=>load();
 $('atbulkgo').onclick=async()=>{const co=$('atbulkco').value.trim(),seat=$('atbulkseat').value.trim();if(!co||!seat)return msg('회사와 좌석을 입력하세요',true);
   const L=R.filter(x=>norm(x.company_name)===norm(co));if(!L.length)return msg('해당 회사 신청자가 없습니다',true);
   const empty=L.filter(x=>!(S[x.id]||{}).seat);const tgt=empty.length===L.length?L:(confirm(co+' '+L.length+'명 중 '+(L.length-empty.length)+'명은 이미 좌석이 있습니다. 모두 "'+seat+'"(으)로 바꿀까요? (취소 = 빈 사람만)')?L:empty);
   const c=sb();const rows=tgt.map(x=>({reg_id:x.id,seat,note:(S[x.id]||{}).note||null,updated_by:QAOnline.who(),updated_at:new Date().toISOString()}));
   const {error}=await c.from('seat_assign').upsert(rows);if(error)return msg(error.message,true);rows.forEach(r=>S[r.reg_id]=r);msg(co+' '+rows.length+'명 좌석 '+seat);$('atbulkseat').value='';draw();};
-$('atcsv').onclick=()=>{const head=['회사','이름','부서','직함','상태','좌석','메모','현장 참석'];
-  const rows=R.map(x=>{const a=S[x.id]||{};return [x.company_name,x.name,x.dept||'',x.title||'',x.status==='confirmed'?'확정':'대기',a.seat||'',a.note||'',x.attended?'Y':''];});
+$('atcsv').onclick=()=>{const head=['회사','이름','부서','직함','상태','데스크','좌석','메모','현장 참석'];
+  const rows=R.map(x=>{const a=S[x.id]||{};return [x.company_name,x.name,x.dept||'',x.title||'',x.status==='confirmed'?'확정':'대기',deskOf(a),a.seat||'',memoOf(a),x.attended?'Y':''];});
   const csv='﻿'+[head].concat(rows).map(r=>r.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(',')).join('\r\n');
   const u=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));const a=document.createElement('a');a.href=u;a.download='좌석배치_'+new Date().toISOString().slice(0,10)+'.csv';a.click();setTimeout(()=>URL.revokeObjectURL(u),1000);};
 $('atlogin').addEventListener('submit',async e=>{e.preventDefault();$('atlerr').textContent='로그인 중…';const m=await QAOnline.login($('atid').value.trim(),$('atpw').value);$('atlerr').textContent=m;if(!m){$('atpw').value='';view();}});
 
 window.addEventListener('qa-auth',view);
-window.Attendees={show:()=>{if(!sb()&&window.QAOnline)QAOnline.start();view();},get:()=>({R,S}),saveSeat,toggleArr,reload:load};
+window.Attendees={show:()=>{if(!sb()&&window.QAOnline)QAOnline.start();view();},get:()=>({R,S}),saveSeat,toggleArr,reload:load,deskOf,memoOf,pack};
 })();
