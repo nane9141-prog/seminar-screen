@@ -150,11 +150,11 @@ html:not(.embed) .stage{background:#0a1017}
 
 /* 11/25 15:25 장면 전환(20초 · 27.5초)을 파랑 단색 와이프 대신 Blue Bloom Gradient로 — 아래에서 빛이 차오르며 화면을 덮고(약 0.45초에 가득) 장면이 바뀐 뒤 서서히 걷힘 */
 #K0 .wp{display:none!important}
-#K0 .bb{position:absolute;inset:0;z-index:9;pointer-events:none;opacity:0;transform:translateY(100%);-webkit-mask-image:radial-gradient(ellipse 90% 75% at 50% 100%,#000 55%,transparent 100%);mask-image:radial-gradient(ellipse 90% 75% at 50% 100%,#000 55%,transparent 100%);-webkit-mask-size:100% 100%;mask-size:100% 100%;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;-webkit-mask-position:50% 100%;mask-position:50% 100%}
+#K0 .bb{position:absolute;inset:0;z-index:9;pointer-events:none;opacity:0;-webkit-mask-image:radial-gradient(ellipse 90% 75% at 50% 100%,#000 55%,transparent 100%);mask-image:radial-gradient(ellipse 90% 75% at 50% 100%,#000 55%,transparent 100%);-webkit-mask-size:100% 100%;mask-size:100% 100%;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;-webkit-mask-position:50% 100%;mask-position:50% 100%}
 #K0 .bb iframe{position:absolute;inset:0;width:100%;height:100%;border:0;background:#000}
-.s.cur#K0 .bb{animation:qBB 1.7s cubic-bezier(.45,0,.2,1) 19.85s both,qBB2 1.7s cubic-bezier(.45,0,.2,1) 27.35s forwards}
-@keyframes qBB2{0%{opacity:0;transform:translateY(70%)}35%,55%{opacity:1;transform:none;-webkit-mask-size:400% 400%;mask-size:400% 400%}100%{opacity:0;transform:translateY(-6%);-webkit-mask-size:400% 400%;mask-size:400% 400%}}
-@keyframes qBB{0%{opacity:0;transform:translateY(70%);-webkit-mask-size:100% 100%;mask-size:100% 100%}35%{opacity:1;transform:none;-webkit-mask-size:400% 400%;mask-size:400% 400%}55%{opacity:1;transform:none;-webkit-mask-size:400% 400%;mask-size:400% 400%}100%{opacity:0;transform:translateY(-6%);-webkit-mask-size:400% 400%;mask-size:400% 400%}}
+.s.cur#K0 .bb{animation:qBB 2.4s ease-in-out 19.6s both,qBB2 2.4s ease-in-out 27.1s forwards}
+@keyframes qBB{0%{opacity:0;transform:none;-webkit-mask-size:100% 60%;mask-size:100% 60%}36%{opacity:1;-webkit-mask-size:400% 400%;mask-size:400% 400%}52%{opacity:1;-webkit-mask-size:400% 400%;mask-size:400% 400%}100%{opacity:0;-webkit-mask-size:400% 400%;mask-size:400% 400%}}
+@keyframes qBB2{0%{opacity:0;transform:none;-webkit-mask-size:100% 60%;mask-size:100% 60%}36%{opacity:1;-webkit-mask-size:400% 400%;mask-size:400% 400%}52%{opacity:1;-webkit-mask-size:400% 400%;mask-size:400% 400%}100%{opacity:0;-webkit-mask-size:400% 400%;mask-size:400% 400%}}
 </style></head>
 <body>
 <div class="stage" id="stage">
@@ -205,7 +205,7 @@ function draw(){raf=requestAnimationFrame(draw);const t=(performance.now()-t0)/1
  if(!any){cx.drawImage(v,0,0,vw,vh,0,0,W,H);return;}
  for(let j=0;j<N;j++){const y=Math.round(j*rh),h=Math.round((j+1)*rh)-y;cx.globalAlpha=al[j];cx.drawImage(v,0,y*ky,vw,h*ky,dx[j],y,W,h);}cx.globalAlpha=1;}
 const BBf=S.querySelector('.bb iframe');let BBt=[];const bbp=m=>{try{BBf.contentWindow.postMessage(m,'*');}catch(e){}};
-function bbPlan(){BBt.forEach(clearTimeout);BBt=[[19.7,'play'],[21.8,'pause'],[27.2,'play'],[29.3,'pause']].map(([t,m])=>setTimeout(()=>bbp(m),t*1000));}
+function bbPlan(){BBt.forEach(clearTimeout);BBt=[[19.5,'play'],[22.1,'pause'],[27,'play'],[29.6,'pause']].map(([t,m])=>setTimeout(()=>bbp(m),t*1000));}
 function start(){t0=performance.now();bbPlan();cancelAnimationFrame(raf);raf=requestAnimationFrame(draw);S.classList.remove('cur');void S.offsetWidth;S.classList.add('cur');try{v.currentTime=0;}catch(e){}v.play().catch(()=>{});up({s4:'pos',label:''});}
 function stop(){S.classList.remove('cur');v.pause();BBt.forEach(clearTimeout);bbp('pause');cancelAnimationFrame(raf);}
 addEventListener('message',e=>{const d=e.data||{};if(!EMB||e.source!==parent||!d.s4)return;
