@@ -1106,6 +1106,23 @@ html.embed,html.embed body,html.embed .stage{background:transparent}html.embed #
 .s.cur#K24b .vs .yes{animation-delay:10.6s}
 .s.cur#K24b .vs .vb{animation-delay:10.6s}
 .s.cur#K24b .vs .done{animation-delay:10.6s}
+/* 11/25 18:40 K21 가운데 ∞ → Data Stream 스타일(점 입자가 ∞ 길을 따라 흐름, 파랑→청록), 주주 쪽 순서 현장전자표결 ↔ 전자주주총회 */
+#K21 .k21inf{position:absolute;opacity:0}
+.s.cur#K21 .k21inf{animation:k21F .8s ease 3s both}
+/* K24a 개인 주주 · 기관 주주를 각각 박스로, 문구 요약 */
+#K24a .k24g{margin-top:44px;padding:44px 56px 34px;border-radius:28px;background:#141a22;box-shadow:inset 0 0 0 2px rgba(242,245,250,.06)}
+#K24a .k24g .grp{margin:0 0 14px}
+#K24a .k24g .lst{margin:0}
+#K24a .k24g .lst li:first-child{border-top:0}
+/* K27 운영지원 크게(콤마 삭제) · 언제나 내 곁에 한 단계 작게, 글은 위로 · 인원 사진은 조금 아래로 */
+#K27 .sec-c{justify-content:flex-start;padding-top:150px;padding-bottom:0}
+#K27 .sec-h{font-size:150px;line-height:1.15}
+#K27 .sec-h small{display:block;margin-top:26px;font-size:96px;line-height:1.2;font-weight:inherit}
+#K27 .photo{background-position:center 0%;top:200px;bottom:-200px}
+#K27.sec .shade{background:linear-gradient(180deg,rgba(0,0,0,.94) 0%,rgba(0,0,0,.78) 26%,rgba(0,0,0,.18) 52%,rgba(0,0,0,.05) 100%)}
+#K27 .photo{top:540px;bottom:0;background-position:center 0%;background-size:cover}
+#K27.sec .shade{background:linear-gradient(180deg,#000 0%,#000 28%,rgba(0,0,0,.35) 42%,rgba(0,0,0,.05) 70%,rgba(0,0,0,.25) 100%)}
+#K21 .k21inf{left:1850px!important;top:760px!important;width:400px!important;height:380px!important}
 </style></head>
 <body>
 <div class="stage" id="stage">
@@ -1328,9 +1345,10 @@ html.embed,html.embed body,html.embed .stage{background:transparent}html.embed #
  <div class="gp gb" style="left:2220px;top:320px;width:1740px;height:1180px"><p>주주</p></div>
  <div class="cd pn" style="left:300px;top:480px;width:680px;height:940px;--dx:-700px;--dy:-500px;--r:-10deg;--d:2.0s"><b>전담 운영지원<br>및 현장지원</b><small>사전 준비부터 당일 현장까지</small></div>
  <div class="cd pn" style="left:1140px;top:480px;width:680px;height:940px;--dx:-200px;--dy:800px;--r:8deg;--d:2.08s"><b>주주총회<br>통합관리시스템</b><small>CONEXUS</small></div>
- <div class="cd sv" style="left:2280px;top:480px;width:860px;height:164px;--dx:-500px;--dy:-700px;--r:-10deg;--d:2.15s"><b>전자투표</b></div><div class="cd sv" style="left:2280px;top:672px;width:860px;height:164px;--dx:700px;--dy:-800px;--r:8deg;--d:2.22s"><b>전자위임장</b></div><div class="cd sv" style="left:2280px;top:864px;width:860px;height:164px;--dx:1000px;--dy:-100px;--r:-6deg;--d:2.29s"><b>의결권 대리행사 권유</b></div><div class="cd sv" style="left:2280px;top:1056px;width:860px;height:164px;--dx:800px;--dy:600px;--r:9deg;--d:2.36s"><b>전자주주총회</b></div><div class="cd sv" style="left:2280px;top:1248px;width:860px;height:164px;--dx:-400px;--dy:800px;--r:-8deg;--d:2.43s"><b>현장전자표결</b></div>
+ <div class="cd sv" style="left:2280px;top:480px;width:860px;height:164px;--dx:-500px;--dy:-700px;--r:-10deg;--d:2.15s"><b>전자투표</b></div><div class="cd sv" style="left:2280px;top:672px;width:860px;height:164px;--dx:700px;--dy:-800px;--r:8deg;--d:2.22s"><b>전자위임장</b></div><div class="cd sv" style="left:2280px;top:864px;width:860px;height:164px;--dx:1000px;--dy:-100px;--r:-6deg;--d:2.29s"><b>의결권 대리행사 권유</b></div><div class="cd sv" style="left:2280px;top:1056px;width:860px;height:164px;--dx:800px;--dy:600px;--r:9deg;--d:2.36s"><b>현장전자표결</b></div><div class="cd sv" style="left:2280px;top:1248px;width:860px;height:164px;--dx:-400px;--dy:800px;--r:-8deg;--d:2.43s"><b>전자주주총회</b></div>
  <div class="cd pn pt" style="left:3260px;top:480px;width:640px;height:940px;--dx:700px;--dy:-400px;--r:10deg;--d:2.5s"><b>주주용<br>고객센터</b><small>이용문의 · 본인확인 · 장애접수</small></div>
- <svg class="k21l" viewBox="0 0 4200 1600" width="4200" height="1600"><line class="al" x1="980" y1="950" x2="1140" y2="950"/><line class="tl" x1="3140" y1="562" x2="3260" y2="562"/><line class="tl" x1="3140" y1="754" x2="3260" y2="754"/><line class="tl" x1="3140" y1="946" x2="3260" y2="946"/><line class="tl" x1="3140" y1="1138" x2="3260" y2="1138"/><line class="tl" x1="3140" y1="1330" x2="3260" y2="1330"/><path class="inf" d="M1930 950c30-60 95-60 120 0s90 60 120 0-90-60-120 0-90 60-120 0z"/></svg>
+ <canvas class="viz k21inf" data-viz="inf" style="left:1850px;top:760px;width:400px;height:380px" width="800" height="760"></canvas>
+ <svg class="k21l" viewBox="0 0 4200 1600" width="4200" height="1600"><line class="al" x1="980" y1="950" x2="1140" y2="950"/><line class="tl" x1="3140" y1="562" x2="3260" y2="562"/><line class="tl" x1="3140" y1="754" x2="3260" y2="754"/><line class="tl" x1="3140" y1="946" x2="3260" y2="946"/><line class="tl" x1="3140" y1="1138" x2="3260" y2="1138"/><line class="tl" x1="3140" y1="1330" x2="3260" y2="1330"/></svg>
 </section>
 
 <section class="s ch sec fl" id="K21b" data-t="장 표지 · 시스템" data-dim=".3">
@@ -1386,10 +1404,10 @@ html.embed,html.embed body,html.embed .stage{background:transparent}html.embed #
   
   <h2 class="h hm fu" style="--i:1;margin-top:36px">서면위임장 · 의결권 대리행사 권유</h2>
   <p class="sub fu" style="--i:2;margin-top:30px">주총 당일 대량의 서면위임장도 실시간 통합 집계</p>
-  <p class="grp fu" style="--i:3">개인 주주<small>신분증 OCR · 진위 확인</small></p>
-  <ul class="lst fu" style="--i:3"><li>행안부 · 경찰청 · 외교부 등 신분증 진위여부 확인</li><li>고유식별정보 개인정보처리 동의</li><li>현장 에이전트 개인 폰에 저장하지 않음</li></ul>
-  <p class="grp fu" style="--i:4">기관 주주<small>실질주주 분석 26년 업력</small></p>
-  <ul class="lst fu" style="--i:4"><li>실질 기관주주 파악 및 타겟팅 · 커뮤니케이션 자료 제작</li><li>프록시 미팅 어레인지 · 행사내역 추적 및 결과분석</li></ul>
+  <div class="k24g fu" style="--i:3"><p class="grp">개인 주주<small>신분증 OCR · 진위 확인</small></p>
+  <ul class="lst"><li>신분증 진위여부 실시간 확인</li><li>고유식별정보 처리 동의</li><li>에이전트 폰에 개인정보 저장 안 함</li></ul></div>
+  <div class="k24g fu" style="--i:4"><p class="grp">기관 주주<small>실질주주 분석 26년 업력</small></p>
+  <ul class="lst"><li>실질 기관주주 파악 · 타겟팅</li><li>프록시 미팅 · 행사내역 추적 · 결과분석</li></ul></div>
  </div>
  <canvas class="viz" data-viz="kr24" style="left:2250px;top:110px;width:1750px;height:1400px" width="1750" height="1400"></canvas>
  <div class="k24app">
@@ -1398,7 +1416,6 @@ html.embed,html.embed body,html.embed .stage{background:transparent}html.embed #
 </section>
 
 <section class="s" id="K24b" data-t="현장 출석 · 표결의 전자화" data-dim=".1">
- <div class="k24bg"></div>
  <div class="k24bi"><div class="phone ip" style="--n:0"><div class="scr"><div class="sc ip-sc s1"><p class="hd">모바일 출입증</p><div class="pass"><span class="nm">김주주</span><span class="co">큐더스전자<br>제56기 정기주주총회</span><div class="row"><span>보유주식<b>200주</b></span><span>좌석번호<b>A129</b></span></div></div><p class="nt">입장 시 출입증을 보여주세요</p></div>
 </div></div><div class="phone ip" style="--n:1"><div class="scr"><div class="sc ip-sc s2"><p class="ti">태깅 한 번으로<br>주주총회 시작하기</p><p class="ds">NFC 기기에 휴대폰 뒷면을 태깅해 주세요</p><div class="nfc"><i></i><i></i><i></i></div><p class="ok">출석 확인 · 의결권이 부여됩니다</p><div class="bt">NFC 태깅하기</div></div>
 </div></div><div class="phone ip" style="--n:2"><div class="scr"><div class="sc ip-sc s3"><p class="ti">본인확인</p><div class="bio"><span class="fc"></span><span class="fp"></span></div><p class="q">생체인증을 사용하시겠습니까?</p><p class="ds">등록된 생체정보로 간편하게 확인합니다</p><div class="bt">생체인증 사용하기</div></div>
@@ -1459,7 +1476,7 @@ html.embed,html.embed body,html.embed .stage{background:transparent}html.embed #
 <!-- ═════════ 6. 운영지원 ═════════ -->
 <section class="s ch sec fl" id="K27" data-t="장 표지 · 운영지원" data-dim="0">
  <div class="photo"></div><div class="shade"></div><div class="au"></div>
- <div class="sec-c"><h2 class="sec-h fu" style="--i:1">운영지원,<br>언제나 내 곁에</h2><p class="sec-s fu" style="--i:2">온보딩부터 당일 현장, 장애 대응까지</p></div>
+ <div class="sec-c"><h2 class="sec-h fu" style="--i:1">운영지원<small>언제나 내 곁에</small></h2><p class="sec-s fu" style="--i:2">온보딩부터 당일 현장, 장애 대응까지</p></div>
 </section>
 
 <section class="s" id="K28a" data-t="운영지원 1 · 온보딩" data-dim=".1">
@@ -1850,6 +1867,15 @@ VIZ.kr24=(cv)=>{const g=cv.getContext('2d'),W=cv.width,H=cv.height;let t0=0;
   C.forEach(c=>{const k=(t-c.t)/.45;if(k<=0)return;const e=Math.min(1,k),s=e<1?1+.5*Math.sin(e*Math.PI):1;
    g.globalAlpha=fade*.18*Math.min(1,e);g.fillStyle='#3aa0ea';g.beginPath();g.arc(c.x,c.y,c.r*2.2*s,0,7);g.fill();
    g.globalAlpha=fade*.95*Math.min(1,e*1.5);g.fillStyle='#0081cc';g.beginPath();g.arc(c.x,c.y,c.r*s,0,7);g.fill();});
+  g.globalAlpha=1;}};};
+/* K21 ∞ Data Stream — 입자가 ∞(lemniscate) 길을 따라 흐름 */
+VIZ.inf=(cv)=>{const g=cv.getContext('2d'),W=cv.width,H=cv.height,N=620;
+ const P=[...Array(N)].map(()=>({u:Math.random(),o:(Math.random()-.5)*2,s:.0009+Math.random()*.0016,r:2.4+Math.random()*5.2}));
+ const pt=u=>{const t=u*Math.PI*2,d=1+Math.sin(t)**2,a=W*.45;return[W/2+a*Math.cos(t)/d,H/2+a*Math.sin(t)*Math.cos(t)/d*1.05,t];};
+ return{enter(){},draw(){g.clearRect(0,0,W,H);
+  g.globalAlpha=.22;g.strokeStyle='#3aa0ea';g.lineWidth=4;g.beginPath();for(let i=0;i<=200;i++){const[x,y]=pt(i/200);i?g.lineTo(x,y):g.moveTo(x,y);}g.stroke();
+  for(const q of P){q.u=(q.u+q.s)%1;const[x,y]=pt(q.u),[x2,y2]=pt((q.u+.002)%1),nx=-(y2-y),ny=x2-x,l=Math.hypot(nx,ny)||1,w=q.o*22;
+   const c=Math.abs(Math.cos(q.u*Math.PI*2));g.fillStyle=mix(c);g.globalAlpha=.45+.55*(1-Math.abs(q.o));g.beginPath();g.arc(x+nx/l*w,y+ny/l*w,q.r,0,7);g.fill();}
   g.globalAlpha=1;}};};
 const live=new Map();slides.forEach(s=>s.querySelectorAll('canvas[data-viz]').forEach(cv=>live.set(cv,VIZ[cv.dataset.viz](cv,s))));
 function loop(t){const s=slides[idx];s.querySelectorAll('canvas[data-viz]').forEach(cv=>{const v=live.get(cv);v&&v.draw&&v.draw(t);});requestAnimationFrame(loop);}requestAnimationFrame(loop);
