@@ -880,6 +880,15 @@ html.embed,html.embed body,html.embed .stage{background:transparent}html.embed #
 #K07 .col:nth-child(1){background:radial-gradient(120% 80% at 80% 100%,#4677e6 0%,rgba(70,119,230,0) 60%),linear-gradient(170deg,#e9eef8 0%,#b8c9ee 100%);color:#0a1730}
 #K07 .col:nth-child(1) .tg{background:#2f62d8;color:#fff}
 #K07 .col:nth-child(1) .n{color:inherit}
+/* 11/25 K11: 범례 가운데, 그래프 키움(막대 높이 700 · 폭 140 · 아래로 확장), 집중일 오렌지 → 레드 */
+#K11 .lg{justify-content:center}
+#K11 .chart{top:560px;height:940px}
+#K11 .bar{width:140px}
+#K11 .bar i{font-size:60px}
+#K11 .day{font-size:72px}
+#K11 .band{background:rgba(255,77,94,.1);border-top-color:rgba(255,77,94,.75)}
+#K11 .band span{color:#ff5a6a}
+#K11 .k11hot{border-color:rgba(255,77,94,.6)}
 </style></head>
 <body>
 <div class="stage" id="stage">
@@ -982,7 +991,7 @@ html.embed,html.embed body,html.embed .stage{background:transparent}html.embed #
 
 <section class="s" id="K11" data-t="3월 집중일 · 지원 가능일" data-dim=".14" data-steps="2">
  <div class="top"><p class="eb fu q" style="--i:0" id="mareb">3월 정기주총 개최일 분포</p><h2 class="h hm fu" style="--i:1" id="mart">2026</h2><p class="sub fu k11s" style="--i:2" id="marsub">의무화 212개사 중 3월 개최 211개사</p></div>
- <div class="lg fu" style="--i:2"><span class="chip"><i class="sw"></i><em class="t0">2026년 3월 개최일</em><em class="t1">2027년 3월 후보일</em></span><span class="chip w k11hot"><i style="width:30px;height:30px;border-radius:8px;background:rgba(255,183,77,.55)"></i>집중일</span></div>
+ <div class="lg fu" style="--i:2"><span class="chip"><i class="sw"></i><em class="t0">2026년 3월 개최일</em><em class="t1">2027년 3월 후보일</em></span><span class="chip w k11hot"><i style="width:30px;height:30px;border-radius:8px;background:rgba(255,77,94,.7)"></i>집중일</span></div>
  <div class="chart fu" style="--i:2" id="mar"></div>
 </section>
 
@@ -1535,12 +1544,12 @@ function count(s,sl=s){s.querySelectorAll('.cnt').forEach(el=>{const hb=el.close
 /* ── 3월 차트: 2026 · 2027을 따로(같은 자리에서 단계마다 바뀜). 날짜 칸마다 그 해 요일. 집중일은 칸 전체 띠 ── */
 (function(){
  const D26=[[13,1],[16,0],[17,1],[18,7],[19,13],[20,20],[23,9],[24,30],[25,5],[26,91],[27,13],[30,2],[31,19]];
- const D27=[[15,0],[16,2],[17,6],[18,6],[19,7],[22,6],[23,17],[24,24],[25,3],[26,8],[29,25],[30,6],[31,17]];
- const el=document.getElementById('mar');if(!el)return;const W=3600,H=600,WD='일월화수목금토';
+ const D27=[[15,1],[16,2],[17,6],[18,6],[19,7],[22,6],[23,19],[24,29],[25,3],[26,8],[29,28],[30,6],[31,19]];
+ const el=document.getElementById('mar');if(!el)return;const W=3600,H=700,WD='일월화수목금토';
  function layer(y,D,hot,cls,extra){const cw=W/D.length,X=i=>cw*(i+.5),MAX=Math.max(...D.map(d=>d[1]));let h=`<div class="ml ${cls}"><div class="ax"></div>`;
   D.forEach(([d],i)=>{if(i&&new Date(y,2,d).getDay()<new Date(y,2,D[i-1][0]).getDay())h+=`<div class="wk" style="left:${cw*i}px"></div>`;});
   D.forEach(([d],i)=>{if(hot.includes(d))h+=`<div class="band" style="left:${X(i)-cw*.42}px;width:${cw*.84}px"><span>집중일</span></div>`;});
-  D.forEach(([d,v],i)=>{h+=`<div class="day" style="left:${X(i)}px">${d}<small>${WD[new Date(y,2,d).getDay()]}</small></div>`;if(v)h+=`<div class="bar${cls==='m27'&&[24,29].includes(d)?' fb':''}" style="left:${X(i)-48}px;height:${Math.max(8,v/MAX*H)}px;transition-delay:${i*.04}s"><i>${v}</i></div>`;});
+  D.forEach(([d,v],i)=>{h+=`<div class="day" style="left:${X(i)}px">${d}<small>${WD[new Date(y,2,d).getDay()]}</small></div>`;if(v)h+=`<div class="bar${cls==='m27'&&[24,29].includes(d)?' fb':''}" style="left:${X(i)-70}px;height:${Math.max(8,v/MAX*H)}px;transition-delay:${i*.04}s"><i>${v}</i></div>`;});
   if(extra)h+=extra(X);return h+'</div>';}
  el.innerHTML=layer(2026,D26,[25,27,30],'m26')+layer(2027,D27,[25,26,30],'m27',X=>
    [[24,'FULL<br>BOOKING'],[29,'FULL<br>BOOKING']].map(([d,s])=>`<div class="full" data-b="2" style="left:${X(D27.findIndex(x=>x[0]===d))}px">${s}</div>`).join('')+
