@@ -528,6 +528,8 @@ body.idle{cursor:none}
 .pipl .pip-sp .pp-who{position:static;margin-top:48px}
 .pipl .pp-l .pip-ev .pp-ev{font-size:46px;line-height:1.28}  /* M7-4 왼쪽 아래 세미나명 56 → 46px */
 .pipl .zm-c.pip-f{box-shadow:0 0 0 3px rgba(255,255,255,.85),0 40px 120px rgba(0,0,0,.5)}.pipl .pip-sp{top:970px;height:auto;justify-content:flex-start}  /* M7-4 얼굴 창 흰 테두리, 연사 정보는 얼굴 창 바로 아래 */
+/* 11/25 M10-2 레이아웃 점검: 왼쪽 Q · 질문 구분 칩을 질문 본문 영역의 세로 가운데에 맞춤(아래 정보 줄 높이만큼 위로) */
+.qa2-l{justify-content:center;padding-top:0;padding-bottom:170px}.qa2-lab{margin-top:70px}
 </style></head>
 <body>
 <div class="stage" id="scr" data-foot="full">
@@ -984,7 +986,7 @@ const OQ_SL={all:'',s1:'Session 1',s2:'Session 2',s3:'Session 3',s4:'Session 4 �
 async function pollOQ(){if(QSRC!=='online'||!location.protocol.startsWith('http'))return;
   try{const r=await fetch('https://zrhtqpzgubaqzsdaxhvt.supabase.co/rest/v1/rpc/qa_current',{method:'POST',headers:{apikey:'sb_publishable_JwET6KLGmdYBkOIIttgOOQ_HEpCKLar','Content-Type':'application/json'},body:'{}',cache:'no-store'});
     if(!r.ok)return;const d=await r.json(),k=JSON.stringify(d);if(k===oqKey)return;oqKey=k;
-    OQ=d&&d.id?{type:d.kind,n:d.n,text:d.body,who:d.who,meta:[(d.company+' '+d.name).trim(),OQ_SL[d.session]].filter(Boolean).join('　·　')}:null;renderQ();}catch(e){}}
+    OQ=d&&d.id?{type:d.kind,n:d.n,text:d.body,who:d.who,meta:OQ_SL[d.session]||''}:null;renderQ();}catch(e){}}
 setInterval(pollOQ,2000);pollOQ();
 function renderQ(){const q=QSRC==='online'?OQ:QA.list.find(x=>x.id===QA.cur),lab=document.getElementById('q-lab'),tx=document.getElementById('q-text'),meta=document.getElementById('q-meta'),ans=document.getElementById('q-ans'),ft=document.getElementById('q-ft');if(typeof MC!=='undefined'){const m=q?{type:q.type,text:q.text,who:q.who||'',meta:q.meta||''}:null;if(JSON.stringify(m)!==JSON.stringify(MC.q)){MC.q=m;MC.pub();}}
   if(!q){lab.textContent='Q&A';lab.className='qa2-lab';tx.textContent='질문을 준비하고 있습니다.';tx.classList.add('idle');meta.textContent='';ans.innerHTML='';ft.classList.add('empty');fitQ();return;}
