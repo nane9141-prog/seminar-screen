@@ -189,6 +189,46 @@ html:not(.embed) .stage{background:#0a1017}
 .s.cur#K0 .q5{animation:qShow .01s linear 24.45s both}
 .s.cur#K0 .q5 img{animation:qBook 1s cubic-bezier(.16,1,.3,1) 24.6s both}
 .s.cur#K0 .q5 h2{animation:qBook 1s cubic-bezier(.16,1,.3,1) 24.9s both}
+/* 11/25 17:45 다시 구성 — ① 영상(오른쪽) + 권재열(작게) 약 1초 유지 → ② 영상은 가로 조각으로 흩어져 사라지고, 한 페이지: 위 이름 · 직함, 가운데 3열(법제 · 사법 / 학계 / 전자주주총회 연구 + 매뉴얼 책), 아래 기사 사진 롤링 → ③ Blue Bloom → 출범식. 전체 약 18초 */
+#K0 .qv{left:2560px;width:1100px;animation:none!important}
+#K0 .q2{left:640px;top:600px;width:1700px}
+#K0 .q2 .nm{font-size:150px;letter-spacing:.02em}
+#K0 .q2 .ro{margin-top:44px;font-size:64px}
+#K0 .q2 .un{font-size:50px}
+.s.cur#K0 .q2 .nm span{animation:qUp .9s cubic-bezier(.16,1,.3,1) .6s both}
+.s.cur#K0 .q2 .ro span{animation:qUp .8s cubic-bezier(.16,1,.3,1) .85s both}
+.s.cur#K0 .q2 .un span{animation:qUp .8s cubic-bezier(.16,1,.3,1) 1s both}
+.s.cur#K0 .q2{animation:qOutL .6s cubic-bezier(.7,0,.3,1) 3.3s both}
+#K0 .q3{left:300px;top:150px;width:3600px}
+#K0 .q3 .who{margin-bottom:64px}
+#K0 .q3 .wn{font-size:96px}
+#K0 .q3 .wr{font-size:46px}
+.s.cur#K0 .q3 .who{animation:qIn .7s cubic-bezier(.16,1,.3,1) 4s both}
+#K0 .q3 .cols{display:grid;grid-template-columns:1fr 1fr 1.15fr;column-gap:120px;align-items:start}
+#K0 .q3 .g{margin:0}
+#K0 .q3 .it{font-size:52px;padding:26px 0}
+#K0 .q3 .gl{font-size:40px;margin-bottom:22px}
+#K0 .q3 .bx{display:flex;align-items:center;gap:56px;padding-top:24px;border-top:2px solid rgba(230,235,242,.22)}
+#K0 .q3 .bkw{height:440px;flex:none;opacity:0}
+#K0 .q3 .bkw img{height:100%;width:auto;display:block;filter:drop-shadow(0 30px 50px rgba(0,0,0,.55))}
+#K0 .q3 .bt{margin:0;font:600 54px/1.3 "Pretendard Variable";color:#F2F5FA;opacity:0}
+#K0 .q3 .bp{margin:24px 0 0;font:400 38px/1.2 "Pretendard Variable";color:#AEB8C6;opacity:0}
+.s.cur#K0 .q3 .bkw{animation:qBkIn 1.2s cubic-bezier(.16,1,.3,1) 5.3s both}
+.s.cur#K0 .q3 .bt{animation:qIn .7s cubic-bezier(.16,1,.3,1) 5.6s both}
+.s.cur#K0 .q3 .bp{animation:qIn .7s cubic-bezier(.16,1,.3,1) 5.8s both}
+.s.cur#K0 .q3{animation:qGone .01s linear 16.05s both}
+#K0 .rl{position:absolute;left:0;right:0;top:1090px;height:400px;overflow:hidden;opacity:0;-webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
+#K0 .rl .rt{display:flex;gap:24px;width:max-content;height:100%}
+#K0 .rl img{height:100%;width:auto;display:block;border-radius:14px;filter:saturate(.9) brightness(.92)}
+.s.cur#K0 .rl{animation:qF 1s ease 4.6s both,qGone .01s linear 16.05s both}
+.s.cur#K0 .rl .rt{animation:qRoll 40s linear 4.6s infinite}
+@keyframes qRoll{from{transform:translateX(0)}to{transform:translateX(calc(-50% - 12px))}}
+.s.cur#K0 .bb{animation:qBB 2.4s ease-in-out 15.2s both}
+.s.cur#K0 .q5{animation:qShow .01s linear 16.05s both}
+.s.cur#K0 .q5 img{animation:qBook 1s cubic-bezier(.16,1,.3,1) 16.2s both}
+.s.cur#K0 .q5 h2{animation:qBook 1s cubic-bezier(.16,1,.3,1) 16.5s both}
+#K0 .q3 .bx{opacity:0}
+.s.cur#K0 .q3 .bx{animation:qF .5s ease 5.2s both}
 </style></head>
 <body>
 <div class="stage" id="stage">
@@ -203,11 +243,13 @@ html:not(.embed) .stage{background:#0a1017}
  </div>
  <div class="q3">
   <div class="who"><p class="wn">권재열</p><p class="wr">한국주주총회연구소장</p></div>
-  <div class="cols"><div class="c1">
-  <div class="g" style="--t:13.1s"><p class="gl">법제 · 사법</p><p class="it" style="--k:0">법무부 상법 특별위원회 위원 역임</p><p class="it" style="--k:1">상법 시행령 제정 TF 위원장 역임</p><p class="it" style="--k:2">대법원 재판연구관 역임</p></div>
-  <div class="g" style="--t:14.3s"><p class="gl">학계</p><p class="it" style="--k:0">경희대학교 법학전문대학원 원장 역임</p><p class="it" style="--k:1">한국상사판례학회 회장 역임</p></div>
-  </div><div class="c2 g" style="--t:15.4s"><p class="gl">전자주주총회 연구</p><div class="bkw"><img src="assets/kism/manual-book.webp" alt="전자주주총회 운영실무 매뉴얼"></div><p class="bt">「전자주주총회 운영실무 매뉴얼」 집필</p><p class="bp">한국상장회사협의회 · 2026</p></div></div>
+  <div class="cols">
+   <div class="g" style="--t:4.3s"><p class="gl">법제 · 사법</p><p class="it" style="--k:0">법무부 상법 특별위원회 위원 역임</p><p class="it" style="--k:1">상법 시행령 제정 TF 위원장 역임</p><p class="it" style="--k:2">대법원 재판연구관 역임</p></div>
+   <div class="g" style="--t:4.7s"><p class="gl">학계</p><p class="it" style="--k:0">경희대학교 법학전문대학원 원장 역임</p><p class="it" style="--k:1">한국상사판례학회 회장 역임</p></div>
+   <div class="g c3" style="--t:5.1s"><p class="gl">전자주주총회 연구</p><div class="bx"><div class="bkw"><img src="assets/kism/manual-book.webp" alt="전자주주총회 운영실무 매뉴얼"></div><div><p class="bt">「전자주주총회<br>운영실무 매뉴얼」<br>집필</p><p class="bp">한국상장회사협의회 · 2026</p></div></div></div>
+  </div>
  </div>
+ <div class="rl"><div class="rt"><img src="assets/kism/photo-main.webp" alt=""><img src="assets/kism/photo-2.webp" alt=""><img src="assets/kism/photo-3.webp" alt=""><img src="assets/kism/photo-main-cut.webp" alt=""><img src="assets/kism/photo-4.webp" alt=""><img src="assets/kism/photo-main.webp" alt=""><img src="assets/kism/photo-2.webp" alt=""><img src="assets/kism/photo-3.webp" alt=""><img src="assets/kism/photo-main-cut.webp" alt=""><img src="assets/kism/photo-4.webp" alt=""></div></div>
  <div class="q4">
   <div class="tx"><p class="gl">전자주주총회 연구</p><p class="ln bk"><span>「전자주주총회</span></p><p class="ln bk"><span>운영실무 매뉴얼」 집필</span></p><p class="ln pb"><span>한국상장회사협의회 · 2026</span></p></div>
   <div class="bk3"><img class="bkimg" src="assets/kism/manual-book.webp" alt="전자주주총회 운영실무 매뉴얼"><i class="bksh"></i></div>
@@ -225,26 +267,24 @@ function fit(){const s=Math.min(innerWidth/4200,innerHeight/1600);stage.style.tr
 addEventListener('resize',fit);fit();
 
 // 영상 프레임 동적 마스킹 (canvas, 4조각 · 조각마다 속도 다르게) — t = 시퀀스 시작 후 초
-const OFF=3.2;  // 첫 타이틀 삭제로 시퀀스를 3.2초 앞당김 (CSS 애니메이션 · 캔버스 · Blue Bloom 모두)
+const OFF=0,TI=.2,TO=3.4;  // 영상 등장 · 퇴장 시각(초)  // 11/25 17:45 타임라인을 새 초 단위로 다시 씀 — 앞당김 없음
 const cv=S.querySelector('.qv canvas'),cx=cv.getContext('2d'),W=1100,H=1600;let t0=0,raf=0;
 const cl=x=>Math.max(0,Math.min(1,x)),oc=x=>1-Math.pow(1-cl(x),3),io=x=>{x=cl(x);return x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2;};
 const IN=[[0,.95,-1,.55],[.12,1.35,1,.9],[.05,.8,-1,.35],[.2,1.15,1,.75]],   // 등장: 지연 · 길이 · 방향 · 거리(화면 높이 비)
       MV=[[0,.9],[.08,1.15],[.03,.75],[.14,1.05]],                       // 이동 때 가로 조각: 지연 · 길이
       OUT=[[0,.55,-1],[.1,.8,1],[.04,.45,1],[.16,.7,-1]];                 // 퇴장: 지연 · 길이 · 방향
 function draw(){raf=requestAnimationFrame(draw);const t=(performance.now()-t0)/1000;cx.clearRect(0,0,W,H);
- if(t<3.4||t>24.5||v.readyState<2)return;
+ if(t<TI||t>TO+1.2||v.readyState<2)return;
  const vw=v.videoWidth||720,vh=v.videoHeight||840,SW=Math.min(vw,vh*W/H),SX=(vw-SW)/2,kx=SW/W,ky=vh/H,N=4;
- if(t<5.2){const cw=W/N;  // 등장: 세로 4조각이 위 · 아래에서 각자 다른 속도로 들어와 맞물림
-  for(let i=0;i<N;i++){const[d,du,dir,dist]=IN[i],p=oc((t-3.5-d)/du);if(p<=0)continue;const dy=(1-p)*dir*dist*H,x=Math.round(i*cw),w=Math.round((i+1)*cw)-x;
+ if(t<TI+1.8){const cw=W/N;  // 등장: 세로 4조각이 위 · 아래에서 각자 다른 속도로 들어와 맞물림
+  for(let i=0;i<N;i++){const[d,du,dir,dist]=IN[i],p=oc((t-TI-d)/du);if(p<=0)continue;const dy=(1-p)*dir*dist*H,x=Math.round(i*cw),w=Math.round((i+1)*cw)-x;
    cx.globalAlpha=cl(p*1.8);cx.drawImage(v,SX+x*kx,0,w*kx,vh,x,dy,w,H);}cx.globalAlpha=1;return;}
- const rh=H/N;let any=false,dx=[0,0,0,0],al=[1,1,1,1];
- if(t>12&&t<13.6){for(let j=0;j<N;j++){const[d,du]=MV[j],p=cl((t-12.05-d)/du);dx[j]=Math.sin(p*Math.PI)*(j%2?1:-1)*(60+j*25)*(1-p*.3);}any=true;}
- if(t>23.25){for(let j=0;j<N;j++){const[d,du,dir]=OUT[j],p=io((t-23.25-d)/du);dx[j]=dir*p*W*1.1;al[j]=1-cl(p*1.3);}any=true;}
- if(!any){cx.drawImage(v,SX,0,SW,vh,0,0,W,H);return;}
- for(let j=0;j<N;j++){const y=Math.round(j*rh),h=Math.round((j+1)*rh)-y;cx.globalAlpha=al[j];cx.drawImage(v,SX,y*ky,SW,h*ky,dx[j],y,W,h);}cx.globalAlpha=1;}
+ if(t<TO){cx.drawImage(v,SX,0,SW,vh,0,0,W,H);return;}
+ const rh=H/N;  // 퇴장: 가로 4조각이 각자 다른 속도로 좌우로 흩어지며 사라짐
+ for(let j=0;j<N;j++){const[d,du,dir]=OUT[j],p=io((t-TO-d)/du),y=Math.round(j*rh),h=Math.round((j+1)*rh)-y;cx.globalAlpha=1-cl(p*1.3);cx.drawImage(v,SX,y*ky,SW,h*ky,dir*p*W*1.1,y,W,h);}cx.globalAlpha=1;}
 const BBf=S.querySelector('.bb iframe');let BBt=[];const bbp=m=>{try{BBf.contentWindow.postMessage(m,'*');}catch(e){}};
-function bbPlan(){BBt.forEach(clearTimeout);BBt=[[23.5,'play'],[26.1,'pause']].map(([t,m])=>setTimeout(()=>bbp(m),(t-OFF)*1000));}
-function start(){t0=performance.now()-OFF*1000;bbPlan();cancelAnimationFrame(raf);raf=requestAnimationFrame(draw);S.classList.remove('cur');void S.offsetWidth;S.classList.add('cur');S.getAnimations({subtree:true}).forEach(a=>{try{a.currentTime=(a.currentTime||0)+OFF*1000;}catch(e){}});try{v.currentTime=0;}catch(e){}v.play().catch(()=>{});up({s4:'pos',label:''});}
+function bbPlan(){BBt.forEach(clearTimeout);BBt=[[15.1,'play'],[17.7,'pause']].map(([t,m])=>setTimeout(()=>bbp(m),(t-OFF)*1000));}
+function start(){t0=performance.now()-OFF*1000;bbPlan();cancelAnimationFrame(raf);raf=requestAnimationFrame(draw);S.classList.remove('cur');void S.offsetWidth;S.classList.add('cur');try{v.currentTime=0;}catch(e){}v.play().catch(()=>{});up({s4:'pos',label:''});}
 function stop(){S.classList.remove('cur');v.pause();BBt.forEach(clearTimeout);bbp('pause');cancelAnimationFrame(raf);}
 addEventListener('message',e=>{const d=e.data||{};if(!EMB||e.source!==parent||!d.s4)return;
  if(d.s4==='enter')start();else if(d.s4==='leave')stop();else if(d.s4==='nav')up({s4:'edge',d:d.d});});
