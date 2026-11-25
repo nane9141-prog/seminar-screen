@@ -2,10 +2,10 @@
 <html lang="ko"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
-<title>한국주주총회연구소 출범 발표 (권재열) — M4-6</title>
+<title>한국주주총회연구소 소개 발표 (권재열) — M4-6</title>
 <style>
 @font-face{font-family:"Pretendard Variable";src:url(assets/PretendardVariable.woff2) format("woff2");font-weight:45 920;font-display:block}
-/* KISM 출범 발표 5장(00 연구소장 소개 + 01~04) (16:9 · 1920×1080) — 메인 M4-6 가운데 창. 세션 2 덱과 같은 톤 · 조작(→ ← · embed) */
+/* KISM 소개 발표 4장(01~04, 11/25 00장은 M4-5 kism-open.html로 이동) (16:9 · 1920×1080) — 메인 M4-6 가운데 창. 세션 2 덱과 같은 톤 · 조작(→ ← · embed) */
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%;background:#000;overflow:hidden}
 body.idle{cursor:none}
@@ -165,129 +165,11 @@ body.notes .s.cur .note b{color:#fff}
 @keyframes k0M{to{transform:translateX(calc(-50% - 8px))}}
 @keyframes k0F{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
 
-/* K0 (11/25) 영상형 전환 시퀀스 — ① 타이틀 「한국주주총회연구소」 0~3s ② 인터뷰 영상(세라테, 19:22~ 인물 중심 크롭 · 로고 제외) + 권재열 · 소장 · 교수 3.4~12s ③ 영상 왼쪽으로 이동 + 역임 내역 12~20s ④ 파랑 와이프 → 「전자주주총회 운영실무 매뉴얼」 집필 + 책 목업 20~27.5s ⑤ 와이프 → KISM 로고 + 「한국주주총회연구소 출범식」에서 정지. 참고 영상의 점 격자 · 바코드 · + 표지 · 원 · 사각 블록을 어두운 화면 · 파랑 강조로 */
-#K0 .dk,#K0 .q1,#K0 .qh,#K0 .qv,#K0 .q2,#K0 .q3,#K0 .q4,#K0 .q5,#K0 .wp{position:absolute;display:block;font-style:normal}
-#K0 .dots{left:96px;top:70px;width:210px;height:84px;background:radial-gradient(circle,rgba(230,235,242,.32) 2px,transparent 2.6px) 0 0/14px 14px;opacity:0}
-#K0 .bars{right:96px;top:74px;width:96px;height:64px;background:repeating-linear-gradient(90deg,rgba(230,235,242,.55) 0 5px,transparent 5px 11px);opacity:0}
-#K0 .plus{font:300 34px/1 "Pretendard Variable";color:rgba(230,235,242,.4);opacity:0}
-#K0 .p1{left:1580px;top:210px}#K0 .p2{left:140px;top:930px}#K0 .p3{left:1760px;top:960px}
-#K0 .acc{left:96px;top:1000px;width:70px;height:8px;background:#0081cc;opacity:0}
-.s.cur#K0 .dk{animation:qF .6s ease .3s both}
-@keyframes qF{from{opacity:0}to{opacity:1}}
-@keyframes qDr{to{transform:translateX(60px)}}
-/* ① 타이틀 */
-#K0 .q1{left:0;right:0;top:400px;text-align:center}
-#K0 .q1 .bar{display:block;width:72px;height:8px;margin:0 auto 46px;background:#0081cc;transform:scaleX(0)}
-#K0 .q1 h1{margin:0;overflow:hidden;font:700 118px/1.15 "Pretendard Variable";letter-spacing:.16em;color:#fff;padding-left:.16em}
-#K0 .q1 h1 span,#K0 .q1 p span{display:inline-block;transform:translateY(110%)}
-#K0 .q1 p{margin:30px 0 0;overflow:hidden;font:600 30px/1.2 "Pretendard Variable";letter-spacing:.5em;color:#3aa0ea;padding-left:.5em}
-.s.cur#K0 .q1 .bar{animation:qBar .6s cubic-bezier(.7,0,.2,1) .2s both}
-.s.cur#K0 .q1 h1 span{animation:qUp .9s cubic-bezier(.16,1,.3,1) .45s both}
-.s.cur#K0 .q1 p span{animation:qUp .8s cubic-bezier(.16,1,.3,1) .8s both}
-.s.cur#K0 .q1{animation:qOut .6s cubic-bezier(.7,0,.3,1) 2.9s both}
-@keyframes qBar{to{transform:none}}
-@keyframes qUp{to{transform:none}}
-@keyframes qOut{to{opacity:0;transform:translateY(-140px) scale(.7);filter:blur(6px)}}
-/* 작은 머리글 (②~④) */
-#K0 .qh{left:340px;top:86px;margin:0;display:flex;align-items:center;gap:18px;font:600 28px/1 "Pretendard Variable";letter-spacing:.3em;color:#E6EBF2;opacity:0}
-#K0 .qh i{width:40px;height:6px;background:#0081cc}
-.s.cur#K0 .qh{animation:qIn .7s cubic-bezier(.16,1,.3,1) 3.4s both,qGone .01s linear 27.95s both}
-@keyframes qIn{from{opacity:0;transform:translateX(-40px)}to{opacity:1;transform:none}}
-@keyframes qGone{to{opacity:0;visibility:hidden}}
-/* ② 영상 패널 */
-#K0 .qv{left:900px;top:170px;width:640px;height:747px;clip-path:inset(0 0 0 100%)}
-#K0 .qv video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;background:#05080c}
-#K0 .qv .sq{position:absolute;left:0;top:0;width:110px;height:110px;background:#E6EBF2;color:#0a1017;font:800 22px/110px "Pretendard Variable";text-align:center;letter-spacing:.1em}
-#K0 .qv .ci{position:absolute;right:-1px;bottom:120px;width:74px;height:74px;border-radius:50%;background:#0081cc}
-#K0 .qv .cr{position:absolute;right:16px;bottom:12px;margin:0;font:500 15px/1 "Pretendard Variable";color:rgba(255,255,255,.75);text-shadow:0 1px 4px rgba(0,0,0,.6)}
-.s.cur#K0 .qv{animation:qWipe .9s cubic-bezier(.77,0,.18,1) 3.5s both,qMove 1s cubic-bezier(.77,0,.18,1) 12.1s both,qGone .01s linear 20.45s both}
-@keyframes qWipe{from{clip-path:inset(0 0 0 100%)}to{clip-path:inset(0)}}
-@keyframes qMove{from{transform:none}to{transform:translateX(-700px)}}
-.s.cur#K0 .qv .sq{animation:qPop .5s cubic-bezier(.16,1,.3,1) 4.2s both}
-.s.cur#K0 .qv .ci{animation:qPop .5s cubic-bezier(.16,1,.3,1) 4.5s both}
-@keyframes qPop{from{transform:scale(0)}to{transform:none}}
-/* ② 이름 · 직함 */
-#K0 .q2{left:200px;top:330px;width:660px}
-#K0 .ln{margin:0;overflow:hidden}
-#K0 .ln span{display:inline-block;transform:translateY(110%)}
-#K0 .q2 .nm{font:700 150px/1.15 "Pretendard Variable";color:#fff;letter-spacing:.04em}
-#K0 .q2 .ro{margin-top:40px;font:600 48px/1.3 "Pretendard Variable";color:#fff}
-#K0 .q2 .un{margin-top:12px;font:400 38px/1.35 "Pretendard Variable";color:#AEB8C6}
-#K0 .q2 .bc{position:absolute;left:0;top:520px;width:160px;height:34px;background:repeating-linear-gradient(90deg,rgba(230,235,242,.6) 0 3px,transparent 3px 7px,rgba(230,235,242,.6) 7px 12px,transparent 12px 16px);opacity:0}
-.s.cur#K0 .q2 .nm span{animation:qUp .9s cubic-bezier(.16,1,.3,1) 4.0s both}
-.s.cur#K0 .q2 .ro span{animation:qUp .8s cubic-bezier(.16,1,.3,1) 4.4s both}
-.s.cur#K0 .q2 .un span{animation:qUp .8s cubic-bezier(.16,1,.3,1) 4.6s both}
-.s.cur#K0 .q2 .bc{animation:qF .5s ease 5s both}
-.s.cur#K0 .q2{animation:qOutL .6s cubic-bezier(.7,0,.3,1) 11.8s both}
-@keyframes qOutL{to{opacity:0;transform:translateX(-160px)}}
-/* ③ 역임 */
-#K0 .q3{left:960px;top:230px;width:820px}
-#K0 .g{margin-bottom:56px}
-#K0 .gl{margin:0 0 18px;font:600 30px/1 "Pretendard Variable";color:#3aa0ea;letter-spacing:.02em}
-#K0 .q3 .gl{opacity:0}
-#K0 .q3 .it{position:relative;margin:0;padding:22px 0;font:500 42px/1.25 "Pretendard Variable";color:#F2F5FA;opacity:0}
-#K0 .q3 .it::before{content:"";position:absolute;left:0;right:0;top:0;height:1.5px;background:rgba(230,235,242,.22);transform:scaleX(0);transform-origin:0 50%}
-.s.cur#K0 .q3 .gl{animation:qIn .6s cubic-bezier(.16,1,.3,1) var(--t) both}
-.s.cur#K0 .q3 .it{animation:qIn .7s cubic-bezier(.16,1,.3,1) calc(var(--t) + .2s + var(--k)*.22s) both}
-.s.cur#K0 .q3 .it::before{animation:qBar .7s cubic-bezier(.7,0,.2,1) calc(var(--t) + .1s + var(--k)*.22s) both}
-.s.cur#K0 .q3{animation:qGone .01s linear 20.45s both}
-/* 와이프 */
-#K0 .wp{left:0;top:0;width:1920px;height:1080px;background:linear-gradient(90deg,#0071c4,#00a3a0);transform:scaleX(0);transform-origin:0 50%;z-index:9}
-.s.cur#K0 .w1{animation:qWp .9s cubic-bezier(.77,0,.18,1) 20s both}
-.s.cur#K0 .w2{animation:qWp .9s cubic-bezier(.77,0,.18,1) 27.5s both}
-@keyframes qWp{0%{transform:scaleX(0);transform-origin:0 50%}50%{transform:scaleX(1);transform-origin:0 50%}50.01%{transform:scaleX(1);transform-origin:100% 50%}100%{transform:scaleX(0);transform-origin:100% 50%}}
-/* ④ 매뉴얼 */
-#K0 .q4{inset:0;visibility:hidden}
-.s.cur#K0 .q4{animation:qShow .01s linear 20.45s both,qGone .01s linear 27.95s both}
-@keyframes qShow{to{visibility:visible}}
-#K0 .q4 .tx{position:absolute;left:200px;top:330px;width:860px}
-#K0 .q4 .gl{opacity:0}
-#K0 .q4 .bk{font:700 86px/1.22 "Pretendard Variable";color:#fff;letter-spacing:-.02em}
-#K0 .q4 .pb{margin-top:34px;font:500 40px/1.3 "Pretendard Variable";color:#AEB8C6}
-.s.cur#K0 .q4 .gl{animation:qIn .6s cubic-bezier(.16,1,.3,1) 20.8s both}
-.s.cur#K0 .q4 .bk span{animation:qUp .9s cubic-bezier(.16,1,.3,1) 21s both}
-.s.cur#K0 .q4 .bk+.bk span{animation-delay:21.15s}
-.s.cur#K0 .q4 .pb span{animation:qUp .8s cubic-bezier(.16,1,.3,1) 21.5s both}
-#K0 .q4 .bkimg{position:absolute;left:1080px;top:110px;height:880px;width:auto;opacity:0;filter:drop-shadow(0 40px 60px rgba(0,0,0,.55))}
-.s.cur#K0 .q4 .bkimg{animation:qBook 1.2s cubic-bezier(.16,1,.3,1) 20.9s both,qFloat 6s ease-in-out 22.1s infinite alternate}
-@keyframes qBook{from{opacity:0;transform:translateY(120px) scale(.92)}to{opacity:1;transform:none}}
-@keyframes qFloat{to{transform:translateY(-14px)}}
-/* ⑤ 출범식 (M4-4) — 여기서 멈춤 */
-#K0 .q5{left:0;right:0;top:0;bottom:0;display:flex;flex-direction:column;align-items:center;justify-content:center;visibility:hidden}
-#K0 .q5 img{height:150px;width:auto;margin-bottom:70px;opacity:0}
-#K0 .q5 h2{margin:0;font:700 100px/1.2 "Pretendard Variable";color:#fff;letter-spacing:-.01em;opacity:0}
-.s.cur#K0 .q5{animation:qShow .01s linear 27.95s both}
-.s.cur#K0 .q5 img{animation:qBook 1s cubic-bezier(.16,1,.3,1) 28.1s both}
-.s.cur#K0 .q5 h2{animation:qBook 1s cubic-bezier(.16,1,.3,1) 28.4s both}
-@media (prefers-reduced-motion:reduce){.s.cur#K0 .q1,.s.cur#K0 .q2,.s.cur#K0 .q3,.s.cur#K0 .q4,.s.cur#K0 .qv,.s.cur#K0 .qh,.s.cur#K0 .wp{animation:none!important;display:none}.s.cur#K0 .q5{visibility:visible;animation:none}.s.cur#K0 .q5 *{animation:none!important;opacity:1}}
 </style></head>
 <body>
 <div class="stage" id="stage">
 
-<section class="s" id="K0" data-n="0">
- <!-- 11/25 영상형 전환 시퀀스 (참고 61105888 레이아웃 전환 방식, 약 30초 후 출범식 화면에서 정지) -->
- <i class="dk dots"></i><i class="dk bars"></i><i class="dk plus p1">+</i><i class="dk plus p2">+</i><i class="dk plus p3">+</i><i class="dk acc"></i>
- <div class="q1"><i class="bar"></i><h1><span>한국주주총회연구소</span></h1><p><span>KISM</span></p></div>
- <p class="qh"><i></i>한국주주총회연구소</p>
- <div class="qv"><video src="assets/kism/kwon-talk.mp4" muted playsinline preload="auto"></video><i class="sq">KISM</i><i class="ci"></i><p class="cr">영상 · 세라테</p></div>
- <div class="q2">
-  <p class="ln nm"><span>권재열</span></p>
-  <p class="ln ro"><span>한국주주총회연구소장</span></p>
-  <p class="ln un"><span>경희대 법학전문대학원 교수</span></p>
-  <i class="bc"></i>
- </div>
- <div class="q3">
-  <div class="g" style="--t:13.1s"><p class="gl">법제 · 사법</p><p class="it" style="--k:0">법무부 상법 특별위원회 위원 역임</p><p class="it" style="--k:1">상법 시행령 제정 TF 위원장 역임</p><p class="it" style="--k:2">대법원 재판연구관 역임</p></div>
-  <div class="g" style="--t:14.3s"><p class="gl">학계</p><p class="it" style="--k:0">경희대학교 법학전문대학원 원장 역임</p><p class="it" style="--k:1">한국상사판례학회 회장 역임</p></div>
- </div>
- <i class="wp w1"></i>
- <div class="q4">
-  <div class="tx"><p class="gl">전자주주총회 연구</p><p class="ln bk"><span>「전자주주총회</span></p><p class="ln bk"><span>운영실무 매뉴얼」 집필</span></p><p class="ln pb"><span>한국상장회사협의회 · 2026</span></p></div>
-  <img class="bkimg" src="assets/kism/manual-book.webp" alt="전자주주총회 운영실무 매뉴얼">
- </div>
- <i class="wp w2"></i>
- <div class="q5"><img src="assets/kism-white.svg" alt="KISM 한국주주총회연구소"><h2>한국주주총회연구소 출범식</h2></div>
-</section>
+
 
 <section class="s" id="K1" data-n="1">
  <p class="pn">01<i> &nbsp;제도 환경</i></p><img class="lg" src="assets/kism-white.svg" alt="KISM 한국주주총회연구소">
