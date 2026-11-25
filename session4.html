@@ -1128,6 +1128,20 @@ html.embed,html.embed body,html.embed .stage{background:transparent}html.embed #
 #K02 .cc .cs{height:auto}
 #K02 .g8 .cc .cs{height:auto}
 #K02 .fl .cc,#K02 .g8 .cc{justify-content:center;align-items:center;text-align:center}
+/* 11/25 19:00 K25b 오른쪽 — K25와 같은 창 프레임 + CONEXUS 실제 화면 녹화(cx-chair.mp4 약 18초 반복): 사회자용 진행 안내 → 의장 소개 → 질의접수 안내, 의장용 상정문 → 표결문, 다시 사회자용 발언신청 안내. 위 칩이 영상에 맞춰 사회자용 / 의장용 표시 */
+#K25b .cxw{position:absolute;left:1860px;top:240px;width:2244px;height:1282px;padding:22px;border-radius:56px;background:linear-gradient(135deg,rgba(0,129,204,.55),rgba(0,173,169,.35) 45%,rgba(255,255,255,.08));box-shadow:0 0 160px rgba(0,129,204,.22)}
+#K25b .cxin{position:relative;width:100%;height:100%;border-radius:36px;overflow:hidden;background:#0b0c0e}
+#K25b .cxin video{position:absolute;left:0;top:0;width:100%;height:100%;object-fit:contain}
+#K25b .k25m{position:absolute;left:1900px;top:120px;display:flex;gap:16px}
+#K25b .k25m span{padding:16px 40px;border-radius:40px;font:600 40px/1 "Pretendard Variable";color:rgba(242,245,250,.45);box-shadow:inset 0 0 0 2px rgba(242,245,250,.18);transition:all .35s}
+#K25b .k25m span.on{color:#fff;background:linear-gradient(90deg,#0081cc,#00ada9);box-shadow:none}
+/* 11/25 19:05 K28b 오른쪽 — K25 · K25b와 같은 창 프레임 + CONEXUS 녹화(cx-test.mp4 약 23초 반복): 주주명부 → 주주총회 연결에서 「테스트용 생성」 · 제10기 → 연결 완료(총 주식수 · 주주수) → 주주명부 설정 → 주주총회 현장 제어 의안 상정 · 투표 시작. 위 칩 3단계가 영상에 맞춰 켜짐 */
+#K28b .cxw{position:absolute;left:1860px;top:240px;width:2244px;height:1282px;padding:22px;border-radius:56px;background:linear-gradient(135deg,rgba(0,129,204,.55),rgba(0,173,169,.35) 45%,rgba(255,255,255,.08));box-shadow:0 0 160px rgba(0,129,204,.22)}
+#K28b .cxin{position:relative;width:100%;height:100%;border-radius:36px;overflow:hidden;background:#f7f8fa}
+#K28b .cxin video{position:absolute;left:0;top:0;width:100%;height:100%;object-fit:contain}
+#K28b .k25m{position:absolute;left:1900px;top:120px;display:flex;gap:16px}
+#K28b .k25m span{padding:16px 40px;border-radius:40px;font:600 40px/1 "Pretendard Variable";color:rgba(242,245,250,.45);box-shadow:inset 0 0 0 2px rgba(242,245,250,.18);transition:all .35s}
+#K28b .k25m span.on{color:#fff;background:linear-gradient(90deg,#0081cc,#00ada9);box-shadow:none}
 </style></head>
 <body>
 <div class="stage" id="stage">
@@ -1461,9 +1475,8 @@ html.embed,html.embed body,html.embed .stage{background:transparent}html.embed #
   <h2 class="h hm fu" style="--i:1;margin-top:36px">사회자와 의장에게<br>실시간으로</h2>
   <p class="sub fu" style="--i:2;margin-top:56px;line-height:1.5">개회 · 의안상정 · 질의응답 · 표결결과 · 폐회 문안을<br>실시간 운영정보와 연계하여 제공</p>
  </div>
- <div class="frame fu" style="--i:2;left:1900px;top:220px;width:1600px;height:952px;background:#000"><img src="assets/s4/chair-1.webp" alt=""></div>
- <div class="frame fu" style="--i:3;left:2150px;top:470px;width:1600px;height:952px;background:#000"><img src="assets/s4/chair-2.webp" alt=""></div>
- <div class="frame fu" style="--i:4;left:2400px;top:660px;width:1500px;height:893px;background:#000"><img src="assets/s4/chair-3.webp" alt=""></div>
+ <div class="cxw fu" style="--i:2"><div class="cxin"><video src="assets/s4/cx-chair.mp4" poster="assets/s4/cx-chair.webp" muted loop playsinline preload="auto"></video></div></div>
+ <div class="k25m fu" style="--i:3"><span class="on" data-m="mc">사회자용</span><span data-m="ch">의장용</span></div>
 </section> 
 
 <section class="s" id="K26" data-t="주주용 서비스 KOSMOS" data-dim=".1">
@@ -1487,7 +1500,7 @@ html.embed,html.embed body,html.embed .stage{background:transparent}html.embed #
 <section class="s" id="K28a" data-t="운영지원 1 · 온보딩" data-dim=".1">
  <div class="top" style="top:150px"><h2 class="h hm fu" style="--i:1">온보딩</h2></div>
  <div class="k28two">
-  <div class="fu" style="--i:2"><div class="k28p" style="background-image:url(assets/s4/callcenter.webp);background-position:center 20%"></div><b>담당자 배정</b><p>계정발급부터 시스템 조작법까지<br>A to Z 상시지원</p></div>
+  <div class="fu" style="--i:2"><div class="k28p" style="background-image:url(assets/s4/onboard-mgr.webp);background-position:center 25%"></div><b>담당자 배정</b><p>계정발급부터 시스템 조작법까지<br>A to Z 상시지원</p></div>
   <div class="fu" style="--i:3"><div class="k28p" style="background-image:url(assets/s4/onboard-2.webp)"></div><b>교육</b><p>지역별 단체 오프라인 교육 및 개별 방문 교육<br><span>광화문 · 강남 · 여의도 · 판교</span></p></div>
  </div>
 </section> 
@@ -1497,7 +1510,8 @@ html.embed,html.embed body,html.embed .stage{background:transparent}html.embed #
   <h2 class="h hm fu" style="--i:1;margin-top:40px">테스트 모드 제공</h2>
   <p class="sub fu" style="--i:2;margin-top:50px;line-height:1.5">실제와 같은 환경에서<br>주총 설정부터 사전투표 · 출석 · 표결 · 집계까지<br>미리 연습</p>
  </div>
- <div class="frame web kb fu" style="--i:2;left:1900px;top:260px;width:2000px;height:1200px"><div class="bar3"><i></i><i></i><i></i></div><img src="assets/s4/cx-3.webp" alt=""></div>
+ <div class="cxw fu" style="--i:2"><div class="cxin"><video src="assets/s4/cx-test.mp4" poster="assets/s4/cx-test.webp" muted loop playsinline preload="auto"></video></div></div>
+ <div class="k25m fu" style="--i:3"><span class="on" data-m="a">테스트 주총 생성</span><span data-m="b">주주명부 등록</span><span data-m="c">실시간 운영</span></div>
 </section> 
 <section class="s" id="K28c" data-t="운영지원 3 · 사전점검 · 리허설 · 당일 현장지원" data-dim="0">
  <div class="k28bg"></div>
@@ -1961,5 +1975,11 @@ document.fonts.ready.then(()=>{go(hi>0?hi:0);up({s4:'ready'});});
 /* K24a 에이전트 앱 영상 — 슬라이드에 들어올 때 앱 화면 등장(7.3s)에 맞춰 처음부터 재생 */
 (function(){const S=document.getElementById('K24a');if(!S)return;const v=S.querySelector('.k24v');let tm=0,on=false;
  new MutationObserver(()=>{const c=S.classList.contains('cur');if(c===on)return;on=c;clearTimeout(tm);v.pause();try{v.currentTime=0}catch(e){}if(c)tm=setTimeout(()=>v.play().catch(()=>{}),7300);}).observe(S,{attributes:true,attributeFilter:['class']});})();
+/* K25b 칩 — 영상 시각에 맞춰 사회자용(0~7.2초 · 13.4초~) / 의장용(7.2~13.4초) */
+(function(){const S=document.getElementById('K25b');if(!S)return;const v=S.querySelector('.cxin video'),m=S.querySelectorAll('.k25m span');
+ v.addEventListener('timeupdate',()=>{const t=v.currentTime,k=(t>=7.2&&t<13.4)?'ch':'mc';m.forEach(e=>e.classList.toggle('on',e.dataset.m===k));});})();
+/* K28b 칩 — 테스트 주총 생성(0~10.5초) · 주주명부 등록(10.5~16.8초) · 실시간 운영(16.8초~) */
+(function(){const S=document.getElementById('K28b');if(!S)return;const v=S.querySelector('.cxin video'),m=S.querySelectorAll('.k25m span');
+ v.addEventListener('timeupdate',()=>{const t=v.currentTime,k=t<10.5?'a':t<16.8?'b':'c';m.forEach(e=>e.classList.toggle('on',e.dataset.m===k));});})();
 </script>
 </body></html>
