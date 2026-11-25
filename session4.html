@@ -915,21 +915,21 @@ html.embed,html.embed body,html.embed .stage{background:transparent}html.embed #
 #K24b .ip{width:560px;height:1200px;top:200px;left:calc(330px + var(--n)*720px);opacity:0;transform-style:preserve-3d}
 #K24b .ip .scr{position:relative;background:#f5f7fb;font-family:"Pretendard Variable";color:#191b22}
 #K24b .ip .sc{opacity:1!important;animation:none!important;transform:none!important}
-.s.cur#K24b .ip{animation:ipUp .9s cubic-bezier(.16,1,.3,1) calc(.15s + var(--n)*.12s) both,ipOut 1.3s cubic-bezier(.6,0,.3,1) calc(1.9s + var(--n)*.05s) forwards}
+.s.cur#K24b .ip{animation:ipUp .6s cubic-bezier(.16,1,.3,1) calc(.1s + var(--n)*.07s) both,ipOut .8s cubic-bezier(.6,0,.3,1) calc(1.25s + var(--n)*.03s) forwards}
 @keyframes ipUp{from{opacity:0;transform:translateY(700px)}to{opacity:1;transform:none}}
 @keyframes ipOut{0%{opacity:1;transform:none}45%{opacity:1;transform:translateX(calc((2 - var(--n))*360px)) rotateY(180deg) scale(.8)}100%{opacity:0;transform:translateX(calc((2 - var(--n))*720px)) rotateY(360deg) scale(.25)}}
 #K24b .k24bt>*{opacity:0}
 .s.cur#K24b .k24bt>*{animation:qIn24 .8s cubic-bezier(.16,1,.3,1) both}
-.s.cur#K24b .k24bt>:nth-child(1){animation-delay:3.4s}.s.cur#K24b .k24bt>:nth-child(2){animation-delay:3.55s}.s.cur#K24b .k24bt>:nth-child(3){animation-delay:3.7s}
+.s.cur#K24b .k24bt>:nth-child(1){animation-delay:2.3s}.s.cur#K24b .k24bt>:nth-child(2){animation-delay:2.45s}.s.cur#K24b .k24bt>:nth-child(3){animation-delay:2.6s}
 @keyframes qIn24{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:none}}
 #K24b .k24bl{list-style:none;margin:90px 0 0;padding:0}
 #K24b .k24bl li{position:relative;padding:30px 0 30px 44px;border-top:2px solid rgba(242,245,250,.14);font:600 60px/1.2 "Pretendard Variable";color:#F2F5FA;letter-spacing:-.02em}
 #K24b .k24bl li:last-child{border-bottom:2px solid rgba(242,245,250,.14)}
 #K24b .k24bl li::before{content:"";position:absolute;left:0;top:50%;width:14px;height:14px;margin-top:-7px;border-radius:50%;background:#3aa0ea}
 /* 출입증 카드 */
-#K24b .k24pass{position:absolute;left:2300px;top:330px;width:780px;height:940px;border-radius:48px;overflow:hidden;padding:70px 64px;color:#fff;display:flex;flex-direction:column;background:linear-gradient(120deg,#2c5bff,#0071f3,#00a6c8,#7a5cff,#2c5bff);background-size:400% 400%;box-shadow:0 50px 120px rgba(0,60,180,.35),inset 0 0 0 2px rgba(255,255,255,.18);opacity:0}
-.s.cur#K24b .k24pass{animation:pIn24 1s cubic-bezier(.16,1,.3,1) 3.6s both,pGr 9s ease-in-out 3.6s infinite alternate}
-@keyframes pIn24{from{opacity:0;transform:translateY(60px) rotate(-3deg)}to{opacity:1;transform:rotate(-3deg)}}
+#K24b .k24pass{position:absolute;left:2380px;top:390px;width:700px;height:840px;border-radius:48px;overflow:hidden;padding:70px 64px;color:#fff;display:flex;flex-direction:column;background:linear-gradient(120deg,#2c5bff,#0071f3,#00a6c8,#7a5cff,#2c5bff);background-size:400% 400%;box-shadow:0 50px 120px rgba(0,60,180,.35),inset 0 0 0 2px rgba(255,255,255,.18);opacity:0}
+.s.cur#K24b .k24pass{animation:pIn24 1s cubic-bezier(.16,1,.3,1) 2.5s both,pGr 9s ease-in-out 2.5s infinite alternate}
+@keyframes pIn24{from{opacity:0;transform:translateY(60px)}to{opacity:1;transform:none}}
 @keyframes pGr{0%{background-position:0% 30%}50%{background-position:100% 70%}100%{background-position:40% 100%}}
 #K24b .k24pass .gl{position:absolute;inset:-40%;background:radial-gradient(40% 30% at 30% 30%,rgba(255,255,255,.35),transparent 70%);animation:pGl 7s ease-in-out infinite alternate;pointer-events:none}
 @keyframes pGl{to{transform:translate(35%,40%)}}
@@ -941,20 +941,23 @@ html.embed,html.embed body,html.embed .stage{background:transparent}html.embed #
 #K24b .k24pass .row span{font:500 30px/1 "Pretendard Variable";opacity:.85}#K24b .k24pass .row b{display:block;margin-top:16px;font:700 54px/1 "Pretendard Variable"}
 /* 투표 휴대폰 */
 #K24b .k24bv{opacity:0}
-.s.cur#K24b .k24bv{animation:qIn24 1s cubic-bezier(.16,1,.3,1) 3.9s both}
+.s.cur#K24b .k24bv{animation:qIn24 1s cubic-bezier(.16,1,.3,1) 2.8s both}
 #K24b .k24bv .scr{position:relative;background:#f5f7fb;font-family:"Pretendard Variable";color:#191b22}
 #K24b .k24bv .sc{opacity:1!important;animation:none!important;transform:none!important}
 #K24b .vs .yes{transition:none}
-.s.cur#K24b .vs .yes{animation:vYes 6s linear 5s infinite}
+.s.cur#K24b .vs .yes{animation:vYes 6s linear 4s infinite}
 @keyframes vYes{0%,18%{background:#f1f3f7;color:#6b7280;box-shadow:none}22%,100%{background:#e6f0ff;color:#0071f3;box-shadow:inset 0 0 0 3px #0071f3}}
-.s.cur#K24b .vs .vb{animation:vBt 6s linear 5s infinite}
+.s.cur#K24b .vs .vb{animation:vBt 6s linear 4s infinite}
 @keyframes vBt{0%,38%{transform:none;filter:none}40%{transform:scale(.95);filter:brightness(.85)}43%,100%{transform:none;filter:none}}
 #K24b .vs .done{position:absolute;inset:0;background:rgba(245,247,251,.97);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px;opacity:0}
-.s.cur#K24b .vs .done{animation:vDone 6s linear 5s infinite}
+.s.cur#K24b .vs .done{animation:vDone 6s linear 4s infinite}
 @keyframes vDone{0%,44%{opacity:0}48%,92%{opacity:1}96%,100%{opacity:0}}
 #K24b .vs .done i{width:150px;height:150px;border-radius:50%;background:#0071f3 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5' fill='none' stroke='white' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/62% no-repeat}
 #K24b .vs .done b{font:700 46px/1.2 "Pretendard Variable";color:#191b22}
 #K24b .vs .done small{font:500 30px/1 "Pretendard Variable";color:#6b7280}
+/* 11/25 16:25 휴대폰 테두리 얇게 */
+#K24b .phone{padding:10px;border-radius:64px;box-shadow:0 0 0 2px #2b3039,0 50px 120px rgba(0,0,0,.6)}
+#K24b .phone .scr{border-radius:54px}
 </style></head>
 <body>
 <div class="stage" id="stage">
