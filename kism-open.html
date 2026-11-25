@@ -47,7 +47,7 @@ html:not(.embed) .stage{background:#0a1017}
 #K0 .qv .sq{position:absolute;left:0;top:0;width:163px;height:163px;background:#E6EBF2;color:#0a1017;font:800 32.6px/163px "Pretendard Variable";text-align:center;letter-spacing:.1em}
 #K0 .qv .ci{position:absolute;right:-1.5px;bottom:177.8px;width:109.6px;height:109.6px;border-radius:50%;background:#0081cc}
 #K0 .qv .cr{position:absolute;right:23.7px;bottom:17.8px;margin:0;font:500 22.2px/1 "Pretendard Variable";color:rgba(255,255,255,.75);text-shadow:0 1.5px 5.9px rgba(0,0,0,.6)}
-.s.cur#K0 .qv{animation:qWipe .9s cubic-bezier(.77,0,.18,1) 3.5s both,qMove 1s cubic-bezier(.77,0,.18,1) 12.1s both,qGone .01s linear 20.45s both}
+.s.cur#K0 .qv{animation:qMove 1s cubic-bezier(.77,0,.18,1) 12.1s both,qGone .01s linear 20.45s both}
 @keyframes qWipe{from{clip-path:inset(0 0 0 100%)}to{clip-path:inset(0)}}
 @keyframes qMove{from{transform:none}to{transform:translateX(-1037px)}}
 .s.cur#K0 .qv .sq{animation:qPop .5s cubic-bezier(.16,1,.3,1) 4.2s both}
@@ -122,20 +122,32 @@ html:not(.embed) .stage{background:#0a1017}
 #K0 .q4 .bkimg{left:2600px;top:160px;height:1300px}
 #K0 .wp{width:4200px;height:1600px}
 
+
+/* 11/25 14:10 수정 — 배경 점 격자 · 바코드 · + · 원 · KISM 박스 삭제. 영상 프레임은 canvas로 그려 참고 영상처럼 동적 마스킹: 등장 시 세로 조각이 서로 다른 높이에서 맞물려 들어오고, 이동(12초) · 중간 글리치(8초) 때 가로 조각이 어긋났다 돌아오고, 퇴장(19.6초) 때 가로 조각으로 흩어짐. 매뉴얼 책은 3D 회전 등장 + 천천히 좌우로 도는 움직임 */
+#K0 .qv{clip-path:none}
+#K0 .qv video{position:absolute;width:2px;height:2px;opacity:0;pointer-events:none}
+#K0 .qv canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+#K0 .q4 .bk3{position:absolute;left:2560px;top:150px;width:1060px;height:1340px;perspective:2600px}
+#K0 .q4 .bk3 .bkimg{position:absolute;left:0;top:0;height:1300px;width:auto;transform-style:preserve-3d;transform-origin:50% 60%;opacity:0;filter:drop-shadow(0 50px 70px rgba(0,0,0,.55))}
+#K0 .q4 .bksh{position:absolute;left:12%;right:12%;bottom:0;height:70px;border-radius:50%;background:radial-gradient(closest-side,rgba(0,0,0,.6),transparent);opacity:0}
+.s.cur#K0 .q4 .bkimg{animation:qB3 1.6s cubic-bezier(.16,1,.3,1) 20.8s both,qB3s 7s ease-in-out 22.4s infinite alternate}
+.s.cur#K0 .q4 .bksh{animation:qF 1s ease 21.2s both}
+@keyframes qB3{from{opacity:0;transform:translate3d(500px,140px,-600px) rotateY(-70deg) rotateX(8deg)}60%{opacity:1}to{opacity:1;transform:rotateY(-14deg) rotateX(3deg)}}
+@keyframes qB3s{from{transform:rotateY(-14deg) rotateX(3deg) translateY(0)}to{transform:rotateY(12deg) rotateX(-2deg) translateY(-24px)}}
+#K0 .q1 p{letter-spacing:.04em;padding-left:0;font:500 52px/1.2 "Pretendard Variable";color:#6fb6ec;margin-top:44px}
+#K0 .qv .cr{opacity:0}.s.cur#K0 .qv .cr{animation:qF .5s ease 4.6s both,qF .3s ease 19.5s reverse both}
 </style></head>
 <body>
 <div class="stage" id="stage">
 <section class="s" id="K0" data-n="0">
  <!-- 11/25 영상형 전환 시퀀스 (참고 61105888 레이아웃 전환 방식, 약 30초 후 출범식 화면에서 정지) -->
- <i class="dk dots"></i><i class="dk bars"></i><i class="dk plus p1">+</i><i class="dk plus p2">+</i><i class="dk plus p3">+</i><i class="dk acc"></i>
- <div class="q1"><i class="bar"></i><h1><span>한국주주총회연구소</span></h1><p><span>KISM</span></p></div>
+ <div class="q1"><i class="bar"></i><h1><span>한국주주총회연구소</span></h1><p><span>Korea Institute of Shareholders’ Meeting</span></p></div>
  <p class="qh"><i></i>한국주주총회연구소</p>
- <div class="qv"><video src="assets/kism/kwon-talk.mp4" muted playsinline preload="auto"></video><i class="sq">KISM</i><i class="ci"></i><p class="cr">영상 · 세라테</p></div>
+ <div class="qv"><video src="assets/kism/kwon-talk.mp4" muted playsinline preload="auto"></video><canvas width="940" height="1097"></canvas><p class="cr">영상 · 세라테</p></div>
  <div class="q2">
   <p class="ln nm"><span>권재열</span></p>
   <p class="ln ro"><span>한국주주총회연구소장</span></p>
   <p class="ln un"><span>경희대 법학전문대학원 교수</span></p>
-  <i class="bc"></i>
  </div>
  <div class="q3">
   <div class="g" style="--t:13.1s"><p class="gl">법제 · 사법</p><p class="it" style="--k:0">법무부 상법 특별위원회 위원 역임</p><p class="it" style="--k:1">상법 시행령 제정 TF 위원장 역임</p><p class="it" style="--k:2">대법원 재판연구관 역임</p></div>
@@ -144,7 +156,7 @@ html:not(.embed) .stage{background:#0a1017}
  <i class="wp w1"></i>
  <div class="q4">
   <div class="tx"><p class="gl">전자주주총회 연구</p><p class="ln bk"><span>「전자주주총회</span></p><p class="ln bk"><span>운영실무 매뉴얼」 집필</span></p><p class="ln pb"><span>한국상장회사협의회 · 2026</span></p></div>
-  <img class="bkimg" src="assets/kism/manual-book.webp" alt="전자주주총회 운영실무 매뉴얼">
+  <div class="bk3"><img class="bkimg" src="assets/kism/manual-book.webp" alt="전자주주총회 운영실무 매뉴얼"><i class="bksh"></i></div>
  </div>
  <i class="wp w2"></i>
  <div class="q5"><img src="assets/kism-white.svg" alt="KISM 한국주주총회연구소"><h2>한국주주총회연구소 출범식</h2></div>
@@ -157,8 +169,30 @@ const Q=new URLSearchParams(location.search),EMB=Q.has('embed')&&parent!==window
 const up=m=>{if(EMB)parent.postMessage(m,'*');};
 function fit(){const s=Math.min(innerWidth/4200,innerHeight/1600);stage.style.transform=`translate(${(innerWidth-4200*s)/2}px,${(innerHeight-1600*s)/2}px) scale(${s})`;}
 addEventListener('resize',fit);fit();
-function start(){S.classList.remove('cur');void S.offsetWidth;S.classList.add('cur');try{v.currentTime=0;}catch(e){}v.play().catch(()=>{});up({s4:'pos',label:''});}
-function stop(){S.classList.remove('cur');v.pause();}
+
+// 영상 프레임 동적 마스킹 (canvas) — t = 시퀀스 시작 후 초
+const cv=S.querySelector('.qv canvas'),cx=cv.getContext('2d'),W=940,H=1097;let t0=0,raf=0;
+const eo=x=>x<=0?0:x>=1?1:1-Math.pow(2,-10*x),ei=x=>x<=0?0:x>=1?1:x*x*x,cl=x=>Math.max(0,Math.min(1,x));
+const rs=[.31,.77,.12,.58,.93,.44,.67,.21,.85,.05,.49,.72];
+function draw(){raf=requestAnimationFrame(draw);const t=(performance.now()-t0)/1000;cx.clearRect(0,0,W,H);
+ if(t<3.45||t>20.5||v.readyState<2)return;
+ const vw=v.videoWidth||720,vh=v.videoHeight||840,kx=vw/W,ky=vh/H;
+ if(t<4.9){ // 등장: 세로 6조각
+  const N=6,cw=W/N;for(let i=0;i<N;i++){const p=eo(cl((t-3.5-i*.085)/.9));if(p<=0)continue;const dir=i%2?1:-1,dy=(1-p)*dir*(260+rs[i]*420),sh=(1-p)*dir*120;
+   cx.globalAlpha=cl(p*2.2);const x=Math.round(i*cw);cx.drawImage(v,x*kx,cl(0)*0+Math.max(0,-sh)*ky,cw*kx+1,(H-Math.abs(sh))*ky,x,dy+Math.max(0,sh),cw+1,H-Math.abs(sh));}
+  cx.globalAlpha=1;return;}
+ // 가로 조각 어긋남 정도
+ let g=0,sc=0,al=1,gap=0;
+ if(t>7.9&&t<8.35)g=Math.sin(cl((t-7.9)/.45)*Math.PI)*.35;
+ if(t>12&&t<13.2)g=Math.sin(cl((t-12)/1.2)*Math.PI);
+ if(t>19.5){const q=cl((t-19.5)/.95);g=ei(q)*2.4;gap=ei(q);al=1-ei(cl((q-.3)/.7));}
+ if(g<=0.001){cx.drawImage(v,0,0,vw,vh,0,0,W,H);return;}
+ const M=10,rh=H/M;cx.globalAlpha=al;
+ for(let j=0;j<M;j++){const dx=(rs[j]-.5)*2*g*260,hh=rh*(1-gap*.75),y=j*rh+(rh-hh)/2;cx.drawImage(v,0,y*ky,vw,hh*ky,dx,y,W,hh);}
+ cx.globalAlpha=1;}
+
+function start(){t0=performance.now();cancelAnimationFrame(raf);raf=requestAnimationFrame(draw);S.classList.remove('cur');void S.offsetWidth;S.classList.add('cur');try{v.currentTime=0;}catch(e){}v.play().catch(()=>{});up({s4:'pos',label:''});}
+function stop(){S.classList.remove('cur');v.pause();cancelAnimationFrame(raf);}
 addEventListener('message',e=>{const d=e.data||{};if(!EMB||e.source!==parent||!d.s4)return;
  if(d.s4==='enter')start();else if(d.s4==='leave')stop();else if(d.s4==='nav')up({s4:'edge',d:d.d});});
 addEventListener('keydown',e=>{if(EMB)return;if(e.key==='r'||e.key==='R'||e.key==='Home')start();
