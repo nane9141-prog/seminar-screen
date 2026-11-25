@@ -20,8 +20,8 @@ body.black #black{opacity:1}
 </style></head>
 <body>
 <div class="stage" id="stage">
- <iframe id="fo" src="kism-open.html?embed=1&v=11251754" tabindex="-1" title="연구소장 소개 시퀀스" aria-hidden="true"></iframe>
- <iframe id="fd" src="kism.html?embed=1&v=11251754" tabindex="-1" title="한국주주총회연구소 소개 발표" aria-hidden="true"></iframe>
+ <iframe id="fo" src="kism-open.html?embed=1&v=11251805" tabindex="-1" title="연구소장 소개 시퀀스" aria-hidden="true"></iframe>
+ <iframe id="fd" src="kism.html?embed=1&v=11251805" tabindex="-1" title="한국주주총회연구소 소개 발표" aria-hidden="true"></iframe>
 </div>
 <div id="black"></div>
 <script>
@@ -40,7 +40,7 @@ addEventListener('message',e=>{const d=e.data||{};
  const i=F.findIndex(f=>f.contentWindow===e.source);
  if(i>=0){ if(!d.s4)return;
   if(d.s4==='ready'){ready[i]=true;if(q[i]){post(i,q[i]);q[i]=null;}if(ready[0]&&ready[1])up({s4:'ready'});}
-  else if(d.s4==='edge'&&i===cur){if(i===0&&d.d>0)show(1,'first');else if(i===1&&d.d<0)show(0,'first');else up({s4:'edge',d:d.d});}
+  else if(d.s4==='edge'&&i===cur){if(i===0&&d.d>0)show(1,'first');else if(i===1&&d.d<0)show(0,'last');else up({s4:'edge',d:d.d});}
   else if(d.s4==='pos'&&i===cur){up({s4:'pos',label:i===0?'소개':('발표 '+(d.label||''))});}
   return;}
  if(!EMB||e.source!==parent||!d.s4)return;
