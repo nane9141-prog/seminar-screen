@@ -1079,6 +1079,33 @@ html.embed,html.embed body,html.embed .stage{background:transparent}html.embed #
 #K18b .hs b{font-size:11px;color:#0071F3;background:#EBF4FF;padding:2px 8px;border-radius:6px}
 #K18b .hs .h2{opacity:0;transition:opacity .4s}
 #K18b .pb[data-st="2"] .hs .h2,#K18b .pb[data-st="3"] .hs .h2{opacity:1}
+/* K24a (11/25) 1~5 단계 글자 · 관리자 페이지 · 「에이전트 앱」 캡션 삭제, 앱 화면은 이전에 만든 에셋(service-motion-kit AS-CX-Mobile_의결권수집: 지도 → 주주 상세 → 약관 동의 → 위임장 서명 → 실명 인증) 영상으로. 휴대폰은 아래로 잘리게 크게 */
+#K24a .k24p{left:2775px;top:515px;width:700px;height:1200px;padding:12px;border-radius:84px;background:#0b0d10;box-shadow:0 0 0 2px #2b3039,0 60px 140px rgba(0,0,0,.6)}
+#K24a .k24p .scr{border-radius:72px;overflow:hidden;background:#fff;height:100%}
+#K24a .k24p video{display:block;width:100%;height:auto;transform:scale(1.03);transform-origin:50% 0}
+#K24a .grp{color:#F2F5FA;font-weight:400}
+/* K24b (11/25) 오른쪽 휴대폰 처음에 NFC 태깅 화면 → 출석 확인 → 투표 화면, 배경에 KOSMOS 인트로 장면 연하게 */
+#K24b .k24bg{position:absolute;inset:0;background:linear-gradient(90deg,#000 0%,rgba(0,0,0,.82) 42%,rgba(0,0,0,.55) 100%),url(assets/s4/k24b-bg.webp) center/cover;opacity:.55;pointer-events:none}
+#K24b .vs .tg{position:absolute;inset:0;z-index:4;background:#fff;display:flex;flex-direction:column;align-items:center;padding-top:190px;text-align:center;opacity:1}
+.s.cur#K24b .vs .tg{animation:k24tg 7.4s linear 2.8s both}
+@keyframes k24tg{0%,92%{opacity:1}100%{opacity:0;visibility:hidden}}
+#K24b .vs .tg .ti{margin:0;font:700 56px/1.3 "Pretendard Variable";color:#191b22}
+#K24b .vs .tg .ds{margin:26px 0 0;font:500 32px/1.45 "Pretendard Variable";color:#6b7280}
+#K24b .vs .tg .nf{position:relative;width:340px;height:340px;margin-top:80px}
+#K24b .vs .tg .nf i{position:absolute;inset:0;border-radius:50%;background:rgba(0,113,243,.14);animation:k24bP 2.4s ease-out infinite}
+#K24b .vs .tg .nf i:nth-child(2){inset:56px;background:rgba(0,113,243,.22);animation-delay:.4s}
+#K24b .vs .tg .nf i:nth-child(3){inset:112px;background:rgba(0,113,243,.4);animation-delay:.8s}
+#K24b .vs .tg .nf b{position:absolute;inset:140px;border-radius:50%;background:#0071f3 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round'%3E%3Cpath d='M8.5 8.5a5 5 0 0 1 0 7M11.5 6a8.5 8.5 0 0 1 0 12M5.5 11a1.5 1.5 0 0 1 0 2'/%3E%3C/svg%3E") center/60% no-repeat}
+#K24b .vs .tg .ok{position:absolute;left:0;right:0;top:560px;display:flex;flex-direction:column;align-items:center;gap:18px;margin:0;font:700 44px/1.2 "Pretendard Variable";color:#191b22;background:#fff;padding-top:20px;opacity:0}
+#K24b .vs .tg .ok i{width:150px;height:150px;border-radius:50%;background:#0dad7e url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5' fill='none' stroke='white' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/62% no-repeat;margin-bottom:10px}
+#K24b .vs .tg .ok small{font:500 32px/1 "Pretendard Variable";color:#0dad7e}
+.s.cur#K24b .vs .tg .ok{animation:k24ok .5s ease-out 6.6s both}
+.s.cur#K24b .vs .tg .nf{animation:k24nf .4s ease-in 6.4s both}
+@keyframes k24ok{from{opacity:0;transform:scale(.9)}to{opacity:1;transform:none}}
+@keyframes k24nf{to{opacity:0;transform:scale(.8)}}
+.s.cur#K24b .vs .yes{animation-delay:10.6s}
+.s.cur#K24b .vs .vb{animation-delay:10.6s}
+.s.cur#K24b .vs .done{animation-delay:10.6s}
 </style></head>
 <body>
 <div class="stage" id="stage">
@@ -1366,15 +1393,12 @@ html.embed,html.embed body,html.embed .stage{background:transparent}html.embed #
  </div>
  <canvas class="viz" data-viz="kr24" style="left:2250px;top:110px;width:1750px;height:1400px" width="1750" height="1400"></canvas>
  <div class="k24app">
- <div class="phone fu k24p" style="--i:3;left:2400px;top:240px;width:520px;height:1110px"><div class="scr"><img src="assets/s4/ocr-4.webp" alt="" style="--k:0"><img src="assets/s4/ocr-2.webp" alt="" style="--k:1"><img src="assets/s4/ocr-1.webp" alt="" style="--k:2"><img src="assets/s4/ocr-5.webp" alt="" style="--k:3"><img src="assets/s4/ocr-3.webp" alt="" style="--k:4"></div></div>
- <p class="k24c fu" style="--i:3;left:2400px;top:1390px;width:520px">에이전트 앱</p>
- <ol class="k24s fu" style="--i:4"><li style="--k:0"><i>1</i>주주 목록 · 방문 동선</li><li style="--k:1"><i>2</i>개인정보 수집 동의</li><li style="--k:2"><i>3</i>신분증 촬영</li><li style="--k:3"><i>4</i>진위 확인 · 인증</li><li style="--k:4"><i>5</i>위임장 수집 완료</li></ol>
- <div class="frame fu k24w" style="--i:5;left:3060px;top:760px;width:880px;height:690px;border-radius:22px"><img src="assets/s4/cx-pop2.webp" alt=""></div>
- <p class="k24c fu" style="--i:5;left:3060px;top:1490px;width:880px">관리자 페이지 · 실시간 통합 집계</p>
+ <div class="phone fu k24p" style="--i:3"><div class="scr"><video class="k24v" src="assets/s4/agent-app.mp4" poster="assets/s4/agent-app.webp" muted loop playsinline preload="auto"></video></div></div>
 </div>
 </section>
 
 <section class="s" id="K24b" data-t="현장 출석 · 표결의 전자화" data-dim=".1">
+ <div class="k24bg"></div>
  <div class="k24bi"><div class="phone ip" style="--n:0"><div class="scr"><div class="sc ip-sc s1"><p class="hd">모바일 출입증</p><div class="pass"><span class="nm">김주주</span><span class="co">큐더스전자<br>제56기 정기주주총회</span><div class="row"><span>보유주식<b>200주</b></span><span>좌석번호<b>A129</b></span></div></div><p class="nt">입장 시 출입증을 보여주세요</p></div>
 </div></div><div class="phone ip" style="--n:1"><div class="scr"><div class="sc ip-sc s2"><p class="ti">태깅 한 번으로<br>주주총회 시작하기</p><p class="ds">NFC 기기에 휴대폰 뒷면을 태깅해 주세요</p><div class="nfc"><i></i><i></i><i></i></div><p class="ok">출석 확인 · 의결권이 부여됩니다</p><div class="bt">NFC 태깅하기</div></div>
 </div></div><div class="phone ip" style="--n:2"><div class="scr"><div class="sc ip-sc s3"><p class="ti">본인확인</p><div class="bio"><span class="fc"></span><span class="fp"></span></div><p class="q">생체인증을 사용하시겠습니까?</p><p class="ds">등록된 생체정보로 간편하게 확인합니다</p><div class="bt">생체인증 사용하기</div></div>
@@ -1386,7 +1410,7 @@ html.embed,html.embed body,html.embed .stage{background:transparent}html.embed #
   <ul class="k24bl"><li>회원가입 없는 모바일 출입증</li><li>태그 한 번으로 출석 확인</li><li>생체인증으로 간편한 본인확인</li><li>현장에서도 간편한 전자표결</li></ul>
  </div>
  <div class="k24pass"><i class="gl"></i><p class="pt">모바일 출입증</p><p class="nm">김주주</p><p class="co">큐더스전자<br>제56기 정기주주총회</p><div class="row"><span>보유주식<b>200주</b></span><span>좌석번호<b>A129</b></span></div></div>
- <div class="phone k24bv" style="left:3240px;top:200px;width:560px;height:1200px"><div class="scr"><div class="sc s4 vs"><p class="hd">큐더스전자 · 제56기 정기주주총회</p><div class="ag"><small>제1호 의안</small><b>재무제표 승인의 건</b><div class="ch"><span class="yes">찬성</span><span>반대</span><span>기권</span></div><div class="bt vb">투표하기</div></div><div class="ag dim"><small>제2호 의안</small><b>정관 일부 변경의 건</b></div><div class="ag dim"><small>제3호 의안</small><b>사내이사 선임의 건</b></div><<div class="done"><i></i><b>투표가 완료되었습니다</b><small>제1호 의안 · 찬성</small></div></div></div></div>
+ <div class="phone k24bv" style="left:3240px;top:200px;width:560px;height:1200px"><div class="scr"><div class="sc s4 vs"><div class="tg"><p class="ti">태깅 한 번으로<br>주주총회 시작하기</p><p class="ds">NFC 기기에 휴대폰 뒷면을<br>태깅해 주세요</p><div class="nf"><i></i><i></i><i></i><b></b></div><p class="ok"><i></i>출석이 확인되었습니다<small>의결권 200주 부여</small></p></div><p class="hd">큐더스전자 · 제56기 정기주주총회</p><div class="ag"><small>제1호 의안</small><b>재무제표 승인의 건</b><div class="ch"><span class="yes">찬성</span><span>반대</span><span>기권</span></div><div class="bt vb">투표하기</div></div><div class="ag dim"><small>제2호 의안</small><b>정관 일부 변경의 건</b></div><div class="ag dim"><small>제3호 의안</small><b>사내이사 선임의 건</b></div><div class="done"><i></i><b>투표가 완료되었습니다</b><small>제1호 의안 · 찬성</small></div></div></div></div>
 </section>
 
 <section class="s" id="K24c" data-t="생중계" data-dim="0">
@@ -1903,5 +1927,8 @@ document.fonts.ready.then(()=>{go(hi>0?hi:0);up({s4:'ready'});});
   if(b===4){B.dataset.st=0;pro.classList.remove('sel');}}
  B.dataset.st=0;setTimeout(()=>setInterval(stepB,1700),900);
 })();
+/* K24a 에이전트 앱 영상 — 슬라이드에 들어올 때 앱 화면 등장(7.3s)에 맞춰 처음부터 재생 */
+(function(){const S=document.getElementById('K24a');if(!S)return;const v=S.querySelector('.k24v');let tm=0,on=false;
+ new MutationObserver(()=>{const c=S.classList.contains('cur');if(c===on)return;on=c;clearTimeout(tm);v.pause();try{v.currentTime=0}catch(e){}if(c)tm=setTimeout(()=>v.play().catch(()=>{}),7300);}).observe(S,{attributes:true,attributeFilter:['class']});})();
 </script>
 </body></html>
