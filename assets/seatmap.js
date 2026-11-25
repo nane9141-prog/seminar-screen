@@ -270,12 +270,16 @@ function build(){
     dummy.position.set(s.x+sx,.225*M,s.z);dummy.updateMatrix();seatMesh.setMatrixAt(s.i,dummy.matrix);
     dummy.position.set(s.x+sx+.265*M,.46*M,s.z);dummy.updateMatrix();backMesh.setMatrixAt(s.i,dummy.matrix);});
   scene.add(seatMesh,backMesh);
-  /* 테이블 번호: 블록 왼쪽 끝 테이블의 좌측면(+z 면) — A4(210×297mm) 실제 크기, 면의 좌측 상단에 맞춤 */
-  const MAGG=new THREE.CylinderGeometry(.0025*M,.0025*M,.002*M,16),MAGM=new THREE.MeshStandardMaterial({color:0x8d9198,metalness:.75,roughness:.3}),sideGeo=new THREE.PlaneGeometry(.210*M,.297*M),sideTex={};
+  /* 테이블 번호: 블록 왼쪽 끝 테이블 위에 A4 스탠드로 세움(옆면 부착 대신) */
+  const STB=new THREE.BoxGeometry(.220*M,.015*M,.065*M),STBM=new THREE.MeshStandardMaterial({color:0x0b0b0d,roughness:.5}),STA=new THREE.BoxGeometry(.214*M,.300*M,.004*M),STAM=new THREE.MeshStandardMaterial({color:0xffffff,transparent:true,opacity:.28,roughness:.1}),sideGeo=new THREE.PlaneGeometry(.210*M,.297*M),sideTex={};
   tables.forEach(t=>{if(!t.blockFirst)return;
     if(!sideTex[t.no])sideTex[t.no]=ctex(256,362,g=>{g.fillStyle='#fff';g.fillRect(0,0,256,362);g.strokeStyle='#000';g.lineWidth=6;g.strokeRect(3,3,250,356);g.fillStyle='#000';g.font='900 '+(t.no<10?230:176)+'px '+FONT;g.textAlign='center';g.textBaseline='middle';g.fillText(t.no,128,196);});
-    const m=new THREE.Mesh(sideGeo,new THREE.MeshBasicMaterial({map:sideTex[t.no]}));m.position.set(t.x-T_DEP/2+.105*M,T_H-.1485*M,t.z+T_LEN/2+.012);scene.add(m);
-    [-1,1].forEach(function(sg){var mg=new THREE.Mesh(MAGG,MAGM);mg.rotation.x=Math.PI/2;mg.position.set(t.x-T_DEP/2+(.105+sg*.0325)*M,T_H-.020*M,t.z+T_LEN/2+.012+.0015*M);scene.add(mg);});   // 원형 자석 2개(지름 5mm, 두 자석 중심 간격 65mm): A4 위쪽 가운데
+    /* 테이블 번호 A4 T자 스탠드(받침 220×65×15mm 검정 · 전체 높이 300mm): 테이블 위 좌측 끝에 세움. 통로 쪽 · 테이블 쪽 양면 */
+    var sz=t.z+T_LEN/2-.045*M,sy=T_H+.015*M+.1485*M,smat=new THREE.MeshBasicMaterial({map:sideTex[t.no]});
+    var sb=new THREE.Mesh(STB,STBM);sb.position.set(t.x,T_H+.0075*M,sz);scene.add(sb);
+    var sa=new THREE.Mesh(STA,STAM);sa.position.set(t.x,sy+.0015*M,sz);scene.add(sa);
+    var f1=new THREE.Mesh(sideGeo,smat);f1.position.set(t.x,sy,sz+.003*M);scene.add(f1);
+    var f2=new THREE.Mesh(sideGeo,smat);f2.rotation.y=Math.PI;f2.position.set(t.x,sy,sz-.003*M);scene.add(f2);
   });
   /* 좌석별 라벨(테이블 상단면, 위쪽 끝): 의자 쪽에서 바로 읽히는 방향 */
   const lGeo=(function(){var w=LBL_W/2,h=LBL_H/2,e=.004,g=new THREE.BufferGeometry();   // 삽지 앞·뒤 양면(90×55mm)
