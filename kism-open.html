@@ -136,14 +136,24 @@ html:not(.embed) .stage{background:#0a1017}
 @keyframes qB3s{from{transform:rotateY(-14deg) rotateX(3deg) translateY(0)}to{transform:rotateY(12deg) rotateX(-2deg) translateY(-24px)}}
 #K0 .q1 p{letter-spacing:.04em;padding-left:0;font:500 52px/1.2 "Pretendard Variable";color:#6fb6ec;margin-top:44px}
 #K0 .qv .cr{opacity:0}.s.cur#K0 .qv .cr{animation:qF .5s ease 4.6s both,qF .3s ease 19.5s reverse both}
+
+/* 11/25 14:30 수정 — 첫 타이틀 영문만 크게, 위 「한국주주총회연구소」 머리글 · 영상 출처 표기 삭제, 소장 영상 세로 꽉(1372×1600, 오른쪽 → 12초에 왼쪽으로), 마스킹 4조각 · 조각마다 속도 차 · 중간 글리치 삭제, 책은 3D 대신 아주 천천히 줌 */
+#K0 .q1 h1.en{font:700 168px/1.15 "Pretendard Variable";letter-spacing:-.02em;padding:0 120px}
+#K0 .qv{left:2480px;top:0;width:1372px;height:1600px}
+@keyframes qMove{from{transform:none}to{transform:translateX(-2180px)}}
+#K0 .q2{left:600px;top:560px;width:1700px}
+#K0 .q3{left:1900px;top:330px;width:1900px}
+.s.cur#K0 .q4 .bkimg{animation:qBkIn 1.4s cubic-bezier(.16,1,.3,1) 20.8s both,qBkZ 9s linear 22.2s both}
+@keyframes qBkIn{from{opacity:0;transform:scale(.97)}to{opacity:1;transform:scale(1)}}
+@keyframes qBkZ{from{transform:scale(1)}to{transform:scale(1.04)}}
+#K0 .q4 .bk3 .bkimg{transform-origin:50% 55%}
 </style></head>
 <body>
 <div class="stage" id="stage">
 <section class="s" id="K0" data-n="0">
  <!-- 11/25 영상형 전환 시퀀스 (참고 61105888 레이아웃 전환 방식, 약 30초 후 출범식 화면에서 정지) -->
- <div class="q1"><i class="bar"></i><h1><span>한국주주총회연구소</span></h1><p><span>Korea Institute of Shareholders’ Meeting</span></p></div>
- <p class="qh"><i></i>한국주주총회연구소</p>
- <div class="qv"><video src="assets/kism/kwon-talk.mp4" muted playsinline preload="auto"></video><canvas width="940" height="1097"></canvas><p class="cr">영상 · 세라테</p></div>
+ <div class="q1"><i class="bar"></i><h1 class="en"><span>Korea Institute of Shareholders’ Meeting</span></h1></div>
+ <div class="qv"><video src="assets/kism/kwon-talk.mp4" muted playsinline preload="auto"></video><canvas width="1372" height="1600"></canvas></div>
  <div class="q2">
   <p class="ln nm"><span>권재열</span></p>
   <p class="ln ro"><span>한국주주총회연구소장</span></p>
@@ -170,27 +180,23 @@ const up=m=>{if(EMB)parent.postMessage(m,'*');};
 function fit(){const s=Math.min(innerWidth/4200,innerHeight/1600);stage.style.transform=`translate(${(innerWidth-4200*s)/2}px,${(innerHeight-1600*s)/2}px) scale(${s})`;}
 addEventListener('resize',fit);fit();
 
-// 영상 프레임 동적 마스킹 (canvas) — t = 시퀀스 시작 후 초
-const cv=S.querySelector('.qv canvas'),cx=cv.getContext('2d'),W=940,H=1097;let t0=0,raf=0;
-const eo=x=>x<=0?0:x>=1?1:1-Math.pow(2,-10*x),ei=x=>x<=0?0:x>=1?1:x*x*x,cl=x=>Math.max(0,Math.min(1,x));
-const rs=[.31,.77,.12,.58,.93,.44,.67,.21,.85,.05,.49,.72];
+// 영상 프레임 동적 마스킹 (canvas, 4조각 · 조각마다 속도 다르게) — t = 시퀀스 시작 후 초
+const cv=S.querySelector('.qv canvas'),cx=cv.getContext('2d'),W=1372,H=1600;let t0=0,raf=0;
+const cl=x=>Math.max(0,Math.min(1,x)),oc=x=>1-Math.pow(1-cl(x),3),io=x=>{x=cl(x);return x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2;};
+const IN=[[0,.95,-1,.55],[.12,1.35,1,.9],[.05,.8,-1,.35],[.2,1.15,1,.75]],   // 등장: 지연 · 길이 · 방향 · 거리(화면 높이 비)
+      MV=[[0,.9],[.08,1.15],[.03,.75],[.14,1.05]],                       // 이동 때 가로 조각: 지연 · 길이
+      OUT=[[0,.55,-1],[.1,.8,1],[.04,.45,1],[.16,.7,-1]];                 // 퇴장: 지연 · 길이 · 방향
 function draw(){raf=requestAnimationFrame(draw);const t=(performance.now()-t0)/1000;cx.clearRect(0,0,W,H);
- if(t<3.45||t>20.5||v.readyState<2)return;
- const vw=v.videoWidth||720,vh=v.videoHeight||840,kx=vw/W,ky=vh/H;
- if(t<4.9){ // 등장: 세로 6조각
-  const N=6,cw=W/N;for(let i=0;i<N;i++){const p=eo(cl((t-3.5-i*.085)/.9));if(p<=0)continue;const dir=i%2?1:-1,dy=(1-p)*dir*(260+rs[i]*420),sh=(1-p)*dir*120;
-   cx.globalAlpha=cl(p*2.2);const x=Math.round(i*cw);cx.drawImage(v,x*kx,cl(0)*0+Math.max(0,-sh)*ky,cw*kx+1,(H-Math.abs(sh))*ky,x,dy+Math.max(0,sh),cw+1,H-Math.abs(sh));}
-  cx.globalAlpha=1;return;}
- // 가로 조각 어긋남 정도
- let g=0,sc=0,al=1,gap=0;
- if(t>7.9&&t<8.35)g=Math.sin(cl((t-7.9)/.45)*Math.PI)*.35;
- if(t>12&&t<13.2)g=Math.sin(cl((t-12)/1.2)*Math.PI);
- if(t>19.5){const q=cl((t-19.5)/.95);g=ei(q)*2.4;gap=ei(q);al=1-ei(cl((q-.3)/.7));}
- if(g<=0.001){cx.drawImage(v,0,0,vw,vh,0,0,W,H);return;}
- const M=10,rh=H/M;cx.globalAlpha=al;
- for(let j=0;j<M;j++){const dx=(rs[j]-.5)*2*g*260,hh=rh*(1-gap*.75),y=j*rh+(rh-hh)/2;cx.drawImage(v,0,y*ky,vw,hh*ky,dx,y,W,hh);}
- cx.globalAlpha=1;}
-
+ if(t<3.4||t>20.5||v.readyState<2)return;
+ const vw=v.videoWidth||720,vh=v.videoHeight||840,kx=vw/W,ky=vh/H,N=4;
+ if(t<5.2){const cw=W/N;  // 등장: 세로 4조각이 위 · 아래에서 각자 다른 속도로 들어와 맞물림
+  for(let i=0;i<N;i++){const[d,du,dir,dist]=IN[i],p=oc((t-3.5-d)/du);if(p<=0)continue;const dy=(1-p)*dir*dist*H,x=Math.round(i*cw),w=Math.round((i+1)*cw)-x;
+   cx.globalAlpha=cl(p*1.8);cx.drawImage(v,x*kx,0,w*kx,vh,x,dy,w,H);}cx.globalAlpha=1;return;}
+ const rh=H/N;let any=false,dx=[0,0,0,0],al=[1,1,1,1];
+ if(t>12&&t<13.6){for(let j=0;j<N;j++){const[d,du]=MV[j],p=cl((t-12.05-d)/du);dx[j]=Math.sin(p*Math.PI)*(j%2?1:-1)*(60+j*25)*(1-p*.3);}any=true;}
+ if(t>19.45){for(let j=0;j<N;j++){const[d,du,dir]=OUT[j],p=io((t-19.45-d)/du);dx[j]=dir*p*W*1.1;al[j]=1-cl(p*1.3);}any=true;}
+ if(!any){cx.drawImage(v,0,0,vw,vh,0,0,W,H);return;}
+ for(let j=0;j<N;j++){const y=Math.round(j*rh),h=Math.round((j+1)*rh)-y;cx.globalAlpha=al[j];cx.drawImage(v,0,y*ky,vw,h*ky,dx[j],y,W,h);}cx.globalAlpha=1;}
 function start(){t0=performance.now();cancelAnimationFrame(raf);raf=requestAnimationFrame(draw);S.classList.remove('cur');void S.offsetWidth;S.classList.add('cur');try{v.currentTime=0;}catch(e){}v.play().catch(()=>{});up({s4:'pos',label:''});}
 function stop(){S.classList.remove('cur');v.pause();cancelAnimationFrame(raf);}
 addEventListener('message',e=>{const d=e.data||{};if(!EMB||e.source!==parent||!d.s4)return;
