@@ -908,6 +908,53 @@ html.embed,html.embed body,html.embed .stage{background:transparent}html.embed #
 #K24a .k24app{position:absolute;inset:0;opacity:0;pointer-events:none}
 .s.cur#K24a .k24app{animation:k24App .9s cubic-bezier(.16,1,.3,1) 7.3s both}
 @keyframes k24App{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:none}}
+
+/* 11/25 K24b 재구성 — ① 0~3.3초: 서비스 화면 5개가 아래에서 차례로 올라온 뒤 한 번 뒤집히며 가운데로 모여 사라짐(참고: 팀네이버 DAN25 화면 나열)
+   ② 3.4초~: 왼쪽 짧은 설명 4줄(오른쪽과 연동 없음) + 오른쪽 출입증 카드(안의 그라데이션이 천천히 흐름) + 휴대폰 1대(의안 찬성 → 투표하기 → 완료, 6초 반복) */
+#K24b .k24bi{position:absolute;inset:0;perspective:3000px;pointer-events:none}
+#K24b .ip{width:560px;height:1200px;top:200px;left:calc(330px + var(--n)*720px);opacity:0;transform-style:preserve-3d}
+#K24b .ip .scr{position:relative;background:#f5f7fb;font-family:"Pretendard Variable";color:#191b22}
+#K24b .ip .sc{opacity:1!important;animation:none!important;transform:none!important}
+.s.cur#K24b .ip{animation:ipUp .9s cubic-bezier(.16,1,.3,1) calc(.15s + var(--n)*.12s) both,ipOut 1.3s cubic-bezier(.6,0,.3,1) calc(1.9s + var(--n)*.05s) forwards}
+@keyframes ipUp{from{opacity:0;transform:translateY(700px)}to{opacity:1;transform:none}}
+@keyframes ipOut{0%{opacity:1;transform:none}45%{opacity:1;transform:translateX(calc((2 - var(--n))*360px)) rotateY(180deg) scale(.8)}100%{opacity:0;transform:translateX(calc((2 - var(--n))*720px)) rotateY(360deg) scale(.25)}}
+#K24b .k24bt>*{opacity:0}
+.s.cur#K24b .k24bt>*{animation:qIn24 .8s cubic-bezier(.16,1,.3,1) both}
+.s.cur#K24b .k24bt>:nth-child(1){animation-delay:3.4s}.s.cur#K24b .k24bt>:nth-child(2){animation-delay:3.55s}.s.cur#K24b .k24bt>:nth-child(3){animation-delay:3.7s}
+@keyframes qIn24{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:none}}
+#K24b .k24bl{list-style:none;margin:90px 0 0;padding:0}
+#K24b .k24bl li{position:relative;padding:30px 0 30px 44px;border-top:2px solid rgba(242,245,250,.14);font:600 60px/1.2 "Pretendard Variable";color:#F2F5FA;letter-spacing:-.02em}
+#K24b .k24bl li:last-child{border-bottom:2px solid rgba(242,245,250,.14)}
+#K24b .k24bl li::before{content:"";position:absolute;left:0;top:50%;width:14px;height:14px;margin-top:-7px;border-radius:50%;background:#3aa0ea}
+/* 출입증 카드 */
+#K24b .k24pass{position:absolute;left:2300px;top:330px;width:780px;height:940px;border-radius:48px;overflow:hidden;padding:70px 64px;color:#fff;display:flex;flex-direction:column;background:linear-gradient(120deg,#2c5bff,#0071f3,#00a6c8,#7a5cff,#2c5bff);background-size:400% 400%;box-shadow:0 50px 120px rgba(0,60,180,.35),inset 0 0 0 2px rgba(255,255,255,.18);opacity:0}
+.s.cur#K24b .k24pass{animation:pIn24 1s cubic-bezier(.16,1,.3,1) 3.6s both,pGr 9s ease-in-out 3.6s infinite alternate}
+@keyframes pIn24{from{opacity:0;transform:translateY(60px) rotate(-3deg)}to{opacity:1;transform:rotate(-3deg)}}
+@keyframes pGr{0%{background-position:0% 30%}50%{background-position:100% 70%}100%{background-position:40% 100%}}
+#K24b .k24pass .gl{position:absolute;inset:-40%;background:radial-gradient(40% 30% at 30% 30%,rgba(255,255,255,.35),transparent 70%);animation:pGl 7s ease-in-out infinite alternate;pointer-events:none}
+@keyframes pGl{to{transform:translate(35%,40%)}}
+#K24b .k24pass>*{position:relative}
+#K24b .k24pass .pt{margin:0;font:600 34px/1 "Pretendard Variable";opacity:.85;letter-spacing:.02em}
+#K24b .k24pass .nm{margin:60px 0 0;font:700 96px/1 "Pretendard Variable"}
+#K24b .k24pass .co{margin:auto 0 0;font:600 42px/1.4 "Pretendard Variable"}
+#K24b .k24pass .row{display:flex;gap:80px;margin-top:40px;padding-top:36px;border-top:2px solid rgba(255,255,255,.35)}
+#K24b .k24pass .row span{font:500 30px/1 "Pretendard Variable";opacity:.85}#K24b .k24pass .row b{display:block;margin-top:16px;font:700 54px/1 "Pretendard Variable"}
+/* 투표 휴대폰 */
+#K24b .k24bv{opacity:0}
+.s.cur#K24b .k24bv{animation:qIn24 1s cubic-bezier(.16,1,.3,1) 3.9s both}
+#K24b .k24bv .scr{position:relative;background:#f5f7fb;font-family:"Pretendard Variable";color:#191b22}
+#K24b .k24bv .sc{opacity:1!important;animation:none!important;transform:none!important}
+#K24b .vs .yes{transition:none}
+.s.cur#K24b .vs .yes{animation:vYes 6s linear 5s infinite}
+@keyframes vYes{0%,18%{background:#f1f3f7;color:#6b7280;box-shadow:none}22%,100%{background:#e6f0ff;color:#0071f3;box-shadow:inset 0 0 0 3px #0071f3}}
+.s.cur#K24b .vs .vb{animation:vBt 6s linear 5s infinite}
+@keyframes vBt{0%,38%{transform:none;filter:none}40%{transform:scale(.95);filter:brightness(.85)}43%,100%{transform:none;filter:none}}
+#K24b .vs .done{position:absolute;inset:0;background:rgba(245,247,251,.97);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px;opacity:0}
+.s.cur#K24b .vs .done{animation:vDone 6s linear 5s infinite}
+@keyframes vDone{0%,44%{opacity:0}48%,92%{opacity:1}96%,100%{opacity:0}}
+#K24b .vs .done i{width:150px;height:150px;border-radius:50%;background:#0071f3 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5' fill='none' stroke='white' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/62% no-repeat}
+#K24b .vs .done b{font:700 46px/1.2 "Pretendard Variable";color:#191b22}
+#K24b .vs .done small{font:500 30px/1 "Pretendard Variable";color:#6b7280}
 </style></head>
 <body>
 <div class="stage" id="stage">
@@ -1196,16 +1243,18 @@ html.embed,html.embed body,html.embed .stage{background:transparent}html.embed #
 </section>
 
 <section class="s" id="K24b" data-t="현장 출석 · 표결의 전자화" data-dim=".1">
- <div class="ab" style="left:300px;top:220px;width:1900px">
-  <h2 class="h hm fu" style="--i:1">현장 출석 · 표결의 전자화</h2>
-  <p class="sub fu" style="--i:2;margin-top:30px">현장 · 전자출석 주주의 표결을 실시간 통합 집계</p>
+ <div class="k24bi"><div class="phone ip" style="--n:0"><div class="scr"><div class="sc ip-sc s1"><p class="hd">모바일 출입증</p><div class="pass"><span class="nm">김주주</span><span class="co">큐더스전자<br>제56기 정기주주총회</span><div class="row"><span>보유주식<b>200주</b></span><span>좌석번호<b>A129</b></span></div></div><p class="nt">입장 시 출입증을 보여주세요</p></div>
+</div></div><div class="phone ip" style="--n:1"><div class="scr"><div class="sc ip-sc s2"><p class="ti">태깅 한 번으로<br>주주총회 시작하기</p><p class="ds">NFC 기기에 휴대폰 뒷면을 태깅해 주세요</p><div class="nfc"><i></i><i></i><i></i></div><p class="ok">출석 확인 · 의결권이 부여됩니다</p><div class="bt">NFC 태깅하기</div></div>
+</div></div><div class="phone ip" style="--n:2"><div class="scr"><div class="sc ip-sc s3"><p class="ti">본인확인</p><div class="bio"><span class="fc"></span><span class="fp"></span></div><p class="q">생체인증을 사용하시겠습니까?</p><p class="ds">등록된 생체정보로 간편하게 확인합니다</p><div class="bt">생체인증 사용하기</div></div>
+</div></div><div class="phone ip" style="--n:3"><div class="scr"><div class="sc ip-sc s4"><p class="hd">큐더스전자 · 제56기 정기주주총회</p><div class="ag"><small>제1호 의안</small><b>재무제표 승인의 건</b><div class="ch"><span class="on">찬성</span><span>반대</span><span>기권</span></div><div class="bt">투표하기</div></div><div class="ag dim"><small>제2호 의안</small><b>정관 일부 변경의 건</b></div><div class="ag dim"><small>제3호 의안</small><b>사내이사 선임의 건</b></div></div>
+</div></div><div class="phone ip" style="--n:4"><div class="scr"><div class="sc ip-sc s5"><p class="hd">의결권 행사내역</p><div class="hi"><span><small>제1호 의안</small>재무제표 승인의 건</span><em>찬성</em></div><div class="hi"><span><small>제2호 의안</small>정관 일부 변경의 건</span><em>찬성</em></div><div class="hi"><span><small>제3호 의안</small>사내이사 선임의 건</span><em>찬성</em></div><div class="hi"><span><small>제4호 의안</small>감사위원 선임의 건</span><em>기권</em></div><div class="hi"><span><small>제5호 의안</small>이사 보수한도 승인의 건</span><em>찬성</em></div></div></div></div></div>
+ <div class="ab k24bt" style="left:300px;top:300px;width:1700px">
+  <h2 class="h hm">현장 출석 · 표결의 전자화</h2>
+  <p class="sub" style="margin-top:34px">현장 · 전자출석 표결을 실시간 통합 집계</p>
+  <ul class="k24bl"><li>회원가입 없는 모바일 출입증</li><li>태그 한 번으로 출석 확인</li><li>생체인증으로 간편한 본인확인</li><li>현장에서도 간편한 전자표결</li></ul>
  </div>
- <ol class="k24bs fu" style="--i:3"><li style="--k:0"><i>01</i><b>회원가입 없는 출입증 발급</b><small>주주 확인 후 모바일 출입증</small></li><li style="--k:1"><i>02</i><b>태그 한 번으로 출석확인</b><small>출석과 동시에 의결권 부여</small></li><li style="--k:2"><i>03</i><b>간편한 본인확인</b><small>생체인증 지원</small></li><li style="--k:3"><i>04</i><b>현장에서도 간편한 전자표결</b><small>의안별 찬성 · 반대 · 기권</small></li><li style="--k:4"><i>05</i><b>빠짐없이 기록되는 행사내역</b><small>전자출석 표결과 실시간 통합 집계</small></li></ol>
- <div class="phone fu k24bp" style="--i:3;left:2870px;top:220px;width:560px;height:1200px"><div class="scr"><div class="sc s1" style="--k:0"><p class="hd">모바일 출입증</p><div class="pass"><span class="nm">김주주</span><span class="co">큐더스전자<br>제56기 정기주주총회</span><div class="row"><span>보유주식<b>200주</b></span><span>좌석번호<b>A129</b></span></div></div><p class="nt">입장 시 출입증을 보여주세요</p></div>
-<div class="sc s2" style="--k:1"><p class="ti">태깅 한 번으로<br>주주총회 시작하기</p><p class="ds">NFC 기기에 휴대폰 뒷면을 태깅해 주세요</p><div class="nfc"><i></i><i></i><i></i></div><p class="ok">출석 확인 · 의결권이 부여됩니다</p><div class="bt">NFC 태깅하기</div></div>
-<div class="sc s3" style="--k:2"><p class="ti">본인확인</p><div class="bio"><span class="fc"></span><span class="fp"></span></div><p class="q">생체인증을 사용하시겠습니까?</p><p class="ds">등록된 생체정보로 간편하게 확인합니다</p><div class="bt">생체인증 사용하기</div></div>
-<div class="sc s4" style="--k:3"><p class="hd">큐더스전자 · 제56기 정기주주총회</p><div class="ag"><small>제1호 의안</small><b>재무제표 승인의 건</b><div class="ch"><span class="on">찬성</span><span>반대</span><span>기권</span></div><div class="bt">투표하기</div></div><div class="ag dim"><small>제2호 의안</small><b>정관 일부 변경의 건</b></div><div class="ag dim"><small>제3호 의안</small><b>사내이사 선임의 건</b></div></div>
-<div class="sc s5" style="--k:4"><p class="hd">의결권 행사내역</p><div class="hi"><span><small>제1호 의안</small>재무제표 승인의 건</span><em>찬성</em></div><div class="hi"><span><small>제2호 의안</small>정관 일부 변경의 건</span><em>찬성</em></div><div class="hi"><span><small>제3호 의안</small>사내이사 선임의 건</span><em>찬성</em></div><div class="hi"><span><small>제4호 의안</small>감사위원 선임의 건</span><em>기권</em></div><div class="hi"><span><small>제5호 의안</small>이사 보수한도 승인의 건</span><em>찬성</em></div></div></div></div>
+ <div class="k24pass"><i class="gl"></i><p class="pt">모바일 출입증</p><p class="nm">김주주</p><p class="co">큐더스전자<br>제56기 정기주주총회</p><div class="row"><span>보유주식<b>200주</b></span><span>좌석번호<b>A129</b></span></div></div>
+ <div class="phone k24bv" style="left:3240px;top:200px;width:560px;height:1200px"><div class="scr"><div class="sc s4 vs"><p class="hd">큐더스전자 · 제56기 정기주주총회</p><div class="ag"><small>제1호 의안</small><b>재무제표 승인의 건</b><div class="ch"><span class="yes">찬성</span><span>반대</span><span>기권</span></div><div class="bt vb">투표하기</div></div><div class="ag dim"><small>제2호 의안</small><b>정관 일부 변경의 건</b></div><div class="ag dim"><small>제3호 의안</small><b>사내이사 선임의 건</b></div><<div class="done"><i></i><b>투표가 완료되었습니다</b><small>제1호 의안 · 찬성</small></div></div></div></div>
 </section>
 
 <section class="s" id="K24c" data-t="생중계" data-dim="0">
