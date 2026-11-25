@@ -262,6 +262,16 @@ html:not(.embed) .stage{background:#0a1017}
 .s.cur.end#K0 .q5 h2{animation:qBook 1s cubic-bezier(.16,1,.3,1) 1.3s both}
 .s.cur#K0 .rl .rt{animation:qRoll3 36s linear 3.6s infinite}
 @keyframes qRoll3{from{transform:translateX(0)}to{transform:translateX(calc(-33.3333% - 8px))}}
+/* 11/25 18:00 첫 영상 장면 1.5초 유지(전환 2.3 → 2.8초), 뒤 페이지 0.5초씩 뒤로 */
+.s.cur#K0 .q2{animation:qOutL .6s cubic-bezier(.7,0,.3,1) 2.8s both}
+.s.cur#K0 .q3 .who{animation:qIn .7s cubic-bezier(.16,1,.3,1) 3.5s both}
+.s.cur#K0 .q3 .bx{animation:qF .5s ease 4.7s both}
+.s.cur#K0 .q3 .bkw{animation:qBkIn 1.2s cubic-bezier(.16,1,.3,1) 4.8s both}
+.s.cur#K0 .q3 .bt{animation:qIn .7s cubic-bezier(.16,1,.3,1) 5.1s both}
+.s.cur#K0 .q3 .bp{animation:qIn .7s cubic-bezier(.16,1,.3,1) 5.3s both}
+.s.cur#K0 .rl{animation:qF 1s ease 4.1s both}
+.s.cur#K0 .rl .rt{animation:qRoll3 36s linear 4.1s infinite}
+.s.cur.end#K0 .q3,.s.cur.end#K0 .rl{animation:qGone .01s linear .85s both}
 </style></head>
 <body>
 <div class="stage" id="stage">
@@ -277,9 +287,9 @@ html:not(.embed) .stage{background:#0a1017}
  <div class="q3">
   <div class="who"><p class="wn">권재열</p><p class="wr">한국주주총회연구소장</p></div>
   <div class="cols">
-   <div class="g" style="--t:3.3s"><p class="gl">법제 · 사법</p><p class="it" style="--k:0">법무부 상법 특별위원회 위원 역임</p><p class="it" style="--k:1">상법 시행령 제정 TF 위원장 역임</p><p class="it" style="--k:2">대법원 재판연구관 역임</p></div>
-   <div class="g" style="--t:3.7s"><p class="gl">학계</p><p class="it" style="--k:0">경희대학교 법학전문대학원 원장 역임</p><p class="it" style="--k:1">한국상사판례학회 회장 역임</p></div>
-   <div class="g c3" style="--t:4.1s"><p class="gl">전자주주총회 연구</p><div class="bx"><div class="bkw"><img src="assets/kism/manual-book.webp" alt="전자주주총회 운영실무 매뉴얼"></div><div><p class="bt">「전자주주총회<br>운영실무 매뉴얼」<br>집필</p><p class="bp">한국상장회사협의회 · 2026</p></div></div></div>
+   <div class="g" style="--t:3.8s"><p class="gl">법제 · 사법</p><p class="it" style="--k:0">법무부 상법 특별위원회 위원 역임</p><p class="it" style="--k:1">상법 시행령 제정 TF 위원장 역임</p><p class="it" style="--k:2">대법원 재판연구관 역임</p></div>
+   <div class="g" style="--t:4.2s"><p class="gl">학계</p><p class="it" style="--k:0">경희대학교 법학전문대학원 원장 역임</p><p class="it" style="--k:1">한국상사판례학회 회장 역임</p></div>
+   <div class="g c3" style="--t:4.6s"><p class="gl">전자주주총회 연구</p><div class="bx"><div class="bkw"><img src="assets/kism/manual-book.webp" alt="전자주주총회 운영실무 매뉴얼"></div><div><p class="bt">「전자주주총회<br>운영실무 매뉴얼」<br>집필</p><p class="bp">한국상장회사협의회 · 2026</p></div></div></div>
   </div>
  </div>
  <div class="rl"><div class="rt"><img src="assets/kism/photo-main.webp" alt=""><img src="assets/kism/photo-2.webp" alt=""><img src="assets/kism/photo-3.webp" alt=""><img src="assets/kism/photo-4.webp" alt=""><img src="assets/kism/photo-main.webp" alt=""><img src="assets/kism/photo-2.webp" alt=""><img src="assets/kism/photo-3.webp" alt=""><img src="assets/kism/photo-4.webp" alt=""><img src="assets/kism/photo-main.webp" alt=""><img src="assets/kism/photo-2.webp" alt=""><img src="assets/kism/photo-3.webp" alt=""><img src="assets/kism/photo-4.webp" alt=""></div></div>
@@ -300,7 +310,7 @@ function fit(){const s=Math.min(innerWidth/4200,innerHeight/1600);stage.style.tr
 addEventListener('resize',fit);fit();
 
 // 영상 프레임 동적 마스킹 (canvas, 4조각 · 조각마다 속도 다르게) — t = 시퀀스 시작 후 초
-const OFF=0,TI=.1,TO=2.3;  // 영상 등장 · 퇴장 시각(초)  // 11/25 17:45 타임라인을 새 초 단위로 다시 씀 — 앞당김 없음
+const OFF=0,TI=.1,TO=2.8;  // 영상 등장 · 퇴장 시각(초)  // 11/25 17:45 타임라인을 새 초 단위로 다시 씀 — 앞당김 없음
 const cv=S.querySelector('.qv canvas'),cx=cv.getContext('2d'),W=1100,H=1600;let t0=0,raf=0;
 const cl=x=>Math.max(0,Math.min(1,x)),oc=x=>1-Math.pow(1-cl(x),3),io=x=>{x=cl(x);return x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2;};
 const IN=[[0,.95,-1,.55],[.12,1.35,1,.9],[.05,.8,-1,.35],[.2,1.15,1,.75]],   // 등장: 지연 · 길이 · 방향 · 거리(화면 높이 비)
