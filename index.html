@@ -856,10 +856,10 @@ addEventListener('message',e=>{const d=e.data||{};if(!d.s4)return;const f=KN.fra
   else if(d.s4==='pos'){if(cur){KN.pos=d.label;if(window.CtrlPanel)CtrlPanel.draw();MC.pub();}}});
 /* 사회자 화면(mc.html) 연동: 같은 PC는 SCHED(BroadcastChannel), 다른 기기는 Supabase Realtime 방송(온라인일 때). 8초마다 재전송 */
 var MC={st:null,q:null,
- pub(o){if(o)this.st=o;if(!this.st)return;const s={...this.st,pos:(typeof KN!=='undefined'&&KN.pos)||'',q:this.q};SCHED.pub(s);
+ pub(o){if(o)this.st=o;if(!this.st)return;const bk=document.getElementById('black');const s={...this.st,pos:(typeof KN!=='undefined'&&KN.pos)||'',q:this.q,black:!!(bk&&bk.classList.contains('on')),sch:(()=>{try{return SCHED.load().items.map(x=>[x.id,x.start,x.end]);}catch(e){return null;}})(),t:Date.now()};SCHED.pub(s);
   try{const sc=SCHED.load();fetch('https://zrhtqpzgubaqzsdaxhvt.supabase.co/realtime/v1/api/broadcast',{method:'POST',headers:{apikey:'sb_publishable_JwET6KLGmdYBkOIIttgOOQ_HEpCKLar','Content-Type':'application/json'},
    body:JSON.stringify({messages:[{topic:'seminar-mc',event:'state',payload:{cur:s.cur,pos:s.pos,q:s.q,sch:sc.items.map(x=>[x.id,x.start,x.end]),t:Date.now()}}]})}).catch(()=>{});}catch(e){}}};
-setInterval(()=>MC.pub(),8000);
+setInterval(()=>MC.pub(),4000);
 const byNo=no=>slides.findIndex(s=>s.dataset.no.toUpperCase()===String(no).toUpperCase());
 /* M3-1 개회 시퀀스: 5 → 1 (1초씩, 점 링이 5초 동안 차오름) → ANYWHERE(4.1초) → 시작 문구에서 멈춤 */
 /* M3-1 카운트다운 효과음: 시계 초침(1초 간격, 파일 0.52초에 첫 틱) — 숫자 5가 뜨는 0.4초에 첫 틱이 맞도록 0.12초부터 재생, 1까지 5번 듣고 5.3초에 짧게 페이드아웃 */
@@ -995,7 +995,7 @@ function renderQ(){const q=QSRC==='online'?OQ:QA.list.find(x=>x.id===QA.cur),lab
   const s=slides[idx];if(s&&s.dataset.qa){tx.parentNode.animate([{opacity:0,transform:'translateY(30px)',filter:'blur(12px)'},{opacity:1,transform:'none',filter:'none'}],{duration:600,easing:'cubic-bezier(.2,.7,.2,1)'});}}
 function fitQ(){const tx=document.getElementById('q-text'),box=tx.parentNode;let f=132;tx.style.fontSize=f+'px';while(f>56&&tx.scrollHeight>box.clientHeight){f-=4;tx.style.fontSize=f+'px';}}
 function qStep(d){const L=QA.list;if(!L.length)return;let i=L.findIndex(x=>x.id===QA.cur);i=Math.max(0,Math.min(L.length-1,i<0?0:i+d));QA.cur=L[i].id;SCHED.saveQ(QA);renderQ();}
-SCHED.onCmd(c=>{if(!c)return;if(c.go){const n=byNo(c.go);if(n>=0)go(n);}if(c.nav)step(c.nav);if(c.speed&&window.CtrlPanel)CtrlPanel.setSpeed(c.speed);if(c.black!=null)document.getElementById('black').classList.toggle('on',!!c.black);if(c.dsset){let o={};try{o=JSON.parse(localStorage.getItem('scr-ds')||'{}')||{};}catch(e){}Object.assign(o,c.dsset);try{localStorage.setItem('scr-ds',JSON.stringify(o));}catch(e){}dsPost(Object.assign({ds:'set'},c.dsset));}});
+SCHED.onCmd(c=>{if(!c)return;if(c.go){const n=byNo(c.go);if(n>=0)go(n);}if(c.nav)step(c.nav);if(c.speed&&window.CtrlPanel)CtrlPanel.setSpeed(c.speed);if(c.black!=null){document.getElementById('black').classList.toggle('on',!!c.black);MC.pub();}if(c.dsset){let o={};try{o=JSON.parse(localStorage.getItem('scr-ds')||'{}')||{};}catch(e){}Object.assign(o,c.dsset);try{localStorage.setItem('scr-ds',JSON.stringify(o));}catch(e){}dsPost(Object.assign({ds:'set'},c.dsset));}});
 // ── HUD ──
 function hud(){const e=document.getElementById('hud');if(!e.classList.contains('on'))return;
   const nx=SCHED.next(SC),cu=SCHED.current(SC);let sch='<div class="sch">지금 '+SCHED.fmt(SCHED.nowMin())+(cu?' · 진행 중: '+(cu.tag||cu.label):'');
@@ -1035,7 +1035,7 @@ addEventListener('keydown',e=>{const k=e.key;
   else if(k==='Home')go(0);else if(k==='End')go(slides.length-1);
   else if(k==='f'||k==='F'){if(document.fullscreenElement)document.exitFullscreen();else document.documentElement.requestFullscreen();}
   else if(k==='m'||k==='M'){BGM.mute();}
-  else if(k==='b'||k==='B'||k==='.'){document.getElementById('black').classList.toggle('on');}
+  else if(k==='b'||k==='B'||k==='.'){document.getElementById('black').classList.toggle('on');MC.pub();}
   else if(k==='o'||k==='O'||k==='?'){CtrlPanel.toggle();}
   else if(k==='a'||k==='A'){auto=!auto;toast('대기화면 자동순환 '+(auto?'켜짐':'꺼짐'));const n=idx;idx=-1;slides[n].classList.remove('on');go(n);}
   else if(k==='+'||k==='='||k==='-'||k==='_'){const s=slides[idx];if(s.dataset.break){const d=(k==='+'||k==='=')?1:-1;SC.hist=(SC.hist||[]).slice(-49);SC.hist.push(JSON.stringify(SC.items));
@@ -1056,7 +1056,7 @@ CtrlPanel.mount({title:'메인 스크린',key:'scr-main',placeholder:'예: 4-5, 
     return {title:s.dataset.no+'  '+nm(s),sub,prog:autoLen?Math.min(1,(performance.now()-autoT0)/autoLen):null};},
   setSpeed:v=>{SPD=v;window.FSSPD=v;dsPost({ds:'mul',v});},
   toggles:[{label:'전체화면',key:'F',click:()=>{if(document.fullscreenElement)document.exitFullscreen();else document.documentElement.requestFullscreen();},on:()=>!!document.fullscreenElement},
-    {label:'블랙아웃',key:'B',click:()=>black().classList.toggle('on'),on:()=>black().classList.contains('on')},
+    {label:'블랙아웃',key:'B',click:()=>{black().classList.toggle('on');MC.pub();},on:()=>black().classList.contains('on')},
     {label:'대기 자동순환',key:'A',click:()=>{auto=!auto;const n=idx;idx=-1;slides[n].classList.remove('on');go(n);},on:()=>auto},
     {label:'운영 입력 열기',click:()=>open('control.html','scr-control')}],
   extra:()=>{const nx=SCHED.next(SC),cu=SCHED.current(SC);let h='진행 '+(cu?(cu.tag||cu.label):'—');

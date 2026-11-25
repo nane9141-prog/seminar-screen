@@ -416,8 +416,13 @@ html{overflow-x:hidden}
 </div>
 </div>
 </main>
-<script src="assets/sched.js"></script>
 <script src="assets/supabase.min.js"></script>
+<script src="assets/sched.js"></script>
+<script>/* 11/25 연동 상태 표시 — 온라인(Supabase Realtime, 다른 PC · 사회자 · LED와 연동) / 같은 PC만(오프라인 예비) */
+(function(){const b=document.createElement('div');b.id='netb';b.style.cssText='position:fixed;right:12px;bottom:12px;z-index:9999;font:600 12px/1 system-ui,sans-serif;padding:7px 11px;border-radius:999px;background:#111;color:#fff;box-shadow:0 2px 8px rgba(0,0,0,.3);cursor:pointer';
+b.title='누르면 온라인 연동 켜기/끄기 (끄면 같은 PC끼리만 연동)';document.body.appendChild(b);
+SCHED.onNet(st=>{const m={on:['#1f9d55','온라인 연동 중 · 메인 · 사회자 · LED'],connecting:['#b7791f','온라인 연결 중…'],down:['#c53030','온라인 끊김 · 같은 PC만 연동'],off:['#4a5568','오프라인 모드 · 같은 PC만 연동']}[st]||['#4a5568',st];b.style.background=m[0];b.textContent='● '+m[1];});
+b.onclick=()=>{if(confirm(SCHED.net.state==='off'?'온라인 연동을 켤까요? (새로 고침)':'온라인 연동을 끄고 같은 PC끼리만 연동할까요? (새로 고침)'))SCHED.setNet(SCHED.net.state==='off');};})();</script>
 <script>/* 온라인 주소로 열면 오프라인 캐시 등록 (sw.js) */
 (function(){const st=t=>{window.OFFLINE_STATE=t;document.dispatchEvent(new CustomEvent('offline-state',{detail:t}));};
 if(!location.protocol.startsWith('http')){st('파일 실행 (오프라인)');return;}

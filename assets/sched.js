@@ -1,5 +1,7 @@
-/* 진행 시간 · 질문 공유 상태 — index.html(메인 스크린)과 control.html(운영 입력)이 같이 씁니다.
-   같은 PC · 같은 브라우저에서 열면 localStorage + BroadcastChannel 로 바로 동기화됩니다. */
+/* 진행 시간 · 질문 · 화면 상태 공유 — index.html(메인) · control.html(운영) · mc.html(사회자) · led.html(양쪽 LED)이 같이 씁니다.
+   11/25 투트랙: ① 온라인(기본) — Supabase Realtime 'seminar-live'로 다른 PC · 기기끼리 동기화
+                ② 오프라인(예비) — 같은 PC · 같은 브라우저에서 localStorage + BroadcastChannel
+   두 경로가 동시에 돌고, 같은 메시지는 id로 한 번만 처리합니다. 온라인 끄기: 주소 뒤 ?net=0 (또는 localStorage scr-net=0) */
 (function(){
 const DEF=[
  {id:'reg',  label:'등록 및 입장',s:'12:30',e:'13:00'},
@@ -22,12 +24,26 @@ const nowMin=()=>Math.floor(nowSec()/60);
 function defItems(){return DEF.map(d=>({...d,ps:toM(d.s),pe:toM(d.e),start:toM(d.s),end:toM(d.e)}));}
 function get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d;}catch(e){return d;}}
 let bc=null;try{bc=new BroadcastChannel('seminar-screen');}catch(e){}
-const subs={};
-function put(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}if(bc)bc.postMessage({k,v});}
+const subs={},seen=new Map(),ME=Math.random().toString(36).slice(2,9);
+const mid=()=>ME+Date.now().toString(36)+Math.random().toString(36).slice(2,5);
+function dup(id){if(!id)return false;const n=Date.now();for(const [k,t] of seen)if(n-t>20000)seen.delete(k);if(seen.has(id))return true;seen.set(id,n);return false;}
 function on(k,cb){(subs[k]=subs[k]||[]).push(cb);}
-function fire(k,v){(subs[k]||[]).forEach(cb=>cb(v));}
-if(bc)bc.onmessage=e=>fire(e.data.k,e.data.v);
-addEventListener('storage',e=>{if(e.key&&subs[e.key]){try{fire(e.key,JSON.parse(e.newValue));}catch(_){}}});
+function fire(k,v){(subs[k]||[]).forEach(cb=>{try{cb(v);}catch(e){console.error(e);}});}
+function recv(m,src){if(!m||!m.k||dup(m.id))return;try{localStorage.setItem(m.k,JSON.stringify(m.v));}catch(e){}NET.last=src==='net'?Date.now():NET.last;fire(m.k,m.v);}
+if(bc)bc.onmessage=e=>recv(e.data,'local');
+// 온라인 경로 (Supabase Realtime 방송)
+const NET={on:false,state:'off',last:0,ch:null,q:[],cbs:[]};
+function netSet(st){NET.state=st;NET.on=st==='on';NET.cbs.forEach(cb=>cb(st));}
+function netSend(m){if(NET.ch&&NET.on)NET.ch.send({type:'broadcast',event:'kv',payload:m}).catch(()=>{});else{NET.q.push(m);if(NET.q.length>40)NET.q.shift();}}
+function put(k,v){const m={k,v,id:mid()};seen.set(m.id,Date.now());try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}if(bc)bc.postMessage(m);netSend(m);}
+(function netInit(){let off=false;try{off=new URLSearchParams(location.search).get('net')==='0'||localStorage.getItem('scr-net')==='0';}catch(e){}
+ if(off){netSet('off');return;}
+ const go=()=>{try{const sb=supabase.createClient('https://zrhtqpzgubaqzsdaxhvt.supabase.co','sb_publishable_JwET6KLGmdYBkOIIttgOOQ_HEpCKLar',{auth:{persistSession:false},realtime:{params:{eventsPerSecond:20}}});
+   NET.ch=sb.channel('seminar-live',{config:{broadcast:{self:false}}}).on('broadcast',{event:'kv'},({payload})=>recv(payload,'net'))
+   .subscribe(st=>{if(st==='SUBSCRIBED'){netSet('on');const q=NET.q.splice(0);q.forEach(netSend);}else if(st==='CHANNEL_ERROR'||st==='TIMED_OUT'||st==='CLOSED')netSet('down');});netSet('connecting');}catch(e){netSet('down');}};
+ if(typeof supabase!=='undefined')return go();
+ const me=document.currentScript&&document.currentScript.src,base=me?me.replace(/sched\.js.*$/,''):'assets/';
+ const sc=document.createElement('script');sc.src=base+'supabase.min.js';sc.onload=go;sc.onerror=()=>netSet('down');(document.head||document.documentElement).appendChild(sc);})();
 // 진행표 상태: {items, progAdj, notice, hist}
 function load(){const s=get('scr-sched',null);if(s&&s.items&&s.items.length===DEF.length)return s;return {items:defItems(),progAdj:false,notice:''};}
 function item(s,id){return s.items.find(x=>x.id===id);}
@@ -46,5 +62,6 @@ window.SCHED={DEF,toM,fmt,nowSec,nowMin,load,save:s=>put('scr-sched',s),onSched:
   loadQ:()=>get('scr-qa',{list:[],cur:null}),saveQ:q=>put('scr-qa',q),onQ:cb=>on('scr-qa',cb),
   cmd:c=>put('scr-cmd',{...c,t:Date.now()}),onCmd:cb=>on('scr-cmd',cb),
   getSrc:()=>get('scr-qsrc',location.protocol.startsWith('http')?'online':'local'),saveSrc:v=>put('scr-qsrc',v),onSrc:cb=>on('scr-qsrc',cb),
-  pub:st=>put('scr-state',st),getState:()=>get('scr-state',null),onState:cb=>on('scr-state',cb)};
+  pub:st=>put('scr-state',st),getState:()=>get('scr-state',null),onState:cb=>on('scr-state',cb),
+  net:NET,onNet:cb=>{NET.cbs.push(cb);cb(NET.state);},setNet:v=>{try{localStorage.setItem('scr-net',v?'1':'0');}catch(e){}location.reload();}};
 })();

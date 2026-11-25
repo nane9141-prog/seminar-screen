@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>양쪽 LED (4:3) — 메인 스크린 연동</title>
+<style>
+@font-face{font-family:"Pretendard Variable";src:url(assets/PretendardVariable.woff2) format("woff2");font-weight:45 920;font-display:block}
+/* 메인 스크린 양쪽 LED 2대(같은 화면, 4:3 · 1600×1200 기준, 창 크기에 맞춰 늘어남).
+   위: 행사 타이틀 고정 / 아래: 메인 스크린 장면에 따라 바뀌는 칸(축사 · 출범식 · 세션 · 휴식 타이머 · 시연 · Q&A · 폐회).
+   연동: 온라인(기본) Supabase Realtime · 같은 PC면 BroadcastChannel. 신호가 없으면 마지막 장면 유지, ← → 로 직접 넘길 수 있음 */
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:#000;overflow:hidden;cursor:none}
+body.mv{cursor:default}
+.stage{position:absolute;left:0;top:0;width:1600px;height:1200px;transform-origin:0 0;overflow:hidden;background:#04070b;color:#E6EBF2;font-family:"Pretendard Variable","Malgun Gothic",sans-serif;word-break:keep-all;letter-spacing:-.015em}
+#ds{position:absolute;inset:0;width:1600px;height:1200px;border:0;opacity:.55;pointer-events:none}
+.glow{position:absolute;left:-10%;right:-10%;bottom:-420px;height:760px;border-radius:50%;background:radial-gradient(closest-side,rgba(0,129,204,.42),rgba(0,173,169,.18) 55%,transparent);filter:blur(10px)}
+.id{position:absolute;left:120px;right:120px;top:130px}
+.id .en{font:600 34px/1 "Pretendard Variable";letter-spacing:.12em;color:#3aa0ea}
+.id h1{margin-top:40px;font:700 118px/1.16 "Pretendard Variable";color:#fff;letter-spacing:-.035em}
+.id .meta{margin-top:40px;font:500 34px/1.4 "Pretendard Variable";color:#AEB8C6}
+.lg{position:absolute;right:120px;bottom:90px;height:56px;opacity:.95}
+/* 바뀌는 칸 */
+.ph{position:absolute;left:120px;right:120px;top:700px;height:330px;padding-top:46px;border-top:2px solid rgba(230,235,242,.2)}
+.ph::before{content:"";position:absolute;left:0;top:-2px;width:140px;height:5px;background:linear-gradient(90deg,#0081cc,#00ada9)}
+.ph .k{font:700 36px/1 "Pretendard Variable";color:#3aa0ea;letter-spacing:.02em}
+.ph .t{margin-top:26px;font:700 62px/1.25 "Pretendard Variable";color:#fff;letter-spacing:-.03em}
+.ph .w{margin-top:22px;font:500 38px/1.35 "Pretendard Variable";color:#cfd6df}
+.ph .w small{font-size:30px;color:#8b95a3;margin-left:16px;font-weight:400}
+.ph .big{margin-top:18px;font:200 150px/1 "Pretendard Variable";color:#fff;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.ph.on{animation:pin .9s cubic-bezier(.16,1,.3,1) both}
+.ph.out{animation:pout .35s ease both}
+@keyframes pin{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:none}}
+@keyframes pout{to{opacity:0;transform:translateY(-16px)}}
+#black{position:fixed;inset:0;background:#000;z-index:50;opacity:0;pointer-events:none;transition:opacity .6s}
+body.black #black{opacity:1}
+#st{position:fixed;left:16px;bottom:16px;z-index:60;font:500 15px/1.4 "Pretendard Variable";color:#fff;background:rgba(0,0,0,.72);padding:8px 14px;border-radius:8px;display:none}
+body.mv #st{display:block}
+#st i{display:inline-block;width:10px;height:10px;border-radius:50%;background:#e5484d;margin-right:8px;vertical-align:1px}#st.ok i{background:#30a46c}
+@media (prefers-reduced-motion:reduce){.ph.on,.ph.out{animation:none}}
+</style></head>
+<body>
+<div class="stage" id="stage">
+ <iframe id="ds" src="assets/ds-bg.html?w=1600&amp;h=1200&amp;ox=.5&amp;bright=.7&amp;size=1&amp;scale=1" tabindex="-1" title="" aria-hidden="true"></iframe>
+ <div class="glow"></div>
+ <div class="id"><p class="en">LIVE DEMO BRIEFING</p><h1>전자주주총회<br>플랫폼 시연 설명회</h1><p class="meta">2026. 11. 30 (월) · 페어몬트 앰배서더 서울 B1 그랜드볼룸</p></div>
+ <div class="ph" id="ph"></div>
+ <img class="lg" src="assets/irk-white.svg" alt="IR KUDOS">
+</div>
+<div id="black"></div><div id="st"><i></i><span>신호 대기</span></div>
+<script src="assets/supabase.min.js"></script>
+<script src="assets/sched.js"></script>
+<script>
+(()=>{
+const stage=document.getElementById('stage'),$=id=>document.getElementById(id);
+function fit(){const s=Math.min(innerWidth/1600,innerHeight/1200);stage.style.transform=`translate(${(innerWidth-1600*s)/2}px,${(innerHeight-1200*s)/2}px) scale(${s})`;}
+addEventListener('resize',fit);fit();
+/* 장면별 아래 칸 (메인 화면 번호 → 칸) */
+const SP={
+ cong1:{k:'축사',t:'김광록',w:'한국기업법학회 회장 · 충북대 법학전문대학원 교수'},
+ cong2:{k:'축사',t:'정우용',w:'전 한국상장회사협의회 정책부회장 · 현 한국상장회사정책연구원 원장'},
+ kism:{k:'한국주주총회연구소 출범식',t:'권재열',w:'한국주주총회연구소장 · 경희대 법학전문대학원 교수'},
+ s1:{k:'Session 1',t:'전자주주총회 제도 도입 및<br>진행 관련 주요 실무 쟁점',w:'김승준<small>김앤장 법률사무소, 변호사</small>'},
+ s2:{k:'Session 2',t:'상법 개정과 전자주총이 몰고 올<br>기업 경영의 지각변동',w:'권재열<small>한국주주총회연구소장</small>'},
+ s3:{k:'Session 3',t:'Proxymity, 글로벌 의결권 행사<br>인프라의 혁신과 미래',w:'Scott Oakland<small>Proxymity, Head of APAC</small>'},
+ s4:{k:'Session 4',t:'전자주주총회 도입 · 운영 방안 및<br>통합 솔루션 소개',w:'박성용<small>IR큐더스, 본부장</small>'},
+ p1:{k:'Part 1',t:'의무화가 바꾸는 주주총회'},
+ p2:{k:'Part 2',t:'전자주주총회 및<br>의결권 행사의 미래'},
+ cer:{k:'Opening Remarks',t:'축사 및<br>한국주주총회연구소 출범식'},
+ wait:{k:'Welcome',t:'13:00에 시작합니다',w:'안내받으신 좌석으로 입장해 주세요'},
+ open:{k:'Opening',t:'개회 및 행사 안내'},
+ demo:{k:'Live Demo',t:'모의 전자주주총회 시연',w:'박성용<small>IR큐더스, 본부장</small>'},
+ qna:{k:'Q&amp;A',t:'사전 질문 및 현장 질의응답',w:'질문은 명찰 뒷면 QR코드로 남겨 주세요'},
+ close:{k:'Thank you',t:'참석해 주셔서 감사합니다'},
+ brk1:{k:'BREAK',brk:'brk1'},brk2:{k:'BREAK',brk:'brk2'},
+ base:null};
+function keyOf(no){no=String(no||'').toUpperCase();const m=no.match(/^M(\d+)-(S?\d+)/);if(!m)return 'base';const a=+m[1],b=m[2];
+ if(a===1)return 'wait';if(a===3)return 'open';
+ if(a===4)return b==='1'?'cer':b==='2'?'cong1':b==='3'?'cong2':'kism';
+ if(a===5)return b==='1'?'p1':(b==='2'||b==='3')?'s1':'s2';
+ if(a===6)return 'brk1';
+ if(a===7)return b==='1'?'p2':(b==='5'||b==='6')?'s4':'s3';
+ if(a===8)return 'brk2';if(a===9)return 'demo';if(a===10)return 'qna';if(a===11)return 'close';return 'base';}
+const ORDER=['base','wait','open','cer','cong1','cong2','kism','p1','s1','s2','brk1','p2','s3','s4','brk2','demo','qna','close'];
+let CUR='base',SCH=null,FOLLOW=true,lastRx=0,src='';
+const F=m=>{m=((Math.round(m)%1440)+1440)%1440;return String(Math.floor(m/60)).padStart(2,'0')+':'+String(m%60).padStart(2,'0');};
+function brkEnd(id){const it=(SCH||[]).find(x=>x[0]===id);if(it)return it[2];try{const x=SCHED.item(SCHED.load(),id);return x?x.end:null;}catch(e){return null;}}
+function html(k){const d=SP[k];if(!d)return '';
+ if(d.brk){const e=brkEnd(d.brk);return `<p class="k">BREAK</p><p class="t">잠시 쉬어가는 시간입니다</p><p class="big" id="cd">--:--</p><p class="w">${e!=null?F(e)+'에 다시 시작합니다':''}</p>`;}
+ return `<p class="k">${d.k}</p><p class="t">${d.t}</p>${d.w?`<p class="w">${d.w}</p>`:''}`;}
+function show(k,force){if(k===CUR&&!force)return;CUR=k;const ph=$('ph');ph.classList.remove('on');ph.classList.add('out');
+ setTimeout(()=>{ph.innerHTML=html(k);ph.classList.remove('out');ph.style.display=SP[k]?'':'none';void ph.offsetWidth;ph.classList.add('on');tick();},SP[k]?330:200);}
+function apply(v,from){if(!v)return;lastRx=Date.now();src=from;if(v.sch)SCH=v.sch;document.body.classList.toggle('black',!!v.black);
+ if(FOLLOW&&v.cur)show(keyOf(v.cur));else if(SP[CUR]&&SP[CUR].brk)tick();}
+function tick(){const d=SP[CUR];if(d&&d.brk){const e=brkEnd(d.brk),el=$('cd');if(el&&e!=null){const left=Math.max(0,e*60-SCHED.nowSec());el.textContent=String(Math.floor(left/60)).padStart(2,'0')+':'+String(Math.floor(left%60)).padStart(2,'0');}}
+ const age=(Date.now()-lastRx)/1000,ok=lastRx&&age<20,st=$('st');st.classList.toggle('ok',!!ok);
+ st.querySelector('span').textContent=(FOLLOW?'':'직접 넘기는 중(A: 다시 따라가기) · ')+(ok?(src==='net'?'온라인 연동':'같은 PC 연동'):lastRx?'신호 끊김 '+Math.round(age)+'초 · 마지막 장면 유지':'메인 스크린 신호 대기')+' · 온라인 '+({on:'연결',connecting:'연결 중',down:'끊김',off:'꺼짐'}[SCHED.net.state]||'')+' · 장면 '+CUR;}
+setInterval(tick,1000);
+SCHED.onState(v=>apply(v,'local'));
+{const v=SCHED.getState();show(v&&v.cur?keyOf(v.cur):'base',true);if(v)SCH=v.sch||null;}
+/* 사회자 화면용 방송도 같이 받음 (메인이 온라인일 때) */
+if(SCHED.net.state!=='off')try{const sb=supabase.createClient('https://zrhtqpzgubaqzsdaxhvt.supabase.co','sb_publishable_JwET6KLGmdYBkOIIttgOOQ_HEpCKLar',{auth:{persistSession:false}});
+ sb.channel('seminar-mc').on('broadcast',{event:'state'},({payload})=>{if(payload&&payload.cur){apply({cur:payload.cur,sch:payload.sch?payload.sch:null},'net');}}).subscribe();}catch(e){}
+/* 직접 조작 (오프라인 예비) */
+addEventListener('keydown',e=>{const k=e.key,i=ORDER.indexOf(CUR);
+ if(k==='ArrowRight'||k==='PageDown'||k===' '){e.preventDefault();FOLLOW=false;show(ORDER[Math.min(ORDER.length-1,i+1)]);}
+ else if(k==='ArrowLeft'||k==='PageUp'){e.preventDefault();FOLLOW=false;show(ORDER[Math.max(0,i-1)]);}
+ else if(k==='a'||k==='A'){FOLLOW=true;const v=SCHED.getState();if(v&&v.cur)show(keyOf(v.cur));}
+ else if(k==='b'||k==='B'||k==='.')document.body.classList.toggle('black');
+ else if(k==='f'||k==='F'){document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen().catch(()=>{});}
+ tick();});
+let mt=0;addEventListener('mousemove',()=>{document.body.classList.add('mv');clearTimeout(mt);mt=setTimeout(()=>document.body.classList.remove('mv'),3000);});
+let wl=null;const wake=async()=>{try{if('wakeLock' in navigator&&document.visibilityState==='visible')wl=await navigator.wakeLock.request('screen');}catch(e){}};wake();document.addEventListener('visibilitychange',wake);
+})();
+</script>
+</body></html>
