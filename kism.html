@@ -69,6 +69,7 @@ body.notes .s.cur .note b{color:#fff}
 .L{top:380px}.R{top:410px}.ar{top:430px}.g22{gap:120px 120px}.c3 .col{min-height:640px}.pr{bottom:300px}
 /* 11/25 번호(01~04) 삭제 */
 .col>b:first-child{margin-top:0}.cell>b:first-child{margin-top:0}.cell .no+b{margin-top:26px}
+.concl{transition-delay:.6s}
 </style></head>
 <body>
 <div class="stage" id="stage">
@@ -125,8 +126,8 @@ const Q=new URLSearchParams(location.search),EMB=Q.has('embed')&&parent!==window
 const up=m=>{if(EMB)parent.postMessage(m,'*');};
 function fit(){const s=Math.min(innerWidth/4200,innerHeight/1600);stage.style.transform=`translate(${(innerWidth-4200*s)/2}px,${(innerHeight-1600*s)/2}px) scale(${s})`;}
 addEventListener('resize',fit);fit();
-let step=0;const steps=s=>s.querySelectorAll('[data-b]').length?1:0;
-function apply(){slides[idx].querySelectorAll('[data-b]').forEach(e=>e.classList.toggle('on',+e.dataset.b<=step));}
+let step=0;const steps=s=>0;  // 11/25 결론 줄도 들어올 때 바로(→ 한 번 더 누르지 않음)
+function apply(){slides.forEach(sl=>sl.querySelectorAll('[data-b]').forEach(e=>e.classList.toggle('on',sl===slides[idx])));}
 function go(n,st=0){n=Math.max(0,Math.min(slides.length-1,n));if(idx>=0)slides[idx].classList.remove('cur');idx=n;void slides[n].offsetWidth;slides[n].classList.add('cur');document.querySelectorAll('.s video').forEach(v=>{if(slides[n].contains(v)){v.currentTime=0;v.play().catch(()=>{});}else v.pause();});step=st;apply();
  document.getElementById('prog').style.width=(n/(slides.length-1)*100)+'%';if(!EMB)history.replaceState(null,'','#'+(n+1));up({s4:'pos',label:(n+1)+'/'+slides.length});}
 function next(){if(step<steps(slides[idx])){step++;apply();}else if(idx<slides.length-1)go(idx+1);else up({s4:'edge',d:1});}
