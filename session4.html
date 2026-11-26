@@ -1652,6 +1652,39 @@ body:not(.idle) #sgb{opacity:.9}body.grid #sgb{opacity:0;pointer-events:none}
 #K02 .bc.ph .u1{left:551px!important;right:auto!important;top:59px!important;bottom:auto!important;width:551px!important}
 #K02 .bc.ph .u2{left:122px!important;right:auto!important;top:364px!important;bottom:auto!important;width:576px!important}
 #K02 .bc.ph .u3{left:776px!important;right:auto!important;top:364px!important;bottom:auto!important;width:483px!important}
+/* 11/26 19:40 가이드라인 장(K09b 관리기관 지정 · K28e 통신장애): 출처 표시 + 차콜 박스, 핵심 문장은 파랑 박스 */
+.gd .gcol{position:absolute;top:330px;display:flex;flex-direction:column;gap:22px}
+.gd .gsrc{display:flex;align-items:baseline;gap:22px;margin-bottom:4px}
+.gd .gsrc span{padding:10px 22px;border-radius:999px;background:#26272b;font:600 30px/1 "Pretendard Variable";color:#cfd5de}
+.gd .gsrc b{font:700 46px/1.2 "Pretendard Variable";letter-spacing:-.02em;color:#fff}
+.gd .gbx{border-radius:32px;background:#1b1d22;padding:30px 40px}
+.gd .gp{position:relative;margin:0;padding-left:56px;font:500 34px/1.45 "Pretendard Variable";color:#e6e9ee}
+.gd .gp i,.gd .gn i{position:absolute;left:0;top:0;font-style:normal;font-weight:700;color:#5aa2ff}
+.gd .gp small{margin-left:12px;font-size:26px;color:#8a919c}
+.gd em{font-style:normal;color:#7fb6ff;font-weight:600}
+.gd .gl{margin:14px 0 0 56px;padding:0;list-style:none;counter-reset:g}
+.gd .gl li{position:relative;padding:7px 0 7px 46px;font:400 32px/1.4 "Pretendard Variable";color:#c4cad3;counter-increment:g}
+.gd .gl li::before{content:counter(g);position:absolute;left:0;top:9px;width:32px;height:32px;border-radius:50%;background:#2a2d34;font:600 20px/32px "Pretendard Variable";text-align:center;color:#9fb6d6}
+.gd .gchips{margin:18px 0 4px 56px;display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.gd .gchips span{padding:12px 18px;border-radius:14px;background:#26282e;font:500 28px/1.25 "Pretendard Variable";color:#d3d8df}
+.gd .gn{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:16px}
+.gd .gn li{position:relative;padding-left:56px;font:400 33px/1.45 "Pretendard Variable";color:#d3d8df}
+.gd .gkey{border-radius:32px;background:linear-gradient(135deg,rgba(26,124,255,.22),rgba(0,173,169,.14));box-shadow:inset 0 0 0 2px rgba(90,162,255,.35);padding:32px 40px}
+.gd .gkey p{margin:0;font:500 34px/1.5 "Pretendard Variable";color:#eef3fa}
+.gd .gtx{margin:0;font:400 36px/1.5 "Pretendard Variable";color:#c4cad3}
+.gd .gtwo{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.gd .gtwo>div{position:relative;border-radius:28px;background:#1b1d22;padding:30px 34px}
+.gd .gtwo i{font-style:normal;font:700 34px/1 "Pretendard Variable";color:#5aa2ff}
+.gd .gtwo b{display:inline-block;margin-left:12px;font:700 40px/1 "Pretendard Variable";color:#fff}
+.gd .gtwo p{margin:18px 0 0;font:400 32px/1.45 "Pretendard Variable";color:#c4cad3}
+#K28e .g7{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+#K28e .g7>div{border-radius:28px;background:#1b1d22;padding:28px 36px}
+#K28e .g7>div.w{grid-column:1/3}
+#K28e .g7 b{display:block;font:700 38px/1.25 "Pretendard Variable";color:#7fb6ff;letter-spacing:-.01em}
+#K28e .g7 b small{margin-left:12px;font:500 26px "Pretendard Variable";color:#8a919c}
+#K28e .g7 p{margin:12px 0 0;font:400 31px/1.45 "Pretendard Variable";color:#cfd5de}
+#K28e .g7 b{font-size:42px}#K28e .g7 p{font-size:34px}#K28e .g7>div{padding:32px 40px}#K28e .g7{gap:22px}
+#K28e .gtx{font-size:40px}#K28e .gtwo p{font-size:34px}#K28e .gtwo b{font-size:44px}#K28e .gkey p{font-size:38px}#K28e .gcol{gap:28px}
 </style></head>
 <body>
 <div class="stage" id="stage">
@@ -1748,14 +1781,44 @@ body:not(.idle) #sgb{opacity:.9}body.grid #sgb{opacity:0;pointer-events:none}
  </div>
 </section>
 
+<section class="s" id="K14" data-t="회사와 관리기관의 역할" data-dim=".14" data-steps="3">
+ <div class="top"><h2 class="h hm fu" style="--i:0">회사와<br>관리기관의 역할</h2></div>
+ <div class="k14p fu" style="--i:1">
+  <div class="th"><span></span><div><p class="chip">회사</p><small>전자주총 운영규정 기반 · 주주총회의 실질적 운영 주체</small></div><div><p class="chip ir">전자주총관리기관</p><small>회사가 법 · 제도를 준수할 수 있도록 시스템 및 운영 지원</small></div></div>
+  <div class="tr" data-b="1"><div class="st"><i class="ti t0"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="10" width="32" height="30" rx="5"/><path d="M8 19h32M17 6v8M31 6v8M16 27l5 5 10-10"/></svg></i><b>총회 전</b></div><p class="co">운영규정 제정 · 이사회 결의<br>소집통지 작성 및 발송</p><div class="ag"><b>기업용 시스템 · 주주용 서비스 제공</b><span>담당자 교육 · 소집지 사전점검 · 모의전자주총 · 리허설</span></div></div><div class="tr" data-b="2"><div class="st"><i class="ti t1"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><rect x="17" y="5" width="14" height="24" rx="7"/><path d="M10 23a14 14 0 0 0 28 0M24 37v6M16 43h16"/></svg></i><b>총회 당일</b></div><p class="co">총회 의사 진행 및<br>주주권 관련 최종 판단</p><div class="ag"><b>당일 현장 운영지원 · 생중계 운영</b><span>주주용 고객센터 운영</span></div></div><div class="tr" data-b="3"><div class="st"><i class="ti t2"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="9" width="34" height="10" rx="3"/><path d="M10 19v19a3 3 0 0 0 3 3h22a3 3 0 0 0 3-3V19M20 27h8"/></svg></i><b>총회 후</b></div><p class="co">의사록 작성 · 기록보존 및 개인정보 최종 관리<br>주주 분쟁 · 결의하자 소송 대응</p><div class="ag"><b>장애 감지 및 대응 내역</b><span>기록 인계</span></div></div>
+ </div>
+</section>
+
 <section class="s" id="K09" data-t="관리기관 선정 현황" data-dim=".18">
  <div class="ab" style="left:300px;top:300px;width:1580px">
   <p class="eb fu k5e" style="--i:0">전자주총관리기관 선정 현황</p>
-  <h2 class="h hm fu" style="--i:1;margin-top:40px">현재 144개사가<br>IR큐더스를 선택했습니다</h2>
+  <h2 class="h hm fu" style="--i:1;margin-top:40px">현재 144개사가<br>IR큐더스를 선택했습니다.</h2>
   <p class="num g fu" style="--i:2;font-size:460px;margin-top:70px"><span class="cnt" data-to="68">68</span><small>%</small></p>
   
  </div>
  <canvas class="viz" data-viz="grid" data-mode="pick" style="left:1950px;top:180px;width:1950px;height:1240px" width="1950" height="1240"></canvas>
+</section>
+
+<section class="s gd" id="K09b" data-t="관리기관 지정 (상장협 · 법무부)" data-dim=".1">
+ <div class="top"><h2 class="h hm fu" style="--i:0">관리기관 지정</h2></div>
+ <div class="gcol" style="left:300px;width:1860px">
+  <div class="gsrc fu" style="--i:1"><span>한국상장회사협의회</span><b>제6조(관리기관의 지정)</b></div>
+  <div class="gbx fu" style="--i:2"><p class="gp"><i>①</i>상법 시행령 제42조의6 요건(인력 · 물적설비 · 업무연속성 보완설비)을 갖춘 기관 중 다음 사항을 <em>실사(due diligence)하여 이사회 결의로 지정</em></p>
+   <ol class="gl"><li>전자주주총회 운영 경력, 상주인력 수 및 비상연락체계</li><li>동시접속 처리용량(참석주주 대비 여유율 200% 이상 권장), 서버 · 데이터센터 이중화</li><li>무정전전원장치(UPS) · 예비회선, 재해복구(DR) 체계 및 목표복구시간(RTO)</li><li>ISMS-P 등 정보보호 인증, 개인정보 보호체계</li><li>손해배상 이행능력(재무상태 또는 배상책임보험)</li></ol></div>
+  <div class="gbx fu" style="--i:3"><p class="gp"><i>②</i>위탁계약 포함 사항 <small>[별지 3] 위탁계약 특약조항(표준안) 기본</small></p>
+   <div class="gchips"><span>위탁업무 범위 · 경계</span><span>서비스수준협약(SLA)</span><span>통신장애 시 책임 분담 · 면책</span><span>손해배상 · 지체상금</span><span>전자기록 보존 · 인계</span><span>개인정보 처리 위탁</span><span>대리인 계정 지원</span><span>사전 리허설(모의총회)</span><span>긴급 대응 · 서버 증설</span><span>계약해지 · 대체수단</span><span>배상책임보험 · 공동피보험자</span><span>감사권 · 운영결과보고서</span></div></div>
+  <div class="gbx fu" style="--i:4"><p class="gp"><i>③</i>관리기관과 임직원은 직무상 알게 된 미공개정보를 자기 또는 제3자의 이익을 위하여 이용 금지</p></div>
+ </div>
+ <div class="gcol" style="left:2260px;width:1640px">
+  <div class="gsrc fu" style="--i:2"><span>법무부</span><b>제6조(관리기관의 지정 및 위탁)</b></div>
+  <div class="gbx fu" style="--i:3"><ol class="gn">
+   <li><i>①</i>원활한 개최 · 운영을 위하여 관리기관을 지정하여 절차 운영을 위탁할 수 있음</li>
+   <li><i>②</i>지정 시 법령의 인력 · 물적설비 · 업무연속성 보완설비를 갖추었는지 확인</li>
+   <li><i>③</i>시스템 수용능력, 본인확인 · 출석관리, 질의 · 발언 · 표결, 통신장애 대응체계, 기록 관리 · 제공, 개인정보 보호체계를 고려하여 선정</li>
+   <li><i>④</i>위탁하더라도 개최 · 의사진행 · 안건 상정 · 질의 · 발언 처리 · 연기 · 속행 · 폐회 판단은 <em>회사 및 의장</em>이 수행</li>
+   <li><i>⑤</i>위탁 범위, 장애대응, 기록 관리 · 제공, 개인정보 처리, 책임분담은 위탁계약에서 정함</li></ol></div>
+  <div class="gkey fu" style="--i:4"><p>상법은 관리기관 위탁 여부 · 사전 신청제도 도입 여부 · 질의 · 발언 횟수와 시간 등 구체적 운영방식까지 이사회 결정을 규정하지 않음 → <em>매번 이사회 결의 없이 대표이사에게 위임 가능</em>. 다만 중요한 일반기준은 이사회 결의를 거친 운영규정으로 정해두는 것이 바람직</p></div>
+ </div>
 </section>
 
 <section class="s" id="K10" data-t="개최 지역" data-dim=".14" data-steps="1">
@@ -1777,13 +1840,7 @@ body:not(.idle) #sgb{opacity:.9}body.grid #sgb{opacity:0;pointer-events:none}
  <div class="chart fu" style="--i:2" id="mar"></div>
 </section>
 
-<section class="s" id="K14" data-t="회사와 관리기관의 역할" data-dim=".14" data-steps="3">
- <div class="top"><h2 class="h hm fu" style="--i:0">회사와<br>관리기관의 역할</h2></div>
- <div class="k14p fu" style="--i:1">
-  <div class="th"><span></span><div><p class="chip">회사</p><small>전자주총 운영규정 기반 · 주주총회의 실질적 운영 주체</small></div><div><p class="chip ir">전자주총관리기관</p><small>회사가 법 · 제도를 준수할 수 있도록 시스템 및 운영 지원</small></div></div>
-  <div class="tr" data-b="1"><div class="st"><i class="ti t0"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="10" width="32" height="30" rx="5"/><path d="M8 19h32M17 6v8M31 6v8M16 27l5 5 10-10"/></svg></i><b>총회 전</b></div><p class="co">운영규정 제정 · 이사회 결의<br>소집통지 작성 및 발송</p><div class="ag"><b>기업용 시스템 · 주주용 서비스 제공</b><span>담당자 교육 · 소집지 사전점검 · 모의전자주총 · 리허설</span></div></div><div class="tr" data-b="2"><div class="st"><i class="ti t1"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><rect x="17" y="5" width="14" height="24" rx="7"/><path d="M10 23a14 14 0 0 0 28 0M24 37v6M16 43h16"/></svg></i><b>총회 당일</b></div><p class="co">총회 의사 진행 및<br>주주권 관련 최종 판단</p><div class="ag"><b>당일 현장 운영지원 · 생중계 운영</b><span>주주용 고객센터 운영</span></div></div><div class="tr" data-b="3"><div class="st"><i class="ti t2"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="9" width="34" height="10" rx="3"/><path d="M10 19v19a3 3 0 0 0 3 3h22a3 3 0 0 0 3-3V19M20 27h8"/></svg></i><b>총회 후</b></div><p class="co">의사록 작성 · 기록보존 및 개인정보 최종 관리<br>주주 분쟁 · 결의하자 소송 대응</p><div class="ag"><b>장애 감지 및 대응 내역</b><span>기록 인계</span></div></div>
- </div>
-</section>
+
 
 <section class="s" id="K15" data-t="준비 로드맵 12월→3월" data-dim=".16">
  <div class="top"><h2 class="h hm fu" style="--i:1">운영규정부터 <span class="ac">소집통지 · 리허설까지</span></h2></div>
@@ -1803,7 +1860,7 @@ body:not(.idle) #sgb{opacity:.9}body.grid #sgb{opacity:0;pointer-events:none}
  <div class="node fu" id="n1" style="--i:2;left:300px"><span class="k">R&amp;D</span><img src="assets/kism-white.svg" style="height:150px" alt="KISM"><span class="ko">연구 조사 · 인사이트 제공</span></div>
  <div class="node fu" id="n2" style="--i:3;left:1600px"><span class="k">기업용</span><img src="assets/s4/kosmos-admin-white.svg" style="height:96px" alt="KOSMOS admin"><span class="ko">관리자 시스템</span></div>
  <div class="node fu" id="n3" style="--i:4;left:2900px"><span class="k">주주용</span><img src="assets/s4/kosmos-white.png" style="height:150px" alt="KOSMOS"><span class="ko">전자주주총회 서비스</span></div>
- <div class="plus fu" style="--i:5"><p><b>+</b><em>(포함)</em>전자투표, 전자위임장</p><p><b>+</b><em>(별도)</em>의결권 대리행사 권유, 주총 현장 제작물 및 셋팅 지원</p></div>
+ <div class="plus fu" style="--i:5"><p><b>+</b><em>(포함)</em>전자투표 · 전자위임장</p><p><b>+</b><em>(별도)</em>의결권 대리행사 권유, 주총 현장 제작물 및 셋팅 지원</p></div>
 </section>
 
 <section class="s brand sp2" id="K18a" data-t="KISM 한국주주총회연구소" data-dim=".12" data-ox=".25">
@@ -1921,7 +1978,7 @@ body:not(.idle) #sgb{opacity:.9}body.grid #sgb{opacity:0;pointer-events:none}
   <p class="eb fu q k23e" style="--i:0">기업용 관리자 시스템</p>
   <h2 class="h hm fu" style="--i:1;margin-top:40px">사전 의결권 행사부터<br>현장 · 전자주총, 생중계,<br>표결 · 집계까지</h2>
   <p class="sub fu" style="--i:2;margin-top:50px">하나의 시스템으로 통합관리</p>
-  <p class="fu" style="--i:3;margin-top:90px;display:flex;flex-wrap:wrap;gap:20px"><span class="chip">설정</span><span class="chip">사전투표</span><span class="chip">사전신청</span><span class="chip">출석</span><i style="flex-basis:100%;height:0;margin-bottom:-20px"></i><span class="chip">질의</span><span class="chip">표결</span><span class="chip">자동집계</span></p>
+  <p class="fu" style="--i:3;margin-top:90px;display:flex;flex-wrap:wrap;gap:20px"><span class="chip">설정</span><span class="chip">사전투표</span><span class="chip">사전신청</span><i style="flex-basis:100%;height:0;margin-bottom:-20px"></i><span class="chip">출석</span><span class="chip">질의</span><span class="chip">표결</span><span class="chip">자동집계</span></p>
  </div>
  <div class="cxw fu" style="--i:2"><div class="cxin"><video src="assets/s4/cx-flow.mp4" poster="assets/s4/cxs-1.webp" muted loop playsinline preload="auto"></video></div></div>
 </section>
@@ -2050,6 +2107,28 @@ body:not(.idle) #sgb{opacity:.9}body.grid #sgb{opacity:0;pointer-events:none}
   <li class="fu" style="--i:4"><i>3</i><b>복구</b><p>시스템 복구<br>기술지원</p></li>
   <li class="fu" style="--i:5"><i>4</i><b>기록</b><p>상황안내 및<br>조치내역 기록</p></li>
  </ol>
+</section>
+
+<section class="s gd" id="K28e" data-t="운영지원 5 · 통신장애 (법무부 권고)" data-dim=".1">
+ <div class="top"><h2 class="h hm fu" style="--i:0">통신장애</h2></div>
+ <div class="gcol" style="left:300px;width:1300px">
+  <div class="gsrc fu" style="--i:1"><span>법무부</span><b>마. 통신장애에 대한 대책</b></div>
+  <p class="gtx fu" style="--i:2">사이버 공격이나 대규모 장애로 통신장애가 발생할 수 있으므로, 회사는 통신장애에 대한 대책을 강구하여야 함</p>
+  <div class="gtwo fu" style="--i:3"><div><i>①</i><b>사전 대응</b><p>준비 단계에서 합리적 대책을 갖추고 통신장애의 위험을 사전 고지</p></div><div><i>②</i><b>사후 대응</b><p>실제 장애 발생 시 최대한 신속하고 효율적으로 피해를 최소화</p></div></div>
+  <div class="gkey fu" style="--i:4"><p>①, ②의 사전적 · 사후적 대응조치를 충실히 취한 경우, 통신장애로 일부 전자출석 주주의 참석이 제한되더라도 <em>결의취소에 이르는 하자가 아닌 것</em>으로 판단되거나 <em>재량기각(상법 제379조)의 요건을 갖춘 것</em>으로 판단될 여지가 있음</p></div>
+ </div>
+ <div class="gcol" style="left:1720px;width:2180px">
+  <div class="gsrc fu" style="--i:2"><span>법무부</span><b>(2) 통신장애 대책에 관한 구체적 권고사항</b></div>
+  <div class="g7">
+   <div class="fu" style="--i:3"><b>시스템 및 백업</b><p>검증된 전문 플랫폼 이용, 서버 · 회선 · 중계 장비 · 호스트 계정 이중화(유선 · 무선 · 이동통신 복수 회선, 공동 호스트)</p></div>
+   <div class="fu" style="--i:3"><b>용량 산정</b><p>출석률 · 주주 수 · 관심도로 1차 용량 확보, 사전 신청 추이에 따라 증설. 초과 예상 시 용량 확충 · 일정 분산 · 지원인력 확대</p></div>
+   <div class="fu" style="--i:4"><b>장애 시나리오별 대응 매뉴얼</b><p>장애 유형별 대응 매뉴얼 작성</p></div>
+   <div class="fu" style="--i:4"><b>당일 현장 운영</b><p>시스템 기술진(관리기관 포함) 현장 배치, 상시 모니터링, 주주지원센터 운영</p></div>
+   <div class="fu" style="--i:5"><b>관계자 교육 및 결과보고</b><p>의장 · 이사 · 감사에게 사용법 사전 교육, 실제 환경에서 접속 · 본인확인 · 표결 · 장애 대응 시험 결과 보고</p></div>
+   <div class="fu" style="--i:5"><b>준비완료 확인</b><p>소집통지 전 운영규정 · 수용능력 · 인증수단 · 위탁계약 · 개인정보보호, 총회 전날 신청 명부 · 대리인 접속정보 · 예비 인력 · 백업 확인</p></div>
+   <div class="fu w" style="--i:6"><b>주주에 대한 사전 고지 · 안내 <small>소집통지 및 로그인 화면</small></b><p>통신장애 · 지연 가능성과 처리 방침(현장 출석 등 대체 수단, 휴회 · 연기 · 속행), 접속 환경(기기 · OS · 브라우저 · 접속속도 · 앱) · 절차 · 기술지원 연락처 안내, 주주 측 환경에 기인한 장애는 회사 책임이 아니며 결의의 하자가 되지 않는다는 점 고지</p></div>
+  </div>
+ </div>
 </section> 
 
 <section class="s" id="K29" data-t="상시 · 사후 — 신뢰 기반" data-dim=".14">
@@ -2332,7 +2411,7 @@ function count(s,sl=s){s.querySelectorAll('.cnt').forEach(el=>{const hb=el.close
  function layer(y,D,hot,cls,extra){const cw=W/D.length,X=i=>cw*(i+.5),MAX=Math.max(...D.map(d=>d[1]));let h=`<div class="ml ${cls}"><div class="ax"></div>`;
   D.forEach(([d],i)=>{if(i&&new Date(y,2,d).getDay()<new Date(y,2,D[i-1][0]).getDay())h+=`<div class="wk" style="left:${cw*i}px"></div>`;});
   D.forEach(([d],i)=>{if(hot.includes(d))h+=`<div class="band" style="left:${X(i)-cw*.42}px;width:${cw*.84}px"><span>집중일</span></div>`;});
-  D.forEach(([d,v],i)=>{h+=`<div class="day" style="left:${X(i)}px">${d}<small>${WD[new Date(y,2,d).getDay()]}</small></div>`;if(v)h+=`<div class="bar${cls==='m27'&&[24,29].includes(d)?' fb':''}" style="left:${X(i)-70}px;height:${Math.max(8,v/MAX*H)}px;transition-delay:${i*.04}s"></div>`;});
+  D.forEach(([d,v],i)=>{h+=`<div class="day" style="left:${X(i)}px">${d}<small>${WD[new Date(y,2,d).getDay()]}</small></div>`;if(v)h+=`<div class="bar${cls==='m27'&&[24,29].includes(d)?' fb':''}" style="left:${X(i)-70}px;height:${Math.max(8,v/MAX*H)}px;transition-delay:${i*.04}s">${cls==='m26'?'<i>'+v+'</i>':''}</div>`;});
   if(extra)h+=extra(X);return h+'</div>';}
  el.innerHTML=layer(2026,D26,[25,27,30],'m26')+layer(2027,D27,[25,26,30],'m27',X=>
    [[24,'FULL<br>BOOKING'],[29,'FULL<br>BOOKING']].map(([d,s])=>`<div class="full" data-b="2" style="left:${X(D27.findIndex(x=>x[0]===d))}px">${s}</div>`).join('')+
