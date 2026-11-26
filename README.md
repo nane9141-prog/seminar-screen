@@ -39,6 +39,24 @@
 - 처음부터 오프라인으로만 쓰려면 주소 뒤에 `?net=0` (운영 입력 오른쪽 아래 점을 눌러도 전환). **같은 온라인 채널을 쓰므로 행사 당일 다른 PC에서 메인 스크린(index.html)을 온라인으로 열어 두지 마세요** — 연습 · 확인용은 `?net=0`.
 - LED(`led.html`, 4:3 · 1600×1200 기준, 창에 맞춰 늘어남): 위는 행사 타이틀 고정(Live Demo Briefing · 전자주주총회 플랫폼 시연 설명회 · 일시 · 장소 · IR KUDOS), 아래 칸만 메인 장면에 따라 바뀜 — 대기(13:00 시작) · 개회 · 축사(연사) · 출범식(권재열) · Part 1/2 · Session 1~4(강연명 · 연사) · 휴식(재개 시각 + 남은 시간) · 시연 · Q&A(명찰 QR 안내) · 폐회. 메인이 블랙아웃이면 LED도 꺼짐. 마우스를 움직이면 왼쪽 아래에 연동 상태 표시. `F` 전체화면 · `B` 블랙아웃.
 
+## 효과음 (S1~S7, 11/26)
+
+장이 바뀌거나 연사가 말하지 않는 순간에만, → 로 들어올 때 한 번 울립니다(← 로 돌아오면 무음). 소리는 모두 오픈버스(Freesound) CC0, -16 LUFS · 끝 페이드로 정리.
+
+| No | 화면 | 시점 | 파일 | 원본 (CC0 1.0) |
+|---|---|---|---|---|
+| S1 | M3-1 카운트다운 | 숫자 5~1 | `countdown-tick.mp3` | Clock Ticking · BenjaminNelan (freesound 321084) |
+| S2 | M3-1 ANYWHERE | 5.5초 | `opening-hit.mp3` | Piano Stinger 1a · MathewHenry (636190) |
+| S3 | M4-1 · M5-1 · M7-1 · M9-1 | 1.0초 붐 | `sfx-s3-part.mp3` | Riser Hit sfx 044 · AudioPapkin (649826) |
+| S4 | M4-4 출범식 | 0.75초 | `sfx-s4-reveal.mp3` | Shimmer · adh.dreaming (632344) + Piano Stinger 1b · MathewHenry (636189) |
+| S5 | M7-3 Proxymity | 14.3초 | `sfx-s5-proxymity.mp3` | whoosh+boom.wav · Capashen (118934) |
+| S6 | M6-S1 · M8-S1 | 0.6초 | `sfx-s6-chime.mp3` | Echo Chime Chime · husky70 (161316) |
+| S7 | M11-1 폐회 | 0.2초~ | `sfx-s7-close.mp3` | Movie Swell 2 · jordivburgel (218524) |
+
+- 끄기: `M` 배경음 · 효과음 모두, `Shift+M` 또는 P 패널 · 운영 입력 「효과음」 버튼으로 효과음만.
+- 배경음이 흐르는 화면(M6-S1 · M8-S1)에서는 효과음 동안 배경음을 절반으로 낮춥니다.
+- 이전 소리: `countdown-tick_v1.mp3` · `opening-hit_v1.mp3`.
+
 ## 로비 (`lobby/index.html`)
 
 - `P` 컨트롤 패널 — 이전·다음, 장면 번호 이동, 일시정지/재생, 처음부터, 배속, 전체화면 · 블랙아웃, 남은 시간 · 다음 장면, 장면 목록

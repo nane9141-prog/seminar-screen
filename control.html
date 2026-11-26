@@ -349,7 +349,7 @@ body.kflash #pvslot,body.kflash #pvbox{box-shadow:0 0 0 2px #2f6bff}
 </div>
 <div id="colScr">
  <div class="box" id="scrbox">
-  <h2>화면 전환 <span class="mut">현재 <b id="curno">-</b> · 점선 = 상황 메시지</span><span><button id="toq2">현장 질문 화면(M10-13)</button> <button id="black">블랙아웃</button></span></h2>
+  <h2>화면 전환 <span class="mut">현재 <b id="curno">-</b> · 점선 = 상황 메시지</span><span><button id="toq2">현장 질문 화면(M10-13)</button> <button id="sfx" title="메인 스크린 효과음(S1~S7)만 켜고 끔 · 배경음은 그대로">효과음</button> <button id="black">블랙아웃</button></span></h2>
   <div class="owner" id="owner"><span class="od"></span><div class="ot"><b id="ownname">조작 기기: 제한 없음</b><span class="mut" id="ownsub">어느 운영 입력 화면에서든 메인을 넘길 수 있습니다.</span></div><span class="sp"></span><label class="pvt"><input type="checkbox" id="pvon"> 미리보기</label><button id="ownset" class="pri">이 기기로 지정</button><button id="ownclr">지정 해제</button></div>
   <div id="scrbody">
   <div class="pvwrap"><div id="pvslot"></div><div class="pvside"><div class="pvnow"><span class="mut">현재 화면</span><b id="pvcur">-</b><span class="mut" id="pvpos"></span></div><div class="pvbtn"><button id="nprev2" class="big">◀ 이전</button><button id="nnext2" class="pri big">다음 ▶</button></div><p class="hint">← → · Space · PageUp/Down(클리커)으로 전환<br>입력칸에 커서가 있을 때는 작동하지 않습니다</p><div class="pvopt"><button id="pvpip">PIP 창으로 띄우기</button><label><input type="checkbox" id="pvmini"> 다른 탭에서도 작은 화면</label></div></div></div>
@@ -508,6 +508,7 @@ const ngo=()=>{let v=$('nno').value.trim().toUpperCase().replace(/^M/,'');if(!v)
  ['scale','size'].forEach(k=>$('ds'+k).addEventListener('input',e=>{ds[k]=+e.target.value;dsUI();dsSend(k);}));
  $('dsreset').onclick=()=>{ds={...DSD};dsUI();dsSend();};}
 $('black').onclick=()=>{black=!black;$('black').classList.toggle('on',black);SCHED.cmd({black});};
+let sfxOn=localStorage.getItem('ctl-sfx')!=='0';$('sfx').classList.toggle('on',!sfxOn);$('sfx').onclick=()=>{sfxOn=!sfxOn;localStorage.setItem('ctl-sfx',sfxOn?'1':'0');$('sfx').classList.toggle('on',!sfxOn);$('sfx').textContent=sfxOn?'효과음':'효과음 끔';SCHED.cmd({sfx:sfxOn});};$('sfx').textContent=sfxOn?'효과음':'효과음 끔';
 drawScr(SCHED.getState());
 // 질문
 function nextN(t){return Q.list.filter(x=>x.type===t).reduce((m,x)=>Math.max(m,x.n),0)+1;}
