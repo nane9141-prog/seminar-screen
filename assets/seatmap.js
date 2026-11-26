@@ -285,12 +285,11 @@ function build(){
   const lGeo=(function(){var w=LBL_W/2,h=LBL_H/2,e=.004,g=new THREE.BufferGeometry();   // 삽지 앞·뒤 양면(90×55mm)
     g.setAttribute('position',new THREE.Float32BufferAttribute([-w,-h,e, w,-h,e, w,h,e, -w,h,e,  w,-h,-e, -w,-h,-e, -w,h,-e, w,h,-e],3));
     g.setAttribute('uv',new THREE.Float32BufferAttribute([0,0,1,0,1,1,0,1, 0,0,1,0,1,1,0,1],2));g.setIndex([0,1,2,0,2,3,4,5,6,4,6,7]);return g;})();
-  /* 좌석 번호 아크릴 스탠드(투명 T자형): 판 90×55mm + 투명 받침 110×40×3mm(가정) + 삽지 90×55mm, 테이블 위쪽 끝(무대 쪽)에서 30mm */
-  ST.base=new THREE.InstancedMesh(new THREE.BoxGeometry(.040*M,.003*M,.090*M),new THREE.MeshBasicMaterial({color:0xdfeef5,transparent:true,opacity:.38,depthWrite:false}),seats.length);
-  ST.acr=new THREE.InstancedMesh(new THREE.BoxGeometry(.004*M,.055*M,.090*M),new THREE.MeshBasicMaterial({color:0xcfe6f2,transparent:true,opacity:.28,depthWrite:false}),seats.length);scene.add(ST.base,ST.acr);
+  /* 좌석 명패: 세우지 않고 테이블 윗면에 눕혀 놓음(90×55mm). 테이블 위쪽 끝(무대 쪽)에서 30mm, 의자 쪽에서 바로 읽히는 방향 */
+  var LQ=new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0,1,0),Math.PI/2).multiply(new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(1,0,0),-Math.PI/2));
   const qt=new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0,1,0),Math.PI/2).multiply(new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(1,0,0),-Math.PI/2));
   seats.forEach(s=>{const c=document.createElement('canvas');c.width=320;c.height=196;const tex=new THREE.CanvasTexture(c);tex.generateMipmaps=false;tex.minFilter=THREE.LinearFilter;tex.anisotropy=4;
-    const m=new THREE.Mesh(lGeo,new THREE.MeshBasicMaterial({map:tex}));m.rotation.y=Math.PI/2;m.position.set(s.x,T_H,s.z);scene.add(m);
+    const m=new THREE.Mesh(lGeo,new THREE.MeshBasicMaterial({map:tex}));m.quaternion.copy(LQ);m.position.set(s.x,T_H,s.z);scene.add(m);
     labels[s.i]={s,ctx:c.getContext('2d'),tex,mesh:m,text:null};});
   hl=new THREE.Mesh(new THREE.PlaneGeometry(T_DEP+1.9,PITCH),new THREE.MeshBasicMaterial({color:0xffffff,transparent:true,opacity:.3,depthWrite:false}));hl.rotation.x=-Math.PI/2;hl.visible=false;scene.add(hl);
 
@@ -308,9 +307,7 @@ function paint(){
   seats.forEach(s=>{tmpColor.setHex(seatColor(s));seatMesh.setColorAt(s.i,tmpColor);backMesh.setColorAt(s.i,tmpColor);
     const o=occ[s.id],lb=labels[s.i],text=o?o[0].company_name||'':(FIXED[s.id]||'');
     if(lb.text!==text){lb.text=text;drawLabel(lb);}
-    const k=NOSEAT[s.id]?0:(big?4:1),cx=s.x-T_DEP/2+(.03+.02*k)*M;lb.mesh.scale.set(k,k,k);lb.mesh.position.set(cx,T_H+k*.0305*M,s.z);
-    dummy.rotation.set(0,0,0);dummy.scale.set(k,k,k);dummy.position.set(cx,T_H+k*.0015*M,s.z);dummy.updateMatrix();ST.base.setMatrixAt(s.i,dummy.matrix);
-    dummy.position.set(cx,T_H+k*.0305*M,s.z);dummy.updateMatrix();ST.acr.setMatrixAt(s.i,dummy.matrix);ST.base.instanceMatrix.needsUpdate=ST.acr.instanceMatrix.needsUpdate=true;});
+    const k=NOSEAT[s.id]?0:(big?4:1),cx=s.x-T_DEP/2+.03*M+k*LBL_H/2;lb.mesh.scale.set(k,k,k);lb.mesh.position.set(cx,T_H+.004+k*.001,s.z);});
   seatMesh.instanceColor.needsUpdate=backMesh.instanceColor.needsUpdate=true;
   if(sel){hl.visible=true;hl.position.set(sel.x+.6,.05,sel.z);}else hl.visible=false;
   planDraw();
