@@ -330,6 +330,33 @@ body.kflash #pvslot,body.kflash #pvbox{box-shadow:0 0 0 2px #2f6bff}
 .pvtg{display:flex;flex-wrap:wrap;gap:6px}.pvtg button{font-size:12px;padding:6px 10px;min-height:0}
 .pvtg button{box-shadow:inset 0 0 0 1px #2f6bff;color:#cfe0ff}.pvtg button.off{box-shadow:none;color:inherit;opacity:.55;text-decoration:line-through}
 .pvex.warn{color:#ff8a7a}.pvex{margin:0;font-size:12px;line-height:1.5;color:var(--fg-3);white-space:pre-line}
+
+/* 11/26 20:40 화면 전환 오른쪽: 메인 스크린 P 패널(assets/panel.js)과 같은 컨트롤 */
+.pvwrap{grid-template-columns:minmax(0,640px) 430px!important;align-items:start}
+.pvl{display:flex;flex-direction:column;gap:10px;min-width:0}
+.pvl .pvopt{flex-direction:row;flex-wrap:wrap;align-items:center;gap:10px;margin:0}.pvl .hint{font-size:12px;color:var(--fg-3)}
+.cpx{background:rgba(10,15,26,.94);color:#E6ECF5;border:1px solid rgba(120,150,200,.35);border-radius:12px;font:13px/1.45 "Pretendard Variable","Malgun Gothic",sans-serif;display:flex;flex-direction:column}
+.cpx .hd{display:flex;align-items:center;gap:8px;padding:10px 12px 8px;border-bottom:1px solid rgba(120,150,200,.2)}
+.cpx .hd b{font-size:14px}.cpx .hd .sp{flex:1}.cpx .hd .clk{font-variant-numeric:tabular-nums;color:#FFB84D;font-weight:700}
+.cpx .bd{padding:10px 12px;display:flex;flex-direction:column;gap:9px}
+.cpx .now{background:#111A2E;border-radius:8px;padding:8px 10px}
+.cpx .now .t{font-weight:700;font-size:15px}.cpx .now .s{color:#A9B4C4;font-size:12px;margin-top:2px}
+.cpx .bar{height:4px;background:#22314F;border-radius:2px;margin-top:6px;overflow:hidden;visibility:hidden}.cpx .bar i{display:block;height:100%;background:#2E8BFF;width:0}
+.cpx .row{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.cpx button{min-height:0;font:inherit;font-weight:600;background:#1C2A45;color:#E6ECF5;border:1px solid #2E4370;border-radius:7px;padding:5px 10px;cursor:pointer;box-shadow:none}
+.cpx button:hover{background:#25385C}.cpx button.pri{background:#2E8BFF;border-color:#2E8BFF;color:#fff}
+.cpx button.on{background:#FFB84D;border-color:#FFB84D;color:#1a1200}.cpx button:disabled{opacity:.45;cursor:default}
+.cpx button.big{flex:1;padding:9px 0;font-size:15px}
+.cpx input{font:inherit;background:#0B1120;color:#E6ECF5;border:1px solid #2E4370;border-radius:7px;padding:5px 8px;width:120px;min-height:0}
+.cpx .lab{color:#8793A6;font-size:12px;min-width:34px}
+.cpx .ex{color:#A9B4C4;font-size:12px;white-space:pre-line}.cpx .ex:empty{display:none}.cpx .ex.warn{color:#ff8a7a}
+.cpx .ls{overflow:auto;max-height:260px;border-top:1px solid rgba(120,150,200,.2);padding-top:6px;margin:0 -4px}
+.cpx .ls div{padding:3px 8px;border-radius:6px;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cpx .ls div:hover{background:#1A2A48}.cpx .ls div.cur{background:#2E8BFF;color:#fff;font-weight:600}.cpx .ls div.msg{color:#C7A66B}
+.cpx .ls .du{float:right;margin-left:8px;color:#8793A6;font-size:.92em;font-variant-numeric:tabular-nums}.cpx .ls div.cur .du{color:#dfe9ff}
+.cpx .ls .no{display:inline-block;min-width:52px;color:#8793A6;font-variant-numeric:tabular-nums}.cpx .ls div.cur .no{color:#dfe9ff}
+.cpx .ft{color:#6F7C90;font-size:11.5px;padding:6px 12px 10px;border-top:1px solid rgba(120,150,200,.2)}
+#scrbox.locked .cpx button,#scrbox.locked .cpx input,#scrbox.locked .cpx .ls{pointer-events:none;opacity:.35}
 </style></head>
 <body>
 <header class="top"><h1>운영 입력<small id="hint">메인 스크린(index.html)과 같은 PC · 같은 브라우저에서 열어 주세요. 입력 즉시 반영됩니다.</small></h1><div class="me"><span id="offst" class="mut"></span><span id="clock">--:--</span></div></header>
@@ -361,7 +388,19 @@ body.kflash #pvslot,body.kflash #pvbox{box-shadow:0 0 0 2px #2f6bff}
   <h2>화면 전환 <span class="mut">현재 <b id="curno">-</b> · 점선 = 상황 메시지</span><span><button id="toq2">현장 질문 화면(M10-13)</button> <button id="black">블랙아웃</button></span></h2>
   <div class="owner" id="owner"><span class="od"></span><div class="ot"><b id="ownname">조작 기기: 제한 없음</b><span class="mut" id="ownsub">어느 운영 입력 화면에서든 메인을 넘길 수 있습니다.</span></div><span class="sp"></span><label class="pvt"><input type="checkbox" id="pvon"> 미리보기</label><button id="ownset" class="pri">이 기기로 지정</button><button id="ownclr">지정 해제</button></div>
   <div id="scrbody">
-  <div class="pvwrap"><div id="pvslot"></div><div class="pvside"><div class="pvnow"><span class="mut">현재 화면</span><b id="pvcur">-</b><span class="mut" id="pvpos"></span><span class="mut" id="pvnx"></span><div class="pvbar" id="pvbar"><i></i></div></div><div class="pvtg"><button id="tgauto" title="메인 A 키">대기 자동순환</button><button id="tgbgm" title="메인 M 키">배경음악</button><button id="tgsfx" title="메인 Shift+M · 효과음 S1~S7만">효과음</button></div><p class="pvex" id="pvex"></p><div class="pvbtn"><button id="nprev2" class="big">◀ 이전</button><button id="nnext2" class="pri big">다음 ▶</button></div><p class="hint">← → · Space · PageUp/Down(클리커)으로 전환<br>입력칸에 커서가 있을 때는 작동하지 않습니다</p><div class="pvopt"><button id="pvpip">PIP 창으로 띄우기</button><label><input type="checkbox" id="pvmini"> 다른 탭에서도 작은 화면</label></div></div></div>
+  <div class="pvwrap"><div class="pvl"><div id="pvslot"></div><div class="pvopt"><button id="pvpip">PIP 창으로 띄우기</button><label><input type="checkbox" id="pvmini"> 다른 탭에서도 작은 화면</label><span class="hint">← → · Space · PageUp/Down(클리커)으로 전환 · 입력칸에 커서가 있을 때는 작동 안 함</span></div></div>
+   <div class="cpx" id="cpx"><div class="hd"><b>메인 스크린</b><span class="sp"></span><span class="clk" id="cpclk"></span></div>
+    <div class="bd">
+     <div class="now"><div class="t" id="pvcur">-</div><div class="s" id="pvsub"></div><div class="bar" id="pvbar"><i></i></div></div>
+     <div class="row"><button class="big" id="nprev2">◀ 이전</button><button class="big pri" id="nnext2">다음 ▶</button></div>
+     <div class="row"><span class="lab">이동</span><input id="cpno" placeholder="예: 4-5, 9-s1"><button id="cpgo">이동</button></div>
+     <div class="row" id="cpspd"><span class="lab">배속</span></div>
+     <div class="row" id="cptg"><button id="tgfs" disabled title="전체화면은 송출 PC에서 F 키로 (크롬이 원격 실행을 막음)">전체화면</button><button id="tgblk">블랙아웃</button><button id="tgsfx">효과음</button><button id="tgauto">대기 자동순환</button><button id="tgbgm">배경음악</button></div>
+     <div class="ex" id="pvex"></div>
+     <div class="ls" id="cpls"></div>
+    </div>
+    <div class="ft">→ ← 이동(상황 메시지 건너뜀) · 번호+Enter 바로가기 · 메인 키: F 전체화면 · B 블랙아웃 · A 자동순환 · M 배경음 · Shift+M 효과음 · 배속은 화면 전환 · 글자 애니메이션 · 배경 · 대기 자동 넘김에 적용</div>
+   </div></div></div>
    <div class="bar" style="margin-top:14px"><button id="nprev">◀ 이전</button><button id="nnext" class="pri">다음 ▶</button>
    <input type="text" id="nno" placeholder="화면 번호 예: 4-5" style="width:130px"><button id="ngo">이동</button>
    <span class="sp"></span><span class="mut">배속</span><span id="spd"></span></div>
@@ -594,13 +633,24 @@ SCHED.onSrc(drawSrc);
   const d=pipW.document;d.title='메인 미리보기';d.body.style.cssText='margin:0;background:#000;overflow:hidden';const f=mk();f.style.cssText='width:100vw;height:100vh;border:0;display:block;pointer-events:none';d.body.appendChild(f);
   $$('pvpip').textContent='PIP 창 닫기';d.addEventListener('keydown',keyNav);
   pipW.addEventListener('pagehide',()=>{pipW=null;$$('pvpip').textContent='PIP 창으로 띄우기';place();});place();};
- let ST=null;const upd=st=>{if(!st)return;ST=st;$$('pvcur').textContent=st.cur||'-';$$('pvpos').textContent=st.pos?('발표 '+st.pos):'';
-  $$('pvnx').textContent=(st.msg?'상황 메시지 · → 누르면 원래 순서로 · ':'')+(st.nx?'다음: '+st.nx:(st.nx===''?'마지막 화면':''));
-  const tg=(id,on)=>{const b=$$(id);if(on==null){b.disabled=true;return;}b.disabled=false;b.classList.toggle('off',!on);};
-  tg('tgauto',st.auto==null?null:!!st.auto);tg('tgbgm',st.bgm==null?null:!!st.bgm);tg('tgsfx',st.sfx==null?null:!!st.sfx);
-  $$('pvex').textContent=(st.snd===0?'⚠ 메인 스크린 소리 막힘 — 송출 PC에서 메인 화면을 한 번 클릭하거나 아무 키(예: F 전체화면)를 누르세요\n':'')+(st.ex||'');$$('pvex').classList.toggle('warn',st.snd===0);};
- setInterval(()=>{const b=$$('pvbar');if(!ST||!ST.alen){b.style.visibility='hidden';return;}b.style.visibility='visible';b.firstChild.style.width=Math.min(100,Math.max(0,(Date.now()-ST.at0)/ST.alen*100))+'%';},300);
+ let ST=null,lastLs='';const nm=x=>x.title.replace(/&amp;/g,'&').replace(/<br>/g,' ').replace(x.no+' ','');
+ const upd=st=>{if(!st)return;ST=st;const L=st.slides||[],cs=L.find(x=>x.no===st.cur);
+  $$('pvcur').textContent=cs?cs.no+'  '+nm(cs):(st.cur||'-');
+  $$('pvsub').textContent=(st.msg?'상황 메시지 · → 누르면 원래 순서로 · ':'')+(st.pos?'발표 '+st.pos+' · ':'')+(st.nx?'다음: '+st.nx:(st.nx===''?'마지막 화면':''));
+  const tg=(id,on)=>{const b=$$(id);if(on==null){b.disabled=true;return;}b.disabled=false;b.classList.toggle('on',!!on);};
+  tg('tgauto',st.auto==null?null:st.auto);tg('tgbgm',st.bgm==null?null:st.bgm);tg('tgsfx',st.sfx==null?null:st.sfx);tg('tgblk',!!st.black);
+  $$('cpspd').querySelectorAll('button').forEach(b=>b.classList.toggle('on',+b.dataset.v===+(st.spd||1)));
+  const ex=$$('pvex');ex.textContent=(st.snd===0?'⚠ 메인 스크린 소리 막힘 — 송출 PC에서 메인 화면을 한 번 클릭하거나 아무 키(예: F 전체화면)를 누르세요\n':'')+(st.ex||'');ex.classList.toggle('warn',st.snd===0);
+  const key=L.map(x=>x.no+(x.no===st.cur)).join('|');if(key!==lastLs){lastLs=key;
+   $$('cpls').innerHTML=L.map(x=>{const d=x.auto?x.auto+'초':x.vid?'영상 '+x.vid+'초':'';return '<div data-go="'+x.no+'" class="'+(x.no===st.cur?'cur ':'')+(x.msg?'msg':'')+'">'+(d?'<span class="du">'+d+'</span>':'')+'<span class="no">'+x.no+'</span>'+nm(x).replace('[상황] ','')+'</div>';}).join('');
+   const c=$$('cpls').querySelector('.cur');if(c){const p=$$('cpls');p.scrollTop=c.offsetTop-p.offsetTop-p.clientHeight/2+c.offsetHeight/2;}}};
+ setInterval(()=>{const b=$$('pvbar');if(!ST||!ST.alen){b.style.visibility='hidden';}else{b.style.visibility='visible';b.firstChild.style.width=Math.min(100,Math.max(0,(Date.now()-ST.at0)/ST.alen*100))+'%';}
+  const n=new Date(Date.now()+32400e3);$$('cpclk').textContent=[n.getUTCHours(),n.getUTCMinutes(),n.getUTCSeconds()].map(v=>String(v).padStart(2,'0')).join(':');},300);
+ [.5,.75,1,1.25,1.5,2].forEach(v=>{const b=document.createElement('button');b.textContent=v+'×';b.dataset.v=v;b.onclick=()=>{SCHED.cmd({speed:v});localStorage.setItem('scr-main-spd',v);};$$('cpspd').appendChild(b);});
  $$('tgauto').onclick=()=>{if(ST)SCHED.cmd({auto:!ST.auto});};$$('tgbgm').onclick=()=>{if(ST)SCHED.cmd({bgm:!ST.bgm});};$$('tgsfx').onclick=()=>{if(ST)SCHED.cmd({sfx:!ST.sfx});};
+ $$('tgblk').onclick=()=>{const v=!(ST&&ST.black);SCHED.cmd({black:v});if(typeof black!=='undefined'){black=v;$$('black').classList.toggle('on',v);}};
+ const cpgo=()=>{let v=$$('cpno').value.trim().toUpperCase().replace(/^M/,'');if(!v)return;SCHED.cmd({go:'M'+v});$$('cpno').value='';$$('cpno').blur();};$$('cpgo').onclick=cpgo;$$('cpno').onkeydown=e=>{e.stopPropagation();if(e.key==='Enter')cpgo();if(e.key==='Escape'){$$('cpno').value='';$$('cpno').blur();}};
+ $$('cpls').addEventListener('click',e=>{const d=e.target.closest('[data-go]');if(d)SCHED.cmd({go:d.dataset.go});});
  SCHED.onState(upd);upd(SCHED.getState());
  /* 키보드 · 클리커: 화면 전환 탭(또는 PIP 창)에서 → Space PageDown = 다음, ← PageUp = 이전 */
  function keyNav(e){const t=e.target;if(t&&(/INPUT|TEXTAREA|SELECT/.test(t.tagName)||t.isContentEditable))return;if(document.querySelector('dialog[open]'))return;

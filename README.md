@@ -45,8 +45,8 @@
 
 | No | 화면 | 시점 | 파일 | 원본 (CC0 1.0) |
 |---|---|---|---|---|
-| S1 | M3-1 카운트다운 | 숫자 5~1 | `countdown-tick.mp3` | Clock Ticking · BenjaminNelan (freesound 321084) |
-| S2 | M3-1 ANYWHERE | 5.5초 | `opening-hit.mp3` | Piano Stinger 1a · MathewHenry (636190) |
+| S1 | M3-1 카운트다운 | 숫자 5~1 | `countdown-tick.mp3` | voicebosch-ticking-clock (11/26 원래 소리로 되돌림 · 오픈버스 BenjaminNelan 321084는 `_openverse`) |
+| S2 | M3-1 ANYWHERE | 5.5초 | `opening-hit.mp3` | universfield cinematic piano hit (11/26 원래 소리로 되돌림 · 오픈버스 MathewHenry 636190은 `_openverse`) |
 | S3 | M4-1 · M5-1 · M7-1 · M9-1 | 1.0초 붐 | `sfx-s3-part.mp3` | Riser Hit sfx 044 · AudioPapkin (649826) |
 | S4 | M4-4 출범식 | 0.75초 | `sfx-s4-reveal.mp3` | Shimmer · adh.dreaming (632344) + Piano Stinger 1b · MathewHenry (636189) |
 | S5 | M7-3 Proxymity | 14.3초 | `sfx-s5-proxymity.mp3` | whoosh+boom.wav · Capashen (118934) |
@@ -55,7 +55,7 @@
 
 - 끄기: `M` 배경음 · 효과음 모두, `Shift+M` 또는 P 패널 · 운영 입력 「효과음」 버튼으로 효과음만.
 - 배경음이 흐르는 화면(M6-S1 · M8-S1)에서는 효과음 동안 배경음을 절반으로 낮춥니다.
-- 이전 소리: `countdown-tick_v1.mp3` · `opening-hit_v1.mp3`.
+- 오픈버스 교체본: `countdown-tick_openverse.mp3` · `opening-hit_openverse.mp3` (원래 소리 사본 `_v1`도 보관).
 - **소리가 안 날 때**: 크롬은 그 화면을 한 번도 클릭 · 키 입력하지 않으면 소리를 막습니다(운영 입력으로만 넘기면 무음). 메인 화면 왼쪽 아래에 빨간 「소리가 막혀 있습니다」가 뜨고 운영 입력 화면 전환 탭에도 표시됩니다 → 송출 PC에서 메인 화면을 한 번 클릭하거나 `F`(전체화면) 등 아무 키를 누르면 풀립니다. 송출 PC 크롬을 `--autoplay-policy=no-user-gesture-required` 옵션으로 실행하면 처음부터 막히지 않습니다.
 
 ## 로비 (`lobby/index.html`)
