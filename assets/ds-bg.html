@@ -115,12 +115,13 @@ const SCN=[
   {k:'orbit', name:'타원 흐름',dur:8, tail:.9, form:1,fl:'타원 높이'},
   {k:'gather',name:'모임 2',  dur:18,tail:.06,form:1,fl:'모이기 전 퍼짐'},
   {k:'radial',name:'방사',    dur:8, tail:.7, form:1,fl:'방사 길이'},
+  {k:'shell', name:'타원 구',  dur:10,tail:1.2,form:1,fl:'링 벌어짐'},
   {k:'ring',  name:'링',      dur:8, tail:.8, form:1,fl:'링 두께'},
   {k:'well',  name:'중력 우물',dur:10,tail:.1, form:1,fl:'우물 깊이'},
   {k:'tunnel',name:'웨이브 터널',dur:16,tail:.12,form:1,fl:'말림'},
   {k:'sphere',name:'구체',    dur:10,tail:1.1,form:1,fl:'구 두께'}];
 // 장면별 공통 조절값: mv 움직임 속도, size 점 크기, scale 형태 크기, bright 밝기 (모두 1이 기본)
-SCN.forEach(s=>{s.mv=1;s.size=1;s.scale=1;s.bright=1;s.boost=s.k==='tunnel'||s.k==='well';}); // boost: 촘촘한 격자 장면은 점을 자동으로 늘림
+SCN.forEach(s=>{s.mv=1;s.size=1;s.scale=1;s.bright=1;s.boost=s.k==='tunnel'||s.k==='well'||s.k==='shell';}); // boost: 촘촘한 격자 장면은 점을 자동으로 늘림
 // 장면별 기본값 조정
 SCN.forEach(s=>{s.dur=s.k==='gather'?20:s.k==='sphere'?15:10;}); // 길이: 모임 20초, 구체 15초, 나머지 10초
 Object.assign(SCN.find(s=>s.k==='stream'),{tail:.4,size:.46,scale:.72,bright:.32,form:.64});
@@ -131,8 +132,9 @@ Object.assign(SCN.find(s=>s.k==='meridian'),{scale:.8});
 Object.assign(SCN.find(s=>s.k==='radial'),{scale:.85});
 Object.assign(SCN.find(s=>s.k==='converge'),{size:1.8,form:0,scale:.88,bright:.6,tail:.8});
 Object.assign(SCN.find(s=>s.k==='orbit'),{scale:.7,tail:.42,size:1.5,form:.8,bright:.22});
+Object.assign(SCN.find(s=>s.k==='shell'),{bright:.7,tail:1,scale:.82});
 Object.assign(SCN.find(s=>s.k==='halftone'),{tail:0,size:.8,scale:.76,bright:1,form:.7});
-SCN.forEach((s,i)=>{s.on=s.k!=='tunnel'&&s.k!=='orbit';s.o0=i;}); // on: 재생 여부, o0: 처음 순서
+SCN.forEach((s,i)=>{s.on=s.k!=='tunnel'&&s.k!=='orbit'&&s.k!=='halftone';s.o0=i;}); // on: 재생 여부, o0: 처음 순서
 const SCN0=SCN.map(s=>({...s})); // 초기화용 장면별 기본값
 let START=[],LOOP_S=0,ACT=[];
 function relayout(){
@@ -199,7 +201,7 @@ const GEDGES=knn(P.slice(0,GL).map(q=>q.g),2);
 const rotY=(p,a)=>{const c=Math.cos(a),s=Math.sin(a);return[p[0]*c+p[2]*s,p[1],-p[0]*s+p[2]*c];};
 const rotX=(p,a)=>{const c=Math.cos(a),s=Math.sin(a);return[p[0],p[1]*c-p[2]*s,p[1]*s+p[2]*c];};
 let HW=2,HH=1;
-const out=[0,0,0,0,0,0,0]; // x,y,size,alpha,r,g,b
+const out=[0,0,0,0,0,0,0,1]; // x,y,size,alpha,r,g,b,꼬리(1 있음 · 0 없음)
 // 하프톤 링: 색(위 주황에서 시계방향)과 격자. 격자는 점 개수와 상관없이 HTN개로 고정하고, 장면 동안 점을 자동으로 늘림
 const HTC=[[242,110,72],[246,178,140],[250,232,226],[214,168,232],[236,120,112]],HTN=3200;
 let HTG=null;
@@ -210,7 +212,7 @@ function htGrid(){if(HTG)return HTG;
   return HTG={s,x:xs,y:ys,idx:Int32Array.from(ord)};}
 function proj(p,o){const k=3.2/(3.2-p[2]);o[0]=p[0]*k;o[1]=p[1]*k;o[2]*=k;o[3]*=.45+.55*clamp01((p[2]+1)/2);}
 const CAM=3.4;
-function modePos(m,q,i,t,o){const tf=TINTS[S.tint].fg;o[4]=tf[0];o[5]=tf[1];o[6]=tf[2];modePos0(m,q,i,t,o);const s=SCN[m];o[2]*=s.size;o[3]*=s.bright;}
+function modePos(m,q,i,t,o){const tf=TINTS[S.tint].fg;o[4]=tf[0];o[5]=tf[1];o[6]=tf[2];o[7]=1;modePos0(m,q,i,t,o);const s=SCN[m];o[2]*=s.size;o[3]*=s.bright;}
 function modePos0(m,q,i,t0,o){
   const s=SCN[m],sc=S.scale*s.scale,t=t0*s.mv,f=s.form;
   switch(s.k){
@@ -227,6 +229,19 @@ function modePos0(m,q,i,t0,o){
     o[3]=q.ga*Math.min(1,.25+.55*k)*clamp01((d-.25)/.8)*(k>3?.65:1);return;}
   case 'stream':{ // 흐름: 왼쪽에서 오른쪽으로 흐르는 데이터 줄기
     const u=(((q.su+t*q.sv*.03)%1)+1)%1;o[0]=-HW*1.25+u*HW*2.5;o[1]=q.sy*sc*f+.05*Math.sin(u*7+q.gp);o[2]=.8;o[3]=.55+.45*q.ga;return;}
+  case 'shell':{ // 타원 구: 대각선 축을 공유하는 원들이 조금씩 더 기울어 겹친 링. 정면(원근 없음)으로 그려 모든 링이 바깥 원 안에 들어감
+    const al=Math.PI/4+.12*Math.sin(TAU*t/40),ax=Math.cos(al),ay=Math.sin(al);  // 축(왼쪽 아래 ↔ 오른쪽 위)이 아주 천천히 흔들림
+    if(q.ln>.84){ // 바깥 원에서 점이 바깥으로 퍼져 나감
+      const u=(((q.su+t*q.lv*.05)%1)+1)%1,a=q.th+.15*u,r=.95*sc*(1+.45*Math.pow(u,1.2));
+      o[0]=Math.cos(a)*r;o[1]=Math.sin(a)*r;o[2]=.55;o[3]=.9*Math.pow(1-u,1.6);o[7]=0;return;}  // 꼬리 없음
+    const NR=22,li=((q.ln/.84)*NR)|0,k=li/(NR-1);
+    const phi=k*1.2*f*(.9+.1*Math.sin(TAU*t/18+k*1.7));                         // 링마다 기울기, 천천히 숨 쉬듯
+    const th=TAU*((((q.su+t*q.lv*.035*(k<.5?1:-1))%1)+1)%1);                     // 링을 따라 흐르는 점
+    const cx=Math.cos(th),cy=Math.sin(th),d=cx*ax+cy*ay,c=Math.cos(phi);
+    // 축을 중심으로 phi만큼 기운 원을 정면에서 본 모양(축 방향은 그대로, 수직 방향만 cos(phi)배)
+    const px=cx-ax*d,py=cy-ay*d,R=.95*sc;
+    o[0]=(ax*d+px*c)*R;o[1]=(ay*d+py*c)*R;
+    o[2]=.5;o[3]=(.16+.42*(1-k)*(1-k))*(li===0?1.8:1);return;}
   case 'sphere':{ // 구체: 각자 다른 대원을 따라 도는 궤도
     const a=q.th+TAU*t*q.w/28,c=Math.cos(a),s=Math.sin(a),r=(.94+(q.rr-.94)*f)*sc;
     let p=[(q.e1[0]*c+q.e2[0]*s)*r,(q.e1[1]*c+q.e2[1]*s)*r,(q.e1[2]*c+q.e2[2]*s)*r];
@@ -301,7 +316,7 @@ function seg(t){
   if(p===last&&last>0&&loc>SCN[k].dur-w)return{from:k,to:ACT[0],tl:loc-(SCN[k].dur-w),tf:t,tt:t-LOOP_S,k,loc};
   return{from:k,to:k,tl:1e9,tf:t,tt:t,k,loc};
 }
-const A=[0,0,0,0,0,0,0],B=[0,0,0,0,0,0,0];
+const A=[0,0,0,0,0,0,0,1],B=[0,0,0,0,0,0,0,1];
 function posAt(i,sg,o){
   const q=P[i];
   if(sg.from===sg.to){modePos(sg.to,q,i,sg.tt,o);return;}
@@ -311,7 +326,7 @@ function posAt(i,sg,o){
   modePos(sg.from,q,i,sg.tf,A);modePos(sg.to,q,i,sg.tt,B);
   const bend=Math.sin(Math.PI*e)*.12*(q.d-.4);
   o[0]=A[0]+(B[0]-A[0])*e-bend*(B[1]-A[1]);o[1]=A[1]+(B[1]-A[1])*e+bend*(B[0]-A[0]);
-  for(let c=2;c<7;c++)o[c]=A[c]+(B[c]-A[c])*e;
+  for(let c=2;c<8;c++)o[c]=A[c]+(B[c]-A[c])*e;
 }
 // 장면 m의 전체 비중(0..1): 선 그리기·꼬리 길이에 사용
 function weight(sg,m){
@@ -326,7 +341,7 @@ function size(){const q=window.DSQ||1;cv.width=Math.round(BGW*q);cv.height=Math.
 function geom(){W=cv.width;H=cv.height;U=Math.min(W,H*1.15)*.36;PX=H/1080;HW=W/2/U;HH=H/2/U;}
 addEventListener('resize',()=>{size();if(paused)draw();});size();
 const K=12; // 꼬리 샘플 수
-const LVL=new Uint8Array(MAXN),XS=new Float32Array(MAXN*(K+1)),YS=new Float32Array(MAXN*(K+1)),SZ=new Float32Array(MAXN),AL=new Float32Array(MAXN),CR=new Float32Array(MAXN),CG=new Float32Array(MAXN),CB=new Float32Array(MAXN);
+const LVL=new Uint8Array(MAXN),XS=new Float32Array(MAXN*(K+1)),YS=new Float32Array(MAXN*(K+1)),SZ=new Float32Array(MAXN),AL=new Float32Array(MAXN),CR=new Float32Array(MAXN),CG=new Float32Array(MAXN),CB=new Float32Array(MAXN),TL=new Float32Array(MAXN).fill(1);
 let tNow=0,paused=false,manual=false;const LF={};
 /* 메인 스크린 배경용: 크기 · 중심 · 속도를 주소 값과 부모 창 메시지로 제어 */
 (function oxTick(){BOX.x+=(BOX.tx-BOX.x)*.04;requestAnimationFrame(oxTick);})();
@@ -347,7 +362,7 @@ function draw(){
     for(let j=0;j<=Kn;j++){
       if(j>0&&tail<=0){XS[i*(K+1)+j]=XS[i*(K+1)];YS[i*(K+1)+j]=YS[i*(K+1)];continue;}
       posAt(i,segs[j],out);XS[i*(K+1)+j]=cx+out[0]*U;YS[i*(K+1)+j]=cy-out[1]*U;
-      if(j===0){SZ[i]=out[2];AL[i]=i<N0?out[3]:out[3]*wB;CR[i]=out[4];CG[i]=out[5];CB[i]=out[6];}
+      if(j===0){SZ[i]=out[2];AL[i]=i<N0?out[3]:out[3]*wB;CR[i]=out[4];CG[i]=out[5];CB[i]=out[6];TL[i]=out[7];}
     }
   }
   Object.assign(LF,{N,tail,s0,wT,TI});
@@ -361,7 +376,7 @@ function draw(){
       for(const band of [0,1]){
         ctx.beginPath();
         for(let i=0;i<N;i++){
-          if(AL[i]<.03||(AL[i]>.7)!==(band===1))continue;
+          if(AL[i]<.03||TL[i]<.5||(AL[i]>.7)!==(band===1))continue;
           const b=i*(K+1)+j,x0=XS[b],y0=YS[b],x1=XS[b+1],y1=YS[b+1];
           if(Math.abs(x1-x0)+Math.abs(y1-y0)>jump)continue;
           ctx.moveTo(x0,y0);ctx.lineTo(x1,y1);
@@ -509,7 +524,7 @@ function toSVG(){
     o.push('<g id="tails">');
     for(let j=0;j<LF.Kn;j++){const fade=Math.pow(1-j/LF.Kn,1.6);
       for(const band of [0,1]){let d='';
-        for(let i=0;i<N;i++){if(AL[i]<.03||(AL[i]>.7)!==(band===1))continue;const x0=X(i,j),y0=Y(i,j),x1=X(i,j+1),y1=Y(i,j+1);
+        for(let i=0;i<N;i++){if(AL[i]<.03||TL[i]<.5||(AL[i]>.7)!==(band===1))continue;const x0=X(i,j),y0=Y(i,j),x1=X(i,j+1),y1=Y(i,j+1);
           if(Math.abs(x1-x0)+Math.abs(y1-y0)>jump)continue;if(Math.abs(x1-x0)+Math.abs(y1-y0)<.05)continue;d+=`M${f(x0)} ${f(y0)}L${f(x1)} ${f(y1)}`;}
         line(d,(band?.5:.26)*fade*br,Math.max(1,.9*PX*S.size));}}
     o.push('</g>');
