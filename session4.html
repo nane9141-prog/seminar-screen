@@ -1925,6 +1925,10 @@ html.embed #sgb,html.embed #sg{display:none!important}  /* 11/26 메인 스크�
 
 /* K11(11/26 22:10) 그래프 최고점을 제목(3월 정기주총 개최일 분포) 윗선 높이까지 — 막대 최대 860 → 967px, 집중일 띠 · △ · FULL BOOKING 윗선도 같은 높이 */
 #K11 .band,#K11 .full,#K11 .tri{top:-270px!important}
+
+/* K18b(11/26 22:14) 휴대폰 뒤에 KOSMOS 웹 전자주주총회장 화면(생중계 · AI 자막 · 의안 진행현황)을 흐리게 */
+#K18b .k18web{position:absolute;left:1960px;top:170px;width:1780px;height:1260px;border-radius:32px;background:#fff url(assets/s4/kosmos-web.webp) center top/100% auto no-repeat;opacity:0;filter:blur(1.5px);-webkit-mask-image:linear-gradient(180deg,#000 55%,transparent 100%);mask-image:linear-gradient(180deg,#000 55%,transparent 100%);transition:opacity 1.2s ease .3s}
+.s.cur#K18b .k18web{opacity:.2}
 </style></head>
 <body>
 <div class="stage" id="stage">
@@ -2116,6 +2120,7 @@ html.embed #sgb,html.embed #sg{display:none!important}  /* 11/26 메인 스크�
   <p class="tl fu" style="--i:2">주주의 참여로 완성되는<br>주주총회의 새로운 질서</p>
   <p class="ds fu" style="--i:3">어디서나 안전하게 출석하고<br>의결권을 행사하는 주주용 서비스</p></div>
  <div class="rp"></div>
+ <div class="k18web"></div>
  <div class="ph pa fu" style="--i:3"><div class="sc"><div class="v">
   <div class="hd"><img class="lg" src="assets/s4/kosmos-color.svg" alt="KOSMOS"><span class="co"><img src="assets/s4/ke-logo.png" alt=""><b>큐더스전자</b><em>● LIVE</em></span></div>
   <div class="vd"><video src="assets/s4/ke-live.mp4" muted autoplay loop playsinline></video><span class="bd">● LIVE</span><span class="snd">소리 켜기</span></div>
