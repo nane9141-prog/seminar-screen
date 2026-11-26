@@ -585,6 +585,51 @@ body.idle{cursor:none}
 /* 11/26 20:56 파트 첫 장 Blue Bloom: 둥근(타원) 마스크 대신 가로 직선 띠 — 아래에서 위로만 옅어짐(좌우 끝까지 같은 높이) */
 .slide[data-glow] .bloom{-webkit-mask-image:linear-gradient(0deg,#000 0%,rgba(0,0,0,.8) 12%,rgba(0,0,0,.4) 26%,rgba(0,0,0,.1) 40%,transparent 50%)!important;mask-image:linear-gradient(0deg,#000 0%,rgba(0,0,0,.8) 12%,rgba(0,0,0,.4) 26%,rgba(0,0,0,.1) 40%,transparent 50%)!important}
 /* M9-1 시연 타이틀: 왼쪽 PART 3 · 제목 2줄 · 시연자, 오른쪽 핵심 문장 + 3단계 가로 카드 — 글은 Bloom 띠 위쪽에 */
+
+/* M9-3~M9-5 모의 주주총회 개요 · 주주 구성 · 회의목적사항 (가상모의주총개요.docx) */
+.slide[data-no=M9-3] .lay2,.slide[data-no=M9-4] .lay2,.slide[data-no=M9-5] .lay2{grid-template-columns:1180px minmax(0,1fr)}
+.mx-sub{margin-top:64px;font-size:66px;line-height:1.4;font-weight:400;color:#A9B4C4}
+.mx-ov{display:flex;flex-direction:column;gap:64px}
+.mx-k{font-size:48px;font-weight:600;color:#0081cc;margin-bottom:22px}
+.mx-dl{display:grid;grid-template-columns:420px 1fr;border-top:3px solid #1C2A40}
+.mx-dl dt,.mx-dl dd{margin:0;padding:22px 0;border-bottom:2px solid #1C2A40;font-size:56px;line-height:1.3}
+.mx-dl dt{color:#8D99AB;font-weight:400}.mx-dl dd{color:#F2F5FA;font-weight:500}
+.mx-chips{display:flex;gap:24px}
+.mx-chips span{font-size:56px;font-weight:500;color:#F2F5FA;padding:18px 44px;border-radius:999px;background:rgba(0,129,204,.18);box-shadow:inset 0 0 0 2px rgba(0,129,204,.55)}
+.mx-nums{display:grid;grid-template-columns:repeat(3,1fr);border-top:3px solid #1C2A40}
+.mx-nums>div{padding:26px 0 0}
+.mx-n{font-size:110px;font-weight:600;line-height:1.1;color:#fff;letter-spacing:-.02em}.mx-n i{font-style:normal;font-size:56px;font-weight:400;color:#A9B4C4;margin-left:10px}
+.mx-l{margin-top:8px;font-size:48px;color:#8D99AB}
+/* M9-4 */
+.slide[data-no=M9-4] .lay2{align-items:stretch}.slide[data-no=M9-4] .lay2-l{display:flex;flex-direction:column}
+.mx-bar{margin-top:auto;display:flex;flex-direction:column;gap:14px;height:760px;width:640px}
+.mx-bar>div{flex:0 0 var(--h);min-height:140px;border-radius:18px;padding:24px 34px;display:flex;flex-direction:column;justify-content:center;background:#16202e}
+.mx-bar>div:nth-child(1){background:linear-gradient(135deg,#0081cc,#0a5f99)}
+.mx-bar>div:nth-child(2){background:linear-gradient(135deg,#123553,#0c2236)}
+.mx-bar b{font-size:64px;font-weight:600;color:#fff;line-height:1.1}.mx-bar span{font-size:44px;color:#D5DCE6}
+.mx-tb{font-size:48px}
+.mx-tr{display:grid;grid-template-columns:400px 560px 280px 260px minmax(0,1fr);align-items:center;column-gap:20px;height:74px;border-bottom:2px solid #1C2A40}
+.mx-tr>span:nth-child(3),.mx-tr>span:nth-child(4){text-align:right;font-variant-numeric:tabular-nums}
+.mx-tr>span:nth-child(5){padding-left:40px}
+.mx-tr.th{height:70px;font-size:42px;color:#8D99AB;border-bottom:3px solid #2A3A52}
+.mx-tr.h{color:#5bade1;font-weight:600;height:78px;border-top:3px solid #2A3A52}
+.mx-tr.h>span:nth-child(3),.mx-tr.h>span:nth-child(4){color:#5bade1}
+.mx-tr.r{color:#E3E8EF;font-weight:400}.mx-tr.r>span:first-child{padding-left:40px;color:#A9B4C4}
+.mx-tr.t{font-weight:700;color:#fff;border-top:3px solid #2A3A52;border-bottom:0}
+.mx-tag{display:inline-block;font-size:40px;font-weight:500;line-height:1;padding:12px 24px;border-radius:12px;color:#ffb27a;background:rgba(255,140,70,.12);box-shadow:inset 0 0 0 2px rgba(255,140,70,.45);white-space:nowrap}
+.mx-tag.all{color:#ff8f99;background:rgba(255,77,94,.12);box-shadow:inset 0 0 0 2px rgba(255,77,94,.5)}
+.mx-tag.b{color:#8fd0f5;background:rgba(0,129,204,.16);box-shadow:inset 0 0 0 2px rgba(0,129,204,.6)}
+/* M9-5 */
+.mx-agl{display:flex;flex-direction:column;border-top:3px solid #1C2A40}
+.mx-ag{display:grid;grid-template-columns:220px minmax(0,1fr) 420px;column-gap:30px;align-items:center;padding:12px 0;border-bottom:2px solid #1C2A40}
+.mx-ag>span:last-child{text-align:right}
+.mx-no{font-size:52px;font-weight:700;color:#0081cc;font-variant-numeric:tabular-nums}
+.mx-an{font-size:56px;font-weight:500;line-height:1.3;color:#F2F5FA}
+.mx-as{margin-top:2px;font-size:42px;line-height:1.3;color:#8D99AB}
+.mx-ag.sub{padding:10px 0}
+.mx-ag.sub .mx-no{padding-left:60px;font-size:46px;font-weight:500;color:#5bade1;position:relative}
+.mx-ag.sub .mx-no::before{content:"";position:absolute;left:18px;top:50%;width:26px;height:2px;background:#5bade1}
+.mx-ag.sub .mx-an{font-size:50px;font-weight:400;color:#D5DCE6}
 </style></head>
 <body>
 <div class="stage" id="scr" data-foot="full">
@@ -754,7 +799,37 @@ body.idle{cursor:none}
 <h2 class="head fu" style="--i:0">시연에서 살펴볼<br>주요 실무 사례</h2>
 <div class="grid2" data-stagger style="--i:1"><div class="case"><p class="num">01</p><p class="lead">결의요건 충족 여부와 가결 판정</p></div><div class="case"><p class="num">02</p><p class="lead">최대주주 등 합산 3% 의결권 제한</p></div><div class="case"><p class="num">03</p><p class="lead">특별이해관계자의 의결권 제한</p></div><div class="case"><p class="num">04</p><p class="lead">수정동의 접수와 표결</p></div><div class="case"><p class="num">05</p><p class="lead">양립불가 의안의 표결 처리</p></div><div class="case"><p class="num">06</p><p class="lead">집중투표의 의결권 배분과 집계</p></div><div class="case"><p class="num">07</p><p class="lead">전자주주총회 사전신청 및 총회 당일 출석</p></div><div class="case"><p class="num">08</p><p class="lead">주주 질의 접수 및 발언 요청 승인</p></div></div>
 </section>
-<section class="slide" id="m9_3" data-no="M9-3" data-title="M9-3 시연 라이브 화면 — 외부 소스" data-bg="C" data-foot="full" data-ext="1">
+<section class="slide" id="m9_3" data-no="M9-3" data-title="M9-3 모의 주주총회 개요" data-bg="B" data-foot="full" data-lay="split">
+<h2 class="head fu" style="--i:0">모의 주주총회<br>개요</h2>
+<p class="mx-sub lay-l fu" style="--i:.6">IR큐더스<br>제2기 정기주주총회</p>
+<div class="mx-ov" data-stagger style="--i:1">
+<div class="mx-sec"><p class="mx-k">일정 · 장소</p><dl class="mx-dl">
+<dt>개최일시</dt><dd>2027. 3. 24 (수) 09:00</dd>
+<dt>개최장소</dt><dd>서울 영등포구 국제금융로8길 2</dd>
+<dt>주주명부 폐쇄일</dt><dd>2026. 12. 31 (목)</dd>
+<dt>사전투표 기간</dt><dd>2027. 3. 14 (일) 09:00 ~ 3. 23 (화) 17:00</dd>
+</dl></div>
+<div class="mx-sec"><p class="mx-k">사전투표 수단</p><div class="mx-chips"><span>전자투표</span><span>전자위임장</span><span>서면위임장</span></div></div>
+<div class="mx-sec"><p class="mx-k">주식 현황</p><div class="mx-nums">
+<div><p class="mx-n">533<i>명</i></p><p class="mx-l">총 주주수</p></div>
+<div><p class="mx-n">118,858<i>주</i></p><p class="mx-l">총 발행주식수</p></div>
+<div><p class="mx-n">106,958<i>주</i></p><p class="mx-l">의결권 있는 주식수</p></div>
+</div></div>
+</div>
+</section>
+<section class="slide" id="m9_4" data-no="M9-4" data-title="M9-4 모의 주주총회 주주 구성" data-bg="B" data-foot="full" data-lay="split">
+<h2 class="head fu" style="--i:0">주주 구성</h2>
+<div class="mx-bar lay-l fu" style="--i:.6"><div style="--h:21.99%"><b>21.99%</b><span>최대주주 등</span></div><div style="--h:64.53%"><b>64.53%</b><span>최대주주 외</span></div><div style="--h:13.48%"><b>13.48%</b><span>기타</span></div></div>
+<div class="mx-tb">
+<div class="mx-tr th"><span>구분</span><span>성명</span><span>주식수</span><span>지분율</span><span>의결권 제한</span></div>
+<div class="mx-rows" data-stagger style="--i:1"><div class="mx-tr h"><span>최대주주 등</span><span></span><span>26,136</span><span>21.99%</span><span></span></div><div class="mx-tr r"><span>최대주주</span><span>나최대</span><span>18,423</span><span>15.50%</span><span><span class="mx-tag">3호 · 합산 3%</span></span></div><div class="mx-tr r"><span>특수관계인</span><span>나삼촌</span><span>3,913</span><span>3.01%</span><span><span class="mx-tag">3호 · 합산 3%</span></span></div><div class="mx-tr r"><span>특수관계인</span><span>나이모</span><span>3,800</span><span>2.98%</span><span><span class="mx-tag">3호 · 합산 3%</span></span></div><div class="mx-tr h"><span>최대주주 외</span><span></span><span>76,702</span><span>64.53%</span><span></span></div><div class="mx-tr r"><span>외국인</span><span>Riley Brown 등</span><span>12,124</span><span>10.20%</span><span></span></div><div class="mx-tr r"><span>기관</span><span>K자산운용 등</span><span>16,402</span><span>13.80%</span><span><span class="mx-tag">3호 · 개별 3%</span></span></div><div class="mx-tr r"><span>개인</span><span>김개인 등</span><span>48,176</span><span>40.53%</span><span></span></div><div class="mx-tr h"><span>기타</span><span></span><span>16,020</span><span>13.48%</span><span></span></div><div class="mx-tr r"><span>자사주</span><span>아이알큐더스</span><span>4,300</span><span>3.62%</span><span><span class="mx-tag all">전체 의안</span></span></div><div class="mx-tr r"><span>상호주</span><span>K-Holdings</span><span>3,850</span><span>3.24%</span><span><span class="mx-tag all">전체 의안</span></span></div><div class="mx-tr r"><span>무효주</span><span>나제한</span><span>3,750</span><span>3.16%</span><span><span class="mx-tag all">전체 의안</span></span></div><div class="mx-tr r"><span>특별이해관계자</span><span>나특별</span><span>10</span><span>0.01%</span><span><span class="mx-tag">4호</span></span></div><div class="mx-tr r"><span>ADR</span><span>아이알큐더스(ADR)</span><span>4,110</span><span>3.46%</span><span></span></div><div class="mx-tr t"><span>합계</span><span></span><span>118,858</span><span>100%</span><span></span></div></div>
+</div>
+</section>
+<section class="slide" id="m9_5" data-no="M9-5" data-title="M9-5 모의 주주총회 회의목적사항" data-bg="B" data-foot="full" data-lay="split">
+<h2 class="head fu" style="--i:0">회의<br>목적사항</h2>
+<div class="mx-agl" data-stagger style="--i:1"><div class="mx-ag"><span class="mx-no">제1호</span><div><p class="mx-an">정관 일부 변경의 건</p><p class=mx-as>전자주주총회 통신장애 대응 근거 마련</p></div><span></span></div><div class="mx-ag"><span class="mx-no">제2호</span><div><p class="mx-an">재무제표 및 연결재무제표 승인의 건</p><p class=mx-as>이익잉여금처분계산서 포함 · 보통주 1주당 현금배당금 500원</p></div><span></span></div><div class="mx-ag"><span class="mx-no">제3호</span><div><p class="mx-an">감사위원회 위원이 되는 독립이사 나분리 선임의 건</p><p class=mx-as>분리선출</p></div><span><span class="mx-tag">개별 · 합산 3%</span></span></div><div class="mx-ag"><span class="mx-no">제4호</span><div><p class="mx-an">이사 보수한도 승인의 건</p></div><span></span></div><div class="mx-ag"><span class="mx-no">제5호</span><div><p class="mx-an">선임할 이사 수 결정의 건</p></div><span><span class="mx-tag b">양립불가</span></span></div><div class="mx-ag sub"><span class="mx-no">제5-1호</span><div><p class="mx-an">이사 3인 선임의 건</p></div><span></span></div><div class="mx-ag sub"><span class="mx-no">제5-2호</span><div><p class="mx-an">이사 4인 선임의 건 (주주제안)</p></div><span></span></div><div class="mx-ag"><span class="mx-no">제6호</span><div><p class="mx-an">집중투표에 의한 이사 선임의 건</p></div><span><span class="mx-tag b">집중투표</span></span></div><div class="mx-ag sub"><span class="mx-no">제6-1호</span><div><p class="mx-an">이사 5인 중 3인 선임의 건</p><p class=mx-as>제5-1호 가결 시 · 김이사, 박이사, 이독립, 최독립, 강비상</p></div><span></span></div><div class="mx-ag sub"><span class="mx-no">제6-2호</span><div><p class="mx-an">이사 6인 중 4인 선임의 건</p><p class=mx-as>제5-2호 가결 시 · 위 5인 + 한독립(주주제안)</p></div><span></span></div></div>
+</section>
+<section class="slide" id="m9_6" data-no="M9-6" data-title="M9-6 시연 라이브 화면 — 외부 소스" data-bg="C" data-foot="full" data-ext="1">
 
 </section>
 <section class="slide" id="m10_1" data-no="M10-1" data-title="M10-1 Q&amp;A 타이틀" data-bg="B" data-foot="full" data-lay="split">
