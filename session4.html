@@ -1701,6 +1701,12 @@ body:not(.idle) #sgb{opacity:.9}body.grid #sgb{opacity:0;pointer-events:none}
 #K11 .lg{top:540px!important;justify-content:flex-start!important}
 #K11 .full,#K11 .tri{top:-163px}
 #K15 .col:not(.hl){padding-top:100px}#K15 .col.hl{padding-top:200px}  /* 11/26 20:11 박스 안 글자 위로(박스 그대로) */
+/* 11/26 20:13 K21: 상장기업 · 주주 묶음 사이 넓힘(각 60px 바깥으로), ∞ 키움, 묶음 제목 살짝 아래로 */
+#K21 .ga,#K21 .kL{translate:-60px 0}#K21 .gb,#K21 .kR{translate:60px 0}
+#K21 .k21inf{left:1770px!important;top:690px!important;width:560px!important;height:532px!important}
+#K21 .gp p{top:66px}
+#K22s .zw{translate:0 40px}  /* 11/26 20:14 도식 전체 살짝 아래로 */
+#K24a .k24g .grp{font-weight:700}#K24a .k24g .grp small{font-weight:400}#K24a .k24g .lst li{font-size:52px}  /* 11/26 20:14 개인 · 기관 주주 볼드, 점 목록 58 → 52px */
 </style></head>
 <body>
 <div class="stage" id="stage">
@@ -1972,12 +1978,12 @@ body:not(.idle) #sgb{opacity:.9}body.grid #sgb{opacity:0;pointer-events:none}
  <h2 class="k21t"><span>전자주주총회의 준비부터 운영까지, <em>A to Z</em></span></h2>
  <div class="gp ga" style="left:240px;top:320px;width:1640px;height:1180px"><p>상장기업</p></div>
  <div class="gp gb" style="left:2220px;top:320px;width:1740px;height:1180px"><p>주주</p></div>
- <div class="cd pn ph" style="left:300px;top:480px;width:680px;height:940px;--dx:-700px;--dy:-500px;--r:-10deg;--d:2.0s"><i style="background-image:url(assets/s4/k2-agency.webp);background-position:50% 20%"></i><b>전담 운영지원<br>및 현장지원</b><small>사전 준비부터 당일 현장까지</small></div>
- <div class="cd pn" style="left:1140px;top:480px;width:680px;height:940px;--dx:-200px;--dy:800px;--r:8deg;--d:2.08s"><img class="lg" src="assets/s4/kosmos-admin-white.svg" alt="KOSMOS admin"><b>기업용<br>관리자 시스템</b></div>
- <div class="cd sh" style="left:2280px;top:480px;width:860px;height:940px;--dx:-500px;--dy:-700px;--r:-10deg;--d:2.15s"><img class="lg" src="assets/s4/kosmos-white.png" alt="KOSMOS"><b>주주용 전자주총 서비스</b><ul><li>전자투표</li><li>전자위임장</li><li>의결권 대리행사 권유</li><li>현장전자표결</li><li>전자주주총회</li></ul></div>
- <div class="cd pn pt ph" style="left:3260px;top:480px;width:640px;height:940px;--dx:700px;--dy:-400px;--r:10deg;--d:2.5s"><i style="background-image:url(assets/s4/k2-support.webp);background-size:auto 128%;background-position:74% 42%"></i><b>주주용<br>고객센터</b><small>이용문의 · 본인확인 · 장애접수</small></div>
+ <div class="cd pn ph kL" style="left:300px;top:480px;width:680px;height:940px;--dx:-700px;--dy:-500px;--r:-10deg;--d:2.0s"><i style="background-image:url(assets/s4/k2-agency.webp);background-position:50% 20%"></i><b>전담 운영지원<br>및 현장지원</b><small>사전 준비부터 당일 현장까지</small></div>
+ <div class="cd pn kL" style="left:1140px;top:480px;width:680px;height:940px;--dx:-200px;--dy:800px;--r:8deg;--d:2.08s"><img class="lg" src="assets/s4/kosmos-admin-white.svg" alt="KOSMOS admin"><b>기업용<br>관리자 시스템</b></div>
+ <div class="cd sh kR" style="left:2280px;top:480px;width:860px;height:940px;--dx:-500px;--dy:-700px;--r:-10deg;--d:2.15s"><img class="lg" src="assets/s4/kosmos-white.png" alt="KOSMOS"><b>주주용 전자주총 서비스</b><ul><li>전자투표</li><li>전자위임장</li><li>의결권 대리행사 권유</li><li>현장전자표결</li><li>전자주주총회</li></ul></div>
+ <div class="cd pn pt ph kR" style="left:3260px;top:480px;width:640px;height:940px;--dx:700px;--dy:-400px;--r:10deg;--d:2.5s"><i style="background-image:url(assets/s4/k2-support.webp);background-size:auto 128%;background-position:74% 42%"></i><b>주주용<br>고객센터</b><small>이용문의 · 본인확인 · 장애접수</small></div>
  <canvas class="viz k21inf" data-viz="inf" style="left:1850px;top:760px;width:400px;height:380px" width="800" height="760"></canvas>
- <svg class="k21l" viewBox="0 0 4200 1600" width="4200" height="1600"><path class="b" pathLength="1" d="M980 950H1140" style="--d:3.10s"/><path class="m" d="M980 950H1140" style="--d:3.10s"/><path class="b" pathLength="1" d="M3140 950H3260" style="--d:3.2s"/><path class="m" d="M3140 950H3260" style="--d:3.2s"/></svg>
+ <svg class="k21l" viewBox="0 0 4200 1600" width="4200" height="1600"><path class="b kL" pathLength="1" d="M980 950H1140" style="--d:3.10s"/><path class="m kL" d="M980 950H1140" style="--d:3.10s"/><path class="b kR" pathLength="1" d="M3140 950H3260" style="--d:3.2s"/><path class="m kR" d="M3140 950H3260" style="--d:3.2s"/></svg>
 </section>
 
 <section class="s ch sec fl" id="K21b" data-t="장 표지 · 시스템" data-dim=".3">
