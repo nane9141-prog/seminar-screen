@@ -357,6 +357,16 @@ body.kflash #pvslot,body.kflash #pvbox{box-shadow:0 0 0 2px #2f6bff}
 .cpx .ls .no{display:inline-block;min-width:52px;color:#8793A6;font-variant-numeric:tabular-nums}.cpx .ls div.cur .no{color:#dfe9ff}
 .cpx .ft{color:#6F7C90;font-size:11.5px;padding:6px 12px 10px;border-top:1px solid rgba(120,150,200,.2)}
 #scrbox.locked .cpx button,#scrbox.locked .cpx input,#scrbox.locked .cpx .ls{pointer-events:none;opacity:.35}
+
+/* 11/26 세션 3 화상 화면(M7-4 얼굴 창) 미리 연결 */
+.facebox{margin-top:4px;padding:14px 16px;border-radius:10px;background:rgba(255,255,255,.04);display:flex;flex-direction:column;gap:10px}
+.facebox .fh{display:flex;flex-direction:column;gap:2px}.facebox .fh b{font-size:14px}.facebox .fh .mut{font-size:12px}
+.facebox .fst{font-size:13px;color:var(--fg-2)}.facebox .fst.on{color:#3ddc84}.facebox .fst.err{color:#ff8a7a}
+.facebox .frow{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.facebox .frow .sp{flex:1}
+.facebox select{flex:1;min-width:220px;background:#111;color:var(--fg);border:1px solid var(--line);border-radius:8px;padding:8px 10px;font:inherit;font-size:13px}
+.facebox button{min-height:0;padding:7px 12px;font-size:13px}.facebox .ff.on{box-shadow:0 0 0 2px #2f6bff}
+.facebox .hint{margin:0;font-size:12px;line-height:1.5;color:var(--fg-3)}
+#scrbox.locked .facebox button,#scrbox.locked .facebox select{pointer-events:none;opacity:.35}
 </style></head>
 <body>
 <header class="top"><h1>운영 입력<small id="hint">메인 스크린(index.html)과 같은 PC · 같은 브라우저에서 열어 주세요. 입력 즉시 반영됩니다.</small></h1><div class="me"><span id="offst" class="mut"></span><span id="clock">--:--</span></div></header>
@@ -388,7 +398,11 @@ body.kflash #pvslot,body.kflash #pvbox{box-shadow:0 0 0 2px #2f6bff}
   <h2>화면 전환 <span class="mut">현재 <b id="curno">-</b> · 점선 = 상황 메시지</span><span><button id="toq2">현장 질문 화면(M10-13)</button> <button id="black">블랙아웃</button></span></h2>
   <div class="owner" id="owner"><span class="od"></span><div class="ot"><b id="ownname">조작 기기: 제한 없음</b><span class="mut" id="ownsub">어느 운영 입력 화면에서든 메인을 넘길 수 있습니다.</span></div><span class="sp"></span><label class="pvt"><input type="checkbox" id="pvon"> 미리보기</label><button id="ownset" class="pri">이 기기로 지정</button><button id="ownclr">지정 해제</button></div>
   <div id="scrbody">
-  <div class="pvwrap"><div class="pvl"><div id="pvslot"></div><div class="pvopt"><button id="pvpip">PIP 창으로 띄우기</button><label><input type="checkbox" id="pvmini"> 다른 탭에서도 작은 화면</label><span class="hint">← → · Space · PageUp/Down(클리커)으로 전환 · 입력칸에 커서가 있을 때는 작동 안 함</span></div></div>
+  <div class="pvwrap"><div class="pvl"><div id="pvslot"></div><div class="pvopt"><button id="pvpip">PIP 창으로 띄우기</button><label><input type="checkbox" id="pvmini"> 다른 탭에서도 작은 화면</label><span class="hint">← → · Space · PageUp/Down(클리커)으로 전환 · 입력칸에 커서가 있을 때는 작동 안 함</span></div><div class="facebox" id="facebox"><div class="fh"><b>세션 3 화상 화면</b><span class="mut">M7-4 오른쪽 연사 얼굴 창 · 미리 연결해 두면 M7-4에 들어갈 때 바로 보임</span></div>
+  <div class="fst" id="facest">메인 스크린 상태를 기다리는 중…</div>
+  <div class="frow"><select id="facedev"><option value="">— 영상 장치 선택 (캡처보드 · 카메라) —</option></select><button id="faceon" class="pri">연결</button><button id="faceoff">해제(사진)</button></div>
+  <div class="frow"><span class="mut">맞춤</span><button data-fit="cover" class="ff">채우기</button><button data-fit="contain" class="ff">전체 보기</button><span class="sp"></span><button id="facels">장치 목록 새로고침</button><button id="faceask" title="송출 PC 메인 화면에 카메라 권한 창이 뜹니다 — 리허설 때 한 번 허용">권한 요청</button></div>
+  <p class="hint">장치 이름이 안 보이면 「권한 요청」 → 송출 PC 메인 화면에서 허용(한 번이면 됨). Google Meet 창 캡처는 크롬 정책상 송출 PC 메인 화면에서 M7-4를 띄운 뒤 Shift+V로 직접 고릅니다. 고른 장치는 저장돼 메인을 다시 열어도 자동 연결됩니다.</p></div></div>
    <div class="cpx" id="cpx"><div class="hd"><b>메인 스크린</b><span class="sp"></span><span class="clk" id="cpclk"></span></div>
     <div class="bd">
      <div class="now"><div class="t" id="pvcur">-</div><div class="s" id="pvsub"></div><div class="bar" id="pvbar"><i></i></div></div>
@@ -636,7 +650,7 @@ SCHED.onSrc(drawSrc);
  let ST=null,lastLs='';const nm=x=>x.title.replace(/&amp;/g,'&').replace(/<br>/g,' ').replace(x.no+' ','');
  const upd=st=>{if(!st)return;ST=st;const L=st.slides||[],cs=L.find(x=>x.no===st.cur);
   $$('pvcur').textContent=cs?cs.no+'  '+nm(cs):(st.cur||'-');
-  $$('pvsub').textContent=(st.msg?'상황 메시지 · → 누르면 원래 순서로 · ':'')+(st.pos?'발표 '+st.pos+' · ':'')+(st.nx?'다음: '+st.nx:(st.nx===''?'마지막 화면':''));
+  $$('pvsub').textContent=(st.msg?'상황 메시지 · → 누르면 원래 순서로 · ':'')+(st.pos?'발표 '+st.pos+' · ':'')+(st.pdk!=null&&st.pdkn?'발표자료 '+(st.pdk+1)+' / '+st.pdkn+' · ':'')+(st.nx?'다음: '+st.nx:(st.nx===''?'마지막 화면':''));
   const tg=(id,on)=>{const b=$$(id);if(on==null){b.disabled=true;return;}b.disabled=false;b.classList.toggle('on',!!on);};
   tg('tgauto',st.auto==null?null:st.auto);tg('tgbgm',st.bgm==null?null:st.bgm);tg('tgsfx',st.sfx==null?null:st.sfx);tg('tgblk',!!st.black);
   $$('cpspd').querySelectorAll('button').forEach(b=>b.classList.toggle('on',+b.dataset.v===+(st.spd||1)));
@@ -644,6 +658,15 @@ SCHED.onSrc(drawSrc);
   const key=L.map(x=>x.no+(x.no===st.cur)).join('|');if(key!==lastLs){lastLs=key;
    $$('cpls').innerHTML=L.map(x=>{const d=x.auto?x.auto+'초':x.vid?'영상 '+x.vid+'초':'';return '<div data-go="'+x.no+'" class="'+(x.no===st.cur?'cur ':'')+(x.msg?'msg':'')+'">'+(d?'<span class="du">'+d+'</span>':'')+'<span class="no">'+x.no+'</span>'+nm(x).replace('[상황] ','')+'</div>';}).join('');
    const c=$$('cpls').querySelector('.cur');if(c){const p=$$('cpls');p.scrollTop=c.offsetTop-p.offsetTop-p.clientHeight/2+c.offsetHeight/2;}}};
+ const faceUpd=st=>{const f=st&&st.face,el=$$('facest'),sel=$$('facedev');if(!f){el.textContent='메인 스크린 상태를 기다리는 중…';return;}
+  el.className='fst'+(f.on?' on':f.err?' err':'');el.textContent=f.on?'● 연결됨 — '+(f.label||'영상 장치')+(f.res?' · '+f.res:''):f.err?'연결 안 됨 — '+f.err+(f.err==='NotAllowedError'?' (송출 PC 메인 화면에서 카메라 권한 허용 필요)':''):'연결 안 됨 — 연사 사진 표시 중';
+  const key=(f.devs||[]).map(d=>d.id+d.label).join('|');if(sel._k!==key){const cur=sel.value;sel._k=key;sel.innerHTML='<option value="">— 영상 장치 선택 (캡처보드 · 카메라) —</option>'+(f.devs||[]).map(d=>'<option value="'+d.id+'">'+d.label.replace(/</g,'&lt;')+'</option>').join('');sel.value=cur;}
+  if(f.on&&f.id&&document.activeElement!==sel)sel.value=f.id;
+  document.querySelectorAll('#facebox .ff').forEach(b=>b.classList.toggle('on',b.dataset.fit===f.fit));};
+ SCHED.onState(faceUpd);faceUpd(SCHED.getState());
+ $$('faceon').onclick=()=>{const v=$$('facedev').value;if(!v){$$('facedev').focus();return;}SCHED.cmd({face:v});};
+ $$('faceoff').onclick=()=>SCHED.cmd({face:''});$$('facels').onclick=()=>SCHED.cmd({facelist:1});$$('faceask').onclick=()=>SCHED.cmd({facelist:'ask'});
+ document.querySelectorAll('#facebox .ff').forEach(b=>b.onclick=()=>SCHED.cmd({facefit:b.dataset.fit}));
  setInterval(()=>{const b=$$('pvbar');if(!ST||!ST.alen){b.style.visibility='hidden';}else{b.style.visibility='visible';b.firstChild.style.width=Math.min(100,Math.max(0,(Date.now()-ST.at0)/ST.alen*100))+'%';}
   const n=new Date(Date.now()+32400e3);$$('cpclk').textContent=[n.getUTCHours(),n.getUTCMinutes(),n.getUTCSeconds()].map(v=>String(v).padStart(2,'0')).join(':');},300);
  [.5,.75,1,1.25,1.5,2].forEach(v=>{const b=document.createElement('button');b.textContent=v+'×';b.dataset.v=v;b.onclick=()=>{SCHED.cmd({speed:v});localStorage.setItem('scr-main-spd',v);};$$('cpspd').appendChild(b);});

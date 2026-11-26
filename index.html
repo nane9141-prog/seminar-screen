@@ -958,12 +958,12 @@ addEventListener('message',e=>{const d=e.data||{};if(!d.s4)return;const f=KN.fra
 var MC={st:null,q:null,
  pub(o){if(o)this.st=o;if(!this.st||window.VIEW_MODE)return;const bk=document.getElementById('black');const s={...this.st,...MC.panel(),pos:(typeof KN!=='undefined'&&KN.pos)||'',q:this.q,black:!!(bk&&bk.classList.contains('on')),sch:(()=>{try{return SCHED.load().items.map(x=>[x.id,x.start,x.end]);}catch(e){return null;}})(),t:Date.now()};SCHED.pub(s);
   try{const sc=SCHED.load();fetch('https://zrhtqpzgubaqzsdaxhvt.supabase.co/realtime/v1/api/broadcast',{method:'POST',headers:{apikey:'sb_publishable_JwET6KLGmdYBkOIIttgOOQ_HEpCKLar','Content-Type':'application/json'},
-   body:JSON.stringify({messages:[{topic:'seminar-mc',event:'state',payload:{cur:s.cur,pos:s.pos,q:s.q,nx:s.nx,msg:s.msg,at0:s.at0,alen:s.alen,auto:s.auto,bgm:s.bgm,sfx:s.sfx,spd:s.spd,ex:s.ex,snd:s.snd,black:s.black,sch:sc.items.map(x=>[x.id,x.start,x.end]),t:Date.now()}}]})}).catch(()=>{});}catch(e){}}};
+   body:JSON.stringify({messages:[{topic:'seminar-mc',event:'state',payload:{cur:s.cur,pos:s.pos,q:s.q,nx:s.nx,msg:s.msg,at0:s.at0,alen:s.alen,auto:s.auto,bgm:s.bgm,sfx:s.sfx,pdk:s.pdk,pdkn:s.pdkn,spd:s.spd,ex:s.ex,snd:s.snd,black:s.black,sch:sc.items.map(x=>[x.id,x.start,x.end]),t:Date.now()}}]})}).catch(()=>{});}catch(e){}}};
 /* 11/26 운영 입력 「화면 전환」 탭에 메인 P 패널 정보 보내기: 다음 화면 · 자동 넘김 진행 · 대기 자동순환 · 배경음악 · 효과음 · 배속 · 진행 일정 */
 MC.panel=function(){try{const s=slides[idx];let nx=null;if(s){const j=nextMain(isMsg(s)?home:idx,1);nx=j!==idx?slides[j]:null;}
   let ex='';try{const n=SCHED.next(SC),c=SCHED.current(SC);ex='진행 '+(c?(c.tag||c.label):'—');if(n){const d=n.start-n.ps;ex+=' · 다음 '+(n.tag||n.label)+' '+SCHED.fmt(n.start)+(d?' ('+(d>0?'+':'')+d+'분)':'');}ex=[ex].concat(SCHED.warnings(SC).map(w=>'⚠ '+w)).join('\n');}catch(e){}
   return {nx:nx?nx.dataset.no+' '+nx.dataset.title.replace(/&amp;/g,'&').replace(/<br>/g,' ').replace(nx.dataset.no+' ',''):'',msg:isMsg(s)?1:0,
-   at0:autoLen?Date.now()-(performance.now()-autoT0):0,alen:autoLen||0,auto:auto?1:0,bgm:(typeof BGM!=='undefined'&&BGM.muted)?0:1,sfx:(typeof SFX!=='undefined'&&SFX.off)?0:1,spd:SPD,ex,snd:(typeof AUD!=='undefined'&&AUD.blk)?0:1};}catch(e){return {};}};
+   at0:autoLen?Date.now()-(performance.now()-autoT0):0,alen:autoLen||0,auto:auto?1:0,bgm:(typeof BGM!=='undefined'&&BGM.muted)?0:1,sfx:(typeof SFX!=='undefined'&&SFX.off)?0:1,spd:SPD,ex,...(()=>{const dk=s&&s.querySelector('.pdk');return dk?{pdk:+dk.dataset.i,pdkn:dk.children.length}:{pdk:null};})(),face:(typeof FACE!=='undefined'?FACE.st():null),snd:(typeof AUD!=='undefined'&&AUD.blk)?0:1};}catch(e){return {};}};
 setInterval(()=>MC.pub(),4000);
 const byNo=no=>slides.findIndex(s=>s.dataset.no.toUpperCase()===String(no).toUpperCase());
 /* 11/26 소리 막힘 알림: 크롬은 그 화면을 한 번도 클릭 · 키 입력하지 않으면 소리를 막음(운영 입력으로만 넘기면 무음).
@@ -1015,7 +1015,7 @@ var SFX={vol:.7,a:{},T:[],off:localStorage.getItem('scr-sfx-off')==='1',
  toggle(v){this.off=v==null?!this.off:!!v;localStorage.setItem('scr-sfx-off',this.off?'1':'0');if(this.off)this.clear();toast('효과음 '+(this.off?'끔':'켬'));}};
 window.SFX=SFX;
 /* M7-3 앞단계 카피 애니메이션: a 타이핑 → b 단어 등장 → c 줄 쌓기 → m 투자사 11곳 로고(n 정지) → j 가운데로 합쳐짐 → d Proxymity 로고에서 멈춤. → 누르면 소개 장표(i) */
-function PDK(dk,i){const im=dk.children,n=im.length;i=Math.max(0,Math.min(n-1,i));dk.dataset.i=i;[...im].forEach((e,k)=>e.classList.toggle('on',k===i));const c=dk.parentNode.querySelector('.pdk-n');if(c){c.textContent=(i+1)+' / '+n;c.classList.add('show');clearTimeout(c._t);c._t=setTimeout(()=>c.classList.remove('show'),1500);}}
+function PDK(dk,i){const im=dk.children,n=im.length;i=Math.max(0,Math.min(n-1,i));dk.dataset.i=i;[...im].forEach((e,k)=>e.classList.toggle('on',k===i));const c=dk.parentNode.querySelector('.pdk-n');if(c){c.textContent=(i+1)+' / '+n;c.classList.add('show');clearTimeout(c._t);c._t=setTimeout(()=>c.classList.remove('show'),1500);}if(!window.VIEW_MODE&&typeof MC!=='undefined'&&slides[idx]&&slides[idx].contains(dk))MC.pub();}
 function PDKin(prev,s){const dk=s&&s.querySelector('.pdk');if(!dk)return;const back=prev&&slides.indexOf(prev)>slides.indexOf(s);PDK(dk,back?dk.children.length-1:0);}
 function PXA(s,on){if(!s||!s.dataset.pa)return;(s._tp||[]).forEach(clearTimeout);clearInterval(s._ip);s._tp=[];if(!on){s.dataset.pp='';return;}
   const at=(ms,f)=>s._tp.push(setTimeout(f,ms)),t1=s.querySelector('.pa-t1'),t2=s.querySelector('.pa-t2'),L1='Investor communications',L2='for a connected world';
@@ -1071,8 +1071,29 @@ async function zoomIn(m,sel){const sl=slides[idx];const stop=b=>{if(b._s){b._s.g
   if(m==='x'){sl.querySelectorAll('.zm-c').forEach(stop);toast('화면 입력 해제');return;}
   const box=sl.querySelector(sel||'.zm-c'),v=box&&box.querySelector('video');if(!v)return;stop(box);
   try{const S=m==='v'?await navigator.mediaDevices.getDisplayMedia({video:{frameRate:30},audio:false}):await navigator.mediaDevices.getUserMedia({video:{width:{ideal:1920},height:{ideal:1080},frameRate:{ideal:30}},audio:false});
-    box._s=S;v.srcObject=S;await v.play();box.classList.add('on');S.getVideoTracks()[0].addEventListener('ended',()=>{box.classList.remove('on');box._s=null;});toast((sel==='.pip-f'?'연사 화면 ':'')+(m==='v'?'화면 캡처 연결':'캡처보드 연결'));}
+    box._s=S;v.srcObject=S;await v.play();box.classList.add('on');S.getVideoTracks()[0].addEventListener('ended',()=>{box.classList.remove('on');box._s=null;});toast((sel==='.pip-f'?'연사 화면 ':'')+(m==='v'?'화면 캡처 연결':'캡처보드 연결'));if(sel==='.pip-f'&&typeof MC!=='undefined')MC.pub();}
   catch(err){toast('입력 연결 실패: '+(err.name||err));}}
+/* 11/26 M7-4 오른쪽 연사 얼굴 창을 운영 입력에서 미리 연결: 캡처보드 · 카메라 장치를 골라 연결(화면이 M7-4가 아니어도 미리 붙여 둠), 채우기/전체 보기, 해제.
+   마지막에 고른 장치는 저장해 두고 메인을 다시 열면 자동으로 다시 연결. 화면 캡처(Shift+V)는 크롬 정책상 송출 PC에서 직접 */
+var FACE={devs:[],err:'',fit:localStorage.getItem('scr-face-fit')||'cover',
+ box(){return document.querySelector('#m7_4 .pip-f');},
+ async list(ask){if(window.VIEW_MODE||!navigator.mediaDevices)return;try{
+   if(ask){const t=await navigator.mediaDevices.getUserMedia({video:true,audio:false});t.getTracks().forEach(x=>x.stop());}
+   const d=await navigator.mediaDevices.enumerateDevices();this.devs=d.filter(x=>x.kind==='videoinput').map((x,i)=>({id:x.deviceId,label:x.label||('영상 장치 '+(i+1)+' (이름은 권한 허용 뒤 표시)')}));this.err='';}catch(e){this.err=e.name||String(e);}MC.pub();},
+ stop(){const b=this.box();if(!b)return;if(b._s){b._s.getTracks().forEach(t=>t.stop());b._s=null;}const v=b.querySelector('video');if(v)v.srcObject=null;b.classList.remove('on');},
+ async set(id){if(window.VIEW_MODE)return;const b=this.box();if(!b)return;this.stop();
+  if(!id){localStorage.removeItem('scr-face-dev');this.err='';MC.pub();return;}
+  try{const S=await navigator.mediaDevices.getUserMedia({video:{deviceId:{exact:id},width:{ideal:1920},height:{ideal:1080},frameRate:{ideal:30}},audio:false});
+   const v=b.querySelector('video');b._s=S;v.srcObject=S;v.style.objectFit=this.fit;await v.play().catch(()=>{});b.classList.add('on');localStorage.setItem('scr-face-dev',id);this.err='';
+   S.getVideoTracks()[0].addEventListener('ended',()=>{b.classList.remove('on');b._s=null;this.err='장치 연결이 끊김';MC.pub();});
+   if(!this.devs.length||!this.devs[0].label||/권한/.test(this.devs[0].label))await this.list();}
+  catch(e){this.err=e.name||String(e);}MC.pub();},
+ setFit(f){this.fit=f==='contain'?'contain':'cover';localStorage.setItem('scr-face-fit',this.fit);const b=this.box(),v=b&&b.querySelector('video');if(v)v.style.objectFit=this.fit;MC.pub();},
+ st(){const b=this.box(),on=!!(b&&b.classList.contains('on')&&b._s),tr=on&&b._s.getVideoTracks()[0],ss=tr&&tr.getSettings?tr.getSettings():{};
+  return {on:on?1:0,label:tr?tr.label:'',id:tr&&ss.deviceId||'',res:ss.width?ss.width+'×'+ss.height:'',fit:this.fit,err:this.err,devs:this.devs};}};
+window.FACE=FACE;
+if(!window.VIEW_MODE&&navigator.mediaDevices){navigator.mediaDevices.addEventListener&&navigator.mediaDevices.addEventListener('devicechange',()=>FACE.list());
+ setTimeout(async()=>{await FACE.list();const id=localStorage.getItem('scr-face-dev');if(id&&FACE.devs.some(d=>d.id===id))FACE.set(id);},1500);}
 function fillMeasure(){document.querySelectorAll('.slide[data-fill] h1[data-words]').forEach(h=>{const W=[...h.querySelectorAll('.w')];if(!W.length)return;
   const L=Math.min(...W.map(w=>w.offsetLeft)),Rr=Math.max(...W.map(w=>w.offsetLeft+w.offsetWidth));h.style.setProperty('--tw',(Rr-L)+'px');W.forEach(w=>w.style.setProperty('--wl',(w.offsetLeft-L)+'px'));});}
 (document.fonts?document.fonts.ready:Promise.resolve()).then(fillMeasure);addEventListener('resize',fillMeasure);
@@ -1131,7 +1152,7 @@ function renderQ(){const q=QSRC==='online'?OQ:QA.list.find(x=>x.id===QA.cur),lab
   const s=slides[idx];if(s&&s.dataset.qa){tx.parentNode.animate([{opacity:0,transform:'translateY(30px)',filter:'blur(12px)'},{opacity:1,transform:'none',filter:'none'}],{duration:600,easing:'cubic-bezier(.2,.7,.2,1)'});}}
 function fitQ(){const tx=document.getElementById('q-text'),box=tx.parentNode;let f=132;tx.style.fontSize=f+'px';while(f>56&&tx.scrollHeight>box.clientHeight){f-=4;tx.style.fontSize=f+'px';}}
 function qStep(d){const L=QA.list;if(!L.length)return;let i=L.findIndex(x=>x.id===QA.cur);i=Math.max(0,Math.min(L.length-1,i<0?0:i+d));QA.cur=L[i].id;SCHED.saveQ(QA);renderQ();}
-SCHED.onCmd(c=>{if(!c||window.VIEW_MODE)return;{const ow=SCHED.getOwner&&SCHED.getOwner();if(ow&&ow.id&&c.dev!==ow.id)return;}if(c.go){const n=byNo(c.go);if(n>=0)go(n);}if(c.nav)step(c.nav);if(c.speed&&window.CtrlPanel)CtrlPanel.setSpeed(c.speed);if(c.sfx!=null){SFX.toggle(!c.sfx);MC.pub();}if(c.auto!=null&&!!c.auto!==auto&&idx>=0){auto=!!c.auto;const n=idx;idx=-1;slides[n].classList.remove('on');go(n);}if(c.bgm!=null&&(!c.bgm)!==BGM.muted){BGM.mute();MC.pub();}if(c.black!=null){document.getElementById('black').classList.toggle('on',!!c.black);MC.pub();}if(c.dsset){let o={};try{o=JSON.parse(localStorage.getItem('scr-ds')||'{}')||{};}catch(e){}Object.assign(o,c.dsset);try{localStorage.setItem('scr-ds',JSON.stringify(o));}catch(e){}dsPost(Object.assign({ds:'set'},c.dsset));}});
+SCHED.onCmd(c=>{if(!c||window.VIEW_MODE)return;{const ow=SCHED.getOwner&&SCHED.getOwner();if(ow&&ow.id&&c.dev!==ow.id)return;}if(c.go){const n=byNo(c.go);if(n>=0)go(n);}if(c.nav)step(c.nav);if(c.speed&&window.CtrlPanel)CtrlPanel.setSpeed(c.speed);if(c.sfx!=null){SFX.toggle(!c.sfx);MC.pub();}if(c.face!=null)FACE.set(c.face);if(c.facefit)FACE.setFit(c.facefit);if(c.facelist)FACE.list(c.facelist==='ask');if(c.auto!=null&&!!c.auto!==auto&&idx>=0){auto=!!c.auto;const n=idx;idx=-1;slides[n].classList.remove('on');go(n);}if(c.bgm!=null&&(!c.bgm)!==BGM.muted){BGM.mute();MC.pub();}if(c.black!=null){document.getElementById('black').classList.toggle('on',!!c.black);MC.pub();}if(c.dsset){let o={};try{o=JSON.parse(localStorage.getItem('scr-ds')||'{}')||{};}catch(e){}Object.assign(o,c.dsset);try{localStorage.setItem('scr-ds',JSON.stringify(o));}catch(e){}dsPost(Object.assign({ds:'set'},c.dsset));}});
 // ── HUD ──
 function hud(){const e=document.getElementById('hud');if(!e.classList.contains('on'))return;
   const nx=SCHED.next(SC),cu=SCHED.current(SC);let sch='<div class="sch">지금 '+SCHED.fmt(SCHED.nowMin())+(cu?' · 진행 중: '+(cu.tag||cu.label):'');
@@ -1207,6 +1228,7 @@ if(window.VIEW_MODE){(function(){auto=false;
  document.documentElement.classList.add('viewmode');
  const fol=st=>{if(!st||!st.cur)return;const n=byNo(st.cur);let moved=false;if(n>=0&&n!==idx){go(n);moved=true;}
   const bk=document.getElementById('black');if(bk)bk.classList.toggle('on',!!st.black);
+  if(st.pdk!=null){const dk=slides[idx]&&slides[idx].querySelector('.pdk');if(dk&&+dk.dataset.i!==st.pdk)PDK(dk,st.pdk);}
   if(st.pos){const f=KN.of(slides[idx]);if(f){const send=()=>KN.post(f,{s4:'goto',label:st.pos});if(moved||!f._r)setTimeout(send,1200);else send();}}};
  SCHED.onState(fol);setTimeout(()=>fol(SCHED.getState()),300);})();}
 window.SCR={go,initBG,byNo,boot,count:slides.length};
