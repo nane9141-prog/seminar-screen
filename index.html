@@ -547,6 +547,11 @@ body.idle{cursor:none}
 .s3-a::before{content:"";position:absolute;inset:0;background:radial-gradient(45% 55% at 50% 50%,rgba(255,255,255,.55),rgba(0,173,169,.25) 40%,transparent 70%);opacity:0;pointer-events:none}
 .slide[data-ph=a] .s3-a::before{animation:s3Fx .9s ease-out both}
 @keyframes s3Fx{0%{opacity:0;transform:scale(.6)}12%{opacity:1}100%{opacity:0;transform:scale(1.5)}}
+/* 11/26 M3-1 시작 장면 「전자주주총회 플랫폼 시연 설명회 / 지금 시작합니다.」 블러 인 — 단어별 등장 대신 줄 단위로 흐림에서 또렷하게 */
+.slide[data-ph=e] .s3-e .w{animation:none!important;opacity:1!important}
+.slide[data-ph=e] .s3-e .title-m{animation:s3Bl 1.3s cubic-bezier(.2,.7,.2,1) .15s both}
+.slide[data-ph=e] .s3-e .title-m b{display:inline-block;animation:s3Bl 1.3s cubic-bezier(.2,.7,.2,1) .55s both}
+@keyframes s3Bl{0%{opacity:0;filter:blur(36px);transform:scale(1.06)}100%{opacity:1;filter:blur(0);transform:none}}
 </style></head>
 <body>
 <div class="stage" id="scr" data-foot="full">
