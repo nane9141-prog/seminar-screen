@@ -1149,6 +1149,13 @@ html,body{overflow:hidden;max-width:100vw}
 html,body,body *{touch-action:none;-webkit-touch-callout:none;-webkit-user-select:none;user-select:none}
 /* 11/26 K15 1~3월 라인 · 박스를 다시 위로 — 라인이 「지금 시작」 배지 세로 가운데를 지나도록, 글자 위치 유지 */
 #K15 .col:not(.hl){margin-top:14px;padding-top:136px}
+/* 11/26 K18a 오른쪽 영상을 오른쪽 면 전체에 — 영상은 가로 꽉(2100px, 여백 · 둥근 모서리 없음), 위아래 남는 곳은 같은 영상을 흐리게 깔아 채움 */
+#K18a .rp{padding:0!important}
+#K18a .rp .card{position:absolute;inset:0;width:auto!important;height:auto!important;aspect-ratio:auto!important;border-radius:0;box-shadow:none;margin:0;max-width:none}
+#K18a .rp .card{transform:none!important;top:0!important;left:0!important}
+#K18a .rp .card video{position:absolute;left:0;top:0;width:100%;height:100%}
+#K18a .rp .card .bgv{object-fit:cover;filter:blur(60px) brightness(.55);transform:scale(1.15)}
+#K18a .rp .card .fgv{object-fit:contain}
 </style></head>
 <body>
 <div class="stage" id="stage">
@@ -1306,7 +1313,7 @@ html,body,body *{touch-action:none;-webkit-touch-callout:none;-webkit-user-selec
  <div class="ab lc"><img class="fu" style="--i:1;height:200px" src="assets/kism-white.svg" alt="KISM">
   <p class="tl fu" style="--i:2">더 나은 주주총회와<br>기업 · 주주의 관계를 위하여</p>
   <p class="ds fu" style="--i:3">주주총회의 제도 · 운영 · 기술을 연구하는<br>주주총회 전문 연구소</p></div>
- <div class="rp"><div class="card fu" style="--i:2;aspect-ratio:2520/960"><video src="assets/kism-intro.mp4" muted playsinline loop preload="auto"></video></div></div>
+ <div class="rp"><div class="card fu" style="--i:2;aspect-ratio:2520/960"><video class="bgv" src="assets/kism-intro.mp4" muted playsinline loop preload="auto" aria-hidden="true"></video><video class="fgv" src="assets/kism-intro.mp4" muted playsinline loop preload="auto"></video></div></div>
 </section>
 
 <section class="s brand sp2" id="K18b" data-t="KOSMOS 주주용" data-dim=".12" data-ox=".25">
