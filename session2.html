@@ -300,13 +300,13 @@ const up=m=>{if(EMB)parent.postMessage(m,'*');};
 function fit(){const s=Math.min(innerWidth/1920,innerHeight/1080);stage.style.transform=`translate(${(innerWidth-1920*s)/2}px,${(innerHeight-1080*s)/2}px) scale(${s})`;}
 addEventListener('resize',fit);fit();
 let step=0;const steps=s=>s.querySelectorAll('[data-b]').length?1:0;
-function apply(){slides[idx].querySelectorAll('[data-b]').forEach(e=>e.classList.toggle('on',+e.dataset.b<=step));}
+function apply(){slides[idx].querySelectorAll('[data-b]').forEach(e=>e.classList.toggle('on',+e.dataset.b<=step));if(typeof up==='function')up({s4:'pos',label:(idx+1)+'/'+slides.length+(steps(slides[idx])?' · 단계 '+step+'/'+steps(slides[idx]):'')});}
 function go(n,st=0){n=Math.max(0,Math.min(slides.length-1,n));if(idx>=0)slides[idx].classList.remove('cur');idx=n;slides[n].classList.add('cur');step=st;apply();
- document.getElementById('prog').style.width=(n/(slides.length-1)*100)+'%';if(!EMB)history.replaceState(null,'','#'+(n+1));up({s4:'pos',label:(n+1)+'/'+slides.length});}
+ document.getElementById('prog').style.width=(n/(slides.length-1)*100)+'%';if(!EMB)history.replaceState(null,'','#'+(n+1));}
 function next(){if(step<steps(slides[idx])){step++;apply();}else if(idx<slides.length-1)go(idx+1);else up({s4:'edge',d:1});}
 function prev(){if(step>0){step--;apply();}else if(idx>0)go(idx-1,steps(slides[idx-1]));else up({s4:'edge',d:-1});}
 addEventListener('message',e=>{const d=e.data||{};if(!EMB||e.source!==parent||!d.s4)return;
- if(d.s4==='nav')d.d>0?next():prev();else if(d.s4==='enter'){const n=d.at==='last'?slides.length-1:0;go(n,d.at==='last'?steps(slides[n]):0);}});
+ if(d.s4==='goto'){const L=String(d.label||''),m=L.match(/^(\d+)\//),k=L.match(/단계 (\d+)\//);if(m){const n=+m[1]-1,st=k?+k[1]:0;if(slides[n]&&(n!==idx||st!==step))go(n,st);}return;}if(d.s4==='nav')d.d>0?next():prev();else if(d.s4==='enter'){const n=d.at==='last'?slides.length-1:0;go(n,d.at==='last'?steps(slides[n]):0);}});
 let buf='',bt=0;const nb=document.getElementById('num');
 addEventListener('keydown',e=>{const k=e.key;
  if(/^[0-9]$/.test(k)){buf+=k;nb.textContent=buf;nb.style.display='block';clearTimeout(bt);bt=setTimeout(()=>{buf='';nb.style.display='none';},2500);return;}

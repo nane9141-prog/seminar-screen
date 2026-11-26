@@ -133,7 +133,7 @@ function go(n,st=0){n=Math.max(0,Math.min(slides.length-1,n));if(idx>=0)slides[i
 function next(){if(step<steps(slides[idx])){step++;apply();}else if(idx<slides.length-1)go(idx+1);else up({s4:'edge',d:1});}
 function prev(){if(step>0){step--;apply();}else if(idx>0)go(idx-1,steps(slides[idx-1]));else up({s4:'edge',d:-1});}
 addEventListener('message',e=>{const d=e.data||{};if(!EMB||e.source!==parent||!d.s4)return;
- if(d.s4==='nav')d.d>0?next():prev();else if(d.s4==='enter'){const n=d.at==='last'?slides.length-1:0;go(n,d.at==='last'?steps(slides[n]):0);}});
+ if(d.s4==='goto'){const m=String(d.label||'').match(/(\d+)\//);if(m){const n=+m[1]-1;if(n!==idx&&slides[n])go(n,0);}return;}if(d.s4==='nav')d.d>0?next():prev();else if(d.s4==='enter'){const n=d.at==='last'?slides.length-1:0;go(n,d.at==='last'?steps(slides[n]):0);}});
 let buf='',bt=0;const nb=document.getElementById('num');
 addEventListener('keydown',e=>{const k=e.key;
  if(/^[0-9]$/.test(k)){buf+=k;nb.textContent=buf;nb.style.display='block';clearTimeout(bt);bt=setTimeout(()=>{buf='';nb.style.display='none';},2500);return;}

@@ -49,7 +49,8 @@ addEventListener('message',e=>{const d=e.data||{};
  if(!EMB||e.source!==parent||!d.s4)return;
  if(d.s4==='enter')show(d.at==='last'?1:0,d.at||'first');
  else if(d.s4==='leave'){if(cur>=0)post(cur,{s4:'leave'});}
- else if(d.s4==='nav')nav(d.d);});
+ else if(d.s4==='nav')nav(d.d);
+ else if(d.s4==='goto'){const L=String(d.label||'');if(L.startsWith('발표')){if(cur!==1)show(1,'first');setTimeout(()=>post(1,{s4:'goto',label:L.replace(/^발표\s*/,'')}),cur===1?0:600);}else if(cur!==0)show(0,'first');}});
 addEventListener('keydown',e=>{if(EMB)return;const k=e.key;
  if(['ArrowRight',' ','PageDown','ArrowDown'].includes(k)){e.preventDefault();nav(1);}
  else if(['ArrowLeft','PageUp','ArrowUp','Backspace'].includes(k)){e.preventDefault();nav(-1);}

@@ -803,6 +803,7 @@ const stage=document.getElementById('scr'),slides=[...document.querySelectorAll(
 slides.forEach(s=>{if(s.dataset.glow){const d=document.createElement('div');d.className='bloom';d.innerHTML='<iframe class="fs" data-src="assets/blue-bloom.html" tabindex="-1" title="" aria-hidden="true"></iframe>';s.prepend(d);}});
 const qp=new URLSearchParams(location.search);
 if(qp.get('lite'))stage.classList.add('lite');
+const VIEW=qp.has('view');window.VIEW_MODE=VIEW;
 /* ---- 연사 초상(로비 lobby/index.html 와 같은 코드): 원본 사진이 나타나고, 인물 중심을 13개 점이 공전(점끼리 가까우면 선으로 이어짐). 사진 · 점 · 선 · 글씨가 함께 나타나고 함께 사라짐 ---- */
 const BOX={x:940,y:50,w:732,h:980};  // 사진 자리(이전 x 1080 → 140px 왼쪽)
 const sm=(a,b,x)=>{x=(x-a)/(b-a);x=x<0?0:x>1?1:x;return x*x*(3-2*x);};
@@ -893,7 +894,7 @@ addEventListener('message',e=>{const d=e.data||{};if(!d.s4)return;const f=KN.fra
   else if(d.s4==='pos'){if(cur){KN.pos=d.label;if(window.CtrlPanel)CtrlPanel.draw();MC.pub();}}});
 /* 사회자 화면(mc.html) 연동: 같은 PC는 SCHED(BroadcastChannel), 다른 기기는 Supabase Realtime 방송(온라인일 때). 8초마다 재전송 */
 var MC={st:null,q:null,
- pub(o){if(o)this.st=o;if(!this.st)return;const bk=document.getElementById('black');const s={...this.st,pos:(typeof KN!=='undefined'&&KN.pos)||'',q:this.q,black:!!(bk&&bk.classList.contains('on')),sch:(()=>{try{return SCHED.load().items.map(x=>[x.id,x.start,x.end]);}catch(e){return null;}})(),t:Date.now()};SCHED.pub(s);
+ pub(o){if(o)this.st=o;if(!this.st||window.VIEW_MODE)return;const bk=document.getElementById('black');const s={...this.st,pos:(typeof KN!=='undefined'&&KN.pos)||'',q:this.q,black:!!(bk&&bk.classList.contains('on')),sch:(()=>{try{return SCHED.load().items.map(x=>[x.id,x.start,x.end]);}catch(e){return null;}})(),t:Date.now()};SCHED.pub(s);
   try{const sc=SCHED.load();fetch('https://zrhtqpzgubaqzsdaxhvt.supabase.co/realtime/v1/api/broadcast',{method:'POST',headers:{apikey:'sb_publishable_JwET6KLGmdYBkOIIttgOOQ_HEpCKLar','Content-Type':'application/json'},
    body:JSON.stringify({messages:[{topic:'seminar-mc',event:'state',payload:{cur:s.cur,pos:s.pos,q:s.q,sch:sc.items.map(x=>[x.id,x.start,x.end]),t:Date.now()}}]})}).catch(()=>{});}catch(e){}}};
 setInterval(()=>MC.pub(),4000);
@@ -1037,7 +1038,7 @@ function renderQ(){const q=QSRC==='online'?OQ:QA.list.find(x=>x.id===QA.cur),lab
   const s=slides[idx];if(s&&s.dataset.qa){tx.parentNode.animate([{opacity:0,transform:'translateY(30px)',filter:'blur(12px)'},{opacity:1,transform:'none',filter:'none'}],{duration:600,easing:'cubic-bezier(.2,.7,.2,1)'});}}
 function fitQ(){const tx=document.getElementById('q-text'),box=tx.parentNode;let f=132;tx.style.fontSize=f+'px';while(f>56&&tx.scrollHeight>box.clientHeight){f-=4;tx.style.fontSize=f+'px';}}
 function qStep(d){const L=QA.list;if(!L.length)return;let i=L.findIndex(x=>x.id===QA.cur);i=Math.max(0,Math.min(L.length-1,i<0?0:i+d));QA.cur=L[i].id;SCHED.saveQ(QA);renderQ();}
-SCHED.onCmd(c=>{if(!c)return;if(c.go){const n=byNo(c.go);if(n>=0)go(n);}if(c.nav)step(c.nav);if(c.speed&&window.CtrlPanel)CtrlPanel.setSpeed(c.speed);if(c.black!=null){document.getElementById('black').classList.toggle('on',!!c.black);MC.pub();}if(c.dsset){let o={};try{o=JSON.parse(localStorage.getItem('scr-ds')||'{}')||{};}catch(e){}Object.assign(o,c.dsset);try{localStorage.setItem('scr-ds',JSON.stringify(o));}catch(e){}dsPost(Object.assign({ds:'set'},c.dsset));}});
+SCHED.onCmd(c=>{if(!c||window.VIEW_MODE)return;if(c.go){const n=byNo(c.go);if(n>=0)go(n);}if(c.nav)step(c.nav);if(c.speed&&window.CtrlPanel)CtrlPanel.setSpeed(c.speed);if(c.black!=null){document.getElementById('black').classList.toggle('on',!!c.black);MC.pub();}if(c.dsset){let o={};try{o=JSON.parse(localStorage.getItem('scr-ds')||'{}')||{};}catch(e){}Object.assign(o,c.dsset);try{localStorage.setItem('scr-ds',JSON.stringify(o));}catch(e){}dsPost(Object.assign({ds:'set'},c.dsset));}});
 // ── HUD ──
 function hud(){const e=document.getElementById('hud');if(!e.classList.contains('on'))return;
   const nx=SCHED.next(SC),cu=SCHED.current(SC);let sch='<div class="sch">지금 '+SCHED.fmt(SCHED.nowMin())+(cu?' · 진행 중: '+(cu.tag||cu.label):'');
@@ -1106,10 +1107,18 @@ CtrlPanel.mount({title:'메인 스크린',key:'scr-main',placeholder:'예: 4-5, 
     SCHED.warnings(SC).forEach(w=>h+='<br><span style="color:#FF8A7A">⚠ '+w+'</span>');return h+'<br>오프라인: '+(window.OFFLINE_STATE||'-');},
   foot:'P 패널 열기/닫기 · → ← 이동(상황 메시지 건너뜀) · 번호+Enter 바로가기 · F 전체화면 · B 블랙아웃 · A 자동순환 · 휴식 화면 +/− 재개 1분 · 배속은 화면 전환 · 글자 애니메이션 · 배경 · 대기 자동 넘김에 적용'});
 document.addEventListener('offline-state',()=>CtrlPanel.draw());
+/* 11/26 미리보기 모드(?view=1) — control.html 「화면 전환」 작은 화면용. 명령은 받지 않고 · 상태를 보내지 않으며 · 소리 없이, 메인이 방송하는 현재 화면 · 발표 덱 위치 · 블랙아웃을 따라감 */
+if(window.VIEW_MODE){(function(){auto=false;
+ Element.prototype.scrollIntoView=function(){};const mp=HTMLMediaElement.prototype.play;HTMLMediaElement.prototype.play=function(){this.muted=true;return mp.call(this);};
+ document.documentElement.classList.add('viewmode');
+ const fol=st=>{if(!st||!st.cur)return;const n=byNo(st.cur);let moved=false;if(n>=0&&n!==idx){go(n);moved=true;}
+  const bk=document.getElementById('black');if(bk)bk.classList.toggle('on',!!st.black);
+  if(st.pos){const f=KN.of(slides[idx]);if(f){const send=()=>KN.post(f,{s4:'goto',label:st.pos});if(moved||!f._r)setTimeout(send,1200);else send();}}};
+ SCHED.onState(fol);setTimeout(()=>fol(SCHED.getState()),300);})();}
 window.SCR={go,initBG,byNo,boot,count:slides.length};
 })();
 </script>
-<script>SCR.initBG();{const h=decodeURIComponent(location.hash.slice(1)),n=SCR.byNo(h);if(h&&n>=0)SCR.go(n);else SCR.boot();}</script>
+<script>SCR.initBG();{const h=decodeURIComponent(location.hash.slice(1)),n=SCR.byNo(h);if(h&&n>=0)SCR.go(n);else if(!window.VIEW_MODE)SCR.boot();}</script>
 <script>/* 온라인 주소로 열면 오프라인 캐시 등록 (sw.js) */
 (function(){const st=t=>{window.OFFLINE_STATE=t;document.dispatchEvent(new CustomEvent('offline-state',{detail:t}));};
 if(!location.protocol.startsWith('http')){st('파일 실행 (오프라인)');return;}

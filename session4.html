@@ -2305,7 +2305,8 @@ function pos(){const b=slides[idx];up({s4:'pos',label:b.id+' ('+(idx+1)+'/'+slid
 addEventListener('message',e=>{const d=e.data||{};if(!EMB||e.source!==parent||!d.s4)return;
  if(d.s4==='nav'){d.d>0?next():prev();}
  else if(d.s4==='enter'){const n=d.at==='last'?slides.length-1:0;slides.forEach(x=>x.classList.remove('cur','in','out','zout'));idx=n===0?1:0;HARD=true;go(n,d.at==='last'?steps(slides[n]):0);HARD=false;}
- else if(d.s4==='leave'){slides[idx].querySelectorAll('video').forEach(v=>v.pause());}});
+ else if(d.s4==='leave'){slides[idx].querySelectorAll('video').forEach(v=>v.pause());}
+ else if(d.s4==='goto'){const m=String(d.label||'').match(/^(\S+)/),k=String(d.label||'').match(/단계 (\d+)\//);if(!m)return;const n=slides.findIndex(x=>x.id===m[1]);const st=k?+k[1]:0;if(n>=0&&(n!==idx||st!==step))go(n,st);}});
 /* 생중계 필름스트립: 끊김 없이 돌도록 한 벌 더 */
 (()=>{const sp=document.getElementById('strip');sp.innerHTML+=sp.innerHTML;})();
 /* 목록 */
