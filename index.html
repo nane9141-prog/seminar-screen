@@ -530,6 +530,8 @@ body.idle{cursor:none}
 .pipl .zm-c.pip-f{box-shadow:0 0 0 3px rgba(255,255,255,.85),0 40px 120px rgba(0,0,0,.5)}.pipl .pip-sp{top:970px;height:auto;justify-content:flex-start}  /* M7-4 얼굴 창 흰 테두리, 연사 정보는 얼굴 창 바로 아래 */
 /* 11/25 M10-2 레이아웃 점검: 왼쪽 Q · 질문 구분 칩을 질문 본문 영역의 세로 가운데에 맞춤(아래 정보 줄 높이만큼 위로) */
 .qa2-l{justify-content:center;padding-top:0;padding-bottom:170px}.qa2-lab{margin-top:70px}
+/* 11/26 M10-13: Q 옆 세로선 · 질문 글을 왼쪽으로(왼쪽 칸 560 → 500 · 간격 120 → 40 · 선 뒤 여백 100 → 70, 선이 약 140px · 글이 약 170px 왼쪽으로), 아래 질문 세션 · 답변 연사 위 가로선 삭제(글 왼쪽 끝을 질문 글에 맞춤) */
+.qa2{column-gap:40px;grid-template-columns:500px minmax(0,1fr)}.qbox{padding-left:70px}.qa2-ft{border-top:0;margin-left:74px}
 /* 11/26 카운트다운 숫자 전환 효과 */
 .s3-dots.gh{animation:s3Gh .8s cubic-bezier(.16,.84,.3,1) forwards;pointer-events:none}
 @keyframes s3Gh{0%{transform:translate(-50%,-50%) scale(1);opacity:1;filter:drop-shadow(0 0 22px rgba(0,129,204,.55)) blur(0)}35%{opacity:.85}100%{transform:translate(-50%,-50%) scale(3.4);opacity:0;filter:drop-shadow(0 0 60px rgba(0,173,169,.95)) blur(16px)}}
