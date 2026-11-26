@@ -1506,6 +1506,17 @@ html,body,body *{touch-action:none;-webkit-touch-callout:none;-webkit-user-selec
 #K24b .k24pass{left:2260px}
 #K24b .k24bv .sc.vs{position:absolute;left:0;top:0;width:calc(100% / 1.2);height:calc(100% / 1.2);transform:scale(1.2)!important;transform-origin:0 0}
 #K24b .hist2 .hr{align-self:stretch;width:auto;text-align:left}#K24b .hist2 .hr span{flex:1;text-align:left}#K24b .hist2 .sum{align-self:stretch;text-align:left}
+/* 11/26 13:40 K28c: 전면 사진 배경 대신 다른 장과 같은 문법 — 위 제목, 둥근 사진 띠(K28a 사진 카드와 같은 반경), 아래 K28d와 같은 가로 타임라인(윗선 + 점, 시기 · 번호 · 제목 · 설명), 포인트 파랑 */
+#K28c .k28ph{position:absolute;left:300px;right:300px;top:390px;height:440px;border-radius:28px;background:url(assets/s4/rehearsal.webp) center 46%/cover}
+#K28c .k28ph::after{content:"";position:absolute;inset:0;border-radius:inherit;box-shadow:inset 0 0 0 2px rgba(255,255,255,.06)}
+#K28c .k28t{position:absolute;left:300px;right:300px;top:940px;margin:0;padding:0;list-style:none;display:grid;grid-template-columns:repeat(4,1fr)}
+#K28c .k28t li{position:relative;padding:56px 70px 0 0;border-top:4px solid var(--line)}
+#K28c .k28t li::before{content:"";position:absolute;left:0;top:-14px;width:24px;height:24px;border-radius:50%;background:#1a7cff}
+#K28c .k28t em{display:block;font:500 40px/1.2 "Pretendard Variable";font-style:normal;color:#5aa2ff;margin-bottom:26px;letter-spacing:-.01em}
+#K28c .k28t b{display:flex;align-items:baseline;gap:22px;font:700 66px/1.2 "KakaoBig";margin-bottom:24px;letter-spacing:-.02em}
+#K28c .k28t b i{font:300 66px/1 "Pretendard Variable";font-style:normal;color:#5aa2ff}
+#K28c .k28t p{position:relative;word-break:keep-all;margin:0 0 12px;padding-left:24px;font:400 38px/1.45 "KakaoSmall";color:var(--mut)}
+#K28c .k28t p::before{content:"";position:absolute;left:0;top:.68em;width:8px;height:8px;border-radius:50%;background:rgba(242,245,250,.35)}
 </style></head>
 <body>
 <div class="stage" id="stage">
@@ -1886,15 +1897,15 @@ html,body,body *{touch-action:none;-webkit-touch-callout:none;-webkit-user-selec
  <div class="cxw fu" style="--i:2"><div class="cxin"><video src="assets/s4/cx-test.mp4" poster="assets/s4/cx-test.webp" muted loop playsinline preload="auto"></video></div></div>
  <div class="k25m fu" style="--i:3"><i class="ind"></i><span class="on" data-m="a">테스트 주총 생성</span><span data-m="b">주주명부 등록</span><span data-m="c">실시간 운영</span></div>
 </section> 
-<section class="s" id="K28c" data-t="운영지원 3 · 사전점검 · 리허설 · 당일 현장지원" data-dim="0">
- <div class="k28bg"></div>
+<section class="s" id="K28c" data-t="운영지원 3 · 사전점검 · 리허설 · 당일 현장지원" data-dim=".1">
  <div class="top" style="top:150px"><h2 class="h hm fu" style="--i:1">사전점검 · 숙달프로그램 · 당일 현장지원</h2></div>
- <div class="k28g">
-  <div class="fu" style="--i:2"><b><i>1</i>소집지 점검</b><p>네트워크 · 음향 등 사전점검</p><em>소집지 확정 시 ('27년 1월~)</em></div>
-  <div class="fu" style="--i:3"><b><i>2</i>사전 모의전자주총</b><p>실제 주총과 동일한 진행 · 회사 운영기준에 따른 시스템 검증<br>담당자별 역할 확정 및 운영교육 · 실제 총회 환경에서 전 과정 리허설<br>장애대응훈련 및 발견 오류 사전 보완</p><em>명부 및 의안 확정 시 ('27년 2월~)</em></div>
-  <div class="fu" style="--i:4"><b><i>3</i>전날 리허설</b><p>장비설치 및 최종 리허설 · 트래픽 증설 등 대응</p><em>주총 전날 오후 (오전 불가)</em></div>
-  <div class="fu" style="--i:5"><b><i>4</i>당일 현장지원</b><p>전문인력 현장지원 · 시스템 운영 지원 및 커뮤니케이션</p><em>개최 2시간 전~</em></div>
- </div>
+ <div class="k28ph fu" style="--i:2"></div>
+ <ol class="k28t">
+  <li class="fu" style="--i:3"><em>소집지 확정 시 · '27년 1월~</em><b><i>1</i>소집지 점검</b><p>네트워크 · 음향 등 사전점검</p></li>
+  <li class="fu" style="--i:4"><em>명부 · 의안 확정 시 · '27년 2월~</em><b><i>2</i>사전 모의전자주총</b><p>실제 주총과 동일한 진행 ·<br>회사 운영기준에 따른 시스템 검증</p><p>담당자별 역할 확정 및 운영교육 ·<br>실제 총회 환경에서 전 과정 리허설</p><p>장애대응훈련 및 발견 오류 사전 보완</p></li>
+  <li class="fu" style="--i:5"><em>주총 전날 오후 · 오전 불가</em><b><i>3</i>전날 리허설</b><p>장비설치 및 최종 리허설 · 트래픽 증설 등 대응</p></li>
+  <li class="fu" style="--i:6"><em>개최 2시간 전~</em><b><i>4</i>당일 현장지원</b><p>전문인력 현장지원 · 시스템 운영 지원 및 커뮤니케이션</p></li>
+ </ol>
 </section> 
 <section class="s" id="K28d" data-t="운영지원 4 · 장애 감지 · 복구" data-dim=".1">
  <div class="top" style="top:150px"><h2 class="h hm fu" style="--i:1">장애 감지 · 복구 및 의사진행 판단 지원</h2></div>
