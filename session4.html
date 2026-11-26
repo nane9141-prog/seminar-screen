@@ -1929,6 +1929,12 @@ html.embed #sgb,html.embed #sg{display:none!important}  /* 11/26 메인 스크�
 /* K18b(11/26 22:14) 휴대폰 뒤에 KOSMOS 웹 전자주주총회장 화면(생중계 · AI 자막 · 의안 진행현황)을 흐리게 */
 #K18b .k18web{position:absolute;left:1960px;top:170px;width:1780px;height:1260px;border-radius:32px;background:#fff url(assets/s4/kosmos-web.webp) center top/100% auto no-repeat;opacity:0;filter:blur(1.5px);-webkit-mask-image:linear-gradient(180deg,#000 55%,transparent 100%);mask-image:linear-gradient(180deg,#000 55%,transparent 100%);transition:opacity 1.2s ease .3s}
 .s.cur#K18b .k18web{opacity:.2}
+
+/* K27(11/26 22:20) 표지 이미지 처리 · 레이아웃: 사진을 화면 전체로(가로 꽉, 사람 얼굴이 화면 가운데 아래), 위쪽 경계선 없이 검정으로 부드럽게 녹고, 채도 · 밝기를 살짝 낮춰 다른 장 톤에 맞춤. 제목 묶음은 위 가운데 */
+#K27 .photo{inset:0!important;top:0!important;bottom:0!important;background-size:100% auto!important;background-position:center 380px!important;filter:saturate(.82) brightness(.82) contrast(1.04);-webkit-mask-image:linear-gradient(180deg,transparent 0%,transparent 20%,rgba(0,0,0,.45) 33%,#000 50%);mask-image:linear-gradient(180deg,transparent 0%,transparent 20%,rgba(0,0,0,.45) 33%,#000 50%)}
+#K27.sec .shade{background:radial-gradient(120% 80% at 50% 110%,rgba(0,0,0,0) 40%,rgba(0,0,0,.55) 100%),linear-gradient(0deg,rgba(0,0,0,.55) 0%,rgba(0,0,0,0) 22%),linear-gradient(90deg,rgba(0,0,0,.5) 0%,rgba(0,0,0,0) 14%,rgba(0,0,0,0) 86%,rgba(0,0,0,.5) 100%)!important}
+#K27 .sec-c{padding-top:150px!important}
+#K27 .sec-s{margin-top:40px!important;color:rgba(242,245,250,.72)}
 </style></head>
 <body>
 <div class="stage" id="stage">
