@@ -1642,6 +1642,7 @@ body.grid #sg{display:flex}
 #sgb{position:fixed;right:22px;bottom:22px;z-index:65;width:46px;height:46px;border-radius:12px;border:0;background:rgba(30,34,42,.85);cursor:pointer;display:flex;align-items:center;justify-content:center;opacity:.0;transition:opacity .3s}
 #sgb svg{width:22px;height:22px;fill:#cfd5de}
 body:not(.idle) #sgb{opacity:.9}body.grid #sgb{opacity:0;pointer-events:none}
+html.embed #sgb,html.embed #sg{display:none!important}  /* 11/26 메인 스크린 안(M7-6)에서는 썸네일 보기 버튼 · 격자 숨김 */
 /* 11/26 19:25 간지 · 장 제목 한 줄 글씨는 모두 흰색(그라데이션 없음): 표지 2027 · IR큐더스, K15 「소집통지 · 리허설까지」, K21 「A to Z」 */
 .sec-h .g,.h .g,.h .ac,#K15 .h .ac,#K21 .k21t em{background:none!important;-webkit-background-clip:border-box!important;background-clip:border-box!important;color:#F2F5FA!important;-webkit-text-fill-color:#F2F5FA!important}
 /* 11/26 19:30 K02: 카드 영역 오른쪽 · 아래로 넓힘(1250~3980 · 170~1420). 중계 · 관리기관 크롭 다시(위쪽 부드러운 페더), 장애 대응 인물 오른쪽, 사전신청제 · 난이도 도식을 아래로(글과 간격), 전자출석 카드: 위 오른쪽 1장 · 아래 2장 나란히 */
@@ -2644,7 +2645,7 @@ document.getElementById('ov').addEventListener('click',e=>{const a=e.target.clos
  G.addEventListener('click',e=>{const a=e.target.closest('a');if(!a)return;S4GRID.close();go(+a.dataset.i);});
  document.getElementById('sgb').onclick=()=>S4GRID.open();
  addEventListener('keydown',e=>{const k=e.key;
-  if(!S4GRID.on){if((k==='g'||k==='G')&&!e.ctrlKey&&!e.metaKey){e.stopImmediatePropagation();S4GRID.open();}return;}
+  if(!S4GRID.on){if(document.documentElement.classList.contains('embed'))return;if((k==='g'||k==='G')&&!e.ctrlKey&&!e.metaKey){e.stopImmediatePropagation();S4GRID.open();}return;}
   e.stopImmediatePropagation();e.preventDefault();
   const cols=Math.max(1,Math.round(G.clientWidth/(G.children[0]?G.children[0].offsetWidth+18:320)));
   if(k==='Escape'||k==='g'||k==='G')S4GRID.close();
