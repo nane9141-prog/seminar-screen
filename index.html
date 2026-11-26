@@ -530,6 +530,13 @@ body.idle{cursor:none}
 .pipl .zm-c.pip-f{box-shadow:0 0 0 3px rgba(255,255,255,.85),0 40px 120px rgba(0,0,0,.5)}.pipl .pip-sp{top:970px;height:auto;justify-content:flex-start}  /* M7-4 얼굴 창 흰 테두리, 연사 정보는 얼굴 창 바로 아래 */
 /* 11/25 M10-2 레이아웃 점검: 왼쪽 Q · 질문 구분 칩을 질문 본문 영역의 세로 가운데에 맞춤(아래 정보 줄 높이만큼 위로) */
 .qa2-l{justify-content:center;padding-top:0;padding-bottom:170px}.qa2-lab{margin-top:70px}
+/* 11/26 카운트다운 숫자 전환 효과 */
+.s3-dots.gh{animation:s3Gh .8s cubic-bezier(.16,.84,.3,1) forwards;pointer-events:none}
+@keyframes s3Gh{0%{transform:translate(-50%,-50%) scale(1);opacity:1;filter:drop-shadow(0 0 22px rgba(0,129,204,.55)) blur(0)}35%{opacity:.85}100%{transform:translate(-50%,-50%) scale(3.4);opacity:0;filter:drop-shadow(0 0 60px rgba(0,173,169,.95)) blur(16px)}}
+.s3-dots.pop{animation:s3Pop .55s cubic-bezier(.2,1.5,.35,1) both}
+@keyframes s3Pop{0%{transform:translate(-50%,-50%) scale(.45);opacity:0;filter:drop-shadow(0 0 60px rgba(0,129,204,.95)) brightness(2)}55%{opacity:1}100%{transform:translate(-50%,-50%) scale(1);filter:drop-shadow(0 0 22px rgba(0,129,204,.55)) brightness(1)}}
+.s3-ring.fl .s3-rg{animation:s3Fl .6s ease-out}
+@keyframes s3Fl{0%{transform:scale(1.06);filter:brightness(2.2) drop-shadow(0 0 30px rgba(0,173,169,.9))}100%{transform:none;filter:none}}
 </style></head>
 <body>
 <div class="stage" id="scr" data-foot="full">
@@ -878,7 +885,8 @@ function S3(s,on){if(!s||!s.dataset.s3)return;(s._t3||[]).forEach(clearTimeout);
       const e=document.createElementNS(NS,'circle');e.setAttribute('cx',(Math.cos(a)*326).toFixed(1));e.setAttribute('cy',(Math.sin(a)*326).toFixed(1));e.setAttribute('r',k%5===0?9:6.5);e.setAttribute('fill',`rgb(${c})`);rg.appendChild(e);rg._c.push(e);}}
   rg._c.forEach(e=>e.classList.remove('on'));
   const t0=performance.now()+400;s._iv3=setInterval(()=>{const el=(performance.now()-t0)/5000;if(el<0)return;const k=Math.min(N,Math.floor(el*N)+1);rg._c.forEach((e,i)=>e.classList.toggle('on',i<k));},40);
-  [5,4,3,2,1].forEach((n,i)=>at(400+i*1000,()=>{s.dataset.ph='c';s.dataset.n=n;dotTimer(sv,String(n));}));
+  [5,4,3,2,1].forEach((n,i)=>at(400+i*1000,()=>{s.dataset.ph='c';s.dataset.n=n;s3Zoom(sv);dotTimer(sv,String(n));s3Pop(sv);}));
+  at(5420,()=>s3Zoom(sv,1));
   at(5500,()=>{s.dataset.ph='a';clearInterval(s._iv3);const c=document.getElementById('c');if(c)c.style.opacity=0;});at(9600,()=>{s.dataset.ph='e';});}
 /* M7-3 앞단계 카피 애니메이션: a 타이핑 → b 단어 등장 → c 줄 쌓기 → m 투자사 11곳 로고(n 정지) → j 가운데로 합쳐짐 → d Proxymity 로고에서 멈춤. → 누르면 소개 장표(i) */
 function PDK(dk,i){const im=dk.children,n=im.length;i=Math.max(0,Math.min(n-1,i));dk.dataset.i=i;[...im].forEach((e,k)=>e.classList.toggle('on',k===i));const c=dk.parentNode.querySelector('.pdk-n');if(c){c.textContent=(i+1)+' / '+n;c.classList.add('show');clearTimeout(c._t);c._t=setTimeout(()=>c.classList.remove('show'),1500);}}
@@ -958,6 +966,10 @@ function applySched(){
 // 도트 타이포 타이머(5×7 도트): 숫자 0-9와 콜론
 const DOTF={'0':['01110','10001','10011','10101','11001','10001','01110'],'1':['00100','01100','00100','00100','00100','00100','01110'],'2':['01110','10001','00001','00010','00100','01000','11111'],'3':['11110','00001','00001','01110','00001','00001','11110'],'4':['00010','00110','01010','10010','11111','00010','00010'],'5':['11111','10000','11110','00001','00001','10001','01110'],'6':['00110','01000','10000','11110','10001','10001','01110'],'7':['11111','00001','00010','00100','01000','01000','01000'],'8':['01110','10001','10001','01110','10001','10001','01110'],'9':['01110','10001','10001','01111','00001','00010','01100'],':':['0','0','1','0','1','0','0']};
 const DP=34,DR=12.5;
+/* 11/26 카운트다운 숫자 전환 — 이전 숫자는 크게 확대되며 흐려져 사라지고(복제본), 새 숫자는 작게에서 튀어나오듯 등장, 원형 링이 번쩍 */
+function s3Zoom(sv,last){if(!sv._s)return;const g=sv.cloneNode(true);g.classList.remove('pop');g.classList.add('gh');sv.parentNode.appendChild(g);setTimeout(()=>g.remove(),900);
+ const r=sv.parentNode;r.classList.remove('fl');void r.offsetWidth;r.classList.add('fl');if(last){sv.style.opacity=0;setTimeout(()=>sv.style.opacity='',1200);}}
+function s3Pop(sv){sv.classList.remove('pop');void sv.getBoundingClientRect();sv.classList.add('pop');}
 function dotTimer(svg,str){if(svg._s===str)return;const NS='http://www.w3.org/2000/svg';
   if(svg._len!==str.length){svg.innerHTML='';let x=0;svg._cells=[];
     [...str].forEach((ch,i)=>{const w=ch===':'?1:5,cells=[];for(let r=0;r<7;r++)for(let c=0;c<w;c++){const e=document.createElementNS(NS,'circle');e.setAttribute('cx',x+c*DP+DP/2);e.setAttribute('cy',r*DP+DP/2);e.setAttribute('r',DR);svg.appendChild(e);cells.push(e);}
