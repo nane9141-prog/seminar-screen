@@ -1322,6 +1322,29 @@ html,body,body *{touch-action:none;-webkit-touch-callout:none;-webkit-user-selec
 #K19b .cb{margin:22px 0 0;font:500 36px/1.5 "Pretendard Variable";color:#aab3c2}
 #K19b .cf{margin:18px 0 0;font:600 34px/1.3 "Pretendard Variable";color:var(--c)}
 #K19b .cd.t .cf{color:#3fd0cb}#K19b .cd.p .cf{color:#b7a6ff}#K19b .cd.o .cf{color:#ffa566}
+/* K19b(11/26 12:12) 덜 장식적으로: 아이콘 · 칩 · 카드 위 색 선 · 번호 원 삭제, 범례는 짧은 선, 상자는 같은 차콜. 시작 때 IR KUDOS × Proxymity 로고만 크게 → 줄어들며 사라지고 도식 등장 */
+#K19b .k19i{position:absolute;left:0;right:0;top:0;bottom:0;display:flex;align-items:center;justify-content:center;gap:90px;opacity:0;pointer-events:none;z-index:5}
+#K19b .k19i img:first-child{height:150px}#K19b .k19i img:last-child{height:210px}
+#K19b .k19i span{font:200 150px/1 "Pretendard Variable";color:#8a93a3}
+.s.cur#K19b .k19i{animation:k19i 2.9s cubic-bezier(.3,0,.2,1) .2s both}
+@keyframes k19i{0%{opacity:0;transform:scale(.94);filter:blur(14px)}22%{opacity:1;transform:none;filter:none}68%{opacity:1;transform:none;filter:none}100%{opacity:0;transform:scale(1.06);filter:blur(10px)}}
+.s.cur#K19b .fu{transition-delay:calc(3s + var(--i,0)*.12s)}
+.s.cur#K19b svg.k19l .b{animation-delay:calc(var(--d) + 2.3s)}
+.s.cur#K19b svg.k19l .m{animation-delay:calc(var(--d) + 3.1s),calc(var(--d) + 3.1s)}
+#K19b .lb{transition-delay:5s}
+#K19b .lgd i{width:56px;height:0;border-radius:0;border-top:5px solid}
+#K19b .lgd .t i{border-color:var(--ct);background:none}#K19b .lgd .p i{border-top-style:dashed;border-color:var(--cp);background:none}#K19b .lgd .o i{border-color:var(--co);background:none}
+#K19b .nd,#K19b .irk,#K19b .pxy{background:#1c1f26;box-shadow:inset 0 0 0 2px rgba(255,255,255,.07)}
+#K19b .core{background:rgba(255,255,255,.035)}
+#K19b .pxy .api{margin-top:26px;font-size:32px;color:#8a93a3}
+#K19b .cd{border-top:0;background:transparent;padding:0 8px;border-left:2px solid rgba(255,255,255,.12);padding-left:44px;border-radius:0}
+#K19b .ct i{width:auto;height:auto;border-radius:0;background:none!important;font:500 44px/1 "Pretendard Variable";color:#6f7889}
+#K19b .cd .cf,#K19b .cd.t .cf,#K19b .cd.p .cf,#K19b .cd.o .cf{color:#d5dbe5;font-weight:500}
+#K19b svg.k19l .b:not(.ds){opacity:0}
+.s.cur#K19b svg.k19l .b:not(.ds){animation:k22D .8s cubic-bezier(.4,0,.2,1) calc(var(--d) + 2.3s) both,k19v .15s linear calc(var(--d) + 2.4s) both}
+@keyframes k19v{to{opacity:.8}}
+/* K21(11/26 12:14): 배경 데이터센터 사진 삭제 */
+#K21 .k21bg{display:none}
 </style></head>
 <body>
 <div class="stage" id="stage">
@@ -1536,24 +1559,25 @@ html,body,body *{touch-action:none;-webkit-touch-callout:none;-webkit-user-selec
 </section>
 
 <section class="s" id="K19b" data-t="글로벌 주주총회 · 의결권 연결 체계" data-dim=".14">
- <div class="top"><p class="eb fu q" style="--i:0">IR KUDOS × PROXYMITY</p><h2 class="h hm fu" style="--i:1">글로벌 주주총회 · 의결권 연결 체계</h2></div>
- <div class="lgd fu" style="--i:2"><span class="t"><i>1</i>주총 정보 · 자료 배포</span><span class="p"><i>2</i>리얼타임 SID</span><span class="o"><i>3</i>의결권 지시 현황 대사 · 처리 · 조회</span></div>
+ <div class="k19i"><img src="assets/irk-wordmark-white.svg" alt="IR KUDOS"><span>×</span><img src="assets/s4/proxymity-logo.png" alt="Proxymity"></div>
+ <div class="top"><h2 class="h hm fu" style="--i:1">글로벌 주주총회 · 의결권 연결 체계</h2></div>
+ <div class="lgd fu" style="--i:2"><span class="t"><i></i>주총 정보 · 자료 배포</span><span class="p"><i></i>리얼타임 SID</span><span class="o"><i></i>의결권 지시 현황 대사 · 처리 · 조회</span></div>
  <div class="core fu" style="--i:2"></div>
- <div class="nd co fu" style="--i:2;left:300px;top:560px;width:320px;height:440px"><svg viewBox="0 0 48 48"><rect x="10" y="6" width="28" height="36" rx="2"/><path d="M6 42h36M17 14h3M28 14h3M17 21h3M28 21h3M17 28h3M28 28h3M21 42v-7h6v7"/></svg><b>상장기업</b></div>
+ <div class="nd co fu" style="--i:2;left:300px;top:560px;width:320px;height:440px"><b>상장기업</b></div>
  <div class="nd irk fu" style="--i:3;left:870px;top:530px;width:620px;height:520px"><img src="assets/irk-wordmark-white.svg" alt="IR KUDOS"><small>발행회사 서비스 · 데이터 연계</small><hr><p>주총 정보 · 자료 연계<br>실질주주 정보 제공<br>의결권 지시 현황 조회</p></div>
- <div class="nd pxy fu" style="--i:4;left:1790px;top:530px;width:620px;height:520px"><img src="assets/s4/proxymity-logo.png" alt="Proxymity"><small>글로벌 커스터디언 네트워크</small><hr><p>실질주주 식별 · 정보 연계<br>의결권 지시 대사 · 처리</p><em>API · SWIFT · Portal</em></div>
- <div class="nd sm fu" style="--i:5;left:2660px;top:492px;width:560px;height:290px"><svg viewBox="0 0 48 48"><path d="M6 18 24 7l18 11M9 18h30M12 22v14M20 22v14M28 22v14M36 22v14M7 40h34"/></svg><b>글로벌 커스터디언</b><small>보유 · 권리 데이터 / 지시 전달</small></div>
- <div class="nd sm fu" style="--i:6;left:2660px;top:820px;width:560px;height:290px"><svg viewBox="0 0 48 48"><path d="M12 6h17l8 8v28H12z"/><path d="M29 6v8h8M18 22h13M18 28h13M18 34h9"/></svg><b>의결권 자문기관</b><small>안건 분석 · 권고 / 위탁 범위 내 지시</small></div>
- <div class="nd co inv fu" style="--i:7;left:3460px;top:560px;width:440px;height:520px"><svg viewBox="0 0 48 48"><circle cx="24" cy="15" r="6"/><circle cx="11" cy="19" r="4.5"/><circle cx="37" cy="19" r="4.5"/><path d="M14 40c0-6 4.5-11 10-11s10 5 10 11M3 38c0-5 3.5-9 8-9 1.6 0 3 .4 4 1M45 38c0-5-3.5-9-8-9-1.6 0-3 .4-4 1"/></svg><b>해외<br>기관투자자</b><small>운용사 · 펀드 · 실질주주</small><em>의결권 의사결정</em></div>
+ <div class="nd pxy fu" style="--i:4;left:1790px;top:530px;width:620px;height:520px"><img src="assets/s4/proxymity-logo.png" alt="Proxymity"><small>글로벌 커스터디언 네트워크</small><hr><p>실질주주 식별 · 정보 연계<br>의결권 지시 대사 · 처리</p><small class="api">API · SWIFT · Portal</small></div>
+ <div class="nd sm fu" style="--i:5;left:2660px;top:492px;width:560px;height:290px"><b>글로벌 커스터디언</b><small>보유 · 권리 데이터 / 지시 전달</small></div>
+ <div class="nd sm fu" style="--i:6;left:2660px;top:820px;width:560px;height:290px"><b>의결권 자문기관</b><small>안건 분석 · 권고 / 위탁 범위 내 지시</small></div>
+ <div class="nd co inv fu" style="--i:7;left:3460px;top:560px;width:440px;height:520px"><b>해외<br>기관투자자</b><small>운용사 · 펀드 · 실질주주</small></div>
  <svg class="k19l" viewBox="0 0 4200 1600" width="4200" height="1600"><defs><marker id="k19at" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M1 1L8 5L1 9" fill="none" stroke="#00ada9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="k19ap" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M1 1L8 5L1 9" fill="none" stroke="#9b84ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="k19ao" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M1 1L8 5L1 9" fill="none" stroke="#ff8a3d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></marker></defs><path class="b t" marker-end="url(#k19at)" pathLength="1" d="M620 650H862" style="--d:1.3s"/><path class="m t" d="M620 650H862" style="--d:1.3s"/><path class="b o" marker-end="url(#k19ao)" pathLength="1" d="M870 820H628" style="--d:2.5s"/><path class="m o" d="M870 820H628" style="--d:2.5s"/><path class="b p ds" marker-end="url(#k19ap)" pathLength="1" d="M870 950H628" style="--d:1.9s"/><path class="m p" d="M870 950H628" style="--d:1.9s"/><path class="b t" marker-end="url(#k19at)" pathLength="1" d="M1490 650H1782" style="--d:1.4s"/><path class="m t" d="M1490 650H1782" style="--d:1.4s"/><path class="b o" marker-end="url(#k19ao)" pathLength="1" d="M1790 820H1498" style="--d:2.4s"/><path class="m o" d="M1790 820H1498" style="--d:2.4s"/><path class="b p ds" marker-end="url(#k19ap)" pathLength="1" d="M1490 950H1782" style="--d:1.85s"/><path class="m p" d="M1490 950H1782" style="--d:1.85s"/><path class="b t" marker-end="url(#k19at)" pathLength="1" d="M2410 640H2530V610H2652" style="--d:1.5s"/><path class="m t" d="M2410 640H2530V610H2652" style="--d:1.5s"/><path class="b o" marker-end="url(#k19ao)" pathLength="1" d="M2660 720H2560V780H2418" style="--d:2.3s"/><path class="m o" d="M2660 720H2560V780H2418" style="--d:2.3s"/><path class="b t" marker-end="url(#k19at)" pathLength="1" d="M2410 900H2530V930H2652" style="--d:1.55s"/><path class="m t" d="M2410 900H2530V930H2652" style="--d:1.55s"/><path class="b o" marker-end="url(#k19ao)" pathLength="1" d="M2660 1020H2560V990H2418" style="--d:2.3s"/><path class="m o" d="M2660 1020H2560V990H2418" style="--d:2.3s"/><path class="b t" marker-end="url(#k19at)" pathLength="1" d="M3220 600H3330V660H3452" style="--d:1.6s"/><path class="m t" d="M3220 600H3330V660H3452" style="--d:1.6s"/><path class="b o" marker-end="url(#k19ao)" pathLength="1" d="M3460 740H3340V700H3228" style="--d:2.2s"/><path class="m o" d="M3460 740H3340V700H3228" style="--d:2.2s"/><path class="b t" marker-end="url(#k19at)" pathLength="1" d="M3220 900H3330V860H3452" style="--d:1.65s"/><path class="m t" d="M3220 900H3330V860H3452" style="--d:1.65s"/><path class="b o" marker-end="url(#k19ao)" pathLength="1" d="M3460 960H3340V1030H3228" style="--d:2.2s"/><path class="m o" d="M3460 960H3340V1030H3228" style="--d:2.2s"/><path class="b p ds" marker-end="url(#k19ap)" pathLength="1" d="M2100 530V445H2940V492" style="--d:1.95s"/><path class="m p" d="M2100 530V445H2940V492" style="--d:1.95s"/></svg>
  <div class="lb t" style="left:745px;top:606px">주총 정보 · 자료</div><div class="lb o" style="left:745px;top:776px">실시간 행사내역</div><div class="lb p" style="left:745px;top:966px">실질주주 정보</div>
  <div class="lb t" style="left:1640px;top:606px">주총 정보 · 자료</div><div class="lb o" style="left:1640px;top:776px">지시 · 행사내역</div><div class="lb p" style="left:1640px;top:966px">SID 조회 · 회신</div>
  <div class="lb p" style="left:2520px;top:400px">SID 요청 · 회신 / 보유정보</div>
  <div class="lb t" style="left:3340px;top:556px">자료 · 양식</div><div class="lb o" style="left:3340px;top:756px">행사 지시</div><div class="lb t" style="left:3340px;top:816px">분석 · 권고</div><div class="lb o" style="left:3340px;top:1046px">행사 지시</div>
  <div class="k19c fu" style="--i:8">
-  <div class="cd t"><p class="ct"><i>1</i>주총 정보 및 자료 배포</p><p class="cb">해외 기관투자자에게 주총 · 의안 정보 전달<br>자료 · 의결권 행사 양식의 실시간 배포</p><p class="cf">정보 변경사항 및 최신 자료 반영</p></div>
-  <div class="cd p"><p class="ct"><i>2</i>리얼타임 SID</p><p class="cb">실질주주 식별 요청 · 회신 및 결과 조회<br>실질주주 리스트 · 보유정보 제공</p><p class="cf">식별 진행 및 회신 현황 확인</p></div>
-  <div class="cd o"><p class="ct"><i>3</i>리얼타임 의결권 지시 현황</p><p class="cb">대사 · 처리 · 조회<br>지시 접수 · 전달 · 처리 상태의 실시간 확인</p><p class="cf">집중투표 프로라타 문제 해결 추진</p></div>
+  <div class="cd t"><p class="ct"><i>01</i>주총 정보 및 자료 배포</p><p class="cb">해외 기관투자자에게 주총 · 의안 정보 전달<br>자료 · 의결권 행사 양식의 실시간 배포</p><p class="cf">정보 변경사항 및 최신 자료 반영</p></div>
+  <div class="cd p"><p class="ct"><i>02</i>리얼타임 SID</p><p class="cb">실질주주 식별 요청 · 회신 및 결과 조회<br>실질주주 리스트 · 보유정보 제공</p><p class="cf">식별 진행 및 회신 현황 확인</p></div>
+  <div class="cd o"><p class="ct"><i>03</i>리얼타임 의결권 지시 현황</p><p class="cb">대사 · 처리 · 조회<br>지시 접수 · 전달 · 처리 상태의 실시간 확인</p><p class="cf">집중투표 프로라타 문제 해결 추진</p></div>
  </div>
 </section>
 
