@@ -580,6 +580,19 @@ body.idle{cursor:none}
 .pq-l.pq-s li{padding:30px 0}
 .pq-l.pq-s p{font-size:60px}
 #audblk{position:fixed;left:16px;bottom:16px;z-index:9999;display:none;padding:10px 16px;border-radius:10px;background:rgba(160,30,30,.92);color:#fff;font:600 16px/1.3 'Pretendard Variable',sans-serif;pointer-events:none}#audblk.on{display:block}
+/* 11/26 20:56 파트 첫 장 Blue Bloom: 둥근(타원) 마스크 대신 가로 직선 띠 — 아래에서 위로만 옅어짐(좌우 끝까지 같은 높이) */
+.slide[data-glow] .bloom{-webkit-mask-image:linear-gradient(0deg,#000 0%,rgba(0,0,0,.8) 12%,rgba(0,0,0,.4) 26%,rgba(0,0,0,.1) 40%,transparent 50%)!important;mask-image:linear-gradient(0deg,#000 0%,rgba(0,0,0,.8) 12%,rgba(0,0,0,.4) 26%,rgba(0,0,0,.1) 40%,transparent 50%)!important}
+/* M9-1 시연 타이틀: 왼쪽 PART 3 · 제목 2줄 · 시연자, 오른쪽 핵심 문장 + 3단계 가로 카드 — 글은 Bloom 띠 위쪽에 */
+.slide[data-no="M9-1"]{padding-top:250px}
+.slide[data-no="M9-1"] .lay2-l .eyebrow{display:block;margin-bottom:36px}
+.slide[data-no="M9-1"] .lay2-l .dm-p{margin-top:72px;padding-top:44px;border-top:2px solid rgba(255,255,255,.14);width:900px}
+.slide[data-no="M9-1"] .demo{padding-top:8px}
+.slide[data-no="M9-1"] .flow{margin-top:84px;display:grid;grid-template-columns:repeat(3,1fr);gap:28px}
+.slide[data-no="M9-1"] .flow::before{display:none}
+.slide[data-no="M9-1"] .flow li{display:flex;flex-direction:column;align-items:flex-start;height:auto;padding:40px 44px 44px;border:0;border-radius:36px;background:rgba(14,20,32,.72);box-shadow:inset 0 0 0 2px rgba(255,255,255,.07)}
+.slide[data-no="M9-1"] .fl-n{justify-self:auto;width:88px;height:88px;font-size:38px}
+.slide[data-no="M9-1"] .fl-k{margin-top:30px;font-size:72px}
+.slide[data-no="M9-1"] .fl-b{margin-top:18px;font-size:50px;line-height:1.4;white-space:normal;color:#C9D2DE}
 </style></head>
 <body>
 <div class="stage" id="scr" data-foot="full">
@@ -743,7 +756,8 @@ body.idle{cursor:none}
 </section>
 <section class="slide" id="m9_1" data-no="M9-1" data-title="M9-1 시연 타이틀" data-bg="B" data-foot="full" data-tr="zoom" data-glow="1" data-fill="1" data-lay="split">
 <p class="eyebrow fu" style="--i:0">PART 3 · DEMO</p>
-<h1 class="title-m" data-words style="--i:1">모의 전자주주총회 시연</h1>
+<h1 class="title-m" data-words style="--i:1">모의 전자주주총회<br>시연</h1>
+<p class="dm-p lay-l fu" style="--i:4"><b>박성용</b>IR큐더스, 본부장</p>
 <div class="demo">
 <p class="dm-h fu" style="--i:2">준비부터 집계까지, 전자주총 전 과정을 그대로</p>
 <p class="dm-s fu" style="--i:2.5">모의 회사 · 주주 · 의안으로 주주총회 전 과정을 진행합니다.</p>
@@ -752,7 +766,6 @@ body.idle{cursor:none}
 <li><span class="fl-n">02</span><span class="fl-k">사전</span><span class="fl-b">사전 투표 · 의결권 행사 관리</span></li>
 <li><span class="fl-n">03</span><span class="fl-k">당일</span><span class="fl-b">출석, 질의, 표결, 집계</span></li>
 </ol>
-<p class="dm-p fu" style="--i:4"><b>박성용</b>IR큐더스, 본부장</p>
 </div>
 </section>
 <section class="slide" id="m9_2" data-no="M9-2" data-title="M9-2 시연 주요 실무 사례" data-bg="B" data-foot="full" data-lay="split">
@@ -913,7 +926,7 @@ requestAnimationFrame(drawPort);
 window.SPKPORT={show(k){if(port&&port.k===k&&port.tOut==null)return;port={k,t0:performance.now(),tOut:null};},hide(){if(port&&port.tOut==null)port.tOut=performance.now();}};
 
 slides.filter(s=>s.dataset.lay==='split').forEach(s=>{const sp=document.createElement('div'),L=document.createElement('div'),Rr=document.createElement('div');sp.className='lay2';L.className='lay2-l';Rr.className='lay2-r';
-  [...s.children].forEach(c=>{((!Rr.children.length&&c.matches('.eyebrow,h1,h2'))||(s.dataset.prog&&!c.matches('.pscroll'))?L:Rr).appendChild(c);});sp.append(L,Rr);s.append(sp);});
+  [...s.children].filter(c=>!c.matches('.bloom')).forEach(c=>{((!Rr.children.length&&c.matches('.eyebrow,h1,h2,.lay-l'))||(s.dataset.prog&&!c.matches('.pscroll'))?L:Rr).appendChild(c);});sp.append(L,Rr);s.append(sp);});
 window.FSQ=parseFloat(qp.get('q')||localStorage.getItem('scr-q')||'0.75');
 /* 11/26 송출 옵션: ?fit=fill — 화면 전체(예: 1920×1080)에 가로세로 따로 늘려 채움(LED 프로세서가 21:8로 다시 늘리는 Stretch 방식용). ?ds=video — 배경 Data Stream을 WebGL 대신 영상(assets/ds-main.mp4)으로. ?out=led = 둘 다 */
 const OUT_LED=qp.get('out')==='led',FILL=OUT_LED||qp.get('fit')==='fill',DSV=OUT_LED||qp.get('ds')==='video';
