@@ -1345,6 +1345,17 @@ html,body,body *{touch-action:none;-webkit-touch-callout:none;-webkit-user-selec
 @keyframes k19v{to{opacity:.8}}
 /* K21(11/26 12:14): 배경 데이터센터 사진 삭제 */
 #K21 .k21bg{display:none}
+/* K24a(11/26 12:16) 왼쪽 글 묶음을 위로 · 촘촘하게, 휴대폰 위로, 휴대폰 오른쪽에 에이전트 앱 아이콘 + 바깥 그라데이션 빛이 도는 모션 */
+#K24a .ab{top:150px!important}
+#K24a .k24g{margin-top:34px;padding:34px 52px 22px}
+#K24a .k24g .lst li{padding-top:18px;padding-bottom:18px}
+#K24a .k24p{top:300px}
+#K24a .k24ic{position:absolute;left:3600px;top:620px;width:300px;height:300px}
+#K24a .k24ic img{position:relative;width:100%;height:100%;display:block;border-radius:42px;z-index:1}
+#K24a .k24ic i{position:absolute;inset:-26px;border-radius:64px;background:conic-gradient(from var(--a,0deg),#0081cc,#00ada9,#5b8cff,#a66bff,#0081cc);filter:blur(22px);opacity:.85;animation:k24ic 4s linear infinite}
+#K24a .k24ic::after{content:"";position:absolute;inset:-8px;border-radius:50px;background:conic-gradient(from var(--a,0deg),#0081cc,#00ada9,#5b8cff,#a66bff,#0081cc);animation:k24ic 4s linear infinite;z-index:0}
+@property --a{syntax:"<angle>";inherits:false;initial-value:0deg}
+@keyframes k24ic{to{--a:360deg}}
 </style></head>
 <body>
 <div class="stage" id="stage">
@@ -1660,6 +1671,7 @@ html,body,body *{touch-action:none;-webkit-touch-callout:none;-webkit-user-selec
  </div>
  <canvas class="viz" data-viz="kr24" style="left:2250px;top:110px;width:1750px;height:1400px" width="1750" height="1400"></canvas>
  <div class="k24app">
+ <div class="k24ic"><i></i><img src="assets/s4/app-icon-agent.svg" alt="에이전트 앱"></div>
  <div class="phone fu k24p" style="--i:3"><div class="scr"><video class="k24v" src="assets/s4/agent-app.mp4" poster="assets/s4/agent-app.webp" muted loop playsinline preload="auto"></video></div></div>
 </div>
 </section>
