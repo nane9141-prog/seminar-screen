@@ -1074,7 +1074,7 @@ async function zoomIn(m,sel){const sl=slides[idx];const stop=b=>{if(b._s){b._s.g
 var FACE={devs:[],err:'',fit:localStorage.getItem('scr-face-fit')||'cover',
  box(){return document.querySelector('#m7_4 .pip-f');},
  async list(ask){if(window.VIEW_MODE||!navigator.mediaDevices)return;try{
-   if(ask){const t=await navigator.mediaDevices.getUserMedia({video:true,audio:false});t.getTracks().forEach(x=>x.stop());}
+   if(ask){let t=null;try{t=await navigator.mediaDevices.getUserMedia({video:true,audio:false});}catch(e){if(e.name!=='NotFoundError')throw e;t=await navigator.mediaDevices.getUserMedia({audio:true});/* 카메라 없는 송출 PC: 마이크 권한으로 원격 연결용 내부 IP 공개 */}t.getTracks().forEach(x=>x.stop());}
    const d=await navigator.mediaDevices.enumerateDevices();this.devs=d.filter(x=>x.kind==='videoinput').map((x,i)=>({id:x.deviceId,label:x.label||('영상 장치 '+(i+1)+' (이름은 권한 허용 뒤 표시)')}));this.err='';}catch(e){this.err=e.name||String(e);}MC.pub();},
  stop(){const b=this.box();if(!b)return;if(b._s){if(!b._remote)b._s.getTracks().forEach(t=>t.stop());b._s=null;}b._remote=false;const v=b.querySelector('video');if(v){v.srcObject=null;v.style.objectViewBox='';}b.classList.remove('on');},
  /* 11/26 원격 기기(face.html, Meet · Teams 화면 공유) — id 'remote' */

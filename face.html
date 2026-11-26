@@ -54,6 +54,7 @@ ol{padding-left:18px;display:grid;gap:6px;color:var(--fg-2);font-size:13px}ol b{
    <button class="pri" id="bscr">화면 · 창 선택해서 보내기</button>
    <div class="row"><select id="cam" style="flex:1"><option value="">카메라 · 캡처보드로 보내기…</option></select><button id="bcam">보내기</button></div>
    <button class="bad" id="bstop" disabled>보내기 중지</button>
+   <details><summary class="mut" style="cursor:pointer">메인과 연결이 안 될 때 · 중계 서버(TURN)</summary><p class="mut" style="margin:8px 0">망이 기기 간 직접 연결을 막으면 중계 서버가 필요합니다. 받은 iceServers 배열(JSON)을 붙여 넣고 저장한 뒤 다시 보내세요.</p><textarea id="turnv" rows="3" style="width:100%;background:#111;color:#c7c7c7;border:1px solid #333;border-radius:8px;padding:8px;font:12px/1.4 monospace"></textarea><div class="row" style="margin-top:6px"><button id="turns">저장</button><button id="turnx">지우기</button><span class="mut" id="turnst"></span></div></details>
    <div class="out"><div class="mini"><video id="mv" muted playsinline autoplay></video></div>
     <div><div class="big" id="sbig">대기</div><div class="mut" id="ssub">보내는 화면이 없습니다</div></div></div>
   </section>
@@ -80,7 +81,7 @@ const TX=FACELINK.Tx({name:()=>nm.value.trim()||'원격 기기',onChange:upd});T
 function upd(){const n=TX.net,np=$('pnet');np.className='pill '+(n==='on'?'ok':n==='down'?'bad':'warn');np.lastChild.textContent=n==='on'?'신호 연결됨':n==='down'?'신호 끊김 (인터넷 확인)':'신호 연결 중';
  const c=TX.count(),pn=TX.pending(),pr=$('prx');pr.className='pill '+(c?'ok':pn?'warn':'');pr.lastChild.textContent='메인 스크린 '+c+'대'+(pn?' · 연결 중 '+pn:'');
  const on=!!TX.stream;$('bstop').disabled=!on;$('pv').classList.toggle('live',on);
- $('sbig').textContent=!on?'대기':c?'송출 중':'연결 대기';$('sbig').className='big '+(!on?'':c?'ok':'warn');
+ $('sbig').textContent=!on?'대기':c?'송출 중':TX.fail?'연결 실패':'연결 대기';$('sbig').className='big '+(!on?'':c?'ok':'warn');
  $('ssub').textContent=!on?'보내는 화면이 없습니다':c?'메인 스크린 '+c+'대에 보내는 중':TX.net!=='on'?'신호 서버 연결을 기다리는 중':TX.fail?TX.fail:TX.pending()?'메인 스크린과 연결 중…':'메인 스크린(index.html)이 열려 있는지 확인하세요';}
 function show(st){$('v').srcObject=st;$('mv').srcObject=st;drawCrop();}
 async function startScr(){try{await FACELINK.unlock();const st=await navigator.mediaDevices.getDisplayMedia({video:{frameRate:{ideal:30},width:{ideal:3840},height:{ideal:2160}},audio:false,selfBrowserSurface:'exclude',surfaceSwitching:'include'});TX.start(st);show(st);}catch(e){if(e.name!=='NotAllowedError')alert('화면 선택 실패: '+(e.name||e));}}
@@ -106,5 +107,7 @@ pv.addEventListener('pointerup',()=>{if(!d0)return;d0=null;const c=TX.crop;if(c&
 $('crx').onclick=()=>{TX.setCrop(null);localStorage.removeItem('face-tx-crop');drawCrop();};
 v.addEventListener('loadedmetadata',()=>{$('res').textContent=v.videoWidth+'×'+v.videoHeight;drawCrop();});addEventListener('resize',drawCrop);
 navigator.mediaDevices&&navigator.mediaDevices.addEventListener&&navigator.mediaDevices.addEventListener('devicechange',listCam);listCam();
+{const v=$('turnv'),st=$('turnst');const show=()=>{const x=FACELINK.XICE();st.textContent=x.length?'중계 서버 '+x.length+'개 저장됨':'저장된 중계 서버 없음';v.value=x.length?JSON.stringify(x):'';};show();
+ $('turns').onclick=()=>{try{const x=JSON.parse(v.value);if(!Array.isArray(x))throw 0;localStorage.setItem('face-ice',JSON.stringify(x));show();}catch(e){st.textContent='JSON 배열 형식이 아닙니다';}};$('turnx').onclick=()=>{localStorage.removeItem('face-ice');show();};}
 setInterval(upd,1000);upd();
 </script></body></html>
