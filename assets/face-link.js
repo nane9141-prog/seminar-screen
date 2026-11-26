@@ -9,14 +9,8 @@ const SB_URL='https://zrhtqpzgubaqzsdaxhvt.supabase.co',SB_KEY='sb_publishable_J
 const ICE=(()=>{const d=[{urls:['stun:stun.l.google.com:19302','stun:stun1.l.google.com:19302','stun:stun.cloudflare.com:3478']}];
  /* TURN을 쓰려면 localStorage 'face-ice'에 iceServers 배열(JSON)을 넣음 — 기본은 STUN만 */
  try{const x=JSON.parse(localStorage.getItem('face-ice')||'null');if(Array.isArray(x)&&x.length)return d.concat(x);}catch(e){}return d;})();
-/* 11/26 23:05 기본 중계 서버(TURN): Metered Open Relay 공개 정적 인증(staticauth, 문서에 공개된 secret)으로
-   사용자 이름 · 비밀번호를 브라우저에서 만듦. 직접 연결이 막힐 때만 쓰이고 영상은 그대로 WebRTC(끊김 적음) */
-const TURN=[];
-(async()=>{try{const u=(Math.floor(Date.now()/1000)+86400*2)+':seminar',enc=new TextEncoder();
- const k=await crypto.subtle.importKey('raw',enc.encode('openrelayprojectsecret'),{name:'HMAC',hash:'SHA-1'},false,['sign']);
- const sig=new Uint8Array(await crypto.subtle.sign('HMAC',k,enc.encode(u)));let b='';sig.forEach(x=>b+=String.fromCharCode(x));
- TURN.push({urls:['turn:staticauth.openrelay.metered.ca:80','turn:staticauth.openrelay.metered.ca:80?transport=tcp','turn:staticauth.openrelay.metered.ca:443','turns:staticauth.openrelay.metered.ca:443?transport=tcp'],username:u,credential:btoa(b)});}catch(e){console.warn('TURN',e);}})();
-const ICEALL=()=>ICE.concat(TURN);
+/* 11/26 23:10 공개 중계 서버(Metered Open Relay) 기본값 삭제 — 직접 연결(STUN)만. 필요하면 아래 수동 TURN 입력 */
+const ICEALL=()=>ICE;
 // 보내는 쪽에 저장한 TURN(중계) 서버 — 연결 요청에 실어 메인도 같이 씀
 function XICE(){try{const x=JSON.parse(localStorage.getItem('face-ice')||'null');return Array.isArray(x)?x:[];}catch(e){return [];}}
 /* 같은 망의 다른 기기끼리: 크롬은 카메라 · 마이크 권한이 없는 페이지의 내부 IP를 숨겨(mDNS) 직접 연결이 실패할 수 있음.
@@ -91,7 +85,7 @@ function Tx(opt){opt=opt||{};const sid='tx-'+rid(),peers=new Map();
    else if(ev==='ice'&&p.to===sid){const P=peers.get(p.rid);if(P&&P._oid===p.oid)addIce(P,p.c);}
  },st=>{S.net=st;if(st==='on'&&S.stream)C.send('tx',{sid});ch();});
  async function offer(r){const old=peers.get(r);if(old&&(old.connectionState==='connected'||((old.connectionState==='new'||old.connectionState==='connecting')&&Date.now()-old._t<6000)))return;if(old){try{old.close();}catch(e){}}
-  const P=new RTCPeerConnection({iceServers:ICEALL().concat(XICE())});P._oid=rid();P._t=Date.now();peers.set(r,P);setTimeout(()=>{if(peers.get(r)===P&&P.connectionState!=='connected'){if(!S.fail)S.fail='15초 안에 연결 안 됨 — 망이 직접 · 중계 연결을 모두 막는 중';relayCheck();ch();}},15500);trickle(P,c=>C.send('ice',{to:r,sid,oid:P._oid,c}));
+  const P=new RTCPeerConnection({iceServers:ICEALL().concat(XICE())});P._oid=rid();P._t=Date.now();peers.set(r,P);setTimeout(()=>{if(peers.get(r)===P&&P.connectionState!=='connected'){if(!S.fail)S.fail='15초 안에 연결 안 됨 — 망이 기기 간 직접 연결을 막는 중';relayCheck();ch();}},15500);trickle(P,c=>C.send('ice',{to:r,sid,oid:P._oid,c}));
   S.stream.getTracks().forEach(t=>P.addTrack(t,S.stream));
   P.onconnectionstatechange=async()=>{const cs=P.connectionState;if(cs==='connected'||cs==='failed')S.diag=await diag(P);if(cs==='failed')S.fail='연결 실패 (보내는 쪽: '+S.diag+(S.rdiag?' · 메인 쪽: '+S.rdiag:'')+')';if(cs==='connected')S.fail='';if((cs==='failed'||cs==='closed')&&peers.get(r)===P)peers.delete(r);setTimeout(relayCheck,300);ch();};
   try{await P.setLocalDescription(await P.createOffer());await gather(P);
