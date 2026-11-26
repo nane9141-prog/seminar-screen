@@ -1168,6 +1168,41 @@ html,body,body *{touch-action:none;-webkit-touch-callout:none;-webkit-user-selec
 .s.cur#K21 svg.k21l{animation:none;opacity:1}
 .s.cur#K21 svg.k21l .b{animation:k22D .9s cubic-bezier(.4,0,.2,1) var(--d) both}
 .s.cur#K21 svg.k21l .m{animation:k22F .4s ease calc(var(--d) + .9s) both,k22M 1.6s linear calc(var(--d) + .9s) infinite}
+
+/* 11/26 K02 벤토 그리드 — 8장을 한 화면에. 사진 카드 4장(전자출석 · 실시간 중계 · 관리기관 · 장애 대응, 사진은 임시)과
+   색 카드 4장(디지털 전환 · 정확한 집계 · 사전신청제 · 난이도 상승)을 섞음. 12칸 × 2줄:
+   [디지털 전환 4 ][실시간 중계 4 · 두 줄][사전신청제 2][관리기관 2]
+   [전자출석 2][정확한 집계 2][  〃  ][장애 대응 2][난이도 상승 2] */
+#K02 .g4{display:none}
+#K02 .bt{position:absolute;left:300px;right:300px;top:440px;height:1020px;display:grid;grid-template-columns:repeat(12,1fr);grid-template-rows:1fr 1fr;gap:36px}
+#K02 .bw{display:flex;min-width:0;opacity:0;transform:translateX(600px) scale(.96)}
+#K02.cur .bw{animation:k2g 1s cubic-bezier(.16,.84,.24,1) calc(2.35s + var(--k)*.08s) forwards}
+#K02 .bw.a{grid-column:1/5;grid-row:1}
+#K02 .bw.b{grid-column:1/3;grid-row:2}
+#K02 .bw.c{grid-column:3/5;grid-row:2}
+#K02 .bw.d{grid-column:5/9;grid-row:1/3}
+#K02 .bw.e{grid-column:9/11;grid-row:1}
+#K02 .bw.f{grid-column:11/13;grid-row:1}
+#K02 .bw.g{grid-column:9/11;grid-row:2}
+#K02 .bw.h{grid-column:11/13;grid-row:2}
+#K02 .bc{position:relative;flex:1;min-width:0;border-radius:48px;overflow:hidden;display:flex;flex-direction:column;padding:56px 56px}
+#K02 .bc b{position:relative;display:block;font:700 80px/1.15 "Pretendard Variable";letter-spacing:-.02em}
+#K02 .bc p{position:relative;margin:20px 0 0;font:500 42px/1.4 "Pretendard Variable"}
+/* 색 카드: 글은 가운데 */
+#K02 .bc.co{color:#0a1730;justify-content:center;align-items:center;text-align:center;box-shadow:inset 0 0 0 2px rgba(255,255,255,.35)}
+#K02 .bc.co p{opacity:.72}
+#K02 .bw.a .bc b{font-size:120px}
+/* 사진 카드: 사진 전면 + 아래 어둡게, 글은 왼쪽 아래 흰색 */
+#K02 .bc.im{color:#fff;justify-content:flex-end;background:#1b2230}
+#K02 .bc.im i{position:absolute;inset:0;background-size:cover;background-position:center}
+#K02 .bc.im::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(6,10,18,.05) 15%,rgba(6,10,18,.88) 100%)}
+#K02 .bw:is(.b,.f,.g) .bc p{font-size:38px}
+#K02 .bc.im b,#K02 .bc.im p{z-index:1}
+#K02 .bc.im p{opacity:.82}
+#K02 .bw.d .bc b{font-size:120px}
+#K02.cur .bc.im i{animation:k2zoom 9s ease-out 2.35s both}
+@keyframes k2zoom{from{transform:scale(1.08)}to{transform:scale(1)}}
+@media (prefers-reduced-motion:reduce){#K02.cur .bw{animation:none;opacity:1;transform:none}#K02.cur .bc.im i{animation:none}}
 </style></head>
 <body>
 <div class="stage" id="stage">
@@ -1185,10 +1220,11 @@ html,body,body *{touch-action:none;-webkit-touch-callout:none;-webkit-user-selec
  <div class="sec-c"><h2 class="sec-h fu" style="--i:1">2027년 주주총회, 어떻게 바뀌나</h2><p class="sec-s fu" style="--i:2">전자주총 시행에 따른 주주총회 운영의 변화</p></div>
 </section>
 
-<section class="s" id="K02" data-t="운영의 8가지 변화" data-dim=".2" data-steps="1">
+<section class="s" id="K02" data-t="운영의 8가지 변화" data-dim=".2">
  <div class="top"><h2 class="h fu" style="--i:1">주주총회 운영, 이렇게 바뀝니다.</h2></div>
  <div class="sw"><div class="swt"><div class="cc l" style="background:radial-gradient(120% 80% at 80% 100%,#4677e6 0%,rgba(70,119,230,0) 60%),linear-gradient(170deg,#e9eef8 0%,#b8c9ee 100%)"><p class="cs">엑셀에서 시스템으로</p><b>디지털 전환</b></div><div class="cc l" style="background:radial-gradient(120% 80% at 80% 100%,#64a8e6 0%,rgba(100,168,230,0) 60%),linear-gradient(170deg,#e8f1f8 0%,#b8d5ee 100%)"><p class="cs">질의 · 발언 · 표결</p><b>전자출석</b></div><div class="cc l" style="background:radial-gradient(120% 80% at 80% 100%,#4677e6 0%,rgba(70,119,230,0) 60%),linear-gradient(170deg,#e9eef8 0%,#b8c9ee 100%)"><p class="cs">회사 선택에 따라 도입</p><b>사전신청제</b></div><div class="cc l" style="background:radial-gradient(120% 80% at 80% 100%,#4677e6 0%,rgba(70,119,230,0) 60%),linear-gradient(170deg,#e9eef8 0%,#b8c9ee 100%)"><p class="cs">실시간 쌍방향 참여 · 기록</p><b>실시간 중계</b></div><div class="cc l" style="background:radial-gradient(120% 80% at 80% 100%,#64a8e6 0%,rgba(100,168,230,0) 60%),linear-gradient(170deg,#e8f1f8 0%,#b8d5ee 100%)"><p class="cs">의결권 행사 · 결의 결과 검증</p><b>정확한 집계</b></div><div class="cc l" style="background:radial-gradient(120% 80% at 80% 100%,#64a8e6 0%,rgba(100,168,230,0) 60%),linear-gradient(170deg,#e8f1f8 0%,#b8d5ee 100%)"><p class="cs">직접 운영 또는<br>관리기관 위탁</p><b>관리기관</b></div><div class="cc l" style="background:radial-gradient(120% 80% at 80% 100%,#ec5566 0%,rgba(236,85,102,0) 62%),linear-gradient(170deg,#f6ecee 0%,#eac0c6 100%)"><p class="cs">통신장애 · 시스템 오류</p><b>장애 대응</b></div><div class="cc l" style="background:radial-gradient(120% 80% at 80% 100%,#ec5566 0%,rgba(236,85,102,0) 62%),linear-gradient(170deg,#f6ecee 0%,#eac0c6 100%)"><p class="cs">집중투표 · 3%룰 · 행동주의</p><b>난이도 상승</b></div></div></div>
- <div class="g4"><div class="g4w" style="--k:0"><div class="fl"><div class="cc l fr" style="background:radial-gradient(120% 80% at 80% 100%,#4677e6 0%,rgba(70,119,230,0) 60%),linear-gradient(170deg,#e9eef8 0%,#b8c9ee 100%)"><p class="cs">엑셀에서 시스템으로</p><b>디지털 전환</b></div><div class="cc l bk" style="background:radial-gradient(120% 80% at 80% 100%,#64a8e6 0%,rgba(100,168,230,0) 60%),linear-gradient(170deg,#e8f1f8 0%,#b8d5ee 100%)"><p class="cs">직접 운영 또는 관리기관 위탁</p><b>관리기관</b></div></div></div><div class="g4w" style="--k:1"><div class="fl"><div class="cc l fr" style="background:radial-gradient(120% 80% at 80% 100%,#64a8e6 0%,rgba(100,168,230,0) 60%),linear-gradient(170deg,#e8f1f8 0%,#b8d5ee 100%)"><p class="cs">질의 · 발언 · 표결</p><b>전자출석</b></div><div class="cc l bk" style="background:radial-gradient(120% 80% at 80% 100%,#4677e6 0%,rgba(70,119,230,0) 60%),linear-gradient(170deg,#e9eef8 0%,#b8c9ee 100%)"><p class="cs">회사 선택에 따라 도입</p><b>사전신청제</b></div></div></div><div class="g4w" style="--k:2"><div class="fl"><div class="cc l fr" style="background:radial-gradient(120% 80% at 80% 100%,#4677e6 0%,rgba(70,119,230,0) 60%),linear-gradient(170deg,#e9eef8 0%,#b8c9ee 100%)"><p class="cs">실시간 쌍방향 참여 · 기록</p><b>실시간 중계</b></div><div class="cc l bk" style="background:radial-gradient(120% 80% at 80% 100%,#64a8e6 0%,rgba(100,168,230,0) 60%),linear-gradient(170deg,#e8f1f8 0%,#b8d5ee 100%)"><p class="cs">의결권 행사 · 결의 결과 검증</p><b>정확한 집계</b></div></div></div><div class="g4w" style="--k:3"><div class="fl"><div class="cc l fr" style="background:radial-gradient(120% 80% at 80% 100%,#ec5566 0%,rgba(236,85,102,0) 62%),linear-gradient(170deg,#f6ecee 0%,#eac0c6 100%)"><p class="cs">통신장애 · 시스템 오류</p><b>장애 대응</b></div><div class="cc l bk" style="background:radial-gradient(120% 80% at 80% 100%,#ec5566 0%,rgba(236,85,102,0) 62%),linear-gradient(170deg,#f6ecee 0%,#eac0c6 100%)"><p class="cs">집중투표 · 3%룰 · 행동주의</p><b>난이도 상승</b></div></div></div></div>
+ <div class="bt"><div class="bw a" style="--k:0"><div class="bc co" style="background:radial-gradient(120% 80% at 80% 100%,#4677e6 0%,rgba(70,119,230,0) 60%),linear-gradient(170deg,#e9eef8 0%,#b8c9ee 100%)"><b>디지털 전환</b><p>엑셀에서 시스템으로</p></div></div><div class="bw b" style="--k:1"><div class="bc im"><i style="background-image:url(assets/s4/live-7.webp)"></i><b>전자출석</b><p>질의 · 발언 · 표결</p></div></div><div class="bw c" style="--k:2"><div class="bc co" style="background:radial-gradient(120% 80% at 80% 100%,#64a8e6 0%,rgba(100,168,230,0) 60%),linear-gradient(170deg,#e8f1f8 0%,#b8d5ee 100%)"><b>정확한 집계</b><p>의결권 행사 · 결의 결과 검증</p></div></div><div class="bw d" style="--k:3"><div class="bc im"><i style="background-image:url(assets/s4/live-2.webp)"></i><b>실시간 중계</b><p>실시간 쌍방향 참여 · 기록</p></div></div><div class="bw e" style="--k:4"><div class="bc co" style="background:radial-gradient(120% 80% at 80% 100%,#64a8e6 0%,rgba(100,168,230,0) 60%),linear-gradient(170deg,#e8f1f8 0%,#b8d5ee 100%)"><b>사전신청제</b><p>회사 선택에 따라 도입</p></div></div><div class="bw f" style="--k:5"><div class="bc im"><i style="background-image:url(assets/s4/rehearsal.webp)"></i><b>관리기관</b><p>직접 운영 또는 관리기관 위탁</p></div></div><div class="bw g" style="--k:6"><div class="bc im"><i style="background-image:url(assets/s4/live-5.webp)"></i><b>장애 대응</b><p>통신장애 · 시스템 오류</p></div></div><div class="bw h" style="--k:7"><div class="bc co" style="background:radial-gradient(120% 80% at 80% 100%,#ec5566 0%,rgba(236,85,102,0) 62%),linear-gradient(170deg,#f6ecee 0%,#eac0c6 100%)"><b>난이도 상승</b><p>집중투표 · 3%룰 · 행동주의</p></div></div></div>
+<!-- 이전 4장 회전 카드(11/23) --><div class="g4" hidden><div class="g4w" style="--k:0"><div class="fl"><div class="cc l fr" style="background:radial-gradient(120% 80% at 80% 100%,#4677e6 0%,rgba(70,119,230,0) 60%),linear-gradient(170deg,#e9eef8 0%,#b8c9ee 100%)"><p class="cs">엑셀에서 시스템으로</p><b>디지털 전환</b></div><div class="cc l bk" style="background:radial-gradient(120% 80% at 80% 100%,#64a8e6 0%,rgba(100,168,230,0) 60%),linear-gradient(170deg,#e8f1f8 0%,#b8d5ee 100%)"><p class="cs">직접 운영 또는 관리기관 위탁</p><b>관리기관</b></div></div></div><div class="g4w" style="--k:1"><div class="fl"><div class="cc l fr" style="background:radial-gradient(120% 80% at 80% 100%,#64a8e6 0%,rgba(100,168,230,0) 60%),linear-gradient(170deg,#e8f1f8 0%,#b8d5ee 100%)"><p class="cs">질의 · 발언 · 표결</p><b>전자출석</b></div><div class="cc l bk" style="background:radial-gradient(120% 80% at 80% 100%,#4677e6 0%,rgba(70,119,230,0) 60%),linear-gradient(170deg,#e9eef8 0%,#b8c9ee 100%)"><p class="cs">회사 선택에 따라 도입</p><b>사전신청제</b></div></div></div><div class="g4w" style="--k:2"><div class="fl"><div class="cc l fr" style="background:radial-gradient(120% 80% at 80% 100%,#4677e6 0%,rgba(70,119,230,0) 60%),linear-gradient(170deg,#e9eef8 0%,#b8c9ee 100%)"><p class="cs">실시간 쌍방향 참여 · 기록</p><b>실시간 중계</b></div><div class="cc l bk" style="background:radial-gradient(120% 80% at 80% 100%,#64a8e6 0%,rgba(100,168,230,0) 60%),linear-gradient(170deg,#e8f1f8 0%,#b8d5ee 100%)"><p class="cs">의결권 행사 · 결의 결과 검증</p><b>정확한 집계</b></div></div></div><div class="g4w" style="--k:3"><div class="fl"><div class="cc l fr" style="background:radial-gradient(120% 80% at 80% 100%,#ec5566 0%,rgba(236,85,102,0) 62%),linear-gradient(170deg,#f6ecee 0%,#eac0c6 100%)"><p class="cs">통신장애 · 시스템 오류</p><b>장애 대응</b></div><div class="cc l bk" style="background:radial-gradient(120% 80% at 80% 100%,#ec5566 0%,rgba(236,85,102,0) 62%),linear-gradient(170deg,#f6ecee 0%,#eac0c6 100%)"><p class="cs">집중투표 · 3%룰 · 행동주의</p><b>난이도 상승</b></div></div></div></div>
 </section>
 
 <!-- ═════════ 2. 2027 Preview ═════════ -->
