@@ -1880,6 +1880,10 @@ html.embed #sgb,html.embed #sg{display:none!important}  /* 11/26 메인 스크�
 /* K28d(11/26 21:45) 단계 점 · 번호 오렌지 → 레드. K28e 「사이버 공격이나…」 문장도 박스로 */
 #K28d{--warn:#ff4d5e}
 #K28e .gbx .gtx{color:#e6e9ee}
+
+/* K19b(11/26 21:48) 인트로 로고 조금 작게(150 → 128 · 210 → 178), 가운데 ×는 K21 ∞처럼 점 입자가 흐르는 X */
+#K19b .k19i img:first-child{height:128px}#K19b .k19i img:last-child{height:178px}
+#K19b .k19i .k19x{width:250px;height:250px}
 </style></head>
 <body>
 <div class="stage" id="stage">
@@ -2112,7 +2116,7 @@ html.embed #sgb,html.embed #sg{display:none!important}  /* 11/26 메인 스크�
 </section>
 
 <section class="s" id="K19b" data-t="외국인 의결권 프로세스 혁신" data-dim=".14">
- <div class="k19i"><img src="assets/irk-wordmark-white.svg" alt="IR KUDOS"><span>×</span><img src="assets/s4/proxymity-logo.png" alt="Proxymity"></div>
+ <div class="k19i"><img src="assets/irk-wordmark-white.svg" alt="IR KUDOS"><canvas class="k19x" data-viz="xs" width="440" height="440"></canvas><img src="assets/s4/proxymity-logo.png" alt="Proxymity"></div>
  <div class="top"><p class="eb fu q" style="--i:1">IR KUDOS × Proxymity</p><h2 class="h hm fu" style="--i:1">외국인 의결권 프로세스 혁신</h2></div>
  <div class="lgd fu" style="--i:2"><span class="t"><i></i>주총 정보 · 자료 배포</span><span class="p"><i></i>리얼타임 SID</span><span class="o"><i></i>의결권 지시 현황 대사 · 처리 · 조회</span></div>
  <div class="core fu" style="--i:2"></div>
@@ -2731,6 +2735,13 @@ VIZ.kr24=(cv)=>{const g=cv.getContext('2d'),W=cv.width,H=cv.height;let t0=0;
    g.globalAlpha=fade*.95*Math.min(1,e*1.5);g.fillStyle='#0081cc';g.beginPath();g.arc(c.x,c.y,c.r*s,0,7);g.fill();});
   g.globalAlpha=1;}};};
 /* K21 ∞ Data Stream — 입자가 ∞(lemniscate) 길을 따라 흐름 */
+VIZ.xs=(cv)=>{const g=cv.getContext("2d"),W=cv.width,H=cv.height,N=380;/* K19b 인트로 × — K21 ∞처럼 점 입자가 X 두 획을 따라 흐름(파랑 → 청록) */
+ const P=[...Array(N)].map((_,i)=>({k:i%2,u:Math.random(),o:(Math.random()-.5)*2,s:.002+Math.random()*.003,r:3+Math.random()*5.5}));
+ const pt=(k,u)=>{const m=W*.16;return k?[m+(W-2*m)*u,m+(H-2*m)*u]:[W-m-(W-2*m)*u,m+(H-2*m)*u];};
+ return{enter(){},draw(){g.clearRect(0,0,W,H);g.globalAlpha=.22;g.strokeStyle='#3aa0ea';g.lineWidth=4;g.lineCap='round';
+  for(const k of [0,1]){const[a,b]=pt(k,0),[c,d]=pt(k,1);g.beginPath();g.moveTo(a,b);g.lineTo(c,d);g.stroke();}
+  for(const q of P){q.u=(q.u+q.s)%1;const[x,y]=pt(q.k,q.u),w=q.o*16,f=Math.sin(q.u*Math.PI);g.fillStyle=mix(q.u);g.globalAlpha=(.35+.65*(1-Math.abs(q.o)))*(.25+.75*f);g.beginPath();g.arc(x+(q.k?-w:w)*.707,y+w*.707,q.r,0,7);g.fill();}
+  g.globalAlpha=1;}};};
 VIZ.inf=(cv)=>{const g=cv.getContext('2d'),W=cv.width,H=cv.height,N=620;
  const P=[...Array(N)].map(()=>({u:Math.random(),o:(Math.random()-.5)*2,s:.0009+Math.random()*.0016,r:2.4+Math.random()*5.2}));
  const pt=u=>{const t=u*Math.PI*2,d=1+Math.sin(t)**2,a=W*.45;return[W/2+a*Math.cos(t)/d,H/2+a*Math.sin(t)*Math.cos(t)/d*1.05,t];};
