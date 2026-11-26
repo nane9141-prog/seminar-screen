@@ -1156,6 +1156,10 @@ html,body,body *{touch-action:none;-webkit-touch-callout:none;-webkit-user-selec
 #K18a .rp .card video{position:absolute;left:0;top:0;width:100%;height:100%}
 #K18a .rp .card .bgv{object-fit:cover;filter:blur(60px) brightness(.55);transform:scale(1.15)}
 #K18a .rp .card .fgv{object-fit:contain}
+/* 11/26 K21 배경에 데이터센터 사진(shutterstock_2832610495) 연하게, 주주 쪽 5개 박스 앞 세로 선 삭제 */
+#K21 .k21bg{position:absolute;inset:0;background:url(assets/s4/k21-bg.webp) center/cover;opacity:.16;filter:saturate(.8);pointer-events:none}
+#K21 .cd.sv::before{display:none}
+#K21 .cd.sv{padding-left:60px}
 </style></head>
 <body>
 <div class="stage" id="stage">
@@ -1374,6 +1378,7 @@ html,body,body *{touch-action:none;-webkit-touch-callout:none;-webkit-user-selec
 
 <!-- ═════════ 5. A to Z ═════════ -->
 <section class="s" id="K21" data-t="A to Z 구성도" data-dim=".16">
+ <div class="k21bg"></div>
  <h2 class="k21t"><span>전자주주총회의 준비부터 운영까지, <em>A to Z</em></span></h2>
  <div class="gp ga" style="left:240px;top:320px;width:1640px;height:1180px"><p>상장기업</p></div>
  <div class="gp gb" style="left:2220px;top:320px;width:1740px;height:1180px"><p>주주</p></div>
