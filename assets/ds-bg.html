@@ -582,6 +582,7 @@ async function rec8k(){
 }
 $('rec8').onclick=rec8k;
 window.renderAt=t=>{manual=true;tNow=t;draw();};
+window.DSR={cv:()=>cv,loop:()=>LOOP_S,speed:()=>S.speed,size:(w,h)=>{manual=true;cv.width=w;cv.height=h;}};
 requestAnimationFrame(loop);
 }
 </script>

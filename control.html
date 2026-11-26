@@ -563,7 +563,7 @@ SCHED.onSrc(drawSrc);
 <script src="assets/seatmap.js"></script>
 <script>drawSrc();if(document.body.dataset.m==="att")Attendees.show();/* 11/26 화면 전환: 미리보기(메인 화면을 index.html?view=1 로 따라 그림) · 키보드/클리커 · PIP */
 (function(){const $$=id=>document.getElementById(id);const box=document.createElement('div');box.id='pvbox';box.innerHTML='<span class="pvx">메인 미리보기</span>';document.body.appendChild(box);
- let ifr=null,pipW=null;const mk=()=>{const f=document.createElement('iframe');f.src='index.html?view=1&lite=1'+(/[?&]net=0/.test(location.search)?'&net=0':'');f.title='메인 스크린 미리보기';f.setAttribute('tabindex','-1');f.inert=true;return f;};
+ let ifr=null,pipW=null;const mk=()=>{const f=document.createElement('iframe');f.src='index.html?view=1&lite=1&ds=video'+(/[?&]net=0/.test(location.search)?'&net=0':'');f.title='메인 스크린 미리보기';f.setAttribute('tabindex','-1');f.inert=true;return f;};
  const ensure=()=>{if(!ifr){ifr=mk();box.appendChild(ifr);}};
  const place=()=>{const m=document.body.dataset.m,slot=$$('pvslot'),on=$$('pvon').checked,mini=$$('pvmini').checked;
   slot.classList.toggle('off',!on);

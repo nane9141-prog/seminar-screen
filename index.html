@@ -856,7 +856,10 @@ window.SPKPORT={show(k){if(port&&port.k===k&&port.tOut==null)return;port={k,t0:p
 slides.filter(s=>s.dataset.lay==='split').forEach(s=>{const sp=document.createElement('div'),L=document.createElement('div'),Rr=document.createElement('div');sp.className='lay2';L.className='lay2-l';Rr.className='lay2-r';
   [...s.children].forEach(c=>{((!Rr.children.length&&c.matches('.eyebrow,h1,h2'))||(s.dataset.prog&&!c.matches('.pscroll'))?L:Rr).appendChild(c);});sp.append(L,Rr);s.append(sp);});
 window.FSQ=parseFloat(qp.get('q')||localStorage.getItem('scr-q')||'0.75');
-function fit(){const s=Math.min(innerWidth/4200,innerHeight/1600);stage.style.transform='translate('+((innerWidth-4200*s)/2)+'px,'+((innerHeight-1600*s)/2)+'px) scale('+s+')';}
+/* 11/26 송출 옵션: ?fit=fill — 화면 전체(예: 1920×1080)에 가로세로 따로 늘려 채움(LED 프로세서가 21:8로 다시 늘리는 Stretch 방식용). ?ds=video — 배경 Data Stream을 WebGL 대신 영상(assets/ds-main.mp4)으로. ?out=led = 둘 다 */
+const OUT_LED=qp.get('out')==='led',FILL=OUT_LED||qp.get('fit')==='fill',DSV=OUT_LED||qp.get('ds')==='video';
+if(DSV){const f=document.getElementById('c'),v=document.createElement('video');v.id='c';v.src='assets/ds-main.mp4';v.muted=true;v.loop=true;v.playsInline=true;v.autoplay=true;v.preload='auto';v.setAttribute('aria-hidden','true');v.style.objectFit='fill';v.style.transition='opacity 1.2s ease,transform 2.4s cubic-bezier(.3,.7,.2,1)';f.replaceWith(v);v.play().catch(()=>{addEventListener('keydown',()=>v.play(),{once:true});});}
+function fit(){if(FILL){stage.style.transform='scale('+(innerWidth/4200)+','+(innerHeight/1600)+')';return;}const s=Math.min(innerWidth/4200,innerHeight/1600);stage.style.transform='translate('+((innerWidth-4200*s)/2)+'px,'+((innerHeight-1600*s)/2)+'px) scale('+s+')';}
 addEventListener('resize',fit);fit();
 const LAY={A:[{x:.37,y:.02,r:.40},{x:.01,y:0,r:0},{x:.33,y:.29,r:0},{x:.335,y:-.19,r:0}],
  B:[{x:.27,y:0,r:0},{x:.01,y:0,r:0},{x:.33,y:.29,r:0},{x:.335,y:-.19,r:0}],
@@ -869,7 +872,7 @@ function bgTick(now){const f=1-Math.exp(-Math.min(.25,((now||bt)-bt)/1000)*3.2);
 /* 배경 Data Stream: 화면 종류별 밝기 · 형태 중심 위치. A 타이틀류 · B 본문 · C 기본 화면(외부 소스 전환) */
 const BGDIM={A:1,B:1,C:1},BGOX={A:.5,B:.5,C:.5};  // 형태는 모든 화면 가운데 고정
 const OVDIM={title:.42,body:.2};  // 로비 기준: 글(오버레이)이 있으면 배경을 낮춤 — 타이틀류 42% · 본문 · 연사 20% (로비 타이틀 .42 · 타임테이블 · 연사 .2)
-const dsPost=m=>{const f=document.getElementById('c');if(f&&f.contentWindow)f.contentWindow.postMessage(m,'*');};
+const dsPost=m=>{const f=document.getElementById('c');if(!f)return;if(f.tagName==='VIDEO'){if(m.ds==='ox')f.style.transform='translateX('+((+m.v-.5)*4200)+'px)';else if(m.ds==='mul')f.playbackRate=+m.v||1;return;}if(f.contentWindow)f.contentWindow.postMessage(m,'*');};
 function bgSet(s){const f=document.getElementById('c'),k=s.dataset.bg,lay=s.dataset.lay;let d=BGDIM[k]??1,ox=.5;if(k!=='N'){d=(lay==='center'||lay==='en')?OVDIM.title:OVDIM.body;}if(s.dataset.dim)d=+s.dataset.dim;if(s.dataset.ox)ox=+s.dataset.ox;  // 화면별 배경 밝기 · 형태 중심(발표자료: 오른쪽 열)
   f.style.opacity=k==='N'?0:d;dsPost({ds:'ox',v:ox});}
 document.getElementById('c').addEventListener('load',()=>{dsPost({ds:'q',v:window.FSQ});if(SPD!==1)dsPost({ds:'mul',v:SPD});try{const o=JSON.parse(localStorage.getItem('scr-ds')||'null');if(o)dsPost(Object.assign({ds:'set'},o));}catch(e){}const s=slides[idx];if(s)bgSet(s);});
