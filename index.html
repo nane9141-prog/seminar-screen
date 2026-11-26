@@ -1098,7 +1098,7 @@ var FACE={devs:[],err:'',fit:localStorage.getItem('scr-face-fit')||'cover',
    const d=await navigator.mediaDevices.enumerateDevices();this.devs=d.filter(x=>x.kind==='videoinput').map((x,i)=>({id:x.deviceId,label:x.label||('영상 장치 '+(i+1)+' (이름은 권한 허용 뒤 표시)')}));this.err='';}catch(e){this.err=e.name||String(e);}MC.pub();},
  stop(){const b=this.box();if(!b)return;if(b._s){if(!b._remote)b._s.getTracks().forEach(t=>t.stop());b._s=null;}b._remote=false;const v=b.querySelector('video');if(v){v.srcObject=null;v.style.objectViewBox='';}b.classList.remove('on');},
  /* 11/26 원격 기기(face.html, Meet · Teams 화면 공유) — id 'remote' */
- attachRemote(){const b=this.box(),R=window.FACE_RX;if(!b||!R||!R.stream)return false;this.stop();const v=b.querySelector('video');b._s=R.stream;b._remote=true;v.srcObject=R.stream;v.style.objectFit=this.fit;v.style.objectViewBox=FACELINK.viewBox(R.crop);v.play().catch(()=>{});b.classList.add('on');this.err='';return true;},
+ attachRemote(){const b=this.box(),R=window.FACE_RX;if(!b||!R||!R.stream||!R.live)return false;this.stop();const v=b.querySelector('video');b._s=R.stream;b._remote=true;v.srcObject=R.stream;v.style.objectFit=this.fit;v.style.objectViewBox=FACELINK.viewBox(R.crop);v.play().catch(()=>{});b.classList.add('on');this.err='';return true;},
  async set(id){if(window.VIEW_MODE)return;const b=this.box();if(!b)return;this.stop();
   if(!id){localStorage.removeItem('scr-face-dev');this.err='';MC.pub();return;}
   if(id==='remote'){localStorage.setItem('scr-face-dev','remote');if(!this.attachRemote())this.err='원격 기기 대기 중 — face.html에서 보내기를 누르세요';MC.pub();return;}
@@ -1110,7 +1110,7 @@ var FACE={devs:[],err:'',fit:localStorage.getItem('scr-face-fit')||'cover',
  setFit(f){this.fit=f==='contain'?'contain':'cover';localStorage.setItem('scr-face-fit',this.fit);const b=this.box(),v=b&&b.querySelector('video');if(v)v.style.objectFit=this.fit;MC.pub();},
  st(){const b=this.box(),on=!!(b&&b.classList.contains('on')&&b._s),tr=on&&b._s.getVideoTracks()[0],ss=tr&&tr.getSettings?tr.getSettings():{},R=window.FACE_RX,rm=on&&b._remote,v=b&&b.querySelector('video');
   return {on:on?1:0,label:rm?'원격 · '+(R&&R.name||'원격 기기'):tr?tr.label:'',id:rm?'remote':tr&&ss.deviceId||'',res:rm?(v&&v.videoWidth?v.videoWidth+'×'+v.videoHeight:''):ss.width?ss.width+'×'+ss.height:'',fit:this.fit,err:this.err,devs:this.devs,
-   rx:R?{net:R.net,on:R.stream?1:0,name:R.name||'',state:R.state(),crop:R.crop?1:0}:null};}};
+   rx:R?{net:R.net,on:R.live?1:0,name:R.name||'',state:R.state(),crop:R.crop?1:0,fail:R.fail||'',diag:R.diag||''}:null};}};
 window.FACE=FACE;
 if(!window.VIEW_MODE&&window.FACELINK&&window.RTCPeerConnection){window.FACE_RX=FACELINK.Rx({
   onStream(){const m=localStorage.getItem('scr-face-dev'),b=FACE.box();if(m==='remote'||!(b&&b.classList.contains('on'))){localStorage.setItem('scr-face-dev','remote');FACE.attachRemote();toast('연사 화면 원격 연결 — '+(FACE_RX.name||'원격 기기'));}MC.pub();},

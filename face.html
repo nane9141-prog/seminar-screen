@@ -81,7 +81,7 @@ function upd(){const n=TX.net,np=$('pnet');np.className='pill '+(n==='on'?'ok':n
  const c=TX.count(),pn=TX.pending(),pr=$('prx');pr.className='pill '+(c?'ok':pn?'warn':'');pr.lastChild.textContent='메인 스크린 '+c+'대'+(pn?' · 연결 중 '+pn:'');
  const on=!!TX.stream;$('bstop').disabled=!on;$('pv').classList.toggle('live',on);
  $('sbig').textContent=!on?'대기':c?'송출 중':'연결 대기';$('sbig').className='big '+(!on?'':c?'ok':'warn');
- $('ssub').textContent=!on?'보내는 화면이 없습니다':c?'메인 스크린 '+c+'대에 보내는 중':TX.net!=='on'?'신호 서버 연결을 기다리는 중':'메인 스크린(index.html)이 열려 있는지 확인하세요';}
+ $('ssub').textContent=!on?'보내는 화면이 없습니다':c?'메인 스크린 '+c+'대에 보내는 중':TX.net!=='on'?'신호 서버 연결을 기다리는 중':TX.fail?TX.fail:TX.pending()?'메인 스크린과 연결 중…':'메인 스크린(index.html)이 열려 있는지 확인하세요';}
 function show(st){$('v').srcObject=st;$('mv').srcObject=st;drawCrop();}
 async function startScr(){try{const st=await navigator.mediaDevices.getDisplayMedia({video:{frameRate:{ideal:30},width:{ideal:1920},height:{ideal:1080}},audio:false,selfBrowserSurface:'exclude',surfaceSwitching:'include'});TX.start(st);show(st);}catch(e){if(e.name!=='NotAllowedError')alert('화면 선택 실패: '+(e.name||e));}}
 async function startCam(id){try{const st=await navigator.mediaDevices.getUserMedia({video:{deviceId:id?{exact:id}:undefined,width:{ideal:1920},height:{ideal:1080},frameRate:{ideal:30}},audio:false});TX.start(st);show(st);listCam();}catch(e){alert('카메라 연결 실패: '+(e.name||e));}}
