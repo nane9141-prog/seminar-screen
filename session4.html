@@ -1903,6 +1903,28 @@ html.embed #sgb,html.embed #sg{display:none!important}  /* 11/26 메인 스크�
 #K26 .k26s b,#K26 .k26s small{position:relative;z-index:1}
 #K26 .k26s b{font:700 64px/1.3 "Pretendard Variable";color:#F2F5FA;letter-spacing:-.02em}
 #K26 .k26s small{margin-top:28px;font:500 40px/1.3 "Pretendard Variable";color:#8b95a3}
+
+/* 11/26 22:05 K19c 화살표: 머리는 선이 다 그려진 뒤 나타나는 채운 삼각형(둥근 밑변), (7) 모서리 둥글게 · 머리 포함, (8) 관리기관 ↔ KOSMOS 중복출석체크 */
+#K19c .kb{top:1232px!important;height:100px!important}
+#K19c svg.fl .hd{stroke:none;opacity:0}
+#K19c svg.fl .hd.r{fill:#5aa2ff}#K19c svg.fl .hd.l{fill:#00ada9}#K19c svg.fl .hd.x{fill:#00ada9}
+.s.cur#K19c svg.fl .hd{animation:k19cH .25s ease calc(var(--d) + 1.5s) both}
+@keyframes k19cH{from{opacity:0;transform:scale(.6)}to{opacity:1;transform:none}}
+#K19c svg.fl .hd{transform-box:fill-box;transform-origin:center}
+.s.cur#K19c svg.fl .a.x{animation:k22D 1.1s cubic-bezier(.45,0,.25,1) calc(var(--d) + .9s) both}
+.s.cur#K19c svg.fl .m{animation:k19cm .5s ease calc(var(--d) + 2.2s) both,k22M 1.6s linear calc(var(--d) + 2.2s) infinite}
+.s.cur#K19c svg.fl .hd.x{animation-delay:calc(var(--d) + 1.9s)}
+#K19c .lb.k8{font-size:34px;color:#c4cad3}#K19c .lb.k8 i{color:var(--b)}
+/* K09 서브제목과 제목 사이 간격을 다른 장(.top .h margin-top 28px)과 같게 */
+#K09 .ab .eb.q+.h{margin-top:28px}
+/* K17 타이틀 아래 영역 전체 위로 70px */
+#K17 .node{top:490px!important}#K17 .plus{top:1130px!important}
+
+/* 11/26 22:08 K24b 서브제목(K24b .q 규칙과 겹치지 않게 다른 장 서브제목과 같은 모양), K24a 제목 한 줄 · 위로 */
+#K24b .k24bt .eb.q{text-align:left;font:400 50px/1.2 "KakaoSmall",sans-serif;color:var(--mut);letter-spacing:0}
+
+/* K11(11/26 22:10) 그래프 최고점을 제목(3월 정기주총 개최일 분포) 윗선 높이까지 — 막대 최대 860 → 967px, 집중일 띠 · △ · FULL BOOKING 윗선도 같은 높이 */
+#K11 .band,#K11 .full,#K11 .tri{top:-270px!important}
 </style></head>
 <body>
 <div class="stage" id="stage">
@@ -2031,10 +2053,10 @@ html.embed #sgb,html.embed #sg{display:none!important}  /* 11/26 메인 스크�
   <div class="gbx fu" style="--i:3"><ol class="gn">
    <li><i class="nb">1</i><p>원활한 개최 · 운영을 위해 관리기관을 지정해 절차 운영을 위탁할 수 있음</p></li>
    <li><i class="nb">2</i><p>지정 시 인력 · 물적설비 · 업무연속성 보완설비 요건 확인</p></li>
-   <li><i class="nb">3</i><p>수용능력 · 본인확인 · 출석관리 · 질의 · 표결 · 장애대응 · 기록 · 개인정보 체계를 고려해 선정</p></li>
+   <li><i class="nb">3</i><p>수용능력 · 본인확인 · 출석관리 · 질의 · 표결 · 장애대응 · 기록 · 개인정보 체계를<br>고려해 선정</p></li>
    <li><i class="nb">4</i><p>위탁하더라도 개최 · 의사진행 · 연기 · 속행 · 폐회 판단은 <em>회사 및 의장</em>이 수행</p></li>
    <li><i class="nb">5</i><p>위탁 범위 · 장애대응 · 기록 · 개인정보 · 책임분담은 위탁계약에서 정함</p></li></ol></div>
-  <div class="gkey fu" style="--i:4"><p>구체적 운영방식은 <em>매번 이사회 결의 없이 대표이사에게 위임 가능</em>. 다만 중요한 일반기준은 이사회 결의를 거친 운영규정으로 정해두는 것이 바람직</p></div>
+  <div class="gkey fu" style="--i:4"><p>관리기관 지정 등 구체적 운영방식은 <em>매번 이사회 결의 없이 대표이사에게 위임 가능</em>.<br>다만 중요한 일반기준은 이사회 결의를 거친 운영규정으로 정해두는 것이 바람직</p></div>
  </div>
 </section>
 
@@ -2159,7 +2181,7 @@ html.embed #sgb,html.embed #sg{display:none!important}  /* 11/26 메인 스크�
 
 
 <section class="s" id="K19c" data-t="실질주주의 전자주총 참여" data-dim=".14">
- <div class="top"><p class="eb fu q" style="--i:0">IR KUDOS × Proxymity</p><h2 class="h hm fu" style="--i:1">명부에 없는 실질주주, 대리인 자격으로 참여</h2></div>
+ <div class="top"><p class="eb fu q" style="--i:0">실질주주의 직접 전자출석</p><h2 class="h hm fu" style="--i:1">명부에 없는 실질주주, 대리인 자격으로 참여</h2></div>
  <div class="lc">
   <div class="gp fu" style="--i:2"><div class="src"><span>법무부</span><b>전자주주총회 가이드라인</b><small>가. 주주 본인 확인</small></div>
    <div class="qb"><p>주주총회는 주주 전원으로 구성된다.<br><em>여기서 말하는 주주는 기준일 당시<br>주주명부에 기재 또는 기록된 자를 말한다.</em></p></div></div>
@@ -2174,18 +2196,17 @@ html.embed #sgb,html.embed #sg{display:none!important}  /* 11/26 메인 스크�
  <div class="ci fu" style="--i:4;left:3110px;top:990px">관리기관</div>
  <div class="ci fu" style="--i:4;left:3670px;top:990px">회사</div>
  <div class="kb fu" style="--i:5"><img src="assets/s4/kosmos-white.png" alt="KOSMOS"></div>
- <svg class="fl" viewBox="0 0 4200 1600" width="4200" height="1600"><defs>
-  <marker id="k19cr" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="4" markerHeight="4" orient="auto"><path d="M1 1L8 5L1 9" fill="none" stroke="#5aa2ff" stroke-width="2"/></marker>
-  <marker id="k19cl" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="4" markerHeight="4" orient="auto"><path d="M1 1L8 5L1 9" fill="none" stroke="#00ada9" stroke-width="2"/></marker>
-  <linearGradient id="k19cg" gradientUnits="userSpaceOnUse" x1="1990" y1="0" x2="2900" y2="0"><stop offset="0" stop-color="#5aa2ff"/><stop offset="1" stop-color="#00ada9"/></linearGradient></defs>
-  <path class="a r" pathLength="1" style="--d:.2s" marker-end="url(#k19cr)" d="M2162 955H2378"/>
-  <path class="a r" pathLength="1" style="--d:.6s" marker-end="url(#k19cr)" d="M2722 955H2938"/>
-  <path class="a r" pathLength="1" style="--d:1s" marker-end="url(#k19cr)" d="M3282 955H3498"/>
-  <path class="a l" pathLength="1" style="--d:1.4s" marker-end="url(#k19cl)" d="M3498 1025H3282"/>
-  <path class="a l" pathLength="1" style="--d:1.8s" marker-end="url(#k19cl)" d="M2938 1025H2722"/>
-  <path class="a l" pathLength="1" style="--d:2.2s" marker-end="url(#k19cl)" d="M2378 1025H2162"/>
-  <path class="a x" pathLength="1" style="--d:2.6s" d="M1990 1142V1252H2886"/>
-  <path class="m" style="--d:2.6s" d="M1990 1142V1252H2886"/>
+ <svg class="fl" viewBox="0 0 4200 1600" width="4200" height="1600"><defs><linearGradient id="k19cg" gradientUnits="userSpaceOnUse" x1="1990" y1="0" x2="2900" y2="0"><stop offset="0" stop-color="#5aa2ff"/><stop offset="1" stop-color="#00ada9"/></linearGradient></defs>
+ <path class="a r" pathLength="1" style="--d:.2s" d="M2162 955H2370"/><path class="hd r" style="--d:.2s" d="M2384 955L2358 970Q2364 955 2358 940Z"/>
+ <path class="a r" pathLength="1" style="--d:.6s" d="M2722 955H2930"/><path class="hd r" style="--d:.6s" d="M2944 955L2918 970Q2924 955 2918 940Z"/>
+ <path class="a r" pathLength="1" style="--d:1s" d="M3282 955H3490"/><path class="hd r" style="--d:1s" d="M3504 955L3478 970Q3484 955 3478 940Z"/>
+ <path class="a l" pathLength="1" style="--d:1.4s" d="M3504 1025H3296"/><path class="hd l" style="--d:1.4s" d="M3282 1025L3308 1010Q3302 1025 3308 1040Z"/>
+ <path class="a l" pathLength="1" style="--d:1.8s" d="M2944 1025H2736"/><path class="hd l" style="--d:1.8s" d="M2722 1025L2748 1010Q2742 1025 2748 1040Z"/>
+ <path class="a l" pathLength="1" style="--d:2.2s" d="M2384 1025H2176"/><path class="hd l" style="--d:2.2s" d="M2162 1025L2188 1010Q2182 1025 2188 1040Z"/>
+ <path class="a r" pathLength="1" style="--d:3.2s" d="M3090 1148V1214"/><path class="hd r" style="--d:3.2s" d="M3090 1228L3075 1202Q3090 1208 3105 1202Z"/>
+ <path class="a l" pathLength="1" style="--d:3.5s" d="M3130 1228V1162"/><path class="hd l" style="--d:3.5s" d="M3130 1148L3145 1174Q3130 1168 3115 1174Z"/>
+ <path class="a x" pathLength="1" style="--d:2.6s" d="M1990 1146V1236Q1990 1282 2036 1282H2880"/><path class="hd x" style="--d:2.6s" d="M2900 1282L2874 1297Q2880 1282 2874 1267Z"/>
+ <path class="m" style="--d:2.6s" d="M1990 1146V1236Q1990 1282 2036 1282H2880"/>
  </svg>
  <div class="lb u" style="--d:.2s;left:2270px;top:928px"><i>(1)</i> 직접출석<br>요청</div>
  <div class="lb u" style="--d:.6s;left:2830px;top:928px"><i>(2)</i> 대리인 위임<br>· 코드 발급<br>(+의결권 불통일행사)</div>
@@ -2193,7 +2214,8 @@ html.embed #sgb,html.embed #sg{display:none!important}  /* 11/26 메인 스크�
  <div class="lb l" style="--d:1.4s;left:3390px;top:1050px"><i>(4)</i> 승인</div>
  <div class="lb l" style="--d:1.8s;left:2830px;top:1050px"><i>(5)</i> 대리인<br>참석자 코드 제공</div>
  <div class="lb l" style="--d:2.2s;left:2270px;top:1050px"><i>(6)</i> 대리인 지정<br>· 참석자 코드 제공</div>
- <div class="lb x" style="--d:2.6s;left:2050px;top:1274px"><i>(7)</i> 전자주총 출석</div>
+ <div class="lb x" style="--d:2.6s;left:2030px;top:1196px"><i>(7)</i> 전자주총 출석</div>
+ <div class="lb x k8" style="--d:3.4s;left:3160px;top:1166px"><i>(8)</i> 중복출석체크</div>
 </section>
 
 <section class="s ch" id="K20" data-t="Powered by IR KUDOS" data-dim=".42">
@@ -2234,7 +2256,7 @@ html.embed #sgb,html.embed #sg{display:none!important}  /* 11/26 메인 스크�
 </section>
 <section class="s" id="K23b" data-t="전자투표 · 전자위임장" data-dim=".1" data-ox=".2">
  <div class="ab" style="left:300px;top:250px;width:1460px">
-  <p class="eb fu q k23e" style="--i:0">전자투표 · 전자위임장</p>
+  <p class="eb fu q k23e" style="--i:0">전자투표 · 전자위임장 · 서면위임장</p>
   <h2 class="h hm fu" style="--i:1;margin-top:40px">사전투표에서 현장 · 온라인까지<br>하나의 DB에서 통합</h2>
   <p class="sub fu" style="--i:2;margin-top:50px">전자주총 시 전자투표관리기관은 자유롭게 선택 가능</p>
   <div class="k23r fu" style="--i:3"><p class="k23l">참고</p><p class="k23c"><span>전자등록기관</span><i>≠</i><span>명의개서대행기관</span><i>≠</i><span>전자투표관리기관</span><i>≠</i><span class="on">전자주총관리기관</span></p></div>
@@ -2244,10 +2266,10 @@ html.embed #sgb,html.embed #sg{display:none!important}  /* 11/26 메인 스크�
 </section> 
 
 <section class="s" id="K24a" data-t="서면위임장 · 권유" data-dim=".1" data-ox=".2">
- <div class="ab" style="left:300px;top:220px;width:1900px">
-  
-  <h2 class="h hm fu" style="--i:1;margin-top:36px">서면위임장 · 의결권 대리행사 권유</h2>
-  <p class="sub fu" style="--i:2;margin-top:30px">주총 당일 대량의 서면위임장도 실시간 통합 집계</p>
+ <div class="ab" style="left:300px;top:150px;width:1900px">
+  <p class="eb fu q" style="--i:0">의결권 대리행사 권유</p>
+  <h2 class="h hm fu" style="--i:1;margin-top:28px;white-space:nowrap">안전하고 체계적인 의결권 대리행사 권유</h2>
+  <p class="sub fu" style="--i:2;margin-top:30px">개인 · 기관 주주 대응과 위임장 처리를 하나의 체계로 관리</p>
   <div class="k24g fu" style="--i:3"><p class="grp">개인 주주<small>신분증 OCR · 진위 확인</small></p>
   <ul class="lst"><li>신분증 진위여부 실시간 확인</li><li>고유식별정보 처리 동의</li><li>에이전트 폰에 개인정보 저장 안 함</li></ul></div>
   <div class="k24g fu" style="--i:4"><p class="grp">기관 주주<small>실질주주 분석 26년 업력</small></p>
@@ -2266,9 +2288,10 @@ html.embed #sgb,html.embed #sg{display:none!important}  /* 11/26 메인 스크�
 </div></div><div class="phone ip" style="--n:2"><div class="scr"><div class="sc ip-sc s3"><p class="ti">본인확인</p><div class="bio"><span class="fc"></span><span class="fp"></span></div><p class="q">생체인증을 사용하시겠습니까?</p><p class="ds">등록된 생체정보로 간편하게 확인합니다</p><div class="bt">생체인증 사용하기</div></div>
 </div></div><div class="phone ip" style="--n:3"><div class="scr"><div class="sc ip-sc s4"><p class="hd">큐더스전자 · 제56기 정기주주총회</p><div class="ag"><small>제1호 의안</small><b>재무제표 승인의 건</b><div class="ch"><span class="on">찬성</span><span>반대</span><span>기권</span></div><div class="bt">투표하기</div></div><div class="ag dim"><small>제2호 의안</small><b>정관 일부 변경의 건</b></div><div class="ag dim"><small>제3호 의안</small><b>사내이사 선임의 건</b></div></div>
 </div></div><div class="phone ip" style="--n:4"><div class="scr"><div class="sc ip-sc s5"><p class="hd">의결권 행사내역</p><div class="hi"><span><small>제1호 의안</small>재무제표 승인의 건</span><em>찬성</em></div><div class="hi"><span><small>제2호 의안</small>정관 일부 변경의 건</span><em>찬성</em></div><div class="hi"><span><small>제3호 의안</small>사내이사 선임의 건</span><em>찬성</em></div><div class="hi"><span><small>제4호 의안</small>감사위원 선임의 건</span><em>기권</em></div><div class="hi"><span><small>제5호 의안</small>이사 보수한도 승인의 건</span><em>찬성</em></div></div></div></div></div>
- <div class="ab k24bt" style="left:300px;top:300px;width:1700px">
-  <h2 class="h hm">현장 출석 · 표결의 전자화</h2>
-  <p class="sub" style="margin-top:34px">현장 · 전자출석 표결을 실시간 통합 집계</p>
+ <div class="ab k24bt" style="left:300px;top:170px;width:1700px">
+  <p class="eb q">현장 출석 · 전자표결</p>
+  <h2 class="h hm" style="margin-top:28px">출석부터 표결까지,<br>스마트폰 하나로</h2>
+  <p class="sub" style="margin-top:34px">모바일 출입증으로 간편하게 출석하고<br>현장 · 온라인 표결 결과를 실시간 통합 집계</p>
   <ul class="k24bl"><li>회원가입 없는 모바일 출입증</li><li>태그 한 번으로 출석 확인</li><li>생체인증으로 간편한 본인확인</li><li>현장에서도 간편한 전자표결</li></ul>
  </div>
  <div class="k24pass"><i class="gl"></i><p class="pt">모바일 출입증</p><p class="nm">윤대일</p><p class="co">큐더스전자<br>제10기 정기주주총회</p><div class="row"><span>주식 수<b>41,847주</b></span><span>참석번호<b>A129</b></span></div></div>
@@ -2351,7 +2374,7 @@ html.embed #sgb,html.embed #sg{display:none!important}  /* 11/26 메인 스크�
  </ol>
 </section> 
 <section class="s" id="K28d" data-t="운영지원 4 · 장애 감지 · 복구" data-dim=".1">
- <div class="top" style="top:150px"><p class="eb fu q" style="--i:1">운영지원</p><h2 class="h hm fu" style="--i:1">장애 감지 · 복구 및 의사진행 판단 지원</h2></div>
+ <div class="top" style="top:150px"><p class="eb fu q" style="--i:1">장애대응</p><h2 class="h hm fu" style="--i:1">장애 감지 · 복구 및 의사진행 판단 지원</h2></div>
  <ol class="k28f">
   <li class="fu" style="--i:2"><i>1</i><b>장애 감지</b><p>장애발생 감지 및<br>영향범위 확인</p></li>
   <li class="fu" style="--i:3"><i>2</i><b>의사진행 판단 지원</b><p>영향범위 · 복구 전망 · 표결 가능 여부에<br>따른 의사진행 절차 판단 지원</p></li>
@@ -2664,7 +2687,7 @@ function count(s,sl=s){s.querySelectorAll('.cnt').forEach(el=>{const hb=el.close
 (function(){
  const D26=[[13,1],[16,0],[17,1],[18,7],[19,13],[20,20],[23,9],[24,30],[25,5],[26,91],[27,13],[30,2],[31,19]];
  const D27=[[15,1],[16,2],[17,6],[18,6],[19,7],[22,6],[23,19],[24,35],[25,3],[26,8],[29,35],[30,6],[31,19]];
- const el=document.getElementById('mar');if(!el)return;const W=3600,H=860,WD='일월화수목금토';
+ const el=document.getElementById('mar');if(!el)return;const W=3600,H=967,WD='일월화수목금토';
  function layer(y,D,hot,cls,extra){const cw=W/D.length,X=i=>cw*(i+.5),MAX=Math.max(...D.map(d=>d[1]));let h=`<div class="ml ${cls}"><div class="ax"></div>`;
   D.forEach(([d],i)=>{if(i&&new Date(y,2,d).getDay()<new Date(y,2,D[i-1][0]).getDay())h+=`<div class="wk" style="left:${cw*i}px"></div>`;});
   D.forEach(([d],i)=>{if(hot.includes(d))h+=`<div class="band" style="left:${X(i)-cw*.42}px;width:${cw*.84}px"><span>집중일</span></div>`;});
