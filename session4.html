@@ -1588,6 +1588,22 @@ html,body,body *{touch-action:none;-webkit-touch-callout:none;-webkit-user-selec
 /* 11/26 K30 마지막 「Get Ready.」 굵기 300 → 600 */
 #K30 .gr-t{font-weight:600}
 #K30.p2 .k30a{transition:opacity 1s ease .45s,transform 1.4s cubic-bezier(.6,0,.2,1),filter 1s ease .45s}
+/* 11/26 18:40 K02 정리: 카드 안 여백 48px 통일 · 실시간 중계 영상은 크게 확대해 오른쪽 아래로(얼굴이 제목 아래) · 관리기관 사진 확대 · 장애 대응 왼쪽 그라데이션 · 디지털 전환 시스템 패널을 카드 높이만큼 · 전자출석 카드 3장 지그재그 */
+#K02 .bc{padding:48px 48px}
+#K02 .tg,#K02 .tl2,#K02 .stp{left:48px;right:48px;bottom:48px}
+#K02 .bw.d .bc.im video{top:0!important;height:100%!important;bottom:0!important;object-fit:cover;object-position:50% 50%;transform:scale(1.35);transform-origin:-43px -525px;-webkit-mask-image:linear-gradient(180deg,transparent 0,#000 12%);mask-image:linear-gradient(180deg,transparent 0,#000 12%)}
+#K02 .bw.f .bc.im i{top:0!important;height:100%!important;background-size:auto 150%!important;background-position:42% 200px!important;-webkit-mask-image:linear-gradient(180deg,transparent 0,transparent 40%,#000 60%);mask-image:linear-gradient(180deg,transparent 0,transparent 40%,#000 60%)}
+#K02 .bw.g .bc.im::after{background:linear-gradient(90deg,rgba(20,21,24,.97) 0%,rgba(20,21,24,.9) 38%,rgba(20,21,24,.45) 58%,rgba(20,21,24,0) 74%)!important}
+#K02 .bw.g .bc.im i{background-size:cover!important;background-position:50% 30%!important;transform-origin:85% 40%}
+#K02 .dx{left:48px;right:48px;top:48px;bottom:48px;height:auto;display:grid;grid-template-columns:420px 70px 1fr;align-items:end;gap:26px}
+#K02 .dx .xl{flex-basis:auto;height:160px;padding:40px 14px 14px;gap:7px}
+#K02 .dx .ar{align-self:end;margin-bottom:72px;justify-content:center}
+#K02 .dx .sy{height:100%;padding:26px 30px;gap:14px;border-radius:26px}
+#K02 .dx .st{font-size:28px}
+#K02 .dx .ln b{height:16px;border-radius:8px}#K02 .dx .ln em{width:30px;height:30px}
+#K02 .bc.ph .u1{left:auto;right:48px;top:48px;bottom:auto;width:540px}
+#K02 .bc.ph .u2{left:48px;right:auto;top:370px;bottom:auto;width:560px}
+#K02 .bc.ph .u3{left:auto;right:96px;top:auto;bottom:48px;width:470px}
 </style></head>
 <body>
 <div class="stage" id="stage">
