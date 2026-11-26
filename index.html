@@ -561,6 +561,14 @@ body.idle{cursor:none}
 /* 11/26 세 문장 세로 간격 동일 — 실제 글자(대문자·한글) 윗선~아랫선 기준 영문↔국문, 국문↔부제 모두 80px */
 .s3-kh{margin-top:50px}
 .s3-sub{margin-top:63px}
+/* M1-2(11/26) 좌석 안내: 왼쪽 글 한 칸(제목 · 안내 · 주석 세로), 오른쪽에 좌석 배치 3D 모션(assets/seat-guide.html, 18초) */
+#m1_2 .lay2{display:flex;flex-direction:column;width:1180px}
+#m1_2 .lay2 .lay2-l .title-m{font-size:150px;line-height:196px;padding-right:0}
+#m1_2 .lay2 .lay2-r{padding-top:70px}
+#m1_2 .lay2 .lay2-r>.lead{font-size:62px;line-height:96px}
+#m1_2 .lay2 .lay2-r>.meta{margin-top:70px;font-size:50px}
+#m1_2 .m12v{position:absolute;left:1450px;top:0;width:2750px;height:1600px;-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 260px);mask-image:linear-gradient(90deg,transparent 0,#000 260px)}
+#m1_2 .m12v iframe{width:100%;height:100%;border:0;display:block;background:transparent}
 </style></head>
 <body>
 <div class="stage" id="scr" data-foot="full">
@@ -574,6 +582,7 @@ body.idle{cursor:none}
 <h1 class="title-m" data-words style="--i:1">참석해 주셔서<br>감사합니다.</h1>
 <p class="lead fu" style="--i:2">설명회는 13:00에 시작합니다.<br>안내받으신 좌석 번호로 이동하신 뒤,<br>테이블에 붙어 있는 좌석번호를 확인해주세요.</p>
 <p class="meta fu" style="--i:3">자리를 찾기 어려우시면 운영 스태프에게 말씀해주세요.</p>
+<div class="m12v"><iframe class="fs" data-src="assets/seat-guide.html" tabindex="-1" title="" aria-hidden="true"></iframe></div>
 </section>
 <section class="slide" id="m1_3" data-no="M1-3" data-title="M1-3 대기 · 프로그램" data-bg="B" data-foot="full" data-group="standby" data-auto="46" data-tr="xfade" data-prog="1" data-lay="split">
 <h2 class="head fu" style="--i:0">행사 프로그램</h2>

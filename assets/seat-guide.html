@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>좌석 안내 3D</title>
+<style>
+@font-face{font-family:"Pretendard Variable";src:url(PretendardVariable.woff2) format("woff2");font-weight:45 920}
+html,body{margin:0;height:100%;overflow:hidden;background:transparent;font-family:"Pretendard Variable",sans-serif;color:#F2F5FA}
+canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+/* 장면 위 안내 글: 아래 왼쪽 */
+.scrim{position:absolute;left:0;top:0;width:70%;height:60%;background:radial-gradient(80% 80% at 0% 0%,rgba(0,0,0,.75) 0%,rgba(0,0,0,.45) 45%,rgba(0,0,0,0) 100%);pointer-events:none}
+.cap{position:absolute;left:150px;top:150px;opacity:0;transition:opacity .7s ease,transform .7s ease;transform:translateY(24px)}
+.cap.on{opacity:1;transform:none}
+.cap small{display:block;font:500 46px/1.3 "Pretendard Variable";color:#8f9bb0;letter-spacing:-.01em}
+.cap b{display:block;margin-top:14px;font:600 64px/1.3 "Pretendard Variable";letter-spacing:-.02em}
+.cap b em{font-style:normal;color:#5bade1}
+.ex{position:absolute;left:150px;top:230px;display:flex;align-items:flex-end;gap:40px;opacity:0;transition:opacity .8s ease,transform .8s ease;transform:translateY(24px)}
+.ex.on{opacity:1;transform:none}
+.ex .n{text-align:center}
+.ex .n b{display:block;font:300 230px/1 "Pretendard Variable";letter-spacing:-.04em}
+.ex .n.s b{color:#5bade1}
+.ex .n span{display:block;margin-top:22px;font:500 46px/1 "Pretendard Variable";color:#8f9bb0}
+.ex .d{font:200 200px/1 "Pretendard Variable";color:#5d6a80;padding-bottom:86px}
+.ex .h{position:absolute;left:0;bottom:calc(100% + 40px);font:500 46px/1 "Pretendard Variable";color:#8f9bb0;white-space:nowrap}
+</style>
+</head>
+<body>
+<canvas id="c"></canvas><div class="scrim"></div>
+<div class="cap" id="cap1"><small>테이블 번호</small><b>스크린을 바라보고<br><em>왼쪽 1–15</em> · <em>가운데 16–30</em> · <em>오른쪽 31–45</em></b></div>
+<div class="cap" id="cap2"><small>입구에서</small><b>안내받은 <em>테이블 번호</em>로 이동</b></div>
+<div class="ex" id="ex"><p class="h">좌석 번호 보는 법 · 예시</p><div class="n"><b>22</b><span>테이블 번호</span></div><div class="d">-</div><div class="n s"><b>4</b><span>좌석 번호</span></div></div>
+<script src="three.min.js"></script>
+<script>
+(async()=>{await document.fonts.load('600 64px "Pretendard Variable"').catch(()=>{});
+/* M1-2 좌석 안내 모션 (18초 반복). 도면 기준은 control.html 좌석 배치(assets/seatmap.js)와 같음:
+   15줄(무대 쪽 A) · 블록 왼쪽 2 · 가운데 3 · 오른쪽 2 테이블, 테이블 번호 = 왼쪽 블록 앞줄부터 1~15, 가운데 16~30, 오른쪽 31~45, 좌석은 테이블 안 왼쪽부터 1, 2, 3 …
+   메인 플레이어가 'play' 를 보내면 처음부터, 'pause' 면 멈춤. 주소 ?t=초 로 그 시점에 고정(확인용) */
+const Q=new URLSearchParams(location.search),FIX=Q.has('t')?+Q.get('t'):null;
+const M=1/0.686,ROWS=15,PITCH=.6*M,ROW_X0=-15.7,ROW_DX=2.7,T_LEN=1.8*M,T_DEP=.45*M;
+const BLOCKS=[{z:8.6,n:2},{z:-.4,n:3},{z:-8.7,n:2}];
+const EX={no:22,seat:4};
+const LOOP=18;
+const cv=document.getElementById('c');
+const R=new THREE.WebGLRenderer({canvas:cv,antialias:true,alpha:true});R.setPixelRatio(1);R.setClearColor(0x000000,0);
+const S=new THREE.Scene();
+const CAM=new THREE.PerspectiveCamera(32,1,.1,400);
+S.add(new THREE.AmbientLight(0xc8d4f0,.75));const dl=new THREE.DirectionalLight(0xffffff,.6);dl.position.set(20,40,10);S.add(dl);
+const ease=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2,cl=v=>Math.max(0,Math.min(1,v)),seg=(t,a,b)=>cl((t-a)/(b-a));
+const FONT='"Pretendard Variable",sans-serif';
+function tex(w,h,draw){const c=document.createElement('canvas');c.width=w;c.height=h;draw(c.getContext('2d'),w,h);const t=new THREE.CanvasTexture(c);t.anisotropy=4;return t;}
+function label(text,color,px,weight){const pad=20;const c=document.createElement('canvas').getContext('2d');c.font=`${weight||600} ${px}px ${FONT}`;const w=Math.ceil(c.measureText(text).width)+pad*2,h=Math.ceil(px*1.3)+pad;
+  const t=tex(w,h,g=>{g.font=`${weight||600} ${px}px ${FONT}`;g.fillStyle=color;g.textAlign='center';g.textBaseline='middle';g.fillText(text,w/2,h/2+px*.04);});
+  const sp=new THREE.Sprite(new THREE.SpriteMaterial({map:t,transparent:true,depthTest:false,opacity:0}));sp.userData.ar=w/h;sp.renderOrder=10;return sp;}
+
+/* 홀 바닥 · 테두리 */
+const HW=28,HD=13.5;
+const floor=new THREE.Mesh(new THREE.PlaneGeometry(HW*2,HD*2),new THREE.MeshBasicMaterial({color:0x0b1220,transparent:true,opacity:.55}));floor.rotation.x=-Math.PI/2;S.add(floor);
+const lineM=c=>new THREE.LineBasicMaterial({color:c,transparent:true,opacity:.0});
+const outline=new THREE.LineLoop(new THREE.BufferGeometry().setFromPoints([[-HW,-HD],[HW,-HD],[HW,HD],[-HW,HD]].map(p=>new THREE.Vector3(p[0],.01,p[1]))),lineM(0x3a4a66));S.add(outline);
+/* 바닥 격자 */
+const gp=[];for(let x=-HW;x<=HW;x+=2)gp.push(new THREE.Vector3(x,.005,-HD),new THREE.Vector3(x,.005,HD));for(let z=-HD;z<=HD;z+=2)gp.push(new THREE.Vector3(-HW,.005,z),new THREE.Vector3(HW,.005,z));
+const grid=new THREE.LineSegments(new THREE.BufferGeometry().setFromPoints(gp),lineM(0x1c2a40));S.add(grid);
+/* 무대 · 스크린 */
+const stage=new THREE.Mesh(new THREE.BoxGeometry(3.6,.8,16.2),new THREE.MeshStandardMaterial({color:0x1a2234,roughness:.8}));stage.position.set(-25.1,.4,-.4);S.add(stage);
+const scrT=tex(1024,390,(g,w,h)=>{const gr=g.createLinearGradient(0,0,w,h);gr.addColorStop(0,'#0a2a66');gr.addColorStop(1,'#0a6a7a');g.fillStyle=gr;g.fillRect(0,0,w,h);g.font=`600 64px ${FONT}`;g.fillStyle='rgba(255,255,255,.9)';g.textAlign='center';g.textBaseline='middle';g.fillText('SCREEN',w/2,h/2);});
+const scr=new THREE.Mesh(new THREE.PlaneGeometry(5.2*21/8,5.2),new THREE.MeshBasicMaterial({map:scrT}));scr.rotation.y=Math.PI/2;scr.position.set(-27.6,3.9,-.4);S.add(scr);
+const stL=label('STAGE','#8f9bb0',64,600);stL.position.set(-25.1,1.6,7.4);S.add(stL);
+/* 입구 Gate */
+const gate=new THREE.Mesh(new THREE.BoxGeometry(2.2,1.2,.36),new THREE.MeshBasicMaterial({color:0x3cc9c4}));gate.position.set(25.4,.6,HD);S.add(gate);
+const gateL=label('입구','#3cc9c4',72,700);gateL.position.set(25.4,2.4,HD);S.add(gateL);
+
+/* 테이블 · 의자 · 번호 */
+const TAB=[],GRP={},CH=[];
+const tGeo=new THREE.BoxGeometry(T_DEP,.32,T_LEN-.12),cGeo=new THREE.CylinderGeometry(.24,.24,.18,20);
+const edgeGeo=new THREE.EdgesGeometry(tGeo);
+for(let r=0;r<ROWS;r++){const x=ROW_X0+r*ROW_DX;
+  BLOCKS.forEach((b,bi)=>{const no=bi*ROWS+r+1;const g={no,bi,r,x,z:b.z,tables:[],seats:[]};GRP[no]=g;let kk=0;
+    for(let k=0;k<b.n;k++){const z=b.z+((b.n-1)/2-k)*T_LEN;
+      const m=new THREE.Mesh(tGeo,new THREE.MeshStandardMaterial({color:0x1c2536,roughness:.6,transparent:true,opacity:1}));m.position.set(x,.7,z);
+      const e=new THREE.LineSegments(edgeGeo,new THREE.LineBasicMaterial({color:0x4a5c80,transparent:true}));m.add(e);m.userData.e=e;S.add(m);g.tables.push(m);TAB.push({m,g});
+      for(let j=0;j<3;j++){kk++;const c=new THREE.Mesh(cGeo,new THREE.MeshStandardMaterial({color:0x2a3550,roughness:.7,transparent:true}));c.position.set(x+T_DEP/2+.5,.35,z+(1-j)*PITCH);c.userData={no,k:kk};S.add(c);CH.push(c);g.seats.push(c);}}
+    const lb=label(String(no),'#F2F5FA',96,600);lb.position.set(x,2.2,b.z);S.add(lb);g.lb=lb;});}
+/* 예시 테이블: 좌석 번호 1~9 */
+const G22=GRP[EX.no],SEATL=[];
+G22.seats.forEach((c,i)=>{const l=label(String(i+1),i+1===EX.seat?'#ffffff':'#9fb3d6',72,700);l.position.set(c.position.x+.95,.9,c.position.z);S.add(l);SEATL.push(l);});
+const ring=new THREE.Mesh(new THREE.RingGeometry(.42,.56,40),new THREE.MeshBasicMaterial({color:0x5bade1,transparent:true,opacity:0,side:THREE.DoubleSide,depthTest:false}));ring.rotation.x=-Math.PI/2;
+const tgt=G22.seats[EX.seat-1];ring.position.set(tgt.position.x,.46,tgt.position.z);ring.renderOrder=9;S.add(ring);
+
+/* 입구 → 22번 테이블 동선(통로 따라) */
+const sx=tgt.position.x,sz=tgt.position.z;
+const PATH=[[25.4,12.6],[23.6,10.8],[23.6,4.77],[sx+1.3,4.77],[sx+1.3,sz]].map(p=>new THREE.Vector3(p[0],.08,p[1]));
+const curve=new THREE.CurvePath();for(let i=0;i<PATH.length-1;i++)curve.add(new THREE.LineCurve3(PATH[i],PATH[i+1]));
+const PN=240,pp=curve.getSpacedPoints(PN);
+const dash=new THREE.Points(new THREE.BufferGeometry().setFromPoints(pp),new THREE.PointsMaterial({color:0x5bade1,size:.34,transparent:true,depthTest:false}));dash.renderOrder=8;dash.geometry.setDrawRange(0,0);S.add(dash);
+const dot=new THREE.Mesh(new THREE.SphereGeometry(.42,24,16),new THREE.MeshBasicMaterial({color:0xffffff,transparent:true,opacity:0,depthTest:false}));dot.renderOrder=11;S.add(dot);
+
+/* 카메라 키 */
+const V=(x,y,z)=>new THREE.Vector3(x,y,z);
+const K=[ // [시각, 위치, 바라보는 곳]
+  [0,   V(62,46,40),  V(-2,0,0)],
+  [3.2, V(50,44,26),  V(-3,0,0)],
+  [6.8, V(44,33,26),  V(2,0,2)],
+  [9.4, V(15,10,9),   V(sx-1.2,.4,sz+1.2)],
+  [18,  V(12.5,8.2,6.5),V(sx-1.2,.4,sz+1.2)]];
+function camAt(t){let i=0;while(i<K.length-2&&t>K[i+1][0])i++;const a=K[i],b=K[i+1],e=ease(cl((t-a[0])/(b[0]-a[0])));
+  CAM.position.lerpVectors(a[1],b[1],e);const L=new THREE.Vector3().lerpVectors(a[2],b[2],e);CAM.lookAt(L);}
+
+const cap1=document.getElementById('cap1'),cap2=document.getElementById('cap2'),ex=document.getElementById('ex');
+const B=new THREE.Color(0x1c2536),HB=new THREE.Color(0x1466ff),EB=new THREE.Color(0x4a5c80),HE=new THREE.Color(0x8fd0ff),DIM=.04;
+function frame(t){
+  camAt(t);
+  const a0=seg(t,0,1.2);outline.material.opacity=.7*a0;grid.material.opacity=.35*a0;floor.material.opacity=.55*a0;stL.material.opacity=a0;
+  /* 테이블: 앞줄부터 차례로 올라옴 */
+  TAB.forEach(({m,g})=>{const k=ease(seg(t,.3+g.r*.09,1.1+g.r*.09));m.scale.y=Math.max(.001,k);m.position.y=.7*k;});
+  CH.forEach(c=>{const g=GRP[c.userData.no];c.material.opacity=seg(t,.6+g.r*.09,1.3+g.r*.09);});
+  /* 테이블 번호: 블록마다 1–15 · 16–30 · 31–45 */
+  const hl=seg(t,7.6,8.6);   // 예시 강조 시작
+  Object.values(GRP).forEach(g=>{const s0=2.4+g.bi*1.1+g.r*.05,o=seg(t,s0,s0+.5);const isE=g.no===EX.no;
+    const fade=isE?1:1-hl*(1-DIM);g.lb.material.opacity=o*fade;const sc=(isE?1+.5*hl:1)*1.5;g.lb.scale.set(sc*g.lb.userData.ar,sc,1);g.lb.position.y=2.2+(isE?.8*hl:0);
+    g.tables.forEach(m=>{m.material.color.copy(B).lerp(HB,isE?hl:0);m.material.opacity=isE?1:1-hl*.55;m.userData.e.material.color.copy(EB).lerp(HE,isE?hl:0);m.userData.e.material.opacity=isE?1:1-hl*.6;});
+    g.seats.forEach(c=>{c.material.opacity=Math.min(c.material.opacity,isE?1:1-hl*.6);});});
+  /* 좌석 번호(예시 테이블) · 강조 링 */
+  SEATL.forEach((l,i)=>{const o=seg(t,9.6+i*.06,10.1+i*.06);l.material.opacity=o*(i+1===EX.seat?1:.75);const sc=i+1===EX.seat?1.05:.75;l.scale.set(sc*l.userData.ar,sc,1);});
+  tgt.material.color.set(t>10.2?0x5bade1:0x2a3550);
+  const rp=seg(t,10.2,10.8);ring.material.opacity=rp*(.55+.45*Math.sin(t*4)*.5+.2);const rs=1+.25*Math.sin(t*3);ring.scale.set(rs,rs,rs);
+  /* 동선: 6.6~9.6초에 입구에서 그려짐 */
+  const pg=seg(t,6.4,9.6),nDraw=Math.round(PN*pg);dash.geometry.setDrawRange(0,nDraw);dash.material.opacity=1-seg(t,12,13.5)*.6;
+  if(pg>0&&pg<1){dot.material.opacity=1;dot.position.copy(curve.getPointAt(pg));dot.position.y=.3;}else dot.material.opacity=pg>=1?Math.max(0,1-seg(t,9.6,10.2)):0;
+  gateL.material.opacity=seg(t,5.8,6.6);const gs=1.4;gateL.scale.set(gs*gateL.userData.ar,gs,1);stL.scale.set(1.3*stL.userData.ar,1.3,1);
+  /* 글 */
+  cap1.classList.toggle('on',t>2.6&&t<6.4);cap2.classList.toggle('on',t>6.6&&t<9.4);ex.classList.toggle('on',t>9.8&&t<17.4);
+  R.render(S,CAM);
+}
+function size(){const w=innerWidth,h=innerHeight;R.setSize(w,h,false);CAM.aspect=w/h;CAM.setViewOffset(w,h,-w*.12,-h*.04,w,h);CAM.updateProjectionMatrix();}
+addEventListener('resize',size);size();
+let t0=performance.now(),run=true,raf=0;
+function loop(){raf=requestAnimationFrame(loop);if(!run)return;const t=((performance.now()-t0)/1000)%LOOP;frame(t);}
+if(FIX!=null)frame(FIX);else loop();
+addEventListener('message',e=>{if(e.data==='play'){t0=performance.now();run=true;}else if(e.data==='pause'){run=false;}});
+})();
+</script>
+</body>
+</html>
