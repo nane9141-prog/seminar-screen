@@ -285,7 +285,7 @@ function build(){
   const lGeo=(function(){var w=LBL_W/2,h=LBL_H/2,e=.004,g=new THREE.BufferGeometry();   // 삽지 앞·뒤 양면(90×55mm)
     g.setAttribute('position',new THREE.Float32BufferAttribute([-w,-h,e, w,-h,e, w,h,e, -w,h,e,  w,-h,-e, -w,-h,-e, -w,h,-e, w,h,-e],3));
     g.setAttribute('uv',new THREE.Float32BufferAttribute([0,0,1,0,1,1,0,1, 0,0,1,0,1,1,0,1],2));g.setIndex([0,1,2,0,2,3,4,5,6,4,6,7]);return g;})();
-  /* 좌석 명패: 세우지 않고 테이블 윗면에 눕혀 놓음(90×55mm). 테이블 위쪽 끝(무대 쪽)에서 30mm, 의자 쪽에서 바로 읽히는 방향 */
+  /* 좌석 명패: 세우지 않고 테이블 윗면에 눕혀 놓음(90×55mm). 테이블 위쪽 끝선(무대 쪽 가장자리)에 딱 맞춤, 의자 쪽에서 바로 읽히는 방향 */
   var LQ=new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0,1,0),Math.PI/2).multiply(new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(1,0,0),-Math.PI/2));
   const qt=new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0,1,0),Math.PI/2).multiply(new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(1,0,0),-Math.PI/2));
   seats.forEach(s=>{const c=document.createElement('canvas');c.width=320;c.height=196;const tex=new THREE.CanvasTexture(c);tex.generateMipmaps=false;tex.minFilter=THREE.LinearFilter;tex.anisotropy=4;
@@ -307,7 +307,7 @@ function paint(){
   seats.forEach(s=>{tmpColor.setHex(seatColor(s));seatMesh.setColorAt(s.i,tmpColor);backMesh.setColorAt(s.i,tmpColor);
     const o=occ[s.id],lb=labels[s.i],text=o?o[0].company_name||'':(FIXED[s.id]||'');
     if(lb.text!==text){lb.text=text;drawLabel(lb);}
-    const k=NOSEAT[s.id]?0:(big?4:1),cx=s.x-T_DEP/2+.03*M+k*LBL_H/2;lb.mesh.scale.set(k,k,k);lb.mesh.position.set(cx,T_H+.004+k*.001,s.z);});
+    const k=NOSEAT[s.id]?0:(big?4:1),cx=s.x-T_DEP/2+k*LBL_H/2;lb.mesh.scale.set(k,k,k);lb.mesh.position.set(cx,T_H+.004+k*.001,s.z);});
   seatMesh.instanceColor.needsUpdate=backMesh.instanceColor.needsUpdate=true;
   if(sel){hl.visible=true;hl.position.set(sel.x+.6,.05,sel.z);}else hl.visible=false;
   planDraw();
