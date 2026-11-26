@@ -19,8 +19,9 @@ canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
 .ex .n{text-align:center}
 .ex .n b{display:block;font:300 230px/1 "Pretendard Variable";letter-spacing:-.04em}
 .ex .n.s b{color:#5bade1}
+.ex .pl i{display:block;margin-bottom:30px;padding:34px 46px;border-radius:14px;background:#fff;color:#0d1320;font:700 84px/1 "Pretendard Variable";font-style:normal;letter-spacing:-.02em;box-shadow:0 0 0 6px #5bade1}
 .ex .n span{display:block;margin-top:22px;font:500 46px/1 "Pretendard Variable";color:#8f9bb0}
-.ex .d{font:200 200px/1 "Pretendard Variable";color:#5d6a80;padding-bottom:86px}
+.ex .d{font:200 140px/1 "Pretendard Variable";color:#5d6a80;padding-bottom:110px}
 .ex .h{position:absolute;left:0;bottom:calc(100% + 40px);font:500 46px/1 "Pretendard Variable";color:#8f9bb0;white-space:nowrap}
 </style>
 </head>
@@ -28,7 +29,7 @@ canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
 <canvas id="c"></canvas><div class="scrim"></div>
 <div class="cap" id="cap1"><small>테이블 번호</small><b>스크린을 바라보고<br><em>왼쪽 1–15</em> · <em>가운데 16–30</em> · <em>오른쪽 31–45</em></b></div>
 <div class="cap" id="cap2"><small>입구에서</small><b>안내받은 <em>테이블 번호</em>로 이동</b></div>
-<div class="ex" id="ex"><p class="h">좌석 번호 보는 법 · 예시</p><div class="n"><b>22</b><span>테이블 번호</span></div><div class="d">-</div><div class="n s"><b>4</b><span>좌석 번호</span></div></div>
+<div class="ex" id="ex"><p class="h">자리 찾는 법 · 예시</p><div class="n"><b>22</b><span>테이블 번호로 이동</span></div><div class="d">→</div><div class="n s pl"><i>큐더스전자</i><span>기업명 명패 확인</span></div></div>
 <script src="three.min.js"></script>
 <script>
 (async()=>{await document.fonts.load('600 64px "Pretendard Variable"').catch(()=>{});
@@ -83,7 +84,10 @@ for(let r=0;r<ROWS;r++){const x=ROW_X0+r*ROW_DX;
     const lb=label(String(no),'#F2F5FA',96,600);lb.position.set(x,2.2,b.z);S.add(lb);g.lb=lb;});}
 /* 예시 테이블: 좌석 번호 1~9 */
 const G22=GRP[EX.no],SEATL=[];
-G22.seats.forEach((c,i)=>{const l=label(String(i+1),i+1===EX.seat?'#ffffff':'#9fb3d6',72,700);l.position.set(c.position.x+.95,.9,c.position.z);S.add(l);SEATL.push(l);});
+const CO=['○○금융','○○화학','○○건설','큐더스전자','○○바이오','○○통신','○○에너지','○○식품','○○물산'];
+G22.seats.forEach((c,i)=>{const hi=i+1===EX.seat;const tx=tex(256,110,(g,w,h)=>{g.fillStyle=hi?'#ffffff':'#d9dee8';g.fillRect(0,0,w,h);if(hi){g.strokeStyle='#5bade1';g.lineWidth=10;g.strokeRect(5,5,w-10,h-10);}
+  g.font=`700 ${hi?40:34}px ${FONT}`;g.fillStyle=hi?'#0d1320':'#4a5568';g.textAlign='center';g.textBaseline='middle';g.fillText(CO[i],w/2,h/2+2);});
+  const m=new THREE.Mesh(new THREE.PlaneGeometry(.78,.34),new THREE.MeshBasicMaterial({map:tx,transparent:true,opacity:0,side:THREE.DoubleSide}));m.rotation.y=Math.PI/2;m.position.set(G22.x+.12,1.06,c.position.z);m.renderOrder=7;S.add(m);SEATL.push(m);});
 const ring=new THREE.Mesh(new THREE.RingGeometry(.42,.56,40),new THREE.MeshBasicMaterial({color:0x5bade1,transparent:true,opacity:0,side:THREE.DoubleSide,depthTest:false}));ring.rotation.x=-Math.PI/2;
 const tgt=G22.seats[EX.seat-1];ring.position.set(tgt.position.x,.46,tgt.position.z);ring.renderOrder=9;S.add(ring);
 
@@ -121,7 +125,7 @@ function frame(t){
     g.tables.forEach(m=>{m.material.color.copy(B).lerp(HB,isE?hl:0);m.material.opacity=isE?1:1-hl*.55;m.userData.e.material.color.copy(EB).lerp(HE,isE?hl:0);m.userData.e.material.opacity=isE?1:1-hl*.6;});
     g.seats.forEach(c=>{c.material.opacity=Math.min(c.material.opacity,isE?1:1-hl*.6);});});
   /* 좌석 번호(예시 테이블) · 강조 링 */
-  SEATL.forEach((l,i)=>{const o=seg(t,9.6+i*.06,10.1+i*.06);l.material.opacity=o*(i+1===EX.seat?1:.75);const sc=i+1===EX.seat?1.05:.75;l.scale.set(sc*l.userData.ar,sc,1);});
+  SEATL.forEach((l,i)=>{const o=seg(t,9.6+i*.06,10.1+i*.06);l.material.opacity=o*(i+1===EX.seat?1:.8);const sc=i+1===EX.seat?1+.25*seg(t,10.2,10.8):1;l.scale.set(sc,sc,1);});
   tgt.material.color.set(t>10.2?0x5bade1:0x2a3550);
   const rp=seg(t,10.2,10.8);ring.material.opacity=rp*(.55+.45*Math.sin(t*4)*.5+.2);const rs=1+.25*Math.sin(t*3);ring.scale.set(rs,rs,rs);
   /* 동선: 6.6~9.6초에 입구에서 그려짐 */
