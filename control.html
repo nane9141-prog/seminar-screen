@@ -373,6 +373,7 @@ body.kflash #pvslot,body.kflash #pvbox{box-shadow:0 0 0 2px #2f6bff}
 .facebox .ftxpv video{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}
 .facebox .ftxpv .cr{position:absolute;border:2px solid #fff;box-shadow:0 0 0 9999px rgba(0,0,0,.55);border-radius:4px;pointer-events:none;display:none}.facebox .ftxpv .cr.on{display:block}
 #ftxst.on{color:#3ddc84}#ftxst.warn{color:var(--warn)}
+.facebox .fturn summary{cursor:pointer;font-size:12px;color:var(--fg-3)}.facebox .fturn textarea{width:100%;margin:6px 0;background:#111;color:var(--fg-2);border:1px solid var(--line);border-radius:8px;padding:8px;font:12px/1.4 ui-monospace,monospace}
 .facebox #facelink{flex:1 1 200px;min-width:0;background:#111;color:var(--fg-2);border:1px solid var(--line);border-radius:8px;padding:7px 10px;font:inherit;font-size:12px}
 .facebox .hint{margin:0;font-size:12px;line-height:1.5;color:var(--fg-3)}
 #scrbox.locked .facebox button,#scrbox.locked .facebox select{pointer-events:none;opacity:.35}
@@ -446,6 +447,7 @@ body.kflash #pvslot,body.kflash #pvbox{box-shadow:0 0 0 2px #2f6bff}
   <div class="ftx" id="ftx"><div class="frow"><b class="ftxh">이 기기에서 보내기</b><span class="sp"></span><span class="mut" id="ftxst">Meet · Teams가 이 기기에 떠 있을 때</span></div>
    <div class="frow"><button id="ftxscr" class="pri">화면 · 창 선택해서 보내기</button><button id="ftxstop" disabled>보내기 중지</button></div>
    <div class="ftxpv" id="ftxpv" hidden><video id="ftxv" muted playsinline autoplay></video><div class="cr" id="ftxcr"></div></div>
+   <details class="fturn"><summary>다른 기기와 연결이 안 될 때 · 중계 서버(TURN)</summary><p class="hint">같은 망이어도 회사 · 행사장 망이 기기 간 직접 연결을 막으면 중계 서버가 필요합니다. Metered(무료 20GB) 등에서 받은 iceServers 배열(JSON)을 붙여 넣고 저장하면, 이 기기에서 보낼 때 메인도 같은 중계 서버를 씁니다.</p><textarea id="fturnv" rows="3" placeholder='[{"urls":"turn:…:443?transport=tcp","username":"…","credential":"…"}]'></textarea><div class="frow"><button id="fturns">저장</button><button id="fturnx">지우기</button><span class="mut" id="fturnst"></span></div></details>
    <div class="frow" id="ftxcrow" hidden><span class="mut" style="flex:1">미리보기에서 얼굴 부분을 드래그하면 메인에는 그 부분만(4:5)</span><button id="ftxcrx">자르기 해제</button></div></div>
   <div class="frow"><span class="mut">다른 기기에서 보내기</span><input id="facelink" readonly><button id="facecp">주소 복사</button><button id="faceop">열기</button></div>
   <p class="hint">장치 이름이 안 보이면 「권한 요청」 → 송출 PC 메인 화면에서 허용(한 번이면 됨). Meet · Teams가 이 기기에 떠 있으면 「이 기기에서 보내기」, 다른 기기에 떠 있으면 그 기기에서 위 주소(face.html)를 열고 화면을 보내면, 메인이 비어 있을 때 자동으로 얼굴 창에 들어갑니다(인터넷 필요 · 안 되면 캡처보드). 고른 장치는 저장돼 메인을 다시 열어도 자동 연결됩니다.</p></div></div></div>
@@ -716,11 +718,11 @@ SCHED.onSrc(drawSrc);
   const nm=()=>'운영 입력 · '+((localStorage.getItem('ctl-dev-name')||'').trim()||'이 기기');let TX=null,lastC=0;
   const pv=$$('ftxpv'),v=$$('ftxv'),cr=$$('ftxcr');
   const tu=()=>{if(!TX)return;const on=!!TX.stream,c=TX.count(),el=$$('ftxst');$$('ftxstop').disabled=!on;pv.hidden=!on;$$('ftxcrow').hidden=!on;
-   el.className=on?(c?'on':'warn'):'';el.textContent=!on?'Meet · Teams가 이 기기에 떠 있을 때':c?'● 메인 스크린 '+c+'대에 보내는 중':TX.net!=='on'?'신호 서버 연결 중…':TX.fail?TX.fail:TX.pending()?'메인 스크린과 연결 중…':'메인 스크린 응답 대기 중… (메인을 새로고침해 보세요)';
+   el.className=on?(c?'on':'warn'):'';el.textContent=!on?'Meet · Teams가 이 기기에 떠 있을 때':c?'● 메인 스크린 '+c+'대에 보내는 중'+(v.videoWidth?' · 원본 '+v.videoWidth+'×'+v.videoHeight:''):TX.net!=='on'?'신호 서버 연결 중…':TX.fail?TX.fail:TX.pending()?'메인 스크린과 연결 중…':'메인 스크린 응답 대기 중… (메인을 새로고침해 보세요)';
    if(on&&c&&!lastC)SCHED.cmd({face:'remote'});lastC=c;};
   const vr=()=>{const W=pv.clientWidth,H=pv.clientHeight,vw=v.videoWidth||16,vh=v.videoHeight||9,k=Math.min(W/vw,H/vh);return {x:(W-vw*k)/2,y:(H-vh*k)/2,w:vw*k,h:vh*k};};
   const dc=()=>{const c=TX&&TX.crop;if(!c||!TX.stream){cr.classList.remove('on');return;}const r=vr();Object.assign(cr.style,{left:r.x+c.x*r.w+'px',top:r.y+c.y*r.h+'px',width:c.w*r.w+'px',height:c.h*r.h+'px'});cr.classList.add('on');};
-  $$('ftxscr').onclick=async()=>{try{const st=await navigator.mediaDevices.getDisplayMedia({video:{frameRate:{ideal:30},width:{ideal:1920},height:{ideal:1080}},audio:false,selfBrowserSurface:'exclude',surfaceSwitching:'include'});
+  $$('ftxscr').onclick=async()=>{try{await FACELINK.unlock();const st=await navigator.mediaDevices.getDisplayMedia({video:{frameRate:{ideal:30},width:{ideal:3840},height:{ideal:2160}},audio:false,selfBrowserSurface:'exclude',surfaceSwitching:'include'});
     if(!TX){TX=FACELINK.Tx({name:nm,onChange:tu});try{TX.crop=JSON.parse(localStorage.getItem('face-tx-crop')||'null');}catch(e){}}
     TX.start(st);v.srcObject=st;tu();}catch(e){if(e.name!=='NotAllowedError')alert('화면 선택 실패: '+(e.name||e));}};
   $$('ftxstop').onclick=()=>{if(TX)TX.stop();v.srcObject=null;tu();};
@@ -731,6 +733,9 @@ SCHED.onSrc(drawSrc);
   pv.addEventListener('pointerup',()=>{if(!d0)return;d0=null;if(TX.crop&&(TX.crop.w<.03||TX.crop.h<.03))TX.crop=null;TX.setCrop(TX.crop);localStorage.setItem('face-tx-crop',JSON.stringify(TX.crop));dc();});
   $$('ftxcrx').onclick=()=>{if(!TX)return;TX.setCrop(null);localStorage.removeItem('face-tx-crop');dc();};
   v.addEventListener('loadedmetadata',dc);addEventListener('resize',dc);setInterval(tu,1000);
+ {const v=$$('fturnv'),st=$$('fturnst');const show=()=>{const x=FACELINK.XICE();st.textContent=x.length?'중계 서버 '+x.length+'개 저장됨':'저장된 중계 서버 없음';v.value=x.length?JSON.stringify(x):'';};show();
+  $$('fturns').onclick=()=>{try{const x=JSON.parse(v.value);if(!Array.isArray(x))throw 0;localStorage.setItem('face-ice',JSON.stringify(x));show();st.textContent+=' — 보내기를 다시 누르세요';}catch(e){st.textContent='JSON 배열 형식이 아닙니다';}};
+  $$('fturnx').onclick=()=>{localStorage.removeItem('face-ice');show();};}
  }else $$('ftx').hidden=true;
  $$('faceoff').onclick=()=>SCHED.cmd({face:''});$$('facels').onclick=()=>SCHED.cmd({facelist:1});$$('faceask').onclick=()=>SCHED.cmd({facelist:'ask'});
  document.querySelectorAll('#facebox .ff').forEach(b=>b.onclick=()=>SCHED.cmd({facefit:b.dataset.fit}));

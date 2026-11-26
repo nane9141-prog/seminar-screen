@@ -9,6 +9,12 @@ const SB_URL='https://zrhtqpzgubaqzsdaxhvt.supabase.co',SB_KEY='sb_publishable_J
 const ICE=(()=>{const d=[{urls:['stun:stun.l.google.com:19302','stun:stun1.l.google.com:19302','stun:stun.cloudflare.com:3478']}];
  /* TURN을 쓰려면 localStorage 'face-ice'에 iceServers 배열(JSON)을 넣음 — 기본은 STUN만 */
  try{const x=JSON.parse(localStorage.getItem('face-ice')||'null');if(Array.isArray(x)&&x.length)return d.concat(x);}catch(e){}return d;})();
+// 보내는 쪽에 저장한 TURN(중계) 서버 — 연결 요청에 실어 메인도 같이 씀
+function XICE(){try{const x=JSON.parse(localStorage.getItem('face-ice')||'null');return Array.isArray(x)?x:[];}catch(e){return [];}}
+/* 같은 망의 다른 기기끼리: 크롬은 카메라 · 마이크 권한이 없는 페이지의 내부 IP를 숨겨(mDNS) 직접 연결이 실패할 수 있음.
+   권한을 한 번 받아 두면 내부 IP 후보가 나가므로, 보내기 전에 마이크(없으면 카메라) 권한을 짧게 요청했다가 바로 끔 */
+async function unlock(){try{const pq=navigator.permissions&&await navigator.permissions.query({name:'microphone'}).catch(()=>null);if(pq&&pq.state==='granted')return true;}catch(e){}
+ for(const c of [{audio:true},{video:true}]){try{const st=await navigator.mediaDevices.getUserMedia(c);st.getTracks().forEach(t=>t.stop());return true;}catch(e){}}return false;}
 // 연결 진단: 양쪽이 찾은 연결 후보 종류(host 내부망 · srflx 공인 IP · relay 중계)
 async function diag(pc){try{const st=await pc.getStats(),L=new Set(),R=new Set();let pair='';st.forEach(r=>{if(r.type==='local-candidate')L.add(r.candidateType+(r.address&&/\.local$/.test(r.address)?'(mDNS)':''));if(r.type==='remote-candidate')R.add(r.candidateType+(r.address&&/\.local$/.test(r.address)?'(mDNS)':''));if(r.type==='candidate-pair'&&r.state==='succeeded'&&r.nominated)pair='ok';});
  return '이쪽 '+([...L].join('·')||'없음')+' / 상대 '+([...R].join('·')||'없음')+(pair?' · 연결됨':'');}catch(e){return '';}}
@@ -43,7 +49,7 @@ function Rx(opt){opt=opt||{};const me='rx-'+rid();let pc=null,cur=null,oid=null,
    else if(ev==='ice'&&p.to===me&&pc&&p.oid===oid)addIce(pc,p.c);
  },st=>{S.net=st;if(st==='on')C.send('rx',{rid:me});ch();});
  async function accept(p){close(true);cur=p.sid;oid=p.oid||null;S.name=p.name||'원격 기기';S.crop=p.crop||null;S.fail='';S.live=false;
-  const P=pc=new RTCPeerConnection({iceServers:ICE});trickle(P,c=>C.send('ice',{to:p.sid,rid:me,oid,c}));
+  const P=pc=new RTCPeerConnection({iceServers:ICE.concat(Array.isArray(p.ice)?p.ice:[])});trickle(P,c=>C.send('ice',{to:p.sid,rid:me,oid,c}));
   P.ontrack=e=>{if(P!==pc)return;S.stream=e.streams[0]||new MediaStream([e.track]);ch();};
   P.onconnectionstatechange=async()=>{if(P!==pc)return;const cs=P.connectionState;
    if(cs==='connected'){tries=0;S.live=true;S.fail='';S.diag=await diag(P);opt.onStream&&opt.onStream(S.stream,S);ch();}
@@ -72,9 +78,9 @@ function Tx(opt){opt=opt||{};const sid='tx-'+rid(),peers=new Map();
   S.stream.getTracks().forEach(t=>P.addTrack(t,S.stream));
   P.onconnectionstatechange=async()=>{const cs=P.connectionState;if(cs==='connected'||cs==='failed')S.diag=await diag(P);if(cs==='failed')S.fail='연결 실패 (보내는 쪽: '+S.diag+(S.rdiag?' · 메인 쪽: '+S.rdiag:'')+')';if(cs==='connected')S.fail='';if((cs==='failed'||cs==='closed')&&peers.get(r)===P)peers.delete(r);ch();};
   try{await P.setLocalDescription(await P.createOffer());await gather(P);
-   P.getSenders().forEach(sn=>{const pr=sn.getParameters();if(!pr.encodings||!pr.encodings.length)pr.encodings=[{}];pr.encodings[0].maxBitrate=6e6;sn.setParameters(pr).catch(()=>{});});
-   C.send('offer',{to:r,sid,oid:P._oid,name:(opt.name&&opt.name())||'원격 기기',crop:S.crop,sdp:P.localDescription.toJSON()});P._sent=1;}catch(e){console.error(e);}ch();}
- S.start=st=>{S.stop(true);S.stream=st;const vt=st.getVideoTracks()[0];if(vt){try{vt.contentHint='motion';}catch(e){}vt.addEventListener('ended',()=>S.stop());}C.send('tx',{sid});ch();};
+   P.getSenders().forEach(sn=>{const pr=sn.getParameters();if(!pr.encodings||!pr.encodings.length)pr.encodings=[{}];Object.assign(pr.encodings[0],{maxBitrate:15e6,maxFramerate:30,scaleResolutionDownBy:1});pr.degradationPreference='maintain-resolution';sn.setParameters(pr).catch(()=>{});});
+   C.send('offer',{to:r,sid,oid:P._oid,ice:XICE(),name:(opt.name&&opt.name())||'원격 기기',crop:S.crop,sdp:P.localDescription.toJSON()});P._sent=1;}catch(e){console.error(e);}ch();}
+ S.start=st=>{S.stop(true);S.stream=st;const vt=st.getVideoTracks()[0];if(vt){try{vt.contentHint='detail';}catch(e){}vt.addEventListener('ended',()=>S.stop());}C.send('tx',{sid});ch();};
  S.stop=quiet=>{peers.forEach(P=>{try{P.close();}catch(e){}});peers.clear();if(S.stream){S.stream.getTracks().forEach(t=>t.stop());S.stream=null;if(!quiet)C.send('bye',{sid});}ch();};
  S.setCrop=c=>{S.crop=c;C.send('crop',{sid,crop:c});};
  S.count=()=>[...peers.values()].filter(P=>P.connectionState==='connected').length;
@@ -85,5 +91,5 @@ function Tx(opt){opt=opt||{};const sid='tx-'+rid(),peers=new Map();
 
 // 자르기 {x,y,w,h}(0~1) → CSS object-view-box
 const viewBox=c=>c&&c.w>0&&c.h>0?'inset('+[c.y,1-c.x-c.w,1-c.y-c.h,c.x].map(v=>(Math.max(0,v)*100).toFixed(2)+'%').join(' ')+')':'';
-window.FACELINK={Rx,Tx,viewBox};
+window.FACELINK={Rx,Tx,viewBox,unlock,XICE};
 })();
