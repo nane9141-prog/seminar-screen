@@ -1076,7 +1076,7 @@ var FACE={devs:[],err:'',fit:localStorage.getItem('scr-face-fit')||'cover',
  async list(ask){if(window.VIEW_MODE||!navigator.mediaDevices)return;try{
    if(ask){let t=null;try{t=await navigator.mediaDevices.getUserMedia({video:true,audio:false});}catch(e){if(e.name!=='NotFoundError')throw e;t=await navigator.mediaDevices.getUserMedia({audio:true});/* 카메라 없는 송출 PC: 마이크 권한으로 원격 연결용 내부 IP 공개 */}t.getTracks().forEach(x=>x.stop());}
    const d=await navigator.mediaDevices.enumerateDevices();this.devs=d.filter(x=>x.kind==='videoinput').map((x,i)=>({id:x.deviceId,label:x.label||('영상 장치 '+(i+1)+' (이름은 권한 허용 뒤 표시)')}));this.err='';}catch(e){this.err=e.name||String(e);}MC.pub();},
- stop(){const b=this.box();if(!b)return;if(b._s){if(!b._remote)b._s.getTracks().forEach(t=>t.stop());b._s=null;}b._remote=false;const v=b.querySelector('video');if(v){v.srcObject=null;v.style.objectViewBox='';}b.classList.remove('on');},
+ stop(){const b=this.box();if(!b)return;if(b._s){if(!b._remote)b._s.getTracks().forEach(t=>t.stop());b._s=null;}b._remote=false;b._relay=false;const im=b.querySelector('img.relay');if(im){im.hidden=true;if(im._u){URL.revokeObjectURL(im._u);im._u='';}im.removeAttribute('src');}const v=b.querySelector('video');if(v){v.srcObject=null;v.style.objectViewBox='';}b.classList.remove('on');},
  /* 11/26 원격 기기(face.html, Meet · Teams 화면 공유) — id 'remote' */
  attachRemote(){const b=this.box(),R=window.FACE_RX;if(!b||!R||!R.stream||!R.live)return false;this.stop();const v=b.querySelector('video');b._s=R.stream;b._remote=true;v.srcObject=R.stream;v.style.objectFit=this.fit;v.style.objectViewBox=FACELINK.viewBox(R.crop);v.play().catch(()=>{});b.classList.add('on');this.err='';return true;},
  async set(id){if(window.VIEW_MODE)return;const b=this.box();if(!b)return;this.stop();
@@ -1087,15 +1087,21 @@ var FACE={devs:[],err:'',fit:localStorage.getItem('scr-face-fit')||'cover',
    S.getVideoTracks()[0].addEventListener('ended',()=>{b.classList.remove('on');b._s=null;this.err='장치 연결이 끊김';MC.pub();});
    if(!this.devs.length||!this.devs[0].label||/권한/.test(this.devs[0].label))await this.list();}
   catch(e){this.err=e.name||String(e);}MC.pub();},
- setFit(f){this.fit=f==='contain'?'contain':'cover';localStorage.setItem('scr-face-fit',this.fit);const b=this.box(),v=b&&b.querySelector('video');if(v)v.style.objectFit=this.fit;MC.pub();},
- st(){const b=this.box(),on=!!(b&&b.classList.contains('on')&&b._s),tr=on&&b._s.getVideoTracks()[0],ss=tr&&tr.getSettings?tr.getSettings():{},R=window.FACE_RX,rm=on&&b._remote,v=b&&b.querySelector('video');
-  return {on:on?1:0,label:rm?'원격 · '+(R&&R.name||'원격 기기'):tr?tr.label:'',id:rm?'remote':tr&&ss.deviceId||'',res:rm?(v&&v.videoWidth?v.videoWidth+'×'+v.videoHeight:''):ss.width?ss.width+'×'+ss.height:'',fit:this.fit,err:this.err,devs:this.devs,
-   rx:R?{net:R.net,on:R.live?1:0,name:R.name||'',state:R.state(),crop:R.crop?1:0,fail:R.fail||'',diag:R.diag||''}:null};}};
+ setFit(f){this.fit=f==='contain'?'contain':'cover';localStorage.setItem('scr-face-fit',this.fit);const b=this.box(),v=b&&b.querySelector('video'),im=b&&b.querySelector('img.relay');if(v)v.style.objectFit=this.fit;if(im)im.style.objectFit=this.fit;MC.pub();},
+ st(){const b=this.box(),rl=!!(b&&b._relay&&b.classList.contains('on')),on=rl||!!(b&&b.classList.contains('on')&&b._s),tr=on&&!rl&&b._s.getVideoTracks()[0],ss=tr&&tr.getSettings?tr.getSettings():{},R=window.FACE_RX,rm=on&&(b._remote||rl),v=b&&b.querySelector(rl?'img.relay':'video');
+  return {on:on?1:0,label:rm?'원격 · '+(R&&R.name||'원격 기기'):tr?tr.label:'',id:rm?'remote':tr&&ss.deviceId||'',res:rm?(v&&(v.videoWidth||v.naturalWidth)?(v.videoWidth||v.naturalWidth)+'×'+(v.videoHeight||v.naturalHeight)+(rl?' · 중계':''):''):ss.width?ss.width+'×'+ss.height:'',fit:this.fit,err:this.err,devs:this.devs,
+   rx:R?{net:R.net,on:(R.live||R.relay)?1:0,relay:R.relay?1:0,name:R.name||'',state:R.state(),crop:R.crop?1:0,fail:R.fail||'',diag:R.diag||''}:null};}};
 window.FACE=FACE;
 if(!window.VIEW_MODE&&window.FACELINK&&window.RTCPeerConnection){window.FACE_RX=FACELINK.Rx({
   onStream(){const m=localStorage.getItem('scr-face-dev'),b=FACE.box();if(m==='remote'||!(b&&b.classList.contains('on'))){localStorage.setItem('scr-face-dev','remote');FACE.attachRemote();toast('연사 화면 원격 연결 — '+(FACE_RX.name||'원격 기기'));}MC.pub();},
   onEnd(){const b=FACE.box();if(b&&b._remote){FACE.stop();FACE.err='원격 연결 끊김 — 다시 보내면 자동 연결';toast('연사 원격 화면 끊김');}MC.pub();},
   onCrop(c){const b=FACE.box(),v=b&&b.querySelector('video');if(b&&b._remote&&v)v.style.objectViewBox=FACELINK.viewBox(c);},
+  onRelay(p,first){const b=FACE.box();if(!b)return;const m=localStorage.getItem('scr-face-dev'),busy=b.classList.contains('on')&&!b._relay;if(busy&&m!=='remote')return;
+   if(first){if(!b._relay){FACE.stop();b._relay=true;localStorage.setItem('scr-face-dev','remote');toast('연사 화면 원격 연결(중계) — '+(p.name||'원격 기기'));}}
+   let im=b.querySelector('img.relay');if(!im){im=document.createElement('img');im.className='relay zm-v';im.style.cssText='position:absolute;inset:0;width:100%;height:100%;z-index:2';b.appendChild(im);}
+   im.style.objectFit=FACE.fit;im.hidden=false;const bin=atob(p.d),u=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)u[i]=bin.charCodeAt(i);
+   const url=URL.createObjectURL(new Blob([u],{type:'image/jpeg'}));const old=im._u;im.onload=()=>{if(old)URL.revokeObjectURL(old);};im._u=url;im.src=url;b.classList.add('on');FACE.err='';if(first)MC.pub();},
+  onRelayEnd(){const b=FACE.box();if(b&&b._relay){FACE.stop();FACE.err='원격 연결 끊김 — 다시 보내면 자동 연결';toast('연사 원격 화면 끊김');}MC.pub();},
   onChange(){clearTimeout(FACE._pt);FACE._pt=setTimeout(()=>MC.pub(),200);}});}
 if(!window.VIEW_MODE&&navigator.mediaDevices){navigator.mediaDevices.addEventListener&&navigator.mediaDevices.addEventListener('devicechange',()=>FACE.list());
  setTimeout(async()=>{await FACE.list();const id=localStorage.getItem('scr-face-dev');if(id&&FACE.devs.some(d=>d.id===id))FACE.set(id);},1500);}

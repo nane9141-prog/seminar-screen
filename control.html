@@ -709,7 +709,7 @@ SCHED.onSrc(drawSrc);
   const key=(f.devs||[]).map(d=>d.id+d.label).join('|');if(sel._k!==key){const cur=sel.value;sel._k=key;sel.innerHTML='<option value="">— 영상 장치 선택 (캡처보드 · 카메라) —</option><option value="remote">원격 기기 (Meet · Teams 화면 공유 · face.html)</option>'+(f.devs||[]).map(d=>'<option value="'+d.id+'">'+d.label.replace(/</g,'&lt;')+'</option>').join('');sel.value=cur;}
   if(f.on&&f.id&&document.activeElement!==sel)sel.value=f.id;
   document.querySelectorAll('#facebox .ff').forEach(b=>b.classList.toggle('on',b.dataset.fit===f.fit));
-  const r=f.rx,rs=$$('facerx');if(rs){rs.className='frx'+(r&&r.on?' on':r&&r.fail?' err':'');rs.textContent=!r?'원격 수신: 메인 스크린이 원격 연결을 지원하지 않음(새로고침 필요)':r.net!=='on'?'원격 수신: 신호 서버 연결 '+(r.net==='down'?'끊김 — 송출 PC 인터넷 확인':'중…'):r.fail?'원격 수신: '+r.fail+(r.diag?' · '+r.diag:''):r.on?'원격 수신 ● 「'+r.name+'」에서 받는 중'+(r.crop?' · 자르기 적용':'')+(f.id==='remote'?' · 얼굴 창에 표시 중':' · 얼굴 창에 쓰려면 「원격 기기」 선택 → 연결'):'원격 수신 대기 — Meet · Teams 기기에서 아래 주소를 열고 「보내기」';}};
+  const r=f.rx,rs=$$('facerx');if(rs){rs.className='frx'+(r&&r.on?' on':r&&r.fail?' err':'');rs.textContent=!r?'원격 수신: 메인 스크린이 원격 연결을 지원하지 않음(새로고침 필요)':r.net!=='on'?'원격 수신: 신호 서버 연결 '+(r.net==='down'?'끊김 — 송출 PC 인터넷 확인':'중…'):r.fail?'원격 수신: '+r.fail+(r.diag?' · '+r.diag:''):r.on?'원격 수신 ● 「'+r.name+'」에서 받는 중'+(r.relay?'(중계 모드)':'')+(r.crop?' · 자르기 적용':'')+(f.id==='remote'?' · 얼굴 창에 표시 중':' · 얼굴 창에 쓰려면 「원격 기기」 선택 → 연결'):'원격 수신 대기 — Meet · Teams 기기에서 아래 주소를 열고 「보내기」';}};
  SCHED.onState(faceUpd);faceUpd(SCHED.getState());
  $$('faceon').onclick=()=>{const v=$$('facedev').value;if(!v){$$('facedev').focus();return;}SCHED.cmd({face:v});};
  {const u=new URL('face.html',location.href).href;$$('facelink').value=u;$$('facecp').onclick=()=>{navigator.clipboard&&navigator.clipboard.writeText(u);$$('facecp').textContent='복사됨';setTimeout(()=>$$('facecp').textContent='주소 복사',1500);};$$('faceop').onclick=()=>open(u,'_blank');}
@@ -718,8 +718,8 @@ SCHED.onSrc(drawSrc);
   const nm=()=>'운영 입력 · '+((localStorage.getItem('ctl-dev-name')||'').trim()||'이 기기');let TX=null,lastC=0;
   const pv=$$('ftxpv'),v=$$('ftxv'),cr=$$('ftxcr');
   const tu=()=>{if(!TX)return;const on=!!TX.stream,c=TX.count(),el=$$('ftxst');$$('ftxstop').disabled=!on;pv.hidden=!on;$$('ftxcrow').hidden=!on;
-   el.className=on?(c?'on':'warn'):'';el.textContent=!on?'Meet · Teams가 이 기기에 떠 있을 때':c?'● 메인 스크린 '+c+'대에 보내는 중'+(v.videoWidth?' · 원본 '+v.videoWidth+'×'+v.videoHeight:''):TX.net!=='on'?'신호 서버 연결 중…':TX.fail?TX.fail:TX.pending()?'메인 스크린과 연결 중…':'메인 스크린 응답 대기 중… (메인을 새로고침해 보세요)';
-   if(on&&c&&!lastC)SCHED.cmd({face:'remote'});lastC=c;};
+   el.className=on?((c||TX.relayCount())?'on':'warn'):'';el.textContent=!on?'Meet · Teams가 이 기기에 떠 있을 때':c?'● 메인 스크린 '+c+'대에 보내는 중'+(v.videoWidth?' · 원본 '+v.videoWidth+'×'+v.videoHeight:''):TX.relayOn?(TX.relayCount()?'● 중계 모드로 보내는 중 · 메인 '+TX.relayCount()+'대(직접 연결이 막혀 약 12fps)':'중계 모드 시작 — 메인 응답 기다리는 중…'):TX.net!=='on'?'신호 서버 연결 중…':TX.fail?TX.fail:TX.pending()?'메인 스크린과 연결 중…':'메인 스크린 응답 대기 중… (메인을 새로고침해 보세요)';
+   const cc=c+TX.relayCount();if(on&&cc&&!lastC)SCHED.cmd({face:'remote'});lastC=cc;};
   const vr=()=>{const W=pv.clientWidth,H=pv.clientHeight,vw=v.videoWidth||16,vh=v.videoHeight||9,k=Math.min(W/vw,H/vh);return {x:(W-vw*k)/2,y:(H-vh*k)/2,w:vw*k,h:vh*k};};
   const dc=()=>{const c=TX&&TX.crop;if(!c||!TX.stream){cr.classList.remove('on');return;}const r=vr();Object.assign(cr.style,{left:r.x+c.x*r.w+'px',top:r.y+c.y*r.h+'px',width:c.w*r.w+'px',height:c.h*r.h+'px'});cr.classList.add('on');};
   $$('ftxscr').onclick=async()=>{try{await FACELINK.unlock();const st=await navigator.mediaDevices.getDisplayMedia({video:{frameRate:{ideal:30},width:{ideal:3840},height:{ideal:2160}},audio:false,selfBrowserSurface:'exclude',surfaceSwitching:'include'});
