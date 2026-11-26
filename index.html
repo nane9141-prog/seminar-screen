@@ -568,6 +568,17 @@ body.idle{cursor:none}
 /* 11/26 M1-5 안내사항: 파랑 라벨(주차 · 현장 질문) 외 글씨 키움 — 제목 63→74px, 설명 48→58px(밝기도 한 단계) */
 .slide[data-no=M1-5] .card-t{font-size:74px}
 .slide[data-no=M1-5] .card-b{font-size:58px;color:#AEB6C1;margin-top:18px}
+/* 11/26 M10-2~M10-12 사전 질문: 카테고리별 한 장, 기업명 없이 질문만 */
+.pq-h{font-size:150px!important;line-height:1.22!important;display:flex;flex-direction:column}
+.pq-k{display:block;margin-bottom:56px;font:400 54px/1 "Pretendard Variable",sans-serif;color:#8F9AAA;letter-spacing:0}
+.pq-k b{font-weight:600;color:#F2F5FA}
+.pq-l{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+.pq-l li{display:grid;grid-template-columns:120px minmax(0,1fr);align-items:baseline;padding:40px 0;border-top:2px solid rgba(255,255,255,.12)}
+.pq-l li:last-child{border-bottom:2px solid rgba(255,255,255,.12)}
+.pq-n{font:500 52px/1 "Pretendard Variable",sans-serif;color:#0081cc}
+.pq-l p{margin:0;font:400 66px/1.42 "Pretendard Variable",sans-serif;color:#F2F5FA;letter-spacing:-.01em;word-break:keep-all}
+.pq-l.pq-s li{padding:30px 0}
+.pq-l.pq-s p{font-size:60px}
 </style></head>
 <body>
 <div class="stage" id="scr" data-foot="full">
@@ -764,7 +775,51 @@ body.idle{cursor:none}
 <p class="qa1-note fu" style="--i:4">Proxymity 세션에 질문 주신 내용은 세미나 종료 후 메일을 통해 답변 드리겠습니다.</p>
 </div>
 </section>
-<section class="slide" id="m10_2" data-no="M10-2" data-title="M10-2 질문 화면 (control.html 송출)" data-bg="B" data-foot="full" data-qa="1" data-tr="blur">
+<section class="slide" id="m10_p1" data-no="M10-2" data-title="M10-2 사전 질문 · 법제" data-bg="B" data-foot="full" data-lay="split" data-pq="1">
+<h2 class="head fu pq-h" style="--i:0"><span class="pq-k">사전 질문 <b>01</b> / 11</span>법제</h2>
+<ol class="pq-l" data-stagger style="--i:1"><li><span class="pq-n">01</span><p>소집통지 전 이사회에서 운영규정을 승인한 뒤, 주주총회 승인 등 별도 절차가 더 필요한지</p></li><li><span class="pq-n">02</span><p>의장의 속행 · 연기 권한을 주주총회 첫 번째 안건으로 승인받은 경우, 전산장애 시 의장이 이 권한을 행사해도 법적으로 문제가 없는지</p></li></ol>
+</section>
+<section class="slide" id="m10_p2" data-no="M10-3" data-title="M10-3 사전 질문 · 사전 준비" data-bg="B" data-foot="full" data-lay="split" data-pq="1">
+<h2 class="head fu pq-h" style="--i:0"><span class="pq-k">사전 질문 <b>02</b> / 11</span>사전 준비</h2>
+<ol class="pq-l" data-stagger style="--i:1"><li><span class="pq-n">01</span><p>전자주주총회 운영 및 사전 준비 절차</p></li><li><span class="pq-n">02</span><p>사전 준비 절차 — 운영규정 마련, 이사회 결의 등</p></li><li><span class="pq-n">03</span><p>회사가 해야 할 준비 사항(To Do)</p></li><li><span class="pq-n">04</span><p>준비 절차와 함께 주주 본인확인 방법, 현장 · 온라인 통합 운영, 표결 집계 방식</p></li></ol>
+</section>
+<section class="slide" id="m10_p3" data-no="M10-4" data-title="M10-4 사전 질문 · 계약 · 운영" data-bg="B" data-foot="full" data-lay="split" data-pq="1">
+<h2 class="head fu pq-h" style="--i:0"><span class="pq-k">사전 질문 <b>03</b> / 11</span>계약 · 운영</h2>
+<ol class="pq-l pq-s" data-stagger style="--i:1"><li><span class="pq-n">01</span><p>전자주주총회 진행 방법 전반</p></li><li><span class="pq-n">02</span><p>발생할 수 있는 상황별 플랫폼 운영 방법</p></li><li><span class="pq-n">03</span><p>실제 운영 방식 — 사전 준비 절차, 문제가 생겼을 때 대응 방법</p></li><li><span class="pq-n">04</span><p>현장 · 온라인 통합 운영</p></li><li><span class="pq-n">05</span><p>기존과 다르게 준비할 사항, 담당자별 임무, 사전 세부 준비 사항, 진행사 · 위탁사 간 업무 분담</p></li><li><span class="pq-n">06</span><p>계약 진행 절차, 수수료 비용, 회사별 전담 인력 배정 여부</p></li></ol>
+</section>
+<section class="slide" id="m10_p4" data-no="M10-5" data-title="M10-5 사전 질문 · 사전투표" data-bg="B" data-foot="full" data-lay="split" data-pq="1">
+<h2 class="head fu pq-h" style="--i:0"><span class="pq-k">사전 질문 <b>04</b> / 11</span>사전투표</h2>
+<ol class="pq-l" data-stagger style="--i:1"><li><span class="pq-n">01</span><p>전자투표와의 연동 · 연계 여부</p></li><li><span class="pq-n">02</span><p>전자투표 사용자 현황(시장 점유율)</p></li><li><span class="pq-n">03</span><p>기관주주 편의성</p></li></ol>
+</section>
+<section class="slide" id="m10_p5" data-no="M10-6" data-title="M10-6 사전 질문 · 주주 확인 · 출석" data-bg="B" data-foot="full" data-lay="split" data-pq="1">
+<h2 class="head fu pq-h" style="--i:0"><span class="pq-k">사전 질문 <b>05</b> / 11</span>주주 확인 · 출석</h2>
+<ol class="pq-l" data-stagger style="--i:1"><li><span class="pq-n">01</span><p>주주 확인 방법</p></li><li><span class="pq-n">02</span><p>외국인 주주의 본인확인 방법</p></li><li><span class="pq-n">03</span><p>외국인 주주 본인확인 방법 — 예탁원 방식과 다른 점</p></li></ol>
+</section>
+<section class="slide" id="m10_p6" data-no="M10-7" data-title="M10-7 사전 질문 · 위임 · 대리인 · 외국인" data-bg="B" data-foot="full" data-lay="split" data-pq="1">
+<h2 class="head fu pq-h" style="--i:0"><span class="pq-k">사전 질문 <b>06</b> / 11</span>위임 · 대리인 · 외국인</h2>
+<ol class="pq-l pq-s" data-stagger style="--i:1"><li><span class="pq-n">01</span><p>상임대리인(보관기관)이 다수 외국인 주주의 의결권을 대리할 때 사전투표 없이 당일 온라인으로 출석 · 표결할 수 있는지, 가능하다면 주주별 찬반을 나누는 불통일행사를 시스템에서 어떻게 처리하는지</p></li><li><span class="pq-n">02</span><p>한 수임인이 수백 명의 위임을 받아 온라인으로 출석할 때 위임장 검증과 수임인 본인인증 방법, 위임 주주별로 찬반을 나눠 행사할 수 있는지</p></li><li><span class="pq-n">03</span><p>대리인 위임 확인 방법</p></li><li><span class="pq-n">04</span><p>해외 운용사의 전자주총 참여 관리 방안</p></li><li><span class="pq-n">05</span><p>외국인 주주 참여 A to Z — 사전 등록 절차부터 단계별로</p></li><li><span class="pq-n">06</span><p>전자주주총회 투표 절차에서 집중투표제 구현 방식</p></li></ol>
+</section>
+<section class="slide" id="m10_p7" data-no="M10-8" data-title="M10-8 사전 질문 · 질의 · 발언" data-bg="B" data-foot="full" data-lay="split" data-pq="1">
+<h2 class="head fu pq-h" style="--i:0"><span class="pq-k">사전 질문 <b>07</b> / 11</span>질의 · 발언</h2>
+<ol class="pq-l pq-s" data-stagger style="--i:1"><li><span class="pq-n">01</span><p>온라인 참여 주주의 질문을 어디까지 수용해 대응해야 하는지</p></li><li><span class="pq-n">02</span><p>주주 질의 허용 방식 — 사전 질의 또는 당일 실시간, 별도 질의응답 창 활용 여부</p></li><li><span class="pq-n">03</span><p>발언권 선정 등 질의 · 의견 발언권 관리 방안</p></li><li><span class="pq-n">04</span><p>온라인 전자주주총회의 발언 진행 방식</p></li><li><span class="pq-n">05</span><p>음성 또는 문자 송수신 방법</p></li></ol>
+</section>
+<section class="slide" id="m10_p8" data-no="M10-9" data-title="M10-9 사전 질문 · 표결 · 집계" data-bg="B" data-foot="full" data-lay="split" data-pq="1">
+<h2 class="head fu pq-h" style="--i:0"><span class="pq-k">사전 질문 <b>08</b> / 11</span>표결 · 집계</h2>
+<ol class="pq-l pq-s" data-stagger style="--i:1"><li><span class="pq-n">01</span><p>표결 · 의결권 집계 방식</p></li><li><span class="pq-n">02</span><p>온라인 · 오프라인 사전 표결 집계 취합 방식</p></li><li><span class="pq-n">03</span><p>특별결의 · 보통결의 · 집중투표제 등 세부 조건별 자동 집계 가능 여부</p></li><li><span class="pq-n">04</span><p>현장투표 시 앱을 반드시 설치해야 하는지, 고령 주주 등 스마트기기에 익숙하지 않은 현장 주주 응대 방법(예탁원은 QR코드 · URL 접속으로 앱 설치 없이 현장 행사 가능)</p></li></ol>
+</section>
+<section class="slide" id="m10_p9" data-no="M10-10" data-title="M10-10 사전 질문 · 생중계" data-bg="B" data-foot="full" data-lay="split" data-pq="1">
+<h2 class="head fu pq-h" style="--i:0"><span class="pq-k">사전 질문 <b>09</b> / 11</span>생중계</h2>
+<ol class="pq-l" data-stagger style="--i:1"><li><span class="pq-n">01</span><p>실제 주총 진행과 온라인 중계 사이의 지연(Latency) 시간</p></li><li><span class="pq-n">02</span><p>운영상 영상 송수신</p></li><li><span class="pq-n">03</span><p>촬영 장비 대여 여부</p></li></ol>
+</section>
+<section class="slide" id="m10_p10" data-no="M10-11" data-title="M10-11 사전 질문 · 시스템 · 기록 · 장애" data-bg="B" data-foot="full" data-lay="split" data-pq="1">
+<h2 class="head fu pq-h" style="--i:0"><span class="pq-k">사전 질문 <b>10</b> / 11</span>시스템 · 기록 · 장애</h2>
+<ol class="pq-l" data-stagger style="--i:1"><li><span class="pq-n">01</span><p>동시 접속 지원 인원</p></li><li><span class="pq-n">02</span><p>담당자별로 플랫폼에서 활성화되는 기능을 다르게 설정할 수 있는지</p></li><li><span class="pq-n">03</span><p>접속 로그(log)</p></li><li><span class="pq-n">04</span><p>전산장애 발생 시 책임 여부</p></li></ol>
+</section>
+<section class="slide" id="m10_p11" data-no="M10-12" data-title="M10-12 사전 질문 · 종료 후 · 기타" data-bg="B" data-foot="full" data-lay="split" data-pq="1">
+<h2 class="head fu pq-h" style="--i:0"><span class="pq-k">사전 질문 <b>11</b> / 11</span>종료 후 · 기타</h2>
+<ol class="pq-l" data-stagger style="--i:1"><li><span class="pq-n">01</span><p>주주명부 분석 절차</p></li><li><span class="pq-n">02</span><p>주총 이후 당일 공시와 등기를 위한 서류 일체 · 양식 샘플</p></li><li><span class="pq-n">03</span><p>온 · 오프라인 민원성 주주 관리 방안</p></li></ol>
+</section>
+<section class="slide" id="m10_2" data-no="M10-13" data-title="M10-13 현장 질문 화면 (control.html 송출)" data-bg="B" data-foot="full" data-qa="1" data-tr="blur">
 <div class="qa2">
 <div class="qa2-l fu" style="--i:0"><span class="qa2-q">Q</span><p class="qa2-lab" id="q-lab">Q&amp;A</p></div>
 <div class="qa2-r">
@@ -1051,7 +1106,7 @@ function hud(){const e=document.getElementById('hud');if(!e.classList.contains('
   if(nx){const d=nx.start-nx.ps;sch+='<br>다음: '+(nx.tag||nx.label)+' '+SCHED.fmt(nx.start)+(d?' <span class="'+(d>0?'late':'early')+'">('+(d>0?'+':'')+d+'분)</span>':' (예정대로)');}
   SCHED.warnings(SC).forEach(w=>sch+='<br><span class="late">⚠ '+w+'</span>');sch+='</div>';
   e.innerHTML='<b>화면 목록</b> (클릭, 또는 화면 번호 입력 예: 4-5 Enter, 1-s1 Enter)<ol>'+slides.map((s,i)=>s.dataset.skip?'':'<li class="'+(i===idx?'cur':'')+'" data-i="'+i+'">'+s.dataset.title+'</li>').join('')+'</ol>'+sch+
-  '<br><b>조작</b><br>→ ← Space PageDown PageUp : 이동 (상황 메시지는 건너뜀) · Home End : 처음/끝<br>질문 화면(M10-2)에서 ← → : 이전 · 다음 질문, PageUp/PageDown : 화면 이동<br>F 전체화면 · B 블랙아웃 · A 대기화면 자동순환('+(auto?'켜짐':'꺼짐')+')<br>휴식 화면에서 + − : 재개 시각과 이후 순서 1분 조정 · [ ] 배경 품질('+window.FSQ.toFixed(2)+') · O 이 창 닫기<br>운영 입력: control.html (질문 · 진행 시간 · 화면 전환)<br>오프라인: '+(window.OFFLINE_STATE||'-');}
+  '<br><b>조작</b><br>→ ← Space PageDown PageUp : 이동 (상황 메시지는 건너뜀) · Home End : 처음/끝<br>질문 화면(M10-13)에서 ← → : 이전 · 다음 질문, PageUp/PageDown : 화면 이동<br>F 전체화면 · B 블랙아웃 · A 대기화면 자동순환('+(auto?'켜짐':'꺼짐')+')<br>휴식 화면에서 + − : 재개 시각과 이후 순서 1분 조정 · [ ] 배경 품질('+window.FSQ.toFixed(2)+') · O 이 창 닫기<br>운영 입력: control.html (질문 · 진행 시간 · 화면 전환)<br>오프라인: '+(window.OFFLINE_STATE||'-');}
 document.addEventListener('offline-state',e=>{hud();if(/완료/.test(e.detail))toast('오프라인 저장 완료');});
 document.getElementById('hud').addEventListener('click',e=>{const li=e.target.closest('li');if(li)go(+li.dataset.i);});
 setInterval(hud,15000);

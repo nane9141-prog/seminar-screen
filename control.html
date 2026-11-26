@@ -349,7 +349,7 @@ body.kflash #pvslot,body.kflash #pvbox{box-shadow:0 0 0 2px #2f6bff}
 </div>
 <div id="colScr">
  <div class="box" id="scrbox">
-  <h2>화면 전환 <span class="mut">현재 <b id="curno">-</b> · 점선 = 상황 메시지</span><span><button id="toq2">질문 화면(M10-2)</button> <button id="black">블랙아웃</button></span></h2>
+  <h2>화면 전환 <span class="mut">현재 <b id="curno">-</b> · 점선 = 상황 메시지</span><span><button id="toq2">현장 질문 화면(M10-13)</button> <button id="black">블랙아웃</button></span></h2>
   <div class="owner" id="owner"><span class="od"></span><div class="ot"><b id="ownname">조작 기기: 제한 없음</b><span class="mut" id="ownsub">어느 운영 입력 화면에서든 메인을 넘길 수 있습니다.</span></div><span class="sp"></span><label class="pvt"><input type="checkbox" id="pvon"> 미리보기</label><button id="ownset" class="pri">이 기기로 지정</button><button id="ownclr">지정 해제</button></div>
   <div id="scrbody">
   <div class="pvwrap"><div id="pvslot"></div><div class="pvside"><div class="pvnow"><span class="mut">현재 화면</span><b id="pvcur">-</b><span class="mut" id="pvpos"></span></div><div class="pvbtn"><button id="nprev2" class="big">◀ 이전</button><button id="nnext2" class="pri big">다음 ▶</button></div><p class="hint">← → · Space · PageUp/Down(클리커)으로 전환<br>입력칸에 커서가 있을 때는 작동하지 않습니다</p><div class="pvopt"><button id="pvpip">PIP 창으로 띄우기</button><label><input type="checkbox" id="pvmini"> 다른 탭에서도 작은 화면</label></div></div></div>
@@ -413,7 +413,7 @@ body.kflash #pvslot,body.kflash #pvbox{box-shadow:0 0 0 2px #2f6bff}
 </div>
 <div id="colQa">
  <div class="box">
-  <h2>질의 관리 <span><button id="toq" title="메인 스크린이 열린 송출 PC에서만 동작합니다">메인 스크린을 질문 화면(M10-2)으로</button></span></h2>
+  <h2>질의 관리 <span><button id="toq" title="메인 스크린이 열린 송출 PC에서만 동작합니다">메인 스크린을 현장 질문 화면(M10-13)으로</button></span></h2>
   <div id="qonline">
    <div id="oqoff" hidden class="mut" style="padding:8px">인터넷에 연결되지 않아 온라인 질문을 불러올 수 없습니다. <button data-src="local">오프라인 직접 입력으로 전환</button></div>
    <form id="oqlogin" hidden class="row" style="flex-wrap:wrap"><span class="mut" style="width:100%">관리자 페이지 계정으로 로그인하세요.</span><input type="text" id="oqid" placeholder="아이디 (seminar01)" autocomplete="username"><input type="password" id="oqpw" placeholder="비밀번호" autocomplete="current-password" style="flex:1;min-width:0"><button class="pri" type="submit">로그인</button><span id="oqlerr" class="late" style="width:100%"></span></form>
@@ -424,9 +424,9 @@ body.kflash #pvslot,body.kflash #pvbox{box-shadow:0 0 0 2px #2f6bff}
      <div class="bar oq-ctl"><button id="oqprev">◀ 이전</button><button id="oqnext" class="pri">다음 ▶</button><button id="oqclear">화면 비우기</button><span class="hint">키보드 <span class="kbd">←</span><span class="kbd">→</span></span><span class="sp"></span><span id="oqmsg"></span></div>
     </section>
     <section class="oq-sec oq-list">
-     <div class="bar oq-tools"><button id="oqadd" class="pri">+ 직접 추가</button><button id="oqimport">사전 질문 가져오기</button></div>
+     <div class="bar oq-tools"><button id="oqadd" class="pri">+ 직접 추가</button></div>
      <div class="oq-head">
-      <nav class="subtab" id="oqtabs"><button data-tab="all">전체 <b id="oqc-all">0</b></button><button data-tab="pre">사전 <b id="oqc-pre">0</b></button><button data-tab="live">현장 <b id="oqc-live">0</b></button><button data-tab="pick">선택 목록 <b id="oqc-pick">0</b></button></nav>
+      <nav class="subtab" id="oqtabs"><b id="oqc-all" hidden>0</b><b id="oqc-pre" hidden>0</b><button data-tab="live">현장 <b id="oqc-live">0</b></button><button data-tab="pick">선택 목록 <b id="oqc-pick">0</b></button></nav>
       <div class="oq-flt"><select id="oqstf" aria-label="상태"><option value="">모든 상태</option><option value="new">접수</option><option value="picked">선택</option><option value="hidden">숨김</option></select>
        <select id="oqses" aria-label="세션"><option value="">모든 세션</option><option value="all">전체 · 공통</option><option value="s1">Session 1</option><option value="s2">Session 2</option><option value="s3">Session 3</option><option value="s4">Session 4 · 시연</option></select></div>
      </div>
@@ -437,10 +437,9 @@ body.kflash #pvslot,body.kflash #pvbox{box-shadow:0 0 0 2px #2f6bff}
   </div>
   <div id="qlocal">
   <div class="offbn">오프라인 직접 입력 모드 — 메인 스크린과 같은 PC에서만 반영됩니다.<span class="sp"></span><button data-src="online">온라인으로 돌아가기</button></div>
-  <div class="row"><select id="qtype"><option value="live">현장</option><option value="pre">사전</option></select>
+  <div class="row"><select id="qtype" hidden><option value="live">현장</option></select>
    <input type="text" id="qtext" placeholder="질문 내용 (Enter로 추가)"><input type="text" id="qwho" placeholder="답변 연사" style="flex:0 0 110px"><button id="qadd">추가</button></div>
-  <details style="margin-top:8px"><summary class="mut" style="cursor:pointer">사전 질문 여러 개 붙여넣기 (한 줄에 하나, 연사는 "질문 | 연사")</summary>
-   <textarea id="qbulk" rows="5" style="margin-top:6px"></textarea><div class="row"><button id="qbulkadd">사전 질문으로 추가</button></div></details>
+  <p class="mut" style="margin:8px 0 0;font-size:12px">사전 질문은 메인 스크린 M10-2~M10-12(카테고리별 고정 화면)로 진행 — 여기서는 현장 질문만 입력 · 송출합니다.</p>
   <div class="air empty" id="qair"><span class="air__lb">송출 중</span><div class="air__q" id="qcurv"></div></div>
   <div class="bar"><button id="qprev">◀ 이전</button><button id="qnext" class="pri">다음 ▶</button><button id="qclear">화면 비우기</button><span class="hint">키보드 <span class="kbd">←</span><span class="kbd">→</span></span></div>
   <div class="ql" id="ql"></div>
@@ -466,9 +465,9 @@ navigator.serviceWorker.register('sw.js').then(()=>navigator.serviceWorker.ready
 })();</script>
 <script>
 const $=id=>document.getElementById(id),F=SCHED.fmt;
-let S=SCHED.load(),Q=SCHED.loadQ(),sel=null;
+let S=SCHED.load(),Q=SCHED.loadQ(),sel=null;Q.list=(Q.list||[]).filter(x=>x.type!=="pre");   // 11/26 사전 질문은 메인 M10-2~12 고정 화면
 SCHED.onSched(v=>{S=v||SCHED.load();draw();});
-SCHED.onQ(v=>{Q=v||{list:[],cur:null};drawQ();});
+SCHED.onQ(v=>{Q=v||{list:[],cur:null};Q.list=(Q.list||[]).filter(x=>x.type!=="pre");drawQ();});
 SCHED.onState(v=>drawScr(v));
 function save(push){if(push!==false){S.hist=(S.hist||[]).slice(-49);}SCHED.save(S);draw();}
 function snap(){S.hist=(S.hist||[]).slice(-49);S.hist.push(JSON.stringify(S.items));}
@@ -517,12 +516,12 @@ function addQ(type,text,who){text=text.trim();if(!text)return;Q.list.push({id:'q
 function sortQ(){Q.list.sort((a,b)=>(a.type===b.type?0:a.type==='pre'?-1:1)||a.n-b.n);}
 $('qadd').onclick=()=>{addQ($('qtype').value,$('qtext').value,$('qwho').value);$('qtext').value='';$('qwho').value='';sortQ();saveQ();$('qtext').focus();};
 $('qtext').onkeydown=e=>{if(e.key==='Enter')$('qadd').click();};
-$('qbulkadd').onclick=()=>{$('qbulk').value.split('\n').forEach(l=>{const [t,w]=l.split('|');addQ('pre',t||'',w);});$('qbulk').value='';sortQ();saveQ();};
+if($('qbulkadd'))$('qbulkadd').onclick=()=>{$('qbulk').value.split('\n').forEach(l=>{const [t,w]=l.split('|');addQ('pre',t||'',w);});$('qbulk').value='';sortQ();saveQ();};
 function qStep(d){const L=Q.list;if(!L.length)return;let i=L.findIndex(x=>x.id===Q.cur);i=Math.max(0,Math.min(L.length-1,i<0?0:i+d));Q.cur=L[i].id;saveQ();}
 $('qprev').onclick=()=>qStep(-1);$('qnext').onclick=()=>qStep(1);
 $('qclear').onclick=()=>{Q.cur=null;saveQ();};
 $('qdelall').onclick=()=>{if(confirm('질문을 모두 삭제할까요?')){Q={list:[],cur:null};saveQ();}};
-$('toq').onclick=$('toq2').onclick=()=>SCHED.cmd({go:'M10-2'});
+$('toq').onclick=$('toq2').onclick=()=>SCHED.cmd({go:'M10-13'});
 function toqState(){const has=!!SCHED.getState();$('toq').disabled=!has;}SCHED.onState(toqState);toqState();
 function esc(s){return s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
 function drawQ(){const L=Q.list;$('ql').innerHTML=L.length?L.map((q,i)=>'<div class="q'+(q.id===Q.cur?' cur':'')+'" data-id="'+q.id+'"><div class="tag '+q.type+'">'+(q.type==='pre'?'사전':'현장')+' Q'+String(q.n).padStart(2,'0')+'</div>'+

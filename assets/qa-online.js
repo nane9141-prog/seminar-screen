@@ -9,8 +9,8 @@ const $=id=>document.getElementById(id);
 const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const tm=d=>{if(!d)return'';const x=new Date(d);return String(x.getHours()).padStart(2,'0')+':'+String(x.getMinutes()).padStart(2,'0');};
 const lab=q=>(q.kind==='pre'?'사전':'현장')+' Q'+String(q.n).padStart(2,'0');
-if(!/^(all|pre|live|pick)$/.test(localStorage.getItem('qa-tab')||'all'))localStorage.setItem('qa-tab','all');   // 예전 탭(접수·숨김) 값 정리
-let sb=null,me=null,L=[],cur=null,tab=localStorage.getItem('qa-tab')||'all',stf=localStorage.getItem('qa-st')||'',ses='',sig='',timer=null,busy=false;
+if(!/^(live|pick)$/.test(localStorage.getItem('qa-tab')||''))localStorage.setItem('qa-tab','live');   // 11/26 사전 질의는 메인 M10-2~12 고정 화면 — 운영 입력은 현장 질의만   // 예전 탭(접수·숨김) 값 정리
+let sb=null,me=null,L=[],cur=null,tab=localStorage.getItem('qa-tab')||'live',stf=localStorage.getItem('qa-st')||'',ses='',sig='',timer=null,busy=false;
 const station=()=>localStorage.getItem('qa-station')||'';
 const by=()=>station()||(me||'').replace(DOMAIN,'');
 
@@ -26,7 +26,6 @@ async function init(){
   if(!ok){await sb.auth.signOut();showLogin('운영자 권한이 없는 계정입니다.');return;}
   me=session.user.email;$('oqme').textContent=me.replace(DOMAIN,'');$('oqst').value=station();
   $('oqlogin').hidden=true;$('oqmain').hidden=false;$('oqoff').hidden=true;
-  sb.rpc('admin_import_pre_questions').then(r=>{if(r.data>0)msg('사전 질의 '+r.data+'건을 불러왔습니다');});
   poll();clearInterval(timer);timer=setInterval(poll,2000);
   window.dispatchEvent(new CustomEvent('qa-auth',{detail:{me}}));
 }
@@ -47,7 +46,7 @@ async function poll(){
       sb.from('live_questions').select('id,kind,n,company,name,email,session,body,who,status,ord,picked_by,shown_at,created_at').order('created_at'),
       sb.from('qa_state').select('cur,updated_by,updated_at').eq('id',1).single()]);
     if(q.error)throw q.error;
-    L=q.data||[];cur=s.data?s.data.cur:null;
+    L=(q.data||[]).filter(x=>x.kind!=='pre');cur=s.data?s.data.cur:null;
     const g=JSON.stringify([L,s.data,tab,ses,stf]);
     $('oqnet').textContent='● 연결됨 '+tm(new Date());$('oqnet').style.color='#7FD6A0';
     if(g!==sig){sig=g;draw(s.data);}
@@ -102,7 +101,7 @@ $('oqclear').onclick=()=>show(null);
 document.querySelectorAll('#oqtabs [data-tab]').forEach(b=>b.onclick=()=>{tab=b.dataset.tab;localStorage.setItem('qa-tab',tab);sig='';draw();poll();});
 $('oqstf').onchange=e=>{stf=e.target.value;localStorage.setItem('qa-st',stf);sig='';draw();poll();};
 $('oqses').onchange=e=>{ses=e.target.value;sig='';draw();};
-$('oqimport').onclick=async()=>{const {data,error}=await sb.rpc('admin_import_pre_questions');if(error)return msg(error.message,true);msg('사전 질문 '+data+'건을 접수 목록에 추가했습니다');sig='';poll();};
+if($('oqimport'))$('oqimport').onclick=async()=>{const {data,error}=await sb.rpc('admin_import_pre_questions');if(error)return msg(error.message,true);msg('사전 질문 '+data+'건을 접수 목록에 추가했습니다');sig='';poll();};
 $('oqadd').onclick=async()=>{const body=prompt('질문 내용 (종이 질문지 등)');if(!body||!body.trim())return;const company=prompt('회사','')||'-';const name=prompt('이름','')||'-';
   const P=picked();const {error}=await sb.from('live_questions').insert({kind:'live',company:company.trim()||'-',name:name.trim()||'-',session:ses||'all',body:body.trim(),status:'picked',ord:(P.length?(P[P.length-1].ord||0):0)+1,picked_by:by()});
   if(error)return msg(error.message,true);msg('선택 목록에 추가했습니다');sig='';poll();};
