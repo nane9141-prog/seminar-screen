@@ -8,13 +8,13 @@
 html,body{margin:0;height:100%;overflow:hidden;background:transparent;font-family:"Pretendard Variable",sans-serif;color:#F2F5FA}
 canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
 /* 장면 위 안내 글: 아래 왼쪽 */
-.scrim{position:absolute;left:0;top:0;width:70%;height:60%;background:radial-gradient(80% 80% at 0% 0%,rgba(0,0,0,.75) 0%,rgba(0,0,0,.45) 45%,rgba(0,0,0,0) 100%);pointer-events:none}
-.cap{position:absolute;left:150px;top:150px;opacity:0;transition:opacity .7s ease,transform .7s ease;transform:translateY(24px)}
+.scrim{position:absolute;left:0;top:0;width:45%;height:100%;background:linear-gradient(90deg,rgba(0,0,0,.72) 0%,rgba(0,0,0,.5) 55%,rgba(0,0,0,0) 100%);pointer-events:none}
+.cap{position:absolute;left:var(--cx,150px);top:var(--cy,150px);opacity:0;transition:opacity .7s ease,transform .7s ease;transform:translateY(24px)}
 .cap.on{opacity:1;transform:none}
 .cap small{display:block;font:500 46px/1.3 "Pretendard Variable";color:#8f9bb0;letter-spacing:-.01em}
 .cap b{display:block;margin-top:14px;font:600 64px/1.3 "Pretendard Variable";letter-spacing:-.02em}
 .cap b em{font-style:normal;color:#5bade1}
-.ex{position:absolute;left:150px;top:230px;display:flex;align-items:flex-end;gap:40px;opacity:0;transition:opacity .8s ease,transform .8s ease;transform:translateY(24px)}
+.ex{position:absolute;left:var(--cx,150px);top:calc(var(--cy,150px) + 80px);display:flex;align-items:flex-end;gap:40px;opacity:0;transition:opacity .8s ease,transform .8s ease;transform:translateY(24px)}
 .ex.on{opacity:1;transform:none}
 .ex .n{text-align:center}
 .ex .n b{display:block;font:300 230px/1 "Pretendard Variable";letter-spacing:-.04em}
@@ -36,6 +36,7 @@ canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
    15줄(무대 쪽 A) · 블록 왼쪽 2 · 가운데 3 · 오른쪽 2 테이블, 테이블 번호 = 왼쪽 블록 앞줄부터 1~15, 가운데 16~30, 오른쪽 31~45, 좌석은 테이블 안 왼쪽부터 1, 2, 3 …
    메인 플레이어가 'play' 를 보내면 처음부터, 'pause' 면 멈춤. 주소 ?t=초 로 그 시점에 고정(확인용) */
 const Q=new URLSearchParams(location.search),FIX=Q.has('t')?+Q.get('t'):null;
+if(Q.has('cx'))document.body.style.setProperty('--cx',Q.get('cx')+'px');if(Q.has('cy'))document.body.style.setProperty('--cy',Q.get('cy')+'px');
 const M=1/0.686,ROWS=15,PITCH=.6*M,ROW_X0=-15.7,ROW_DX=2.7,T_LEN=1.8*M,T_DEP=.45*M;
 const BLOCKS=[{z:8.6,n:2},{z:-.4,n:3},{z:-8.7,n:2}];
 const EX={no:22,seat:4};
