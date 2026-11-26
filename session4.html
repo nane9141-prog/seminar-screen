@@ -1863,6 +1863,12 @@ html.embed #sgb,html.embed #sg{display:none!important}  /* 11/26 메인 스크�
 /* K18a · b · c(11/26 21:35) 오른쪽 서비스 화면 · 휴대폰을 왼쪽으로 200px — 왼쪽 글 묶음 쪽으로 붙임 */
 .sp2 .rp{left:1900px!important}
 #K18b .ph{translate:-200px 0}
+
+/* K24a(11/26 21:38) KOSMOS 에이전트 앱 아이콘 삭제, 오른쪽 아래에 의결권 수집 관제 지도(서비스 모션 키트 PC-Map, 다크모드 「지역별 수집 현황」) — 휴대폰 뒤로 흐리게, 들어오면 수집 점이 차오름 */
+#K24a .k24map{position:absolute;left:3300px;top:460px;width:558px;height:900px;border-radius:40px;overflow:hidden;opacity:0;filter:blur(1.5px);transition:opacity 1.2s ease}
+#K24a .k24map video{display:block;width:100%;height:100%;object-fit:cover}
+.s.cur#K24a .k24map{opacity:.5;transition-delay:3.4s}
+#K24a .k24app{position:relative;z-index:2}
 </style></head>
 <body>
 <div class="stage" id="stage">
@@ -2214,8 +2220,8 @@ html.embed #sgb,html.embed #sg{display:none!important}  /* 11/26 메인 스크�
   <ul class="lst"><li>실질 기관주주 파악 · 타겟팅</li><li>프록시 미팅 · 행사내역 추적 · 결과분석</li></ul></div>
  </div>
  <canvas class="viz" data-viz="kr24" style="left:2250px;top:110px;width:1750px;height:1400px" width="1750" height="1400"></canvas>
+ <div class="k24map"><video src="assets/s4/pc-map.mp4" poster="assets/s4/pc-map.webp" muted playsinline preload="auto"></video></div>
  <div class="k24app">
- <div class="k24ic"><i></i><img src="assets/s4/app-icon-agent.svg" alt="에이전트 앱"></div>
  <div class="phone fu k24p" style="--i:3"><div class="scr"><video class="k24v" src="assets/s4/agent-app.mp4" poster="assets/s4/agent-app.webp" muted loop playsinline preload="auto"></video></div></div>
 </div>
 </section>
