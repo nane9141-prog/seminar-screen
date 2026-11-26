@@ -579,6 +579,7 @@ body.idle{cursor:none}
 .pq-l p{margin:0;font:400 66px/1.42 "Pretendard Variable",sans-serif;color:#F2F5FA;letter-spacing:-.01em;word-break:keep-all}
 .pq-l.pq-s li{padding:30px 0}
 .pq-l.pq-s p{font-size:60px}
+#audblk{position:fixed;left:16px;bottom:16px;z-index:9999;display:none;padding:10px 16px;border-radius:10px;background:rgba(160,30,30,.92);color:#fff;font:600 16px/1.3 'Pretendard Variable',sans-serif;pointer-events:none}#audblk.on{display:block}
 </style></head>
 <body>
 <div class="stage" id="scr" data-foot="full">
@@ -957,22 +958,30 @@ addEventListener('message',e=>{const d=e.data||{};if(!d.s4)return;const f=KN.fra
 var MC={st:null,q:null,
  pub(o){if(o)this.st=o;if(!this.st||window.VIEW_MODE)return;const bk=document.getElementById('black');const s={...this.st,...MC.panel(),pos:(typeof KN!=='undefined'&&KN.pos)||'',q:this.q,black:!!(bk&&bk.classList.contains('on')),sch:(()=>{try{return SCHED.load().items.map(x=>[x.id,x.start,x.end]);}catch(e){return null;}})(),t:Date.now()};SCHED.pub(s);
   try{const sc=SCHED.load();fetch('https://zrhtqpzgubaqzsdaxhvt.supabase.co/realtime/v1/api/broadcast',{method:'POST',headers:{apikey:'sb_publishable_JwET6KLGmdYBkOIIttgOOQ_HEpCKLar','Content-Type':'application/json'},
-   body:JSON.stringify({messages:[{topic:'seminar-mc',event:'state',payload:{cur:s.cur,pos:s.pos,q:s.q,nx:s.nx,msg:s.msg,at0:s.at0,alen:s.alen,auto:s.auto,bgm:s.bgm,sfx:s.sfx,spd:s.spd,ex:s.ex,black:s.black,sch:sc.items.map(x=>[x.id,x.start,x.end]),t:Date.now()}}]})}).catch(()=>{});}catch(e){}}};
+   body:JSON.stringify({messages:[{topic:'seminar-mc',event:'state',payload:{cur:s.cur,pos:s.pos,q:s.q,nx:s.nx,msg:s.msg,at0:s.at0,alen:s.alen,auto:s.auto,bgm:s.bgm,sfx:s.sfx,spd:s.spd,ex:s.ex,snd:s.snd,black:s.black,sch:sc.items.map(x=>[x.id,x.start,x.end]),t:Date.now()}}]})}).catch(()=>{});}catch(e){}}};
 /* 11/26 운영 입력 「화면 전환」 탭에 메인 P 패널 정보 보내기: 다음 화면 · 자동 넘김 진행 · 대기 자동순환 · 배경음악 · 효과음 · 배속 · 진행 일정 */
 MC.panel=function(){try{const s=slides[idx];let nx=null;if(s){const j=nextMain(isMsg(s)?home:idx,1);nx=j!==idx?slides[j]:null;}
   let ex='';try{const n=SCHED.next(SC),c=SCHED.current(SC);ex='진행 '+(c?(c.tag||c.label):'—');if(n){const d=n.start-n.ps;ex+=' · 다음 '+(n.tag||n.label)+' '+SCHED.fmt(n.start)+(d?' ('+(d>0?'+':'')+d+'분)':'');}ex=[ex].concat(SCHED.warnings(SC).map(w=>'⚠ '+w)).join('\n');}catch(e){}
   return {nx:nx?nx.dataset.no+' '+nx.dataset.title.replace(/&amp;/g,'&').replace(/<br>/g,' ').replace(nx.dataset.no+' ',''):'',msg:isMsg(s)?1:0,
-   at0:autoLen?Date.now()-(performance.now()-autoT0):0,alen:autoLen||0,auto:auto?1:0,bgm:(typeof BGM!=='undefined'&&BGM.muted)?0:1,sfx:(typeof SFX!=='undefined'&&SFX.off)?0:1,spd:SPD,ex};}catch(e){return {};}};
+   at0:autoLen?Date.now()-(performance.now()-autoT0):0,alen:autoLen||0,auto:auto?1:0,bgm:(typeof BGM!=='undefined'&&BGM.muted)?0:1,sfx:(typeof SFX!=='undefined'&&SFX.off)?0:1,spd:SPD,ex,snd:(typeof AUD!=='undefined'&&AUD.blk)?0:1};}catch(e){return {};}};
 setInterval(()=>MC.pub(),4000);
 const byNo=no=>slides.findIndex(s=>s.dataset.no.toUpperCase()===String(no).toUpperCase());
+/* 11/26 소리 막힘 알림: 크롬은 그 화면을 한 번도 클릭 · 키 입력하지 않으면 소리를 막음(운영 입력으로만 넘기면 무음).
+   막히면 화면 왼쪽 아래 작은 안내 + 운영 입력에 「메인 소리 막힘」 표시, 메인 화면을 한 번 클릭하거나 키를 누르면 사라지고 배경음 다시 시작 */
+var AUD={blk:false,el:null,
+ fail(e){if(window.VIEW_MODE||!e||e.name!=='NotAllowedError'||this.blk)return;this.blk=true;
+  if(!this.el){const d=document.createElement('div');d.id='audblk';d.textContent='소리가 막혀 있습니다 — 이 화면을 한 번 클릭하거나 아무 키나 누르세요';document.body.appendChild(d);this.el=d;}
+  this.el.classList.add('on');if(typeof MC!=='undefined')MC.pub();},
+ ok(){if(!this.blk)return;this.blk=false;if(this.el)this.el.classList.remove('on');if(typeof MC!=='undefined')MC.pub();}};
+window.AUD=AUD;addEventListener('pointerdown',()=>AUD.ok(),true);addEventListener('keydown',()=>AUD.ok(),true);
 /* M3-1 개회 시퀀스: 5 → 1 (1초씩, 점 링이 5초 동안 차오름) → ANYWHERE(4.1초) → 시작 문구에서 멈춤 */
 /* M3-1 카운트다운 효과음(S1): 시계 초침 — Freesound 321084 BenjaminNelan「Clock Ticking」CC0, 틱 하나를 1초 간격 5번(파일 0.52초에 첫 틱) — 숫자 5가 뜨는 0.4초에 첫 틱이 맞도록 0.12초부터 재생, 1까지 5번 듣고 5.3초에 짧게 페이드아웃 */
 var TICK={a:null,t:null,
- play(){if(!this.a){this.a=new Audio('assets/sound/countdown-tick.mp3?v=1126');this.a.preload='auto';}const x=this.a;clearInterval(this.t);x.volume=(typeof BGM!=='undefined'&&BGM.muted)?0:.9;try{x.currentTime=.12;}catch(e){}const p=x.play();if(p)p.catch(()=>{});},
+ play(){if(!this.a){this.a=new Audio('assets/sound/countdown-tick.mp3?v=1126');this.a.preload='auto';}const x=this.a;clearInterval(this.t);x.volume=(typeof BGM!=='undefined'&&BGM.muted)?0:.9;try{x.currentTime=.12;}catch(e){}const p=x.play();if(p)p.catch(e=>AUD.fail(e));},
  stop(ms){const x=this.a;if(!x||x.paused)return;clearInterval(this.t);const f=x.volume,t0=performance.now();this.t=setInterval(()=>{const k=Math.min(1,(performance.now()-t0)/(ms||200));x.volume=f*(1-k);if(k>=1){clearInterval(this.t);x.pause();}},30);}};window.TICK=TICK;
 /* M3-1 ANYWHERE 효과음(S2): Freesound 636190 MathewHenry「Piano Stinger 1a」CC0, 3초(파일 0.45초에 타격) — ANYWHERE가 뜨는 5.5초에 정점이 오도록 5.1초에 재생, 화면을 나가면 짧게 페이드아웃, M 음소거면 무음 */
 var HIT={a:null,t:null,
- play(){if(!this.a){this.a=new Audio('assets/sound/opening-hit.mp3?v=1126');this.a.preload='auto';}const x=this.a;clearInterval(this.t);x.volume=(typeof BGM!=='undefined'&&BGM.muted)?0:.9;try{x.currentTime=0;}catch(e){}const p=x.play();if(p)p.catch(()=>{});},
+ play(){if(!this.a){this.a=new Audio('assets/sound/opening-hit.mp3?v=1126');this.a.preload='auto';}const x=this.a;clearInterval(this.t);x.volume=(typeof BGM!=='undefined'&&BGM.muted)?0:.9;try{x.currentTime=0;}catch(e){}const p=x.play();if(p)p.catch(e=>AUD.fail(e));},
  stop(ms){const x=this.a;if(!x||x.paused)return;clearInterval(this.t);const f=x.volume,t0=performance.now();this.t=setInterval(()=>{const k=Math.min(1,(performance.now()-t0)/(ms||200));x.volume=f*(1-k);if(k>=1){clearInterval(this.t);x.pause();}},30);},
  load(){if(!this.a){this.a=new Audio('assets/sound/opening-hit.mp3?v=1126');this.a.preload='auto';}}};window.HIT=HIT;
 function S3(s,on){if(!s||!s.dataset.s3)return;(s._t3||[]).forEach(clearTimeout);clearInterval(s._iv3);s._t3=[];if(!on){s.dataset.ph='';TICK.stop(150);HIT.stop(300);return;}TICK.play();HIT.load();s._t3.push(setTimeout(()=>TICK.stop(250),5300));s._t3.push(setTimeout(()=>HIT.play(),5100));
@@ -1000,7 +1009,7 @@ var SFX={vol:.7,a:{},T:[],off:localStorage.getItem('scr-sfx-off')==='1',
  load(s){const m=s&&this.MAP[s.dataset.no];if(m)this.el(m[0]);},
  clear(){this.T.forEach(clearTimeout);this.T=[];Object.values(this.a).forEach(x=>{if(!x.paused)BGM.ramp(x,0,300,()=>x.pause());});},
  duck(ms){if(!BGM.cur||BGM.muted)return;const t=BGM.T[BGM.cur];(t.a||[]).forEach(x=>{if(!x.paused&&x.volume>0)BGM.ramp(x,BGM.vol*.5,200);});clearTimeout(this.dk);this.dk=setTimeout(()=>{if(!BGM.cur||BGM.muted)return;(BGM.T[BGM.cur].a||[]).forEach(x=>{if(!x.paused&&x.volume>0)BGM.ramp(x,BGM.vol,900);});},ms);},
- play(k){if(this.off||(typeof BGM!=='undefined'&&BGM.muted)||window.VIEW_MODE)return;const x=this.el(k);clearInterval(x._t);x.volume=this.vol;try{x.currentTime=0;}catch(e){}const p=x.play();if(p)p.catch(()=>{});this.duck(((x.duration||3)*1000)-200);},
+ play(k){if(this.off||(typeof BGM!=='undefined'&&BGM.muted)||window.VIEW_MODE)return;const x=this.el(k);clearInterval(x._t);x.volume=this.vol;try{x.currentTime=0;}catch(e){}const p=x.play();if(p)p.catch(e=>AUD.fail(e));this.duck(((x.duration||3)*1000)-200);},
  enter(oi,n){this.clear();const s=slides[n];if(oi<n&&s){const m=this.MAP[s.dataset.no];if(m)this.T.push(setTimeout(()=>{if(slides[idx]===s)this.play(m[0]);},m[1]));}
   this.load(slides[nextMain(n,1)]);},
  toggle(v){this.off=v==null?!this.off:!!v;localStorage.setItem('scr-sfx-off',this.off?'1':'0');if(this.off)this.clear();toast('효과음 '+(this.off?'끔':'켬'));}};
@@ -1139,7 +1148,7 @@ var BGM={vol:.6,T:{wait:{src:'assets/sound/wait-bgm.mp3?v=peaceful-heart',lead:1
  cur:null,muted:localStorage.getItem('scr-bgm-mute')==='1',
  el(k,i){const t=this.T[k];t.a=t.a||[];if(!t.a[i]){const x=new Audio(t.src);x.preload='auto';x.volume=0;x._t=null;t.a[i]=x;}return t.a[i];},
  ramp(x,to,ms,end){clearInterval(x._t);const f=x.volume,t0=performance.now();x._t=setInterval(()=>{const k=Math.min(1,(performance.now()-t0)/ms);x.volume=Math.max(0,Math.min(1,f+(to-f)*k));if(k>=1){clearInterval(x._t);end&&end();}},40);},
- start(x,fade){x.currentTime=0;x.volume=0;const p=x.play();if(p)p.catch(()=>{this.blocked=true;});this.ramp(x,this.muted?0:this.vol,fade);},
+ start(x,fade){x.currentTime=0;x.volume=0;const p=x.play();if(p)p.catch(e=>{this.blocked=true;AUD.fail(e);});this.ramp(x,this.muted?0:this.vol,fade);},
  stop(k){(this.T[k].a||[]).forEach(x=>{if(!x.paused)this.ramp(x,0,2500,()=>x.pause());});},
  set(s){const no=(s&&s.dataset.no)||'',k=Object.keys(this.T).find(n=>this.T[n].re.test(no))||null;if(k===this.cur)return;
   if(this.cur)this.stop(this.cur);this.cur=k;clearInterval(this.tk);
