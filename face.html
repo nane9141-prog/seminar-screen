@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>세션 3 원격 화상 보내기 — 전자주주총회 플랫폼 시연 설명회</title>
+<style>
+@font-face{font-family:"Pretendard Variable";src:url(assets/PretendardVariable.woff2) format("woff2");font-weight:45 920}
+:root{color-scheme:dark;--bg:#121212;--card:#1b1b1b;--line:#2c2c2c;--fg:#fff;--fg-2:#c7c7c7;--fg-3:#8a8a8a;--blue:#5ea2ff;--blue-2:#2f6bff;--ok:#5ed39a;--warn:#ffb74d;--bad:#ff7a7a;--font:"Pretendard Variable",sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--fg);font:400 14px/1.5 var(--font);-webkit-font-smoothing:antialiased;word-break:keep-all}
+.top{display:flex;align-items:center;gap:16px;padding:14px 24px;border-bottom:1px solid var(--line)}
+.top h1{font-size:16px;font-weight:800}.top h1 small{display:block;font-size:12px;font-weight:500;color:var(--fg-3)}
+.top .st{margin-left:auto;display:flex;gap:10px}
+.pill{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:999px;background:#232323;font-size:12px;color:var(--fg-2)}
+.pill i{width:8px;height:8px;border-radius:50%;background:var(--fg-3)}.pill.ok i{background:var(--ok)}.pill.warn i{background:var(--warn)}.pill.bad i{background:var(--bad)}
+main{max-width:1280px;margin:0 auto;padding:20px 24px 40px;display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:16px}
+.box{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px;display:flex;flex-direction:column;gap:12px}
+h2{font-size:15px;font-weight:700}
+.mut{color:var(--fg-3);font-size:12px}
+button{font:inherit;font-size:14px;font-weight:600;color:var(--fg);background:#2a2a2a;border:1px solid #3a3a3a;border-radius:8px;padding:10px 14px;cursor:pointer}
+button:hover{background:#333}button.pri{background:var(--blue-2);border-color:var(--blue-2)}button.pri:hover{background:#4a80ff}
+button.bad{color:var(--bad)}button:disabled{opacity:.35;cursor:default}
+input[type=text],select{width:100%;background:#111;color:var(--fg);border:1px solid #333;border-radius:8px;padding:9px 11px;font:inherit}
+label.ck{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--fg-2)}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.pv{position:relative;aspect-ratio:16/9;background:#0a0a0a;border-radius:10px;overflow:hidden;user-select:none;touch-action:none}
+.pv video{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}
+.pv .ph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:6px;color:var(--fg-3);text-align:center;padding:20px}
+.pv .ph b{color:var(--fg-2);font-size:16px}
+.pv.live{cursor:crosshair}.pv.live .ph{display:none}
+.cr{position:absolute;border:2px solid #fff;box-shadow:0 0 0 9999px rgba(0,0,0,.55);border-radius:6px;pointer-events:none;display:none}
+.cr.on{display:block}.cr span{position:absolute;left:6px;top:6px;padding:2px 8px;border-radius:999px;background:rgba(0,0,0,.7);font-size:11px}
+.out{display:flex;gap:14px;align-items:flex-start}
+.mini{width:120px;aspect-ratio:4/5;border-radius:10px;overflow:hidden;background:#0a0a0a;box-shadow:0 0 0 2px rgba(255,255,255,.85);flex:none}
+.mini video{width:100%;height:100%;object-fit:cover;display:block}
+ol{padding-left:18px;display:grid;gap:6px;color:var(--fg-2);font-size:13px}ol b{color:var(--fg)}
+.big{font-size:22px;font-weight:800}.ok{color:var(--ok)}.warn{color:var(--warn)}.bad{color:var(--bad)}
+@media(max-width:900px){main{grid-template-columns:1fr}}
+</style></head><body>
+<div class="top"><h1>세션 3 원격 화상 보내기<small>Meet · Teams 통화 화면을 메인 스크린 M7-4 오른쪽 연사 얼굴 창으로 보냅니다</small></h1>
+ <div class="st"><span class="pill" id="pnet"><i></i>신호 연결 중</span><span class="pill" id="prx"><i></i>메인 스크린 0대</span></div></div>
+<main>
+ <section class="box">
+  <div class="row" style="justify-content:space-between"><h2>미리보기 · 자르기</h2><span class="mut" id="res"></span></div>
+  <div class="pv" id="pv"><video id="v" muted playsinline autoplay></video><div class="cr" id="cr"><span>메인에 나가는 부분</span></div>
+   <div class="ph"><b>아직 보내는 화면이 없습니다</b><span>오른쪽 「화면 · 창 선택해서 보내기」를 누르고 Meet · Teams 창(또는 탭)을 고르세요</span></div></div>
+  <div class="row"><span class="mut" style="flex:1">미리보기에서 <b style="color:#fff">연사 얼굴 부분을 드래그</b>하면 메인에는 그 부분만 나옵니다. 메인 얼굴 창 비율은 4:5(세로형)입니다.</span>
+   <label class="ck"><input type="checkbox" id="lock" checked>4:5 비율 고정</label><button id="crx">자르기 해제</button></div>
+ </section>
+ <aside style="display:flex;flex-direction:column;gap:16px">
+  <section class="box">
+   <h2>보내기</h2>
+   <div><div class="mut" style="margin-bottom:4px">이 기기 이름 (운영 입력에 표시)</div><input type="text" id="nm" placeholder="예: Meet 노트북"></div>
+   <button class="pri" id="bscr">화면 · 창 선택해서 보내기</button>
+   <div class="row"><select id="cam" style="flex:1"><option value="">카메라 · 캡처보드로 보내기…</option></select><button id="bcam">보내기</button></div>
+   <button class="bad" id="bstop" disabled>보내기 중지</button>
+   <div class="out"><div class="mini"><video id="mv" muted playsinline autoplay></video></div>
+    <div><div class="big" id="sbig">대기</div><div class="mut" id="ssub">보내는 화면이 없습니다</div></div></div>
+  </section>
+  <section class="box">
+   <h2>순서</h2>
+   <ol>
+    <li>이 기기에서 Meet · Teams 통화에 들어가 <b>연사 화면을 고정(핀 · 스포트라이트)</b>하고 크게 띄웁니다.</li>
+    <li>「화면 · 창 선택해서 보내기」 → Meet 탭(또는 Teams 창)을 고릅니다. 크롬 탭이면 「탭」, Teams 앱이면 「창」.</li>
+    <li>미리보기에서 얼굴 부분을 드래그해 자릅니다.</li>
+    <li>운영 입력 → 화면 전환 → 세션 3 화상 화면에서 <b>「원격 기기」</b>를 골라 연결합니다. (메인이 비어 있으면 자동 연결)</li>
+   </ol>
+   <p class="mut">소리는 보내지 않습니다(음향은 별도 라인). 이 탭은 뒤로 가도 되지만 <b>닫으면 끊깁니다</b>. 인터넷이 필요하며, 회사망 방화벽 때문에 연결이 안 되면 HDMI 캡처보드로 대신 연결하세요.</p>
+  </section>
+ </aside>
+</main>
+<script src="assets/supabase.min.js"></script>
+<script src="assets/face-link.js"></script>
+<script>
+const $=id=>document.getElementById(id);
+const nm=$('nm');nm.value=localStorage.getItem('face-tx-name')||'';
+nm.onchange=()=>{localStorage.setItem('face-tx-name',nm.value.trim());TX.rename();};
+let crop=null;try{crop=JSON.parse(localStorage.getItem('face-tx-crop')||'null');}catch(e){}
+const TX=FACELINK.Tx({name:()=>nm.value.trim()||'원격 기기',onChange:upd});TX.crop=crop;
+function upd(){const n=TX.net,np=$('pnet');np.className='pill '+(n==='on'?'ok':n==='down'?'bad':'warn');np.lastChild.textContent=n==='on'?'신호 연결됨':n==='down'?'신호 끊김 (인터넷 확인)':'신호 연결 중';
+ const c=TX.count(),pn=TX.pending(),pr=$('prx');pr.className='pill '+(c?'ok':pn?'warn':'');pr.lastChild.textContent='메인 스크린 '+c+'대'+(pn?' · 연결 중 '+pn:'');
+ const on=!!TX.stream;$('bstop').disabled=!on;$('pv').classList.toggle('live',on);
+ $('sbig').textContent=!on?'대기':c?'송출 중':'연결 대기';$('sbig').className='big '+(!on?'':c?'ok':'warn');
+ $('ssub').textContent=!on?'보내는 화면이 없습니다':c?'메인 스크린 '+c+'대에 보내는 중':TX.net!=='on'?'신호 서버 연결을 기다리는 중':'메인 스크린(index.html)이 열려 있는지 확인하세요';}
+function show(st){$('v').srcObject=st;$('mv').srcObject=st;drawCrop();}
+async function startScr(){try{const st=await navigator.mediaDevices.getDisplayMedia({video:{frameRate:{ideal:30},width:{ideal:1920},height:{ideal:1080}},audio:false,selfBrowserSurface:'exclude',surfaceSwitching:'include'});TX.start(st);show(st);}catch(e){if(e.name!=='NotAllowedError')alert('화면 선택 실패: '+(e.name||e));}}
+async function startCam(id){try{const st=await navigator.mediaDevices.getUserMedia({video:{deviceId:id?{exact:id}:undefined,width:{ideal:1920},height:{ideal:1080},frameRate:{ideal:30}},audio:false});TX.start(st);show(st);listCam();}catch(e){alert('카메라 연결 실패: '+(e.name||e));}}
+async function listCam(){try{const d=(await navigator.mediaDevices.enumerateDevices()).filter(x=>x.kind==='videoinput');const s=$('cam'),cur=s.value;
+ s.innerHTML='<option value="">카메라 · 캡처보드로 보내기…</option>'+d.map((x,i)=>'<option value="'+x.deviceId+'">'+(x.label||'영상 장치 '+(i+1)).replace(/</g,'&lt;')+'</option>').join('');s.value=cur;}catch(e){}}
+$('bscr').onclick=startScr;$('bcam').onclick=()=>startCam($('cam').value);
+$('bstop').onclick=()=>{TX.stop();show(null);};
+/* 자르기: 미리보기 위 드래그 → 영상 기준 0~1 좌표 */
+const pv=$('pv'),v=$('v'),cr=$('cr');
+function vr(){const W=pv.clientWidth,H=pv.clientHeight,vw=v.videoWidth||16,vh=v.videoHeight||9,s=Math.min(W/vw,H/vh);return {x:(W-vw*s)/2,y:(H-vh*s)/2,w:vw*s,h:vh*s,vw,vh};}
+function drawCrop(){const c=TX.crop;if(!c||!TX.stream){cr.classList.remove('on');mvCrop();return;}const r=vr();
+ Object.assign(cr.style,{left:r.x+c.x*r.w+'px',top:r.y+c.y*r.h+'px',width:c.w*r.w+'px',height:c.h*r.h+'px'});cr.classList.add('on');mvCrop();}
+function mvCrop(){$('mv').style.objectViewBox=FACELINK.viewBox(TX.stream?TX.crop:null)||'';}
+let d0=null;
+pv.addEventListener('pointerdown',e=>{if(!TX.stream)return;const b=pv.getBoundingClientRect(),r=vr();d0={x:e.clientX-b.left,y:e.clientY-b.top,r};pv.setPointerCapture(e.pointerId);});
+pv.addEventListener('pointermove',e=>{if(!d0)return;const b=pv.getBoundingClientRect(),r=d0.r;let x1=e.clientX-b.left,y1=e.clientY-b.top;
+ let w=x1-d0.x,h=y1-d0.y;if($('lock').checked){const t=.8;/* 가로:세로 = 4:5 */const aw=Math.abs(w),ah=Math.abs(h);if(aw/ah>t)w=Math.sign(w||1)*ah*t;else h=Math.sign(h||1)*aw/t;}
+ let x=Math.min(d0.x,d0.x+w),y=Math.min(d0.y,d0.y+h);w=Math.abs(w);h=Math.abs(h);
+ x=Math.max(r.x,x);y=Math.max(r.y,y);w=Math.min(w,r.x+r.w-x);h=Math.min(h,r.y+r.h-y);
+ TX.crop={x:(x-r.x)/r.w,y:(y-r.y)/r.h,w:w/r.w,h:h/r.h};drawCrop();});
+pv.addEventListener('pointerup',()=>{if(!d0)return;d0=null;const c=TX.crop;if(c&&(c.w<.03||c.h<.03))TX.crop=null;TX.setCrop(TX.crop);localStorage.setItem('face-tx-crop',JSON.stringify(TX.crop));drawCrop();});
+$('crx').onclick=()=>{TX.setCrop(null);localStorage.removeItem('face-tx-crop');drawCrop();};
+v.addEventListener('loadedmetadata',()=>{$('res').textContent=v.videoWidth+'×'+v.videoHeight;drawCrop();});addEventListener('resize',drawCrop);
+navigator.mediaDevices&&navigator.mediaDevices.addEventListener&&navigator.mediaDevices.addEventListener('devicechange',listCam);listCam();
+setInterval(upd,1000);upd();
+</script></body></html>

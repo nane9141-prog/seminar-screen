@@ -366,6 +366,8 @@ body.kflash #pvslot,body.kflash #pvbox{box-shadow:0 0 0 2px #2f6bff}
 .facebox .frow{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.facebox .frow .sp{flex:1}
 .facebox select{flex:1;min-width:220px;background:#111;color:var(--fg);border:1px solid var(--line);border-radius:8px;padding:8px 10px;font:inherit;font-size:13px}
 .facebox button{min-height:0;padding:7px 12px;font-size:13px}.facebox .ff.on{box-shadow:0 0 0 2px #2f6bff}
+.facebox .frx{font-size:12px;color:var(--fg-3)}.facebox .frx.on{color:#3ddc84}
+.facebox #facelink{flex:1 1 200px;min-width:0;background:#111;color:var(--fg-2);border:1px solid var(--line);border-radius:8px;padding:7px 10px;font:inherit;font-size:12px}
 .facebox .hint{margin:0;font-size:12px;line-height:1.5;color:var(--fg-3)}
 #scrbox.locked .facebox button,#scrbox.locked .facebox select{pointer-events:none;opacity:.35}
 
@@ -434,7 +436,9 @@ body.kflash #pvslot,body.kflash #pvbox{box-shadow:0 0 0 2px #2f6bff}
   <div class="fst" id="facest">메인 스크린 상태를 기다리는 중…</div>
   <div class="frow"><select id="facedev"><option value="">— 영상 장치 선택 (캡처보드 · 카메라) —</option></select><button id="faceon" class="pri">연결</button><button id="faceoff">해제(사진)</button></div>
   <div class="frow"><span class="mut">맞춤</span><button data-fit="cover" class="ff">채우기</button><button data-fit="contain" class="ff">전체 보기</button><span class="sp"></span><button id="facels">장치 목록 새로고침</button><button id="faceask" title="송출 PC 메인 화면에 카메라 권한 창이 뜹니다 — 리허설 때 한 번 허용">권한 요청</button></div>
-  <p class="hint">장치 이름이 안 보이면 「권한 요청」 → 송출 PC 메인 화면에서 허용(한 번이면 됨). Google Meet 창 캡처는 크롬 정책상 송출 PC 메인 화면에서 M7-4를 띄운 뒤 Shift+V로 직접 고릅니다. 고른 장치는 저장돼 메인을 다시 열어도 자동 연결됩니다.</p></div></div></div>
+  <div class="frx" id="facerx">원격 수신 상태를 기다리는 중…</div>
+  <div class="frow"><input id="facelink" readonly><button id="facecp">주소 복사</button><button id="faceop">열기</button></div>
+  <p class="hint">장치 이름이 안 보이면 「권한 요청」 → 송출 PC 메인 화면에서 허용(한 번이면 됨). Meet · Teams 통화를 다른 기기에서 띄웠다면 그 기기에서 위 주소(face.html)를 열고 화면을 보내면, 메인이 비어 있을 때 자동으로 얼굴 창에 들어갑니다(인터넷 필요 · 안 되면 캡처보드). 고른 장치는 저장돼 메인을 다시 열어도 자동 연결됩니다.</p></div></div></div>
    <div class="bar" style="margin-top:14px"><button id="nprev">◀ 이전</button><button id="nnext" class="pri">다음 ▶</button>
    <input type="text" id="nno" placeholder="화면 번호 예: 4-5" style="width:130px"><button id="ngo">이동</button><span class="pginfo" id="pginfo"></span>
    <span class="sp"></span><span class="mut">배속</span><span id="spd"></span></div>
@@ -680,11 +684,13 @@ SCHED.onSrc(drawSrc);
    const c=$$('cpls').querySelector('.cur');if(c){const p=$$('cpls');p.scrollTop=c.offsetTop-p.offsetTop-p.clientHeight/2+c.offsetHeight/2;}}};
  const faceUpd=st=>{const f=st&&st.face,el=$$('facest'),sel=$$('facedev');if(!f){el.textContent='메인 스크린 상태를 기다리는 중…';return;}
   el.className='fst'+(f.on?' on':f.err?' err':'');el.textContent=f.on?'● 연결됨 — '+(f.label||'영상 장치')+(f.res?' · '+f.res:''):f.err?'연결 안 됨 — '+f.err+(f.err==='NotAllowedError'?' (송출 PC 메인 화면에서 카메라 권한 허용 필요)':''):'연결 안 됨 — 연사 사진 표시 중';
-  const key=(f.devs||[]).map(d=>d.id+d.label).join('|');if(sel._k!==key){const cur=sel.value;sel._k=key;sel.innerHTML='<option value="">— 영상 장치 선택 (캡처보드 · 카메라) —</option>'+(f.devs||[]).map(d=>'<option value="'+d.id+'">'+d.label.replace(/</g,'&lt;')+'</option>').join('');sel.value=cur;}
+  const key=(f.devs||[]).map(d=>d.id+d.label).join('|');if(sel._k!==key){const cur=sel.value;sel._k=key;sel.innerHTML='<option value="">— 영상 장치 선택 (캡처보드 · 카메라) —</option><option value="remote">원격 기기 (Meet · Teams 화면 공유 · face.html)</option>'+(f.devs||[]).map(d=>'<option value="'+d.id+'">'+d.label.replace(/</g,'&lt;')+'</option>').join('');sel.value=cur;}
   if(f.on&&f.id&&document.activeElement!==sel)sel.value=f.id;
-  document.querySelectorAll('#facebox .ff').forEach(b=>b.classList.toggle('on',b.dataset.fit===f.fit));};
+  document.querySelectorAll('#facebox .ff').forEach(b=>b.classList.toggle('on',b.dataset.fit===f.fit));
+  const r=f.rx,rs=$$('facerx');if(rs){rs.className='frx'+(r&&r.on?' on':'');rs.textContent=!r?'원격 수신: 메인 스크린이 원격 연결을 지원하지 않음(새로고침 필요)':r.net!=='on'?'원격 수신: 신호 서버 연결 '+(r.net==='down'?'끊김 — 송출 PC 인터넷 확인':'중…'):r.on?'원격 수신 ● 「'+r.name+'」에서 받는 중'+(r.crop?' · 자르기 적용':'')+(f.id==='remote'?' · 얼굴 창에 표시 중':' · 얼굴 창에 쓰려면 「원격 기기」 선택 → 연결'):'원격 수신 대기 — Meet · Teams 기기에서 아래 주소를 열고 「보내기」';}};
  SCHED.onState(faceUpd);faceUpd(SCHED.getState());
  $$('faceon').onclick=()=>{const v=$$('facedev').value;if(!v){$$('facedev').focus();return;}SCHED.cmd({face:v});};
+ {const u=new URL('face.html',location.href).href;$$('facelink').value=u;$$('facecp').onclick=()=>{navigator.clipboard&&navigator.clipboard.writeText(u);$$('facecp').textContent='복사됨';setTimeout(()=>$$('facecp').textContent='주소 복사',1500);};$$('faceop').onclick=()=>open(u,'_blank');}
  $$('faceoff').onclick=()=>SCHED.cmd({face:''});$$('facels').onclick=()=>SCHED.cmd({facelist:1});$$('faceask').onclick=()=>SCHED.cmd({facelist:'ask'});
  document.querySelectorAll('#facebox .ff').forEach(b=>b.onclick=()=>SCHED.cmd({facefit:b.dataset.fit}));
  setInterval(()=>{const b=$$('pvbar');if(!ST||!ST.alen){b.style.visibility='hidden';}else{b.style.visibility='visible';b.firstChild.style.width=Math.min(100,Math.max(0,(Date.now()-ST.at0)/ST.alen*100))+'%';}
