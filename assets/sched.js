@@ -60,7 +60,9 @@ function warnings(s){const w=[];s.items.forEach((x,i)=>{const dur=x.end-x.start,
 window.SCHED={DEF,toM,fmt,nowSec,nowMin,load,save:s=>put('scr-sched',s),onSched:cb=>on('scr-sched',cb),
   item,shiftFrom,endNow,current,next,warnings,defItems,
   loadQ:()=>get('scr-qa',{list:[],cur:null}),saveQ:q=>put('scr-qa',q),onQ:cb=>on('scr-qa',cb),
-  cmd:c=>put('scr-cmd',{...c,t:Date.now()}),onCmd:cb=>on('scr-cmd',cb),
+  cmd:c=>put('scr-cmd',{...c,t:Date.now(),dev:(()=>{try{return localStorage.getItem('ctl-dev-id')||'';}catch(e){return '';}})()}),onCmd:cb=>on('scr-cmd',cb),
+  /* 11/26 화면 조작 기기 지정: {id,name,t} — 지정되면 메인은 그 기기의 명령만 따름(null = 제한 없음) */
+  getOwner:()=>get('scr-owner',null),saveOwner:v=>put('scr-owner',v),onOwner:cb=>on('scr-owner',cb),
   getSrc:()=>get('scr-qsrc',location.protocol.startsWith('http')?'online':'local'),saveSrc:v=>put('scr-qsrc',v),onSrc:cb=>on('scr-qsrc',cb),
   pub:st=>put('scr-state',st),getState:()=>get('scr-state',null),onState:cb=>on('scr-state',cb),
   net:NET,onNet:cb=>{NET.cbs.push(cb);cb(NET.state);},setNet:v=>{try{localStorage.setItem('scr-net',v?'1':'0');}catch(e){}location.reload();}};
