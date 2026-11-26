@@ -1431,6 +1431,10 @@ html,body,body *{touch-action:none;-webkit-touch-callout:none;-webkit-user-selec
 #K25b .k25m:has(span[data-m=ch].on) .ind{transform:translateX(360px)}
 /* K18a · b · c(11/26) 오른쪽 면 배경색 없앰 */
 .sp2 .rp{background:none!important;box-shadow:none!important}
+/* K02(11/26 13:10) 처음 큰 카드 여러 장이 지나가는 스윕 삭제 — 벤토가 바로 들어옴 */
+#K02 .sw{display:none!important}
+#K02.cur .bw{animation-delay:calc(.35s + var(--k)*.08s)}
+#K02.cur .bc.im i{animation-delay:.35s}
 </style></head>
 <body>
 <div class="stage" id="stage">
