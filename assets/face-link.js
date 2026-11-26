@@ -9,6 +9,14 @@ const SB_URL='https://zrhtqpzgubaqzsdaxhvt.supabase.co',SB_KEY='sb_publishable_J
 const ICE=(()=>{const d=[{urls:['stun:stun.l.google.com:19302','stun:stun1.l.google.com:19302','stun:stun.cloudflare.com:3478']}];
  /* TURN을 쓰려면 localStorage 'face-ice'에 iceServers 배열(JSON)을 넣음 — 기본은 STUN만 */
  try{const x=JSON.parse(localStorage.getItem('face-ice')||'null');if(Array.isArray(x)&&x.length)return d.concat(x);}catch(e){}return d;})();
+/* 11/26 23:05 기본 중계 서버(TURN): Metered Open Relay 공개 정적 인증(staticauth, 문서에 공개된 secret)으로
+   사용자 이름 · 비밀번호를 브라우저에서 만듦. 직접 연결이 막힐 때만 쓰이고 영상은 그대로 WebRTC(끊김 적음) */
+const TURN=[];
+(async()=>{try{const u=(Math.floor(Date.now()/1000)+86400*2)+':seminar',enc=new TextEncoder();
+ const k=await crypto.subtle.importKey('raw',enc.encode('openrelayprojectsecret'),{name:'HMAC',hash:'SHA-1'},false,['sign']);
+ const sig=new Uint8Array(await crypto.subtle.sign('HMAC',k,enc.encode(u)));let b='';sig.forEach(x=>b+=String.fromCharCode(x));
+ TURN.push({urls:['turn:staticauth.openrelay.metered.ca:80','turn:staticauth.openrelay.metered.ca:80?transport=tcp','turn:staticauth.openrelay.metered.ca:443','turns:staticauth.openrelay.metered.ca:443?transport=tcp'],username:u,credential:btoa(b)});}catch(e){console.warn('TURN',e);}})();
+const ICEALL=()=>ICE.concat(TURN);
 // 보내는 쪽에 저장한 TURN(중계) 서버 — 연결 요청에 실어 메인도 같이 씀
 function XICE(){try{const x=JSON.parse(localStorage.getItem('face-ice')||'null');return Array.isArray(x)?x:[];}catch(e){return [];}}
 /* 같은 망의 다른 기기끼리: 크롬은 카메라 · 마이크 권한이 없는 페이지의 내부 IP를 숨겨(mDNS) 직접 연결이 실패할 수 있음.
@@ -57,7 +65,7 @@ function Rx(opt){opt=opt||{};const me='rx-'+rid();let pc=null,cur=null,oid=null,
  let rlast=0,rack=0;S.relay='';
  setInterval(()=>{if(S.relay&&Date.now()-rlast>3000){S.relay='';S.name='';opt.onRelayEnd&&opt.onRelayEnd();ch();}},1000);
  async function accept(p){close(true);cur=p.sid;oid=p.oid||null;S.name=p.name||'원격 기기';S.crop=p.crop||null;S.fail='';S.live=false;
-  const P=pc=new RTCPeerConnection({iceServers:ICE.concat(Array.isArray(p.ice)?p.ice:[])});trickle(P,c=>C.send('ice',{to:p.sid,rid:me,oid,c}));
+  const P=pc=new RTCPeerConnection({iceServers:ICEALL().concat(Array.isArray(p.ice)?p.ice:[])});trickle(P,c=>C.send('ice',{to:p.sid,rid:me,oid,c}));
   P.ontrack=e=>{if(P!==pc)return;S.stream=e.streams[0]||new MediaStream([e.track]);ch();};
   P.onconnectionstatechange=async()=>{if(P!==pc)return;const cs=P.connectionState;
    if(cs==='connected'){tries=0;S.live=true;S.fail='';S.diag=await diag(P);opt.onStream&&opt.onStream(S.stream,S);ch();}
@@ -83,7 +91,7 @@ function Tx(opt){opt=opt||{};const sid='tx-'+rid(),peers=new Map();
    else if(ev==='ice'&&p.to===sid){const P=peers.get(p.rid);if(P&&P._oid===p.oid)addIce(P,p.c);}
  },st=>{S.net=st;if(st==='on'&&S.stream)C.send('tx',{sid});ch();});
  async function offer(r){const old=peers.get(r);if(old&&(old.connectionState==='connected'||((old.connectionState==='new'||old.connectionState==='connecting')&&Date.now()-old._t<6000)))return;if(old){try{old.close();}catch(e){}}
-  const P=new RTCPeerConnection({iceServers:ICE});P._oid=rid();P._t=Date.now();peers.set(r,P);setTimeout(()=>{if(peers.get(r)===P&&P.connectionState!=='connected'){if(!S.fail)S.fail='직접 연결 안 됨(8초) — 중계 모드로 전환';relayCheck();ch();}},8500);trickle(P,c=>C.send('ice',{to:r,sid,oid:P._oid,c}));
+  const P=new RTCPeerConnection({iceServers:ICEALL().concat(XICE())});P._oid=rid();P._t=Date.now();peers.set(r,P);setTimeout(()=>{if(peers.get(r)===P&&P.connectionState!=='connected'){if(!S.fail)S.fail='15초 안에 연결 안 됨 — 망이 직접 · 중계 연결을 모두 막는 중';relayCheck();ch();}},15500);trickle(P,c=>C.send('ice',{to:r,sid,oid:P._oid,c}));
   S.stream.getTracks().forEach(t=>P.addTrack(t,S.stream));
   P.onconnectionstatechange=async()=>{const cs=P.connectionState;if(cs==='connected'||cs==='failed')S.diag=await diag(P);if(cs==='failed')S.fail='연결 실패 (보내는 쪽: '+S.diag+(S.rdiag?' · 메인 쪽: '+S.rdiag:'')+')';if(cs==='connected')S.fail='';if((cs==='failed'||cs==='closed')&&peers.get(r)===P)peers.delete(r);setTimeout(relayCheck,300);ch();};
   try{await P.setLocalDescription(await P.createOffer());await gather(P);
@@ -111,7 +119,7 @@ function Tx(opt){opt=opt||{};const sid='tx-'+rid(),peers=new Map();
   else{const v=document.createElement('video');v.muted=true;v.playsInline=true;v.srcObject=S.stream;v.play().catch(()=>{});S._ri=setInterval(async()=>{if(busy||!v.videoWidth)return;busy=true;try{await send(v);}catch(e){}busy=false;},80);}};
  S.stopRelay=()=>{if(!S.relayOn)return;S.relayOn=false;rgen++;try{S._rd&&S._rd.cancel();}catch(e){}clearInterval(S._ri);acks.clear();ch();};
  S.relayCount=()=>{const n=Date.now();let k=0;acks.forEach(t=>{if(n-t<4000)k++;});return k;};
- const relayCheck=()=>{if(!S.stream)return;const ok=[...peers.values()].some(P=>P.connectionState==='connected');if(ok)S.stopRelay();else if([...peers.values()].every(P=>(P.connectionState!=='connecting'&&P.connectionState!=='new')||Date.now()-P._t>8000))S.startRelay();};
+ const relayCheck=()=>{if(!S.stream)return;if(localStorage.getItem('face-relay')!=='1'){if(S.relayOn)S.stopRelay();return;}const ok=[...peers.values()].some(P=>P.connectionState==='connected');if(ok)S.stopRelay();else if([...peers.values()].every(P=>(P.connectionState!=='connecting'&&P.connectionState!=='new')||Date.now()-P._t>15000))S.startRelay();};
  S.count=()=>[...peers.values()].filter(P=>P.connectionState==='connected').length;
  S.pending=()=>[...peers.values()].filter(P=>P.connectionState==='new'||P.connectionState==='connecting').length;
  S.rename=()=>{if(S.stream){peers.forEach(P=>{try{P.close();}catch(e){}});peers.clear();C.send('tx',{sid});}};

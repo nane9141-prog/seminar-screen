@@ -54,6 +54,7 @@ ol{padding-left:18px;display:grid;gap:6px;color:var(--fg-2);font-size:13px}ol b{
    <button class="pri" id="bscr">화면 · 창 선택해서 보내기</button>
    <div class="row"><select id="cam" style="flex:1"><option value="">카메라 · 캡처보드로 보내기…</option></select><button id="bcam">보내기</button></div>
    <button class="bad" id="bstop" disabled>보내기 중지</button>
+   <label class="ck"><input type="checkbox" id="relay"> 연결이 안 될 때 이미지 중계 모드 쓰기(예비 · 끊김 있음)</label>
    <details><summary class="mut" style="cursor:pointer">메인과 연결이 안 될 때 · 중계 서버(TURN)</summary><p class="mut" style="margin:8px 0">망이 기기 간 직접 연결을 막으면 중계 서버가 필요합니다. 받은 iceServers 배열(JSON)을 붙여 넣고 저장한 뒤 다시 보내세요.</p><textarea id="turnv" rows="3" style="width:100%;background:#111;color:#c7c7c7;border:1px solid #333;border-radius:8px;padding:8px;font:12px/1.4 monospace"></textarea><div class="row" style="margin-top:6px"><button id="turns">저장</button><button id="turnx">지우기</button><span class="mut" id="turnst"></span></div></details>
    <div class="out"><div class="mini"><video id="mv" muted playsinline autoplay></video></div>
     <div><div class="big" id="sbig">대기</div><div class="mut" id="ssub">보내는 화면이 없습니다</div></div></div>
@@ -109,5 +110,6 @@ v.addEventListener('loadedmetadata',()=>{$('res').textContent=v.videoWidth+'×'+
 navigator.mediaDevices&&navigator.mediaDevices.addEventListener&&navigator.mediaDevices.addEventListener('devicechange',listCam);listCam();
 {const v=$('turnv'),st=$('turnst');const show=()=>{const x=FACELINK.XICE();st.textContent=x.length?'중계 서버 '+x.length+'개 저장됨':'저장된 중계 서버 없음';v.value=x.length?JSON.stringify(x):'';};show();
  $('turns').onclick=()=>{try{const x=JSON.parse(v.value);if(!Array.isArray(x))throw 0;localStorage.setItem('face-ice',JSON.stringify(x));show();}catch(e){st.textContent='JSON 배열 형식이 아닙니다';}};$('turnx').onclick=()=>{localStorage.removeItem('face-ice');show();};}
+{const r=$('relay');r.checked=localStorage.getItem('face-relay')==='1';r.onchange=()=>{localStorage.setItem('face-relay',r.checked?'1':'0');if(!r.checked)TX.stopRelay();};}
 setInterval(upd,1000);upd();
 </script></body></html>

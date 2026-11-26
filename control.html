@@ -447,6 +447,7 @@ body.kflash #pvslot,body.kflash #pvbox{box-shadow:0 0 0 2px #2f6bff}
   <div class="ftx" id="ftx"><div class="frow"><b class="ftxh">이 기기에서 보내기</b><span class="sp"></span><span class="mut" id="ftxst">Meet · Teams가 이 기기에 떠 있을 때</span></div>
    <div class="frow"><button id="ftxscr" class="pri">화면 · 창 선택해서 보내기</button><button id="ftxstop" disabled>보내기 중지</button></div>
    <div class="ftxpv" id="ftxpv" hidden><video id="ftxv" muted playsinline autoplay></video><div class="cr" id="ftxcr"></div></div>
+   <label class="frow" style="font-size:12px;color:var(--fg-3);gap:6px"><input type="checkbox" id="frelay"> 연결이 안 될 때 이미지 중계 모드 쓰기(예비 · 끊김 있음)</label>
    <details class="fturn"><summary>다른 기기와 연결이 안 될 때 · 중계 서버(TURN)</summary><p class="hint">같은 망이어도 회사 · 행사장 망이 기기 간 직접 연결을 막으면 중계 서버가 필요합니다. Metered(무료 20GB) 등에서 받은 iceServers 배열(JSON)을 붙여 넣고 저장하면, 이 기기에서 보낼 때 메인도 같은 중계 서버를 씁니다.</p><textarea id="fturnv" rows="3" placeholder='[{"urls":"turn:…:443?transport=tcp","username":"…","credential":"…"}]'></textarea><div class="frow"><button id="fturns">저장</button><button id="fturnx">지우기</button><span class="mut" id="fturnst"></span></div></details>
    <div class="frow" id="ftxcrow" hidden><span class="mut" style="flex:1">미리보기에서 얼굴 부분을 드래그하면 메인에는 그 부분만(4:5)</span><button id="ftxcrx">자르기 해제</button></div></div>
   <div class="frow"><span class="mut">다른 기기에서 보내기</span><input id="facelink" readonly><button id="facecp">주소 복사</button><button id="faceop">열기</button></div>
@@ -733,6 +734,7 @@ SCHED.onSrc(drawSrc);
   pv.addEventListener('pointerup',()=>{if(!d0)return;d0=null;if(TX.crop&&(TX.crop.w<.03||TX.crop.h<.03))TX.crop=null;TX.setCrop(TX.crop);localStorage.setItem('face-tx-crop',JSON.stringify(TX.crop));dc();});
   $$('ftxcrx').onclick=()=>{if(!TX)return;TX.setCrop(null);localStorage.removeItem('face-tx-crop');dc();};
   v.addEventListener('loadedmetadata',dc);addEventListener('resize',dc);setInterval(tu,1000);
+ {const r=$$('frelay');r.checked=localStorage.getItem('face-relay')==='1';r.onchange=()=>{localStorage.setItem('face-relay',r.checked?'1':'0');if(!r.checked&&TX&&TX.stopRelay)TX.stopRelay();};}
  {const v=$$('fturnv'),st=$$('fturnst');const show=()=>{const x=FACELINK.XICE();st.textContent=x.length?'중계 서버 '+x.length+'개 저장됨':'저장된 중계 서버 없음';v.value=x.length?JSON.stringify(x):'';};show();
   $$('fturns').onclick=()=>{try{const x=JSON.parse(v.value);if(!Array.isArray(x))throw 0;localStorage.setItem('face-ice',JSON.stringify(x));show();st.textContent+=' — 보내기를 다시 누르세요';}catch(e){st.textContent='JSON 배열 형식이 아닙니다';}};
   $$('fturnx').onclick=()=>{localStorage.removeItem('face-ice');show();};}
