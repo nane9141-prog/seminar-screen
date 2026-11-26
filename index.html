@@ -389,7 +389,7 @@ body.idle{cursor:none}
 .slide[data-spk] .talk{min-height:0}
 
 /* slide layout.svg 5번(M4-1): 영문 눈썹 "Pretendard Variable" Light 흰색 */
-.slide[data-no=M4-1],.slide[data-no=M5-1],.slide[data-no=M7-1]{padding-bottom:380px}  /* svg처럼 가운데보다 조금 위 */
+.slide[data-no=M4-1],.slide[data-no=M5-1],.slide[data-no=M7-1],.slide[data-no=M9-1]{padding-bottom:380px}  /* svg처럼 가운데보다 조금 위 */
 .slide[data-no=M4-4] .kism{margin:0 auto 120px;display:block}
 .qa-note{margin:40px 0 0;font:300 52px/1.4 "KakaoSmall",sans-serif;color:#B4BDC9;letter-spacing:0}  /* M10-1 패널 아래 작은 안내 */
 /* 자간: 타이틀(h1 · h2 · h3)과 자간 넓힌 이름을 뺀 모든 글자를 조금 좁게 */
@@ -585,16 +585,6 @@ body.idle{cursor:none}
 /* 11/26 20:56 파트 첫 장 Blue Bloom: 둥근(타원) 마스크 대신 가로 직선 띠 — 아래에서 위로만 옅어짐(좌우 끝까지 같은 높이) */
 .slide[data-glow] .bloom{-webkit-mask-image:linear-gradient(0deg,#000 0%,rgba(0,0,0,.8) 12%,rgba(0,0,0,.4) 26%,rgba(0,0,0,.1) 40%,transparent 50%)!important;mask-image:linear-gradient(0deg,#000 0%,rgba(0,0,0,.8) 12%,rgba(0,0,0,.4) 26%,rgba(0,0,0,.1) 40%,transparent 50%)!important}
 /* M9-1 시연 타이틀: 왼쪽 PART 3 · 제목 2줄 · 시연자, 오른쪽 핵심 문장 + 3단계 가로 카드 — 글은 Bloom 띠 위쪽에 */
-.slide[data-no="M9-1"]{padding-top:250px}
-.slide[data-no="M9-1"] .lay2-l .eyebrow{display:block;margin-bottom:36px}
-.slide[data-no="M9-1"] .lay2-l .dm-p{margin-top:72px;padding-top:44px;border-top:2px solid rgba(255,255,255,.14);width:900px}
-.slide[data-no="M9-1"] .demo{padding-top:8px}
-.slide[data-no="M9-1"] .flow{margin-top:84px;display:grid;grid-template-columns:repeat(3,1fr);gap:28px}
-.slide[data-no="M9-1"] .flow::before{display:none}
-.slide[data-no="M9-1"] .flow li{display:flex;flex-direction:column;align-items:flex-start;height:auto;padding:40px 44px 44px;border:0;border-radius:36px;background:rgba(14,20,32,.72);box-shadow:inset 0 0 0 2px rgba(255,255,255,.07)}
-.slide[data-no="M9-1"] .fl-n{justify-self:auto;width:88px;height:88px;font-size:38px}
-.slide[data-no="M9-1"] .fl-k{margin-top:30px;font-size:72px}
-.slide[data-no="M9-1"] .fl-b{margin-top:18px;font-size:50px;line-height:1.4;white-space:normal;color:#C9D2DE}
 </style></head>
 <body>
 <div class="stage" id="scr" data-foot="full">
@@ -646,7 +636,7 @@ body.idle{cursor:none}
 </section>
 <section class="slide" id="m3_2" data-no="M3-2" data-title="M3-2 행사 안내 · 안내 말씀" data-bg="B" data-foot="full" data-lay="split">
 <h2 class="head fu" style="--i:0">안내 말씀</h2>
-<div class="ncard fu" style="--i:1"><div class="nlist" data-stagger style="--i:1"><div class="nr"><p class="nn">01</p><p class="nt">휴대폰은 무음으로 설정해주세요.</p></div><div class="nr"><p class="nn">02</p><p class="nt">휴식은 14:25, 15:40 두 차례 15분씩 있습니다.</p></div><div class="nr"><p class="nn">03</p><p class="nt">현장 질의는 명찰 뒷면의 QR코드로 남겨주세요.<br>사전 질문과 함께 질의응답 시간(17:30)에 답변드립니다.</p></div><div class="nr"><p class="nn">04</p><p class="nt">설명회는 오프라인으로만 진행되며,<br>온라인 생중계 · 다시보기와 발표자료는 제공되지 않습니다.</p></div><div class="nr"><p class="nn">05</p><p class="nt">원활한 진행을 위해 영상 촬영은 삼가 주시기 바랍니다.</p></div><div class="nr"><p class="nn">06</p><p class="nt">행사 종료 후 설문 참여 안내를 이메일로 보내드립니다.</p></div></div></div>
+<div class="grid2" data-stagger style="--i:1"><div class="case"><p class="num">01</p><p class="lead">휴대폰은 무음으로 설정해주세요.</p></div><div class="case"><p class="num">02</p><p class="lead">휴식은 14:25, 15:40 두 차례 15분씩 있습니다.</p></div><div class="case"><p class="num">03</p><p class="lead">현장 질의는 명찰 뒷면의 QR코드로 남겨주세요.<br>사전 질문과 함께 질의응답 시간(17:30)에 답변드립니다.</p></div><div class="case"><p class="num">04</p><p class="lead">설명회는 오프라인으로만 진행되며,<br>온라인 생중계 · 다시보기와 발표자료는 제공되지 않습니다.</p></div><div class="case"><p class="num">05</p><p class="lead">원활한 진행을 위해 영상 촬영은 삼가 주시기 바랍니다.</p></div><div class="case"><p class="num">06</p><p class="lead">행사 종료 후 설문 참여 안내를 이메일로 보내드립니다.</p></div></div></div>
 </section>
 <section class="slide" id="m4_1" data-no="M4-1" data-title="M4-1 파트 타이틀 · 축사 및 출범식" data-bg="A" data-foot="logo" data-tr="zoom" data-glow="1" data-fill="1" data-lay="center">
 <p class="eyebrow en-eb fu" style="--i:0">Opening Remarks</p>
@@ -756,19 +746,9 @@ body.idle{cursor:none}
 <h1 class="title-m" data-words style="--i:1">곧 모의 전자주주총회 시연이 시작됩니다</h1>
 <p class="lead fu" style="--i:2">자리로 돌아와 주세요.</p>
 </section>
-<section class="slide" id="m9_1" data-no="M9-1" data-title="M9-1 시연 타이틀" data-bg="B" data-foot="full" data-tr="zoom" data-glow="1" data-fill="1" data-lay="split">
-<p class="eyebrow fu" style="--i:0">PART 3 · DEMO</p>
+<section class="slide" id="m9_1" data-no="M9-1" data-title="M9-1 시연 타이틀" data-bg="A" data-foot="logo" data-tr="zoom" data-glow="1" data-fill="1" data-lay="center">
+<p class="eyebrow en-eb fu" style="--i:0">PART 3</p>
 <h1 class="title-m" data-words style="--i:1">모의 전자주주총회<br>시연</h1>
-<p class="dm-p lay-l fu" style="--i:4"><b>박성용</b>IR큐더스, 본부장</p>
-<div class="demo">
-<p class="dm-h fu" style="--i:2">준비부터 집계까지, 전자주총 전 과정을 그대로</p>
-<p class="dm-s fu" style="--i:2.5">모의 회사 · 주주 · 의안으로 주주총회 전 과정을 진행합니다.</p>
-<ol class="flow" data-stagger style="--i:3">
-<li><span class="fl-n">01</span><span class="fl-k">설정</span><span class="fl-b">주주명부, 의안 등록, 의결권 제한</span></li>
-<li><span class="fl-n">02</span><span class="fl-k">사전</span><span class="fl-b">사전 투표 · 의결권 행사 관리</span></li>
-<li><span class="fl-n">03</span><span class="fl-k">당일</span><span class="fl-b">출석, 질의, 표결, 집계</span></li>
-</ol>
-</div>
 </section>
 <section class="slide" id="m9_2" data-no="M9-2" data-title="M9-2 시연 주요 실무 사례" data-bg="B" data-foot="full" data-lay="split">
 <h2 class="head fu" style="--i:0">시연에서 살펴볼<br>주요 실무 사례</h2>
@@ -1163,17 +1143,17 @@ let QA=SCHED.loadQ(),QSRC=SCHED.getSrc(),OQ=null,oqKey='';
 SCHED.onQ(v=>{QA=v||{list:[],cur:null};if(QSRC==='local')renderQ();});
 SCHED.onSrc(v=>{QSRC=v||'local';renderQ();pollOQ();});
 // 온라인 질문: control(운영자 노트북)에서 송출한 질문을 2초마다 확인. 끊기면 마지막 질문 유지.
-const OQ_SL={all:'',s1:'Session 1',s2:'Session 2',s3:'Session 3',s4:'Session 4 · 플랫폼 시연',demo:'Session 4 · 플랫폼 시연'};
+const OQ_SL={all:'전체',s1:'Session 1',s2:'Session 2',s3:'Session 3',s4:'Session 4 · 플랫폼 시연',demo:'Session 4 · 플랫폼 시연'};
 async function pollOQ(){if(QSRC!=='online'||!location.protocol.startsWith('http'))return;
   try{const r=await fetch('https://zrhtqpzgubaqzsdaxhvt.supabase.co/rest/v1/rpc/qa_current',{method:'POST',headers:{apikey:'sb_publishable_JwET6KLGmdYBkOIIttgOOQ_HEpCKLar','Content-Type':'application/json'},body:'{}',cache:'no-store'});
     if(!r.ok)return;const d=await r.json(),k=JSON.stringify(d);if(k===oqKey)return;oqKey=k;
-    OQ=d&&d.id?{type:d.kind,n:d.n,text:d.body,who:d.who,meta:OQ_SL[d.session]||''}:null;renderQ();}catch(e){}}
+    OQ=d&&d.id?{type:d.kind,n:d.n,text:d.body,ses:OQ_SL[d.session]||''}:null;  /* 11/26 답변 연사 대신 질문 접수 때 고른 세션 */renderQ();}catch(e){}}
 setInterval(pollOQ,2000);pollOQ();
-function renderQ(){const q=QSRC==='online'?OQ:QA.list.find(x=>x.id===QA.cur),lab=document.getElementById('q-lab'),tx=document.getElementById('q-text'),meta=document.getElementById('q-meta'),ans=document.getElementById('q-ans'),ft=document.getElementById('q-ft');if(typeof MC!=='undefined'){const m=q?{type:q.type,text:q.text,who:q.who||'',meta:q.meta||''}:null;if(JSON.stringify(m)!==JSON.stringify(MC.q)){MC.q=m;MC.pub();}}
+function renderQ(){const q=QSRC==='online'?OQ:QA.list.find(x=>x.id===QA.cur),lab=document.getElementById('q-lab'),tx=document.getElementById('q-text'),meta=document.getElementById('q-meta'),ans=document.getElementById('q-ans'),ft=document.getElementById('q-ft');if(typeof MC!=='undefined'){const m=q?{type:q.type,text:q.text,who:q.who||'',meta:q.ses||q.meta||''}:null;if(JSON.stringify(m)!==JSON.stringify(MC.q)){MC.q=m;MC.pub();}}
   if(!q){lab.textContent='Q&A';lab.className='qa2-lab';tx.textContent='질문을 준비하고 있습니다.';tx.classList.add('idle');meta.textContent='';ans.innerHTML='';ft.classList.add('empty');fitQ();return;}
   lab.textContent=q.type==='pre'?'사전 질문':'현장 질문';lab.className='qa2-lab '+(q.type==='pre'?'pre':'live');  // Q번호는 표시하지 않음
-  tx.textContent=q.text;tx.classList.remove('idle');meta.textContent=q.meta||'';ans.innerHTML=q.who?'답변<b></b>':'';if(q.who)ans.querySelector('b').textContent=q.who;
-  ft.classList.toggle('empty',!q.meta&&!q.who);fitQ();
+  tx.textContent=q.text;tx.classList.remove('idle');meta.textContent='';ans.innerHTML=q.ses?'질문 세션<b></b>':'';if(q.ses)ans.querySelector('b').textContent=q.ses;
+  ft.classList.toggle('empty',!q.ses);fitQ();
   const s=slides[idx];if(s&&s.dataset.qa){tx.parentNode.animate([{opacity:0,transform:'translateY(30px)',filter:'blur(12px)'},{opacity:1,transform:'none',filter:'none'}],{duration:600,easing:'cubic-bezier(.2,.7,.2,1)'});}}
 function fitQ(){const tx=document.getElementById('q-text'),box=tx.parentNode;let f=132;tx.style.fontSize=f+'px';while(f>56&&tx.scrollHeight>box.clientHeight){f-=4;tx.style.fontSize=f+'px';}}
 function qStep(d){const L=QA.list;if(!L.length)return;let i=L.findIndex(x=>x.id===QA.cur);i=Math.max(0,Math.min(L.length-1,i<0?0:i+d));QA.cur=L[i].id;SCHED.saveQ(QA);renderQ();}
