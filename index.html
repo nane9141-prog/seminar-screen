@@ -628,8 +628,40 @@ body.idle{cursor:none}
 .mx-as{margin-top:2px;font-size:42px;line-height:1.3;color:#8D99AB}
 .mx-ag.sub{padding:10px 0}
 .mx-ag.sub .mx-no{padding-left:60px;font-size:46px;font-weight:500;color:#5bade1;position:relative}
-.mx-ag.sub .mx-no::before{content:"";position:absolute;left:18px;top:50%;width:26px;height:2px;background:#5bade1}
+.mx-ag.sub{position:relative}.mx-ag.sub::before{content:"";position:absolute;left:22px;top:0;bottom:0;width:4px;border-radius:2px;background:#5bade1;opacity:.7}
 .mx-ag.sub .mx-an{font-size:50px;font-weight:400;color:#D5DCE6}
+
+/* M9-4(11/26 23:15) 왼쪽 제목 아래 표, 오른쪽 그룹 비율 세로 막대(위에서부터 차례로 차오름 + 숫자 카운트) */
+.slide[data-no=M9-4]{padding:160px 360px 160px 416px;justify-content:flex-start}
+.m4{display:grid;grid-template-columns:minmax(0,1fr) 820px;column-gap:150px;height:1280px}
+.m4l .head{font-size:150px;line-height:1.1;margin-bottom:56px}
+.m4tb{font-size:48px}
+.m4r{display:grid;grid-template-columns:330px 400px 520px 250px 240px minmax(0,1fr);align-items:center;column-gap:20px;height:80px;border-bottom:2px solid #1C2A40;color:#E3E8EF}
+.m4r>span:nth-child(4),.m4r>span:nth-child(5){text-align:right;font-variant-numeric:tabular-nums}
+.m4r>span:nth-child(6){padding-left:44px}
+.m4r>span:nth-child(2){color:#A9B4C4}
+.m4r.th{height:70px;font-size:42px;color:#8D99AB;border-bottom:3px solid #2A3A52}.m4r.th>span{color:#8D99AB!important}
+.m4r.gs{border-top:3px solid #2A3A52}
+.m4g{font-weight:600}.m4r.g0 .m4g{color:#5bade1}.m4r.g1 .m4g{color:#8fb6d8}.m4r.g2 .m4g{color:#8D99AB}
+.m4r.t{font-weight:700;color:#fff;border-top:3px solid #2A3A52;border-bottom:0}
+.m4b{position:relative;display:flex;gap:56px;height:1176px;margin-top:20px}
+.m4bar{width:300px;display:flex;flex-direction:column;gap:12px}
+.m4bar>div,.m4lab>div{flex:0 0 calc((100% - 24px) * var(--h) / 100)}
+.m4bar>div{border-radius:20px;transform-origin:top;transform:scaleY(0)}
+.m4bar .s0{background:linear-gradient(180deg,#1a8fd6,#0081cc)}
+.m4bar .s1{background:linear-gradient(180deg,#1c4a72,#123553)}
+.m4bar .s2{background:linear-gradient(180deg,#2a3546,#1f2836)}
+.slide.on .m4bar>div{animation:m4grow 1s cubic-bezier(.2,.7,.2,1) both}
+.slide.on .m4bar .s0{animation-delay:.5s}.slide.on .m4bar .s1{animation-delay:.85s}.slide.on .m4bar .s2{animation-delay:1.2s}
+@keyframes m4grow{from{transform:scaleY(0)}to{transform:scaleY(1)}}
+.m4lab{flex:1;display:flex;flex-direction:column;gap:12px}
+.m4lab>div{display:flex;flex-direction:column;justify-content:flex-start;padding-top:6px;opacity:0}
+.slide.on .m4lab>div{animation:rowIn .7s cubic-bezier(.2,.7,.2,1) both}
+.slide.on .m4lab .s0{animation-delay:.9s}.slide.on .m4lab .s1{animation-delay:1.25s}.slide.on .m4lab .s2{animation-delay:1.6s}
+.m4lab b{font-size:110px;font-weight:600;line-height:1.05;color:#fff;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.m4lab .s0 b{color:#5bade1}
+.m4lab span{margin-top:6px;font-size:56px;font-weight:500;color:#F2F5FA}
+.m4lab i{font-style:normal;font-size:46px;color:#8D99AB}
 </style></head>
 <body>
 <div class="stage" id="scr" data-foot="full">
@@ -817,12 +849,19 @@ body.idle{cursor:none}
 </div></div>
 </div>
 </section>
-<section class="slide" id="m9_4" data-no="M9-4" data-title="M9-4 모의 주주총회 주주 구성" data-bg="B" data-foot="full" data-lay="split">
+<section class="slide" id="m9_4" data-no="M9-4" data-title="M9-4 모의 주주총회 주주 구성" data-bg="B" data-foot="full">
+<div class="m4">
+<div class="m4l">
 <h2 class="head fu" style="--i:0">주주 구성</h2>
-<div class="mx-bar lay-l fu" style="--i:.6"><div style="--h:21.99%"><b>21.99%</b><span>최대주주 등</span></div><div style="--h:64.53%"><b>64.53%</b><span>최대주주 외</span></div><div style="--h:13.48%"><b>13.48%</b><span>기타</span></div></div>
-<div class="mx-tb">
-<div class="mx-tr th"><span>구분</span><span>성명</span><span>주식수</span><span>지분율</span><span>의결권 제한</span></div>
-<div class="mx-rows" data-stagger style="--i:1"><div class="mx-tr h"><span>최대주주 등</span><span></span><span>26,136</span><span>21.99%</span><span></span></div><div class="mx-tr r"><span>최대주주</span><span>나최대</span><span>18,423</span><span>15.50%</span><span><span class="mx-tag">3호 · 합산 3%</span></span></div><div class="mx-tr r"><span>특수관계인</span><span>나삼촌</span><span>3,913</span><span>3.01%</span><span><span class="mx-tag">3호 · 합산 3%</span></span></div><div class="mx-tr r"><span>특수관계인</span><span>나이모</span><span>3,800</span><span>2.98%</span><span><span class="mx-tag">3호 · 합산 3%</span></span></div><div class="mx-tr h"><span>최대주주 외</span><span></span><span>76,702</span><span>64.53%</span><span></span></div><div class="mx-tr r"><span>외국인</span><span>Riley Brown 등</span><span>12,124</span><span>10.20%</span><span></span></div><div class="mx-tr r"><span>기관</span><span>K자산운용 등</span><span>16,402</span><span>13.80%</span><span><span class="mx-tag">3호 · 개별 3%</span></span></div><div class="mx-tr r"><span>개인</span><span>김개인 등</span><span>48,176</span><span>40.53%</span><span></span></div><div class="mx-tr h"><span>기타</span><span></span><span>16,020</span><span>13.48%</span><span></span></div><div class="mx-tr r"><span>자사주</span><span>아이알큐더스</span><span>4,300</span><span>3.62%</span><span><span class="mx-tag all">전체 의안</span></span></div><div class="mx-tr r"><span>상호주</span><span>K-Holdings</span><span>3,850</span><span>3.24%</span><span><span class="mx-tag all">전체 의안</span></span></div><div class="mx-tr r"><span>무효주</span><span>나제한</span><span>3,750</span><span>3.16%</span><span><span class="mx-tag all">전체 의안</span></span></div><div class="mx-tr r"><span>특별이해관계자</span><span>나특별</span><span>10</span><span>0.01%</span><span><span class="mx-tag">4호</span></span></div><div class="mx-tr r"><span>ADR</span><span>아이알큐더스(ADR)</span><span>4,110</span><span>3.46%</span><span></span></div><div class="mx-tr t"><span>합계</span><span></span><span>118,858</span><span>100%</span><span></span></div></div>
+<div class="m4tb">
+<div class="m4r th"><span>그룹</span><span>구분</span><span>성명</span><span>주식수</span><span>지분율</span><span>의결권 제한</span></div>
+<div data-stagger style="--i:1"><div class="m4r g0 gs"><span class="m4g">최대주주 등</span><span>최대주주</span><span>나최대</span><span>18,423</span><span>15.50%</span><span><span class="mx-tag">3호 · 합산 3%</span></span></div><div class="m4r g0"><span class="m4g"></span><span>특수관계인</span><span>나삼촌</span><span>3,913</span><span>3.01%</span><span><span class="mx-tag">3호 · 합산 3%</span></span></div><div class="m4r g0"><span class="m4g"></span><span>특수관계인</span><span>나이모</span><span>3,800</span><span>2.98%</span><span><span class="mx-tag">3호 · 합산 3%</span></span></div><div class="m4r g1 gs"><span class="m4g">최대주주 외</span><span>외국인</span><span>Riley Brown 등</span><span>12,124</span><span>10.20%</span><span></span></div><div class="m4r g1"><span class="m4g"></span><span>기관</span><span>K자산운용 등</span><span>16,402</span><span>13.80%</span><span><span class="mx-tag">3호 · 개별 3%</span></span></div><div class="m4r g1"><span class="m4g"></span><span>개인</span><span>김개인 등</span><span>48,176</span><span>40.53%</span><span></span></div><div class="m4r g2 gs"><span class="m4g">기타</span><span>자사주</span><span>아이알큐더스</span><span>4,300</span><span>3.62%</span><span><span class="mx-tag all">전체 의안</span></span></div><div class="m4r g2"><span class="m4g"></span><span>상호주</span><span>K-Holdings</span><span>3,850</span><span>3.24%</span><span><span class="mx-tag all">전체 의안</span></span></div><div class="m4r g2"><span class="m4g"></span><span>무효주</span><span>나제한</span><span>3,750</span><span>3.16%</span><span><span class="mx-tag all">전체 의안</span></span></div><div class="m4r g2"><span class="m4g"></span><span>특별이해관계자</span><span>나특별</span><span>10</span><span>0.01%</span><span><span class="mx-tag">4호</span></span></div><div class="m4r g2"><span class="m4g"></span><span>ADR</span><span>아이알큐더스(ADR)</span><span>4,110</span><span>3.46%</span><span></span></div><div class="m4r t"><span>합계</span><span></span><span></span><span>118,858</span><span>100%</span><span></span></div></div>
+</div>
+</div>
+<div class="m4b">
+<div class="m4bar"><div class="s0" style="--h:21.99"></div><div class="s1" style="--h:64.53"></div><div class="s2" style="--h:13.48"></div></div>
+<div class="m4lab"><div class="s0" style="--h:21.99"><b data-n="21.99">21.99%</b><span>최대주주 등</span><i>26,136주</i></div><div class="s1" style="--h:64.53"><b data-n="64.53">64.53%</b><span>최대주주 외</span><i>76,702주</i></div><div class="s2" style="--h:13.48"><b data-n="13.48">13.48%</b><span>기타</span><i>16,020주</i></div></div>
+</div>
 </div>
 </section>
 <section class="slide" id="m9_5" data-no="M9-5" data-title="M9-5 모의 주주총회 회의목적사항" data-bg="B" data-foot="full" data-lay="split">
@@ -1327,6 +1366,9 @@ if(!location.protocol.startsWith('http')){st('파일 실행 (오프라인)');ret
 if(!('serviceWorker' in navigator)){st('오프라인 캐시 미지원 브라우저');return;}
 st('오프라인 저장 중…');
 navigator.serviceWorker.register('sw.js').then(()=>navigator.serviceWorker.ready).then(()=>caches.keys()).then(k=>st(k.some(x=>x.startsWith('seminar-screen-'))?'오프라인 저장 완료':'오프라인 저장 중…')).catch(e=>st('오프라인 캐시 실패: '+e.message));
-})();</script>
+})();
+/* M9-4 막대 숫자 카운트 */
+(function(){const S=document.getElementById('m9_4');if(!S)return;const run=()=>{S.querySelectorAll('.m4lab b').forEach((b,j)=>{const n=+b.dataset.n,t0=performance.now()+900+j*350;b.textContent='0.00%';const f=t=>{const k=Math.min(1,Math.max(0,(t-t0)/1100)),e=1-Math.pow(1-k,3);b.textContent=(n*e).toFixed(2)+'%';if(k<1&&S.classList.contains('on'))requestAnimationFrame(f);else b.textContent=n.toFixed(2)+'%';};requestAnimationFrame(f);});};new MutationObserver(()=>{if(S.classList.contains('on')&&!S._m4){S._m4=1;run();}else if(!S.classList.contains('on'))S._m4=0;}).observe(S,{attributes:true,attributeFilter:['class']});})();
+</script>
 
 </body></html>
