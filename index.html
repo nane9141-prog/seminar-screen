@@ -1018,7 +1018,7 @@ document.getElementById('hud').addEventListener('click',e=>{const li=e.target.cl
 setInterval(hud,15000);
 /* 배경음악 반복: 대기(M1 · M1-S1 · S2) = wait-bgm, 휴식(M6-1 · M6-S1 · M8-1 · M8-S1) = break-bgm. 해당 화면을 나가면 2.5초 페이드아웃.
    곡 끝(자체 페이드아웃 · 무음 꼬리) lead초 전에 같은 곡을 하나 더 겹쳐 시작해 끊김 없이 반복. M 음소거. 자동재생이 막히면 첫 키 · 클릭에 시작 */
-var BGM={vol:.6,T:{wait:{src:'assets/sound/wait-bgm.mp3',lead:7,re:/^M1-/i},brk:{src:'assets/sound/break-bgm.mp3?v=beautiful-dream',lead:7,re:/^M[68]-(1|S1)$/i}},
+var BGM={vol:.6,T:{wait:{src:'assets/sound/wait-bgm.mp3?v=peaceful-heart',lead:12.5,re:/^M1-/i},brk:{src:'assets/sound/break-bgm.mp3?v=beautiful-dream',lead:7,re:/^M[68]-(1|S1)$/i}},
  cur:null,muted:localStorage.getItem('scr-bgm-mute')==='1',
  el(k,i){const t=this.T[k];t.a=t.a||[];if(!t.a[i]){const x=new Audio(t.src);x.preload='auto';x.volume=0;x._t=null;t.a[i]=x;}return t.a[i];},
  ramp(x,to,ms,end){clearInterval(x._t);const f=x.volume,t0=performance.now();x._t=setInterval(()=>{const k=Math.min(1,(performance.now()-t0)/ms);x.volume=Math.max(0,Math.min(1,f+(to-f)*k));if(k>=1){clearInterval(x._t);end&&end();}},40);},
