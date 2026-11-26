@@ -1160,6 +1160,14 @@ html,body,body *{touch-action:none;-webkit-touch-callout:none;-webkit-user-selec
 #K21 .k21bg{position:absolute;inset:0;background:url(assets/s4/k21-bg.webp) center/cover;opacity:.16;filter:saturate(.8);pointer-events:none}
 #K21 .cd.sv::before{display:none}
 #K21 .cd.sv{padding-left:60px}
+/* 11/26 K21 상장기업 · 주주 묶음 테두리 삭제, 박스 사이 연결선을 시스템 구성도(K22s)처럼 — 옅은 선이 그어진 뒤 점선이 흐름 */
+#K21 .ga,#K21 .gb{box-shadow:none}
+#K21 svg.k21l path{fill:none;stroke-linecap:round}
+#K21 svg.k21l .b{stroke:rgba(143,198,238,.45);stroke-width:3.5;stroke-dasharray:1;stroke-dashoffset:1}
+#K21 svg.k21l .m{stroke:#8fc6ee;stroke-width:5;stroke-dasharray:6 34;opacity:0}
+.s.cur#K21 svg.k21l{animation:none;opacity:1}
+.s.cur#K21 svg.k21l .b{animation:k22D .9s cubic-bezier(.4,0,.2,1) var(--d) both}
+.s.cur#K21 svg.k21l .m{animation:k22F .4s ease calc(var(--d) + .9s) both,k22M 1.6s linear calc(var(--d) + .9s) infinite}
 </style></head>
 <body>
 <div class="stage" id="stage">
@@ -1387,7 +1395,7 @@ html,body,body *{touch-action:none;-webkit-touch-callout:none;-webkit-user-selec
  <div class="cd sv" style="left:2280px;top:480px;width:860px;height:164px;--dx:-500px;--dy:-700px;--r:-10deg;--d:2.15s"><b>전자투표</b></div><div class="cd sv" style="left:2280px;top:672px;width:860px;height:164px;--dx:700px;--dy:-800px;--r:8deg;--d:2.22s"><b>전자위임장</b></div><div class="cd sv" style="left:2280px;top:864px;width:860px;height:164px;--dx:1000px;--dy:-100px;--r:-6deg;--d:2.29s"><b>의결권 대리행사 권유</b></div><div class="cd sv" style="left:2280px;top:1056px;width:860px;height:164px;--dx:800px;--dy:600px;--r:9deg;--d:2.36s"><b>현장전자표결</b></div><div class="cd sv" style="left:2280px;top:1248px;width:860px;height:164px;--dx:-400px;--dy:800px;--r:-8deg;--d:2.43s"><b>전자주주총회</b></div>
  <div class="cd pn pt" style="left:3260px;top:480px;width:640px;height:940px;--dx:700px;--dy:-400px;--r:10deg;--d:2.5s"><b>주주용<br>고객센터</b><small>이용문의 · 본인확인 · 장애접수</small></div>
  <canvas class="viz k21inf" data-viz="inf" style="left:1850px;top:760px;width:400px;height:380px" width="800" height="760"></canvas>
- <svg class="k21l" viewBox="0 0 4200 1600" width="4200" height="1600"><line class="al" x1="980" y1="950" x2="1140" y2="950"/><line class="tl" x1="3140" y1="562" x2="3260" y2="562"/><line class="tl" x1="3140" y1="754" x2="3260" y2="754"/><line class="tl" x1="3140" y1="946" x2="3260" y2="946"/><line class="tl" x1="3140" y1="1138" x2="3260" y2="1138"/><line class="tl" x1="3140" y1="1330" x2="3260" y2="1330"/></svg>
+ <svg class="k21l" viewBox="0 0 4200 1600" width="4200" height="1600"><path class="b" pathLength="1" d="M980 950H1140" style="--d:3.10s"/><path class="m" d="M980 950H1140" style="--d:3.10s"/><path class="b" pathLength="1" d="M3140 562H3260" style="--d:3.18s"/><path class="m" d="M3140 562H3260" style="--d:3.18s"/><path class="b" pathLength="1" d="M3140 754H3260" style="--d:3.26s"/><path class="m" d="M3140 754H3260" style="--d:3.26s"/><path class="b" pathLength="1" d="M3140 946H3260" style="--d:3.34s"/><path class="m" d="M3140 946H3260" style="--d:3.34s"/><path class="b" pathLength="1" d="M3140 1138H3260" style="--d:3.42s"/><path class="m" d="M3140 1138H3260" style="--d:3.42s"/><path class="b" pathLength="1" d="M3140 1330H3260" style="--d:3.50s"/><path class="m" d="M3140 1330H3260" style="--d:3.50s"/></svg>
 </section>
 
 <section class="s ch sec fl" id="K21b" data-t="장 표지 · 시스템" data-dim=".3">
