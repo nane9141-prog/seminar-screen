@@ -90,8 +90,7 @@ $('oql').addEventListener('click',async e=>{const b=e.target.closest('button[dat
   if(a==='hide')return upd(id,{status:'hidden'});
   if(a==='unhide')return upd(id,{status:'new'});
   if(a==='del'){if(!confirm((isMan(q)?'직접 추가한 질문을':'이 질문을')+' 완전히 삭제할까요?\n\n'+q.body.slice(0,60)))return;if(cur===id)await show(null);const {error}=await sb.from('live_questions').delete().eq('id',id);if(error)msg(error.message,true);sig='';return poll();}
-  if(a==='edit'){const t=prompt('질문 내용 (오탈자 · 개인정보 정리)',q.body);if(t==null||!t.trim())return;return upd(id,{body:t.trim()});}
-  if(a==='who'){const w=prompt('답변 연사 (비우면 표시 안 함)',q.who||'');if(w==null)return;return upd(id,{who:w.trim()||null});}
+  if(a==='edit'||a==='who')return dlgOpen(q,a==='who'?'oqfwho':'oqfbody');
   if(a==='up'||a==='down'){const P=picked(),i=P.findIndex(x=>x.id===id),j=a==='up'?i-1:i+1;if(j<0||j>=P.length)return;
     const o1=P[i].ord||i+1,o2=P[j].ord||j+1;await sb.from('live_questions').update({ord:o2}).eq('id',P[i].id);return upd(P[j].id,{ord:o1});}
 });
@@ -104,9 +103,26 @@ document.querySelectorAll('#oqtabs [data-tab]').forEach(b=>b.onclick=()=>{tab=b.
 $('oqstf').onchange=e=>{stf=e.target.value;localStorage.setItem('qa-st',stf);sig='';draw();poll();};
 $('oqses').onchange=e=>{ses=e.target.value;sig='';draw();};
 if($('oqimport'))$('oqimport').onclick=async()=>{const {data,error}=await sb.rpc('admin_import_pre_questions');if(error)return msg(error.message,true);msg('사전 질문 '+data+'건을 접수 목록에 추가했습니다');sig='';poll();};
-$('oqadd').onclick=async()=>{const body=prompt('질문 내용 (종이 질문지 등)');if(!body||!body.trim())return;const company=prompt('회사','')||'-';const name=prompt('이름','')||'-';
-  const P=picked();const {error}=await sb.from('live_questions').insert({kind:'live',company:company.trim()||'-',name:name.trim()||'-',session:ses||'all',body:body.trim(),device:'manual',status:'picked',ord:(P.length?(P[P.length-1].ord||0):0)+1,picked_by:by()});
-  if(error)return msg(error.message,true);msg('선택 목록에 추가했습니다');sig='';poll();};
+/* 11/26 직접 추가 · 수정: 시스템 팝업(prompt) 대신 모달 — 질문 · 회사 · 이름 · 세션 · 답변 연사 · 이메일 한 번에 */
+let dq=null;
+function dlgOpen(q,focus){dq=q||null;const d=$('oqdlg');
+  $('oqdt').textContent=q?'질문 수정':'질문 직접 추가';
+  $('oqdp').textContent=q?(q.kind==='pre'?'사전':'현장')+' 질문 · 접수 '+tm(q.created_at)+(isMan(q)?' · 직접 추가':'')+' — 화면에 송출 중이면 바로 바뀝니다.':'종이 질문지 등 현장에서 받은 질문을 넣습니다. 추가하면 선택 목록 맨 뒤에 붙습니다.';
+  $('oqfbody').value=q?q.body||'':'';$('oqfco').value=q&&q.company!=='-'?q.company||'':'';$('oqfname').value=q&&q.name!=='-'?q.name||'':'';
+  $('oqfses').value=q?(q.session==='demo'?'s4':q.session||'all'):(ses==='demo'?'s4':ses||'all');$('oqfwho').value=q?q.who||'':'';$('oqfemail').value=q?q.email||'':'';
+  $('oqfeml').hidden=!q;$('oqfsave').textContent=q?'저장':'추가하기';$('oqferr').textContent='';
+  d.showModal();setTimeout(()=>{const f=$(focus||'oqfbody');f.focus();if(f.select&&focus==='oqfwho')f.select();},30);}
+$('oqfclose').onclick=()=>$('oqdlg').close();
+$('oqdlg').addEventListener('click',e=>{if(e.target===$('oqdlg'))$('oqdlg').close();});
+$('oqform').addEventListener('submit',async e=>{e.preventDefault();const body=$('oqfbody').value.trim();if(!body){$('oqferr').textContent='질문 내용을 입력하세요';return $('oqfbody').focus();}
+  const f={body,company:$('oqfco').value.trim()||'-',name:$('oqfname').value.trim()||'-',session:$('oqfses').value||'all',who:$('oqfwho').value.trim()||null};
+  const b=$('oqfsave');b.disabled=true;let error;
+  if(dq){f.email=$('oqfemail').value.trim()||null;if(dq.session==='demo'&&f.session==='s4')f.session='demo';({error}=await sb.from('live_questions').update(f).eq('id',dq.id));}
+  else{const P=picked();({error}=await sb.from('live_questions').insert(Object.assign(f,{kind:'live',device:'manual',status:'picked',ord:(P.length?(P[P.length-1].ord||0):0)+1,picked_by:by()})));}
+  b.disabled=false;if(error){$('oqferr').textContent=error.message;return;}
+  $('oqdlg').close();msg(dq?'질문을 수정했습니다':'선택 목록에 추가했습니다');sig='';poll();});
+$('oqfbody').addEventListener('keydown',e=>{if(e.key==='Enter'&&(e.ctrlKey||e.metaKey)){e.preventDefault();$('oqform').requestSubmit();}});
+$('oqadd').onclick=()=>dlgOpen(null);
 $('oqreset').onclick=async()=>{const k=prompt('테스트 질문 초기화 — 현장 질문만 지우려면 live, 사전 질문까지 모두 지우려면 all 을 입력하세요','live');if(k!=='live'&&k!=='all')return;
   if(!confirm((k==='all'?'모든':'현장')+' 질문을 삭제합니다. 되돌릴 수 없습니다. 계속할까요?'))return;
   const {data,error}=await sb.rpc('admin_qa_reset',{p_kind:k});if(error)return msg(error.message,true);msg(data+'건 삭제');sig='';poll();};

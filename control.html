@@ -221,6 +221,7 @@ dialog.atmr::backdrop{background:rgba(0,0,0,.6)}
 dialog.atmr h3{margin:0 0 6px;font-size:17px}dialog.atmr p{margin:0 0 14px;font-size:13px;line-height:1.6}
 dialog.atmr label{display:block;font-size:12px;color:var(--fg-2);margin-bottom:10px}dialog.atmr label em{font-style:normal;color:var(--warn);font-size:11px;margin-left:4px}
 dialog.atmr label input[type=text],dialog.atmr label input[type=tel],dialog.atmr label input[type=email],dialog.atmr label select{display:block;width:100%;margin-top:4px;box-sizing:border-box}
+dialog.atmr label textarea{display:block;width:100%;margin-top:4px;box-sizing:border-box;font:inherit;font-size:14px;line-height:1.55;background:var(--field);color:var(--fg);border:1px solid var(--field-line);border-radius:8px;padding:9px 10px;resize:vertical;min-height:110px}
 dialog.atmr label select{display:flex}   /* 펼침 디자인(base-select)은 flex 여야 글자·화살표가 한 줄에 놓임 */
 dialog.atmr .two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 dialog.atmr label.chk{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--fg)}
@@ -518,6 +519,15 @@ body.kflash #pvslot,body.kflash #pvbox{box-shadow:0 0 0 2px #2f6bff}
      </div>
      <div class="ql" id="oql"></div>
     </section>
+    <dialog id="oqdlg" class="atmr"><form id="oqform" method="dialog">
+     <h3 id="oqdt">질문 직접 추가</h3>
+     <p class="mut" id="oqdp">종이 질문지 등 현장에서 받은 질문을 넣습니다. 추가하면 선택 목록 맨 뒤에 붙습니다.</p>
+     <label>질문 내용 <em>필수</em><textarea id="oqfbody" rows="5" maxlength="1000" required placeholder="오탈자 · 개인정보는 정리해서 입력"></textarea></label>
+     <div class="two"><label>회사<input type="text" id="oqfco" maxlength="60" placeholder="비우면 -"></label><label>이름<input type="text" id="oqfname" maxlength="40" placeholder="비우면 -"></label></div>
+     <div class="two"><label>세션<select id="oqfses"><option value="all">전체 · 공통</option><option value="s1">Session 1</option><option value="s2">Session 2</option><option value="s3">Session 3</option><option value="s4">Session 4 · 시연</option></select></label><label>답변 연사<input type="text" id="oqfwho" maxlength="40" placeholder="비우면 표시 안 함"></label></div>
+     <label id="oqfeml">이메일<input type="email" id="oqfemail" maxlength="120" placeholder="회신이 필요하면"></label>
+     <div class="ft"><span id="oqferr" class="late"></span><span class="sp"></span><button type="button" id="oqfclose">닫기</button><button class="pri" type="submit" id="oqfsave">추가하기</button></div>
+    </form></dialog>
     <details class="adm" style="margin-top:16px"><summary>관리</summary><div class="bar"><button class="warn" id="oqreset">테스트 질문 초기화</button><span class="hint">행사 전 리허설 질문 삭제용</span></div><div class="bar"><button data-src="local">오프라인 직접 입력으로 전환</button><span class="hint">통신 장애 시 송출 PC에서만 사용</span></div></details>
    </div>
   </div>
@@ -630,7 +640,7 @@ const ofs=()=>{$('offst').textContent=window.OFFLINE_STATE||'';$('offst').style.
 // 메뉴 탭: 운영 관리 / 질의 관리
 const HINT={seat:'행사장 3D 도면에서 좌석(테이블-좌석, 예: 16-3)을 눌러 신청자를 배정합니다. 좌석 값은 참석자 관리의 좌석 칸과 같습니다. 운영자 노트북 어디서나 사용.',att:'사전 신청자 확인 · 좌석은 미리 입력해 두면 현장에서 검색으로 바로 안내할 수 있습니다. 운영자 노트북 어디서나 사용.',ops:'메인 스크린(index.html)과 같은 PC · 같은 브라우저에서 열어 주세요. 입력 즉시 반영됩니다.',qa:'운영자 노트북 어디서나 사용 · 관리자 계정으로 로그인 · 송출하면 메인 스크린에 2초 안에 표시됩니다.',qaLocal:'직접 입력은 메인 스크린과 같은 PC · 같은 브라우저에서만 반영됩니다.'};
 function hint(){const m=document.body.dataset.m;$('hint').textContent=m==='qa'?(SCHED.getSrc()==='local'?HINT.qaLocal:HINT.qa):m==='att'?HINT.att:m==='seat'?HINT.seat:HINT.ops;}
-document.addEventListener('keydown',e=>{if(document.body.dataset.m!=='qa'||/INPUT|TEXTAREA|SELECT/.test(e.target.tagName)||e.target.isContentEditable)return;
+document.addEventListener('keydown',e=>{if(document.body.dataset.m!=='qa'||document.querySelector('dialog[open]')||/INPUT|TEXTAREA|SELECT/.test(e.target.tagName)||e.target.isContentEditable)return;
   if(e.key!=='ArrowRight'&&e.key!=='ArrowLeft')return;e.preventDefault();const d=e.key==='ArrowRight'?1:-1;
   if(SCHED.getSrc()==='online'){if(window.QAOnline&&QAOnline.step)QAOnline.step(d);}else qStep(d);});
 function setM(m){document.body.dataset.m=m;localStorage.setItem('ctl-menu',m);document.querySelectorAll('#mtab [data-m]').forEach(b=>b.classList.toggle('on',b.dataset.m===m));if(window.SCHED)hint();if((m==='att'||m==='seat')&&window.Attendees)Attendees.show();if(m==='seat'&&window.SeatMap)SeatMap.show();if(m==='att')setTimeout(()=>{const q=document.getElementById('atq');if(q&&!q.closest('[hidden]'))q.focus();},50);}
