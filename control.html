@@ -370,6 +370,22 @@ body.kflash #pvslot,body.kflash #pvbox{box-shadow:0 0 0 2px #2f6bff}
 
 /* 11/26 화면 전환 기존 컨트롤: 현재 화면 · 발표자료 장 · 남은 장 */
 .pginfo{margin-left:12px;font-size:13px;color:var(--fg-2)}.pginfo b{color:var(--fg);font-weight:700}.pginfo em{font-style:normal;color:#7fb6ff;font-weight:700}
+
+/* 11/26 20:50 화면 전환 상단 레이아웃 재정리 — 제목 줄(왼쪽 제목 · 현재, 오른쪽 버튼) · 조작 기기 줄 · 3칸 격자(미리보기 | 메인 컨트롤 패널 | 세션 3 화상 화면), 좁으면 화상 화면은 미리보기 아래 */
+#scrbox .scrh{margin-bottom:14px}
+#scrbox .scrt{display:flex;align-items:baseline;gap:14px;min-width:0;flex-wrap:wrap}
+#scrbox .scrt .cur{font-size:14px;font-weight:500;color:var(--fg-2)}#scrbox .scrt .cur b{color:var(--fg);font-weight:700}
+#scrbox .scrt .lg{font-size:12px;font-weight:400;color:var(--fg-3)}
+#scrbox .owner{margin-bottom:16px}
+.pvwrap{display:grid!important;grid-template-columns:minmax(0,680px) minmax(400px,1fr)!important;grid-template-areas:"pv cp" "fc cp";grid-template-rows:min-content 1fr;gap:16px 20px!important;align-items:stretch!important;margin-bottom:16px}
+.pvl{grid-area:pv;align-self:start}.cpx{grid-area:cp;min-height:0}.facebox{grid-area:fc;align-self:start;margin:0}
+@media (min-width:1640px){.pvwrap{grid-template-columns:minmax(0,680px) 440px minmax(320px,1fr)!important;grid-template-areas:"pv cp fc";grid-template-rows:auto}}
+.facebox select{flex:1 1 100%!important}
+.cpx .bd{flex:1;min-height:0}.cpx .ls{flex:1;max-height:280px;min-height:160px}
+.cpx .now .t{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pvl .pvopt{justify-content:flex-start}
+.pvl .hint{flex-basis:100%}
+.facebox .frow select{min-width:0;flex:1 1 200px}
 </style></head>
 <body>
 <header class="top"><h1>운영 입력<small id="hint">메인 스크린(index.html)과 같은 PC · 같은 브라우저에서 열어 주세요. 입력 즉시 반영됩니다.</small></h1><div class="me"><span id="offst" class="mut"></span><span id="clock">--:--</span></div></header>
@@ -398,14 +414,10 @@ body.kflash #pvslot,body.kflash #pvbox{box-shadow:0 0 0 2px #2f6bff}
 </div>
 <div id="colScr">
  <div class="box" id="scrbox">
-  <h2>화면 전환 <span class="mut">현재 <b id="curno">-</b> · 점선 = 상황 메시지</span><span><button id="toq2">현장 질문 화면(M10-13)</button> <button id="black">블랙아웃</button></span></h2>
+  <h2 class="scrh"><span class="scrt">화면 전환<span class="cur">현재 <b id="curno">-</b></span><span class="lg">점선 = 상황 메시지</span></span><span><button id="toq2">현장 질문 화면(M10-13)</button> <button id="black">블랙아웃</button></span></h2>
   <div class="owner" id="owner"><span class="od"></span><div class="ot"><b id="ownname">조작 기기: 제한 없음</b><span class="mut" id="ownsub">어느 운영 입력 화면에서든 메인을 넘길 수 있습니다.</span></div><span class="sp"></span><label class="pvt"><input type="checkbox" id="pvon"> 미리보기</label><button id="ownset" class="pri">이 기기로 지정</button><button id="ownclr">지정 해제</button></div>
   <div id="scrbody">
-  <div class="pvwrap"><div class="pvl"><div id="pvslot"></div><div class="pvopt"><button id="pvpip">PIP 창으로 띄우기</button><label><input type="checkbox" id="pvmini"> 다른 탭에서도 작은 화면</label><span class="hint">← → · Space · PageUp/Down(클리커)으로 전환 · 입력칸에 커서가 있을 때는 작동 안 함</span></div><div class="facebox" id="facebox"><div class="fh"><b>세션 3 화상 화면</b><span class="mut">M7-4 오른쪽 연사 얼굴 창 · 미리 연결해 두면 M7-4에 들어갈 때 바로 보임</span></div>
-  <div class="fst" id="facest">메인 스크린 상태를 기다리는 중…</div>
-  <div class="frow"><select id="facedev"><option value="">— 영상 장치 선택 (캡처보드 · 카메라) —</option></select><button id="faceon" class="pri">연결</button><button id="faceoff">해제(사진)</button></div>
-  <div class="frow"><span class="mut">맞춤</span><button data-fit="cover" class="ff">채우기</button><button data-fit="contain" class="ff">전체 보기</button><span class="sp"></span><button id="facels">장치 목록 새로고침</button><button id="faceask" title="송출 PC 메인 화면에 카메라 권한 창이 뜹니다 — 리허설 때 한 번 허용">권한 요청</button></div>
-  <p class="hint">장치 이름이 안 보이면 「권한 요청」 → 송출 PC 메인 화면에서 허용(한 번이면 됨). Google Meet 창 캡처는 크롬 정책상 송출 PC 메인 화면에서 M7-4를 띄운 뒤 Shift+V로 직접 고릅니다. 고른 장치는 저장돼 메인을 다시 열어도 자동 연결됩니다.</p></div></div>
+  <div class="pvwrap"><div class="pvl"><div id="pvslot"></div><div class="pvopt"><button id="pvpip">PIP 창으로 띄우기</button><label><input type="checkbox" id="pvmini"> 다른 탭에서도 작은 화면</label><span class="hint">← → · Space · PageUp/Down(클리커)으로 전환 · 입력칸에 커서가 있을 때는 작동 안 함</span></div></div>
    <div class="cpx" id="cpx"><div class="hd"><b>메인 스크린</b><span class="sp"></span><span class="clk" id="cpclk"></span></div>
     <div class="bd">
      <div class="now"><div class="t" id="pvcur">-</div><div class="s" id="pvsub"></div><div class="bar" id="pvbar"><i></i></div></div>
@@ -417,7 +429,11 @@ body.kflash #pvslot,body.kflash #pvbox{box-shadow:0 0 0 2px #2f6bff}
      <div class="ls" id="cpls"></div>
     </div>
     <div class="ft">→ ← 이동(상황 메시지 건너뜀) · 번호+Enter 바로가기 · 메인 키: F 전체화면 · B 블랙아웃 · A 자동순환 · M 배경음 · Shift+M 효과음 · 배속은 화면 전환 · 글자 애니메이션 · 배경 · 대기 자동 넘김에 적용</div>
-   </div></div></div>
+   </div><div class="facebox" id="facebox"><div class="fh"><b>세션 3 화상 화면</b><span class="mut">M7-4 오른쪽 연사 얼굴 창 · 미리 연결해 두면 M7-4에 들어갈 때 바로 보임</span></div>
+  <div class="fst" id="facest">메인 스크린 상태를 기다리는 중…</div>
+  <div class="frow"><select id="facedev"><option value="">— 영상 장치 선택 (캡처보드 · 카메라) —</option></select><button id="faceon" class="pri">연결</button><button id="faceoff">해제(사진)</button></div>
+  <div class="frow"><span class="mut">맞춤</span><button data-fit="cover" class="ff">채우기</button><button data-fit="contain" class="ff">전체 보기</button><span class="sp"></span><button id="facels">장치 목록 새로고침</button><button id="faceask" title="송출 PC 메인 화면에 카메라 권한 창이 뜹니다 — 리허설 때 한 번 허용">권한 요청</button></div>
+  <p class="hint">장치 이름이 안 보이면 「권한 요청」 → 송출 PC 메인 화면에서 허용(한 번이면 됨). Google Meet 창 캡처는 크롬 정책상 송출 PC 메인 화면에서 M7-4를 띄운 뒤 Shift+V로 직접 고릅니다. 고른 장치는 저장돼 메인을 다시 열어도 자동 연결됩니다.</p></div></div></div>
    <div class="bar" style="margin-top:14px"><button id="nprev">◀ 이전</button><button id="nnext" class="pri">다음 ▶</button>
    <input type="text" id="nno" placeholder="화면 번호 예: 4-5" style="width:130px"><button id="ngo">이동</button><span class="pginfo" id="pginfo"></span>
    <span class="sp"></span><span class="mut">배속</span><span id="spd"></span></div>
