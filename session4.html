@@ -1641,6 +1641,8 @@ body.grid #sg{display:flex}
 #sgb{position:fixed;right:22px;bottom:22px;z-index:65;width:46px;height:46px;border-radius:12px;border:0;background:rgba(30,34,42,.85);cursor:pointer;display:flex;align-items:center;justify-content:center;opacity:.0;transition:opacity .3s}
 #sgb svg{width:22px;height:22px;fill:#cfd5de}
 body:not(.idle) #sgb{opacity:.9}body.grid #sgb{opacity:0;pointer-events:none}
+/* 11/26 19:25 간지 · 장 제목 한 줄 글씨는 모두 흰색(그라데이션 없음): 표지 2027 · IR큐더스, K15 「소집통지 · 리허설까지」, K21 「A to Z」 */
+.sec-h .g,.h .g,.h .ac,#K15 .h .ac,#K21 .k21t em{background:none!important;-webkit-background-clip:border-box!important;background-clip:border-box!important;color:#F2F5FA!important;-webkit-text-fill-color:#F2F5FA!important}
 </style></head>
 <body>
 <div class="stage" id="stage">
