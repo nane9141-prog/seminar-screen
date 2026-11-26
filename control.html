@@ -367,6 +367,9 @@ body.kflash #pvslot,body.kflash #pvbox{box-shadow:0 0 0 2px #2f6bff}
 .facebox button{min-height:0;padding:7px 12px;font-size:13px}.facebox .ff.on{box-shadow:0 0 0 2px #2f6bff}
 .facebox .hint{margin:0;font-size:12px;line-height:1.5;color:var(--fg-3)}
 #scrbox.locked .facebox button,#scrbox.locked .facebox select{pointer-events:none;opacity:.35}
+
+/* 11/26 화면 전환 기존 컨트롤: 현재 화면 · 발표자료 장 · 남은 장 */
+.pginfo{margin-left:12px;font-size:13px;color:var(--fg-2)}.pginfo b{color:var(--fg);font-weight:700}.pginfo em{font-style:normal;color:#7fb6ff;font-weight:700}
 </style></head>
 <body>
 <header class="top"><h1>운영 입력<small id="hint">메인 스크린(index.html)과 같은 PC · 같은 브라우저에서 열어 주세요. 입력 즉시 반영됩니다.</small></h1><div class="me"><span id="offst" class="mut"></span><span id="clock">--:--</span></div></header>
@@ -416,7 +419,7 @@ body.kflash #pvslot,body.kflash #pvbox{box-shadow:0 0 0 2px #2f6bff}
     <div class="ft">→ ← 이동(상황 메시지 건너뜀) · 번호+Enter 바로가기 · 메인 키: F 전체화면 · B 블랙아웃 · A 자동순환 · M 배경음 · Shift+M 효과음 · 배속은 화면 전환 · 글자 애니메이션 · 배경 · 대기 자동 넘김에 적용</div>
    </div></div></div>
    <div class="bar" style="margin-top:14px"><button id="nprev">◀ 이전</button><button id="nnext" class="pri">다음 ▶</button>
-   <input type="text" id="nno" placeholder="화면 번호 예: 4-5" style="width:130px"><button id="ngo">이동</button>
+   <input type="text" id="nno" placeholder="화면 번호 예: 4-5" style="width:130px"><button id="ngo">이동</button><span class="pginfo" id="pginfo"></span>
    <span class="sp"></span><span class="mut">배속</span><span id="spd"></span></div>
   <div class="bar dsr" style="margin-top:0"><span class="mut">배경 Data Stream</span><label>형태 크기 <input type="range" id="dsscale" min="0.8" max="2.5" step="0.05" value="1.5"><b id="dsscalev">1.50</b></label><label>점 크기 <input type="range" id="dssize" min="0.5" max="2.5" step="0.05" value="1.25"><b id="dssizev">1.25</b></label><button id="dsreset">기본값</button></div>
   <div class="scr" id="scr"><span class="mut">메인 스크린을 열면 화면 목록이 표시됩니다.</span></div>
@@ -650,7 +653,7 @@ SCHED.onSrc(drawSrc);
  let ST=null,lastLs='';const nm=x=>x.title.replace(/&amp;/g,'&').replace(/<br>/g,' ').replace(x.no+' ','');
  const upd=st=>{if(!st)return;ST=st;const L=st.slides||[],cs=L.find(x=>x.no===st.cur);
   $$('pvcur').textContent=cs?cs.no+'  '+nm(cs):(st.cur||'-');
-  $$('pvsub').textContent=(st.msg?'상황 메시지 · → 누르면 원래 순서로 · ':'')+(st.pos?'발표 '+st.pos+' · ':'')+(st.pdk!=null&&st.pdkn?'발표자료 '+(st.pdk+1)+' / '+st.pdkn+' · ':'')+(st.nx?'다음: '+st.nx:(st.nx===''?'마지막 화면':''));
+  $$('pvsub').textContent=(st.msg?'상황 메시지 · → 누르면 원래 순서로 · ':'')+(st.pos&&!(window.PGINFO&&PGINFO(st))?'발표 '+st.pos+' · ':'')+((p=>p?p.nm+' '+p.i+' / '+p.n+' · 남은 '+(p.n-p.i)+'장 · ':'')(window.PGINFO&&PGINFO(st)))+(st.nx?'다음: '+st.nx:(st.nx===''?'마지막 화면':''));
   const tg=(id,on)=>{const b=$$(id);if(on==null){b.disabled=true;return;}b.disabled=false;b.classList.toggle('on',!!on);};
   tg('tgauto',st.auto==null?null:st.auto);tg('tgbgm',st.bgm==null?null:st.bgm);tg('tgsfx',st.sfx==null?null:st.sfx);tg('tgblk',!!st.black);
   $$('cpspd').querySelectorAll('button').forEach(b=>b.classList.toggle('on',+b.dataset.v===+(st.spd||1)));
@@ -703,4 +706,12 @@ SCHED.onSrc(drawSrc);
  const oc=SCHED.cmd;SCHED.cmd=c=>{if(window.CTL_LOCKED){draw();const e=$$('owner');e.animate([{transform:'translateX(0)'},{transform:'translateX(-6px)'},{transform:'translateX(6px)'},{transform:'translateX(0)'}],{duration:240});return;}return oc(c);};
 })();
 </script>
+<script>/* 11/26 현재 화면 정보 · 발표자료 남은 장 (기존 컨트롤 줄 · 위 제목 · 오른쪽 패널) */
+(function(){const pg=st=>{if(st.pdk!=null&&st.pdkn)return {i:st.pdk+1,n:st.pdkn,nm:'발표자료'};const m=/(\d+)\s*\/\s*(\d+)/.exec(st.pos||'');return m?{i:+m[1],n:+m[2],nm:/^K/.test(st.pos)?'키노트':'발표자료'}:null;};
+ window.PGINFO=pg;
+ const f=st=>{if(!st)return;const L=st.slides||[],cs=L.find(x=>x.no===st.cur),p=pg(st),el=document.getElementById('pginfo');
+  const ttl=cs?cs.title.replace(/&amp;/g,'&').replace(/<br>/g,' ').replace(cs.no+' ','').replace('[상황] ',''):'';
+  el.innerHTML='현재 <b>'+(st.cur||'-')+'</b> '+ttl.replace(/</g,'&lt;')+(p?' · '+p.nm+' <b>'+p.i+' / '+p.n+'</b> · <em>남은 '+(p.n-p.i)+'장</em>':'');
+  const cn=document.getElementById('curno');if(cn)cn.textContent=(st.cur||'-')+(p?' · '+p.nm+' '+p.i+'/'+p.n+' (남은 '+(p.n-p.i)+'장)':'');};
+ SCHED.onState(f);f(SCHED.getState());})();</script>
 </body></html>
