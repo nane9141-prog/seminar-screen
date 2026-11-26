@@ -1935,6 +1935,25 @@ html.embed #sgb,html.embed #sg{display:none!important}  /* 11/26 메인 스크�
 #K27.sec .shade{background:radial-gradient(120% 80% at 50% 110%,rgba(0,0,0,0) 40%,rgba(0,0,0,.55) 100%),linear-gradient(0deg,rgba(0,0,0,.55) 0%,rgba(0,0,0,0) 22%),linear-gradient(90deg,rgba(0,0,0,.5) 0%,rgba(0,0,0,0) 14%,rgba(0,0,0,0) 86%,rgba(0,0,0,.5) 100%)!important}
 #K27 .sec-c{padding-top:150px!important}
 #K27 .sec-s{margin-top:40px!important;color:rgba(242,245,250,.72)}
+
+/* 11/26 K28b: 테스트 주총 생성 · 주주명부 등록 · 실시간 운영 탭 삭제 → 영상 창을 K25와 같은 높이(위 200) */
+#K28b .cxw{top:200px!important}
+/* 11/26 K28p 특허 13건: 위 4분야 요약(분야 · 건수 / 가는 선 / 제목 / 회색 설명), 아래 전체 목록 2열 */
+#K28p{--c1:#0081cc;--c2:#5bade1;--c3:#00ada9;--c4:#a3b8d6}
+#K28p .k28ps{position:absolute;left:300px;top:540px;width:3600px;display:grid;grid-template-columns:repeat(4,1fr);column-gap:80px}
+#K28p .k28ps>div{min-width:0}
+#K28p .k28ps .hd{margin:0;padding-bottom:26px;border-bottom:2px solid rgba(242,245,250,.18);font:600 46px/1.2 "Pretendard Variable";color:#F2F5FA;letter-spacing:-.01em}
+#K28p .k28ps .hd b{margin-left:10px;font-weight:700}
+#K28p .site .hd b{color:var(--c1)}#K28p .vote .hd b{color:var(--c2)}#K28p .onl .hd b{color:var(--c3)}#K28p .cum .hd b{color:var(--c4)}
+#K28p .k28ps .tt{margin:30px 0 0;font:700 50px/1.25 "Pretendard Variable";color:#fff;letter-spacing:-.02em}
+#K28p .k28ps .ds{margin:16px 0 0;font:400 38px/1.4 "Pretendard Variable";color:var(--mut);letter-spacing:-.01em}
+#K28p .k28pl{position:absolute;left:300px;top:870px;width:3600px;margin:0;padding:0;list-style:none;display:grid;grid-template-columns:1fr 1fr;column-gap:100px}
+#K28p .k28pl li{display:grid;grid-template-columns:66px 190px minmax(0,1fr) auto;align-items:center;column-gap:20px;height:70px;border-bottom:1px solid rgba(242,245,250,.08);font:400 36px/1.2 "Pretendard Variable";letter-spacing:-.02em;color:#E6EBF2}
+#K28p .k28pl .pn{color:rgba(242,245,250,.45);font-weight:500;font-variant-numeric:tabular-nums}
+#K28p .k28pl .pc{font-size:29px;font-weight:600}
+#K28p .k28pl .site .pc{color:var(--c1)}#K28p .k28pl .vote .pc{color:var(--c2)}#K28p .k28pl .onl .pc{color:var(--c3)}#K28p .k28pl .cum .pc{color:var(--c4)}
+#K28p .k28pl .pt{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#K28p .k28pl .pa{font-size:30px;color:rgba(242,245,250,.5);font-variant-numeric:tabular-nums;letter-spacing:0}
 </style></head>
 <body>
 <div class="stage" id="stage">
@@ -2358,7 +2377,21 @@ html.embed #sgb,html.embed #sg{display:none!important}  /* 11/26 메인 스크�
   <p class="sub fu" style="--i:2;margin-top:50px;line-height:1.5">실제와 같은 환경에서<br>주총 설정부터 사전투표 · 출석 · 표결 · 집계까지<br>미리 연습</p>
  </div>
  <div class="cxw fu" style="--i:2"><div class="cxin"><video src="assets/s4/cx-test.mp4" poster="assets/s4/cx-test.webp" muted loop playsinline preload="auto"></video></div></div>
- <div class="k25m fu" style="--i:3"><i class="ind"></i><span class="on" data-m="a">테스트 주총 생성</span><span data-m="b">주주명부 등록</span><span data-m="c">실시간 운영</span></div>
+</section>
+<!-- 11/26 K28p 신규(K28b 다음): 자체 기술 개발 · 전자주주총회 관련 특허 13건 출원 — 위 4개 분야 요약, 아래 특허 전체 목록(번호 · 분야 · 발명의 명칭 · 출원번호) -->
+<section class="s" id="K28p" data-t="자체 기술 개발 · 특허 13건" data-dim=".1">
+ <div class="ab" style="left:300px;top:150px;width:3600px">
+  <p class="eb fu q" style="--i:0">자체 기술 개발</p>
+  <h2 class="h hm fu" style="--i:1;margin-top:28px">전자주주총회 관련 특허 13건 출원</h2>
+  <p class="sub fu" style="--i:2;margin-top:30px">현장 출석 · 표결부터 온라인 참여와 집중투표까지</p>
+ </div>
+ <div class="k28ps">
+  <div class="fu site" style="--i:3"><p class="hd">현장 출석 <b>3건</b></p><p class="tt">NFC · QR 기반 참석 인증</p><p class="ds">주주총회 의결권 행사 기술</p></div>
+  <div class="fu vote" style="--i:3"><p class="hd">현장 표결 <b>8건</b></p><p class="tt">다양한 방식의 현장 전자표결</p><p class="ds">BLE · 동적 QR · 네트워크 · 위치 정보 활용</p></div>
+  <div class="fu onl" style="--i:3"><p class="hd">온라인 참여 <b>1건</b></p><p class="tt">주주 유형별 참여 계정</p><p class="ds">임시계정 기반 주주총회 참여</p></div>
+  <div class="fu cum" style="--i:3"><p class="hd">집중투표 <b>1건</b></p><p class="tt">집중투표 의결권 분배</p><p class="ds">집중투표를 위한 의결권 분배 기술</p></div>
+ </div>
+ <ol class="k28pl"><div><li class="fu site" style="--i:5"><span class="pn">01</span><span class="pc">현장 출석</span><span class="pt">NFC 기반의 TTL을 이용한 주주총회 참석 인증 방법 및 시스템</span><span class="pa">10-2026-0124604</span></li><li class="fu site" style="--i:5"><span class="pn">02</span><span class="pc">현장 출석</span><span class="pt">QR코드 기반의 TTL을 이용한 주주총회 참석 인증 방법 및 시스템</span><span class="pa">10-2026-0124608</span></li><li class="fu site" style="--i:5"><span class="pn">03</span><span class="pc">현장 출석</span><span class="pt">주주총회 의결권 행사 방법 및 시스템</span><span class="pa">10-2026-0124612</span></li><li class="fu vote" style="--i:5"><span class="pn">04</span><span class="pc">현장 표결</span><span class="pt">BLE비콘을 이용한 위치확인 기반의 주주총회 의결권 행사 방법 및 시스템</span><span class="pa">10-2026-0160321</span></li><li class="fu vote" style="--i:5"><span class="pn">05</span><span class="pc">현장 표결</span><span class="pt">BLE비콘의 시계열적 인식 기반의 주주총회 의결권 행사 방법 및 시스템</span><span class="pa">10-2026-0160341</span></li><li class="fu vote" style="--i:5"><span class="pn">06</span><span class="pc">현장 표결</span><span class="pt">모바일용 BLE신호 수신 기반의 주주총회 의결권 행사 방법 및 시스템</span><span class="pa">10-2026-0160347</span></li><li class="fu vote" style="--i:5"><span class="pn">07</span><span class="pc">현장 표결</span><span class="pt">동적QR코드를 이용한 주주총회 의결권 행사 방법 및 시스템</span><span class="pa">10-2026-0176962</span></li></div><div><li class="fu vote" style="--i:6"><span class="pn">08</span><span class="pc">현장 표결</span><span class="pt">동적QR코드를 이용한 웹 기반의 주주총회 의결권 행사 방법 및 시스템</span><span class="pa">10-2026-0176978</span></li><li class="fu vote" style="--i:6"><span class="pn">09</span><span class="pc">현장 표결</span><span class="pt">다층적 네트워크 파라미터를 이용한 주주총회 의결권 행사 방법 및 시스템</span><span class="pa">10-2026-0179920</span></li><li class="fu vote" style="--i:6"><span class="pn">10</span><span class="pc">현장 표결</span><span class="pt">네트워크의 고유계정을 이용한 주주총회 의결권 행사 방법 및 시스템</span><span class="pa">10-2026-0179928</span></li><li class="fu vote" style="--i:6"><span class="pn">11</span><span class="pc">현장 표결</span><span class="pt">위치상태 기반의 주주총회 의결권 행사 방법 및 시스템</span><span class="pa">10-2026-0206970</span></li><li class="fu onl" style="--i:6"><span class="pn">12</span><span class="pc">온라인 참여</span><span class="pt">주주유형별 임시계정 기반의 주주총회 참여 방법 및 시스템</span><span class="pa">10-2026-0192034</span></li><li class="fu cum" style="--i:6"><span class="pn">13</span><span class="pc">집중투표</span><span class="pt">집중투표 의결권 분배 방법 및 시스템</span><span class="pa">10-2026-0192052</span></li></div></ol>
 </section> 
 <!-- ═════════ 6. 운영지원 ═════════ -->
 <section class="s ch sec fl" id="K27" data-t="장 표지 · 운영지원" data-dim="0">
