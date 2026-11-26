@@ -43,7 +43,7 @@ async function poll(){
   if(busy)return;busy=true;
   try{
     const [q,s]=await Promise.all([
-      sb.from('live_questions').select('id,kind,n,company,name,email,session,body,who,status,ord,picked_by,shown_at,created_at').order('created_at'),
+      sb.from('live_questions').select('id,kind,n,company,name,email,session,body,who,status,ord,picked_by,shown_at,created_at,device,source_reg').order('created_at'),
       sb.from('qa_state').select('cur,updated_by,updated_at').eq('id',1).single()]);
     if(q.error)throw q.error;
     L=(q.data||[]).filter(x=>x.kind!=='pre');cur=s.data?s.data.cur:null;
@@ -56,6 +56,8 @@ async function poll(){
   }
   busy=false;
 }
+/* 운영자가 「+ 직접 추가」로 넣은 질문: device='manual' (예전 추가분은 기기값 · 사전 원본 없음) */
+const isMan=q=>q.device==='manual'||(q.kind==='live'&&!q.device&&!q.source_reg);
 const picked=()=>L.filter(x=>x.status==='picked').sort((a,b)=>(a.ord||0)-(b.ord||0));
 
 function draw(st){
@@ -72,11 +74,11 @@ function draw(st){
   const allm=tab!=='pick';let list=allm?(stf?K.filter(x=>x.status===stf):K):P;
   if(ses)list=list.filter(x=>x.session===ses||(ses==='s4'&&x.session==='demo'));
   const act=q=>(allm?q.status==='picked':true)
-    ?'<button data-a="show" class="'+(q.id===cur?'pri':'')+'">송출</button><button data-a="up">↑</button><button data-a="down">↓</button><button data-a="who">연사</button><button data-a="edit">수정</button><button data-a="unpick">빼기</button>'
-    :q.status==='new'?'<button data-a="pick" class="pri">선택</button><button data-a="edit">수정</button><button data-a="hide">숨김</button>'
+    ?'<button data-a="show" class="'+(q.id===cur?'pri':'')+'">송출</button><button data-a="up">↑</button><button data-a="down">↓</button><button data-a="who">연사</button><button data-a="edit">수정</button><button data-a="unpick">빼기</button>'+(isMan(q)?'<button data-a="del" class="warn">삭제</button>':'')
+    :q.status==='new'?'<button data-a="pick" class="pri">선택</button><button data-a="edit">수정</button><button data-a="hide">숨김</button>'+(isMan(q)?'<button data-a="del" class="warn">삭제</button>':'')
     :'<button data-a="unhide">되돌리기</button><button data-a="del" class="warn">삭제</button>';
   $('oql').innerHTML=list.length?list.map(q=>'<div class="q'+(q.id===cur?' cur':'')+'" data-id="'+q.id+'"><div class="tag '+q.kind+'">'+lab(q)+'<div class="w">'+SL[q.session]+'</div></div>'+
-    '<div><div class="t">'+(allm?'<span class="st '+q.status+'">'+({new:'접수',picked:'선택',hidden:'숨김'})[q.status]+'</span>':'')+esc(q.body)+'</div><div class="w">'+esc(q.company)+' '+esc(q.name)+(q.email?' · <a href="mailto:'+esc(q.email)+'" style="color:#8FB8FF">'+esc(q.email)+'</a>':'')+' · '+tm(q.created_at)+(q.who?' · 답변 '+esc(q.who):'')+(q.picked_by&&q.status==='picked'?' · 선택 '+esc(q.picked_by):'')+(q.shown_at?' · <span style="color:#FFB84D">송출됨 '+tm(q.shown_at)+'</span>':'')+'</div></div>'+
+    '<div><div class="t">'+(isMan(q)?'<span class="st man">직접 추가</span>':'')+(allm?'<span class="st '+q.status+'">'+({new:'접수',picked:'선택',hidden:'숨김'})[q.status]+'</span>':'')+esc(q.body)+'</div><div class="w">'+esc(q.company)+' '+esc(q.name)+(q.email?' · <a href="mailto:'+esc(q.email)+'" style="color:#8FB8FF">'+esc(q.email)+'</a>':'')+' · '+tm(q.created_at)+(q.who?' · 답변 '+esc(q.who):'')+(q.picked_by&&q.status==='picked'?' · 선택 '+esc(q.picked_by):'')+(q.shown_at?' · <span style="color:#FFB84D">송출됨 '+tm(q.shown_at)+'</span>':'')+'</div></div>'+
     '<div class="act">'+act(q)+'</div></div>').join(''):'<p class="mut empty">'+(kind==='pre'&&!K.length?'사전 질의가 없습니다. 사전 신청 때 받은 질문이 있으면 "사전 질문 가져오기"로 불러옵니다.':tab==='pick'?'선택한 질문이 없습니다. 전체 · 사전 · 현장 탭에서 "선택"을 누르세요.':stf?'해당 상태의 질문이 없습니다.':tab==='live'?'현장 질의가 없습니다.':'질문이 없습니다.')+'</p>';
 }
 async function upd(id,patch){const {error}=await sb.from('live_questions').update(patch).eq('id',id);if(error)msg(error.message,true);sig='';poll();}
@@ -87,7 +89,7 @@ $('oql').addEventListener('click',async e=>{const b=e.target.closest('button[dat
   if(a==='unpick'){if(cur===id)await show(null);return upd(id,{status:'new',ord:null,picked_by:null});}
   if(a==='hide')return upd(id,{status:'hidden'});
   if(a==='unhide')return upd(id,{status:'new'});
-  if(a==='del'){if(!confirm('이 질문을 완전히 삭제할까요?'))return;const {error}=await sb.from('live_questions').delete().eq('id',id);if(error)msg(error.message,true);sig='';return poll();}
+  if(a==='del'){if(!confirm((isMan(q)?'직접 추가한 질문을':'이 질문을')+' 완전히 삭제할까요?\n\n'+q.body.slice(0,60)))return;if(cur===id)await show(null);const {error}=await sb.from('live_questions').delete().eq('id',id);if(error)msg(error.message,true);sig='';return poll();}
   if(a==='edit'){const t=prompt('질문 내용 (오탈자 · 개인정보 정리)',q.body);if(t==null||!t.trim())return;return upd(id,{body:t.trim()});}
   if(a==='who'){const w=prompt('답변 연사 (비우면 표시 안 함)',q.who||'');if(w==null)return;return upd(id,{who:w.trim()||null});}
   if(a==='up'||a==='down'){const P=picked(),i=P.findIndex(x=>x.id===id),j=a==='up'?i-1:i+1;if(j<0||j>=P.length)return;
@@ -103,7 +105,7 @@ $('oqstf').onchange=e=>{stf=e.target.value;localStorage.setItem('qa-st',stf);sig
 $('oqses').onchange=e=>{ses=e.target.value;sig='';draw();};
 if($('oqimport'))$('oqimport').onclick=async()=>{const {data,error}=await sb.rpc('admin_import_pre_questions');if(error)return msg(error.message,true);msg('사전 질문 '+data+'건을 접수 목록에 추가했습니다');sig='';poll();};
 $('oqadd').onclick=async()=>{const body=prompt('질문 내용 (종이 질문지 등)');if(!body||!body.trim())return;const company=prompt('회사','')||'-';const name=prompt('이름','')||'-';
-  const P=picked();const {error}=await sb.from('live_questions').insert({kind:'live',company:company.trim()||'-',name:name.trim()||'-',session:ses||'all',body:body.trim(),status:'picked',ord:(P.length?(P[P.length-1].ord||0):0)+1,picked_by:by()});
+  const P=picked();const {error}=await sb.from('live_questions').insert({kind:'live',company:company.trim()||'-',name:name.trim()||'-',session:ses||'all',body:body.trim(),device:'manual',status:'picked',ord:(P.length?(P[P.length-1].ord||0):0)+1,picked_by:by()});
   if(error)return msg(error.message,true);msg('선택 목록에 추가했습니다');sig='';poll();};
 $('oqreset').onclick=async()=>{const k=prompt('테스트 질문 초기화 — 현장 질문만 지우려면 live, 사전 질문까지 모두 지우려면 all 을 입력하세요','live');if(k!=='live'&&k!=='all')return;
   if(!confirm((k==='all'?'모든':'현장')+' 질문을 삭제합니다. 되돌릴 수 없습니다. 계속할까요?'))return;
