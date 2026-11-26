@@ -1564,7 +1564,7 @@ html,body,body *{touch-action:none;-webkit-touch-callout:none;-webkit-user-selec
 #K10 .rows .p{font-weight:600}
 /* 11/26 18:10 세션 4 위아래 여백(먼 거리 가독): 제목 위 약 150px, 내용 아래 끝은 1360px 안쪽(아래 여백 ≥ 240px · 위보다 크게). 글자 크기는 유지하고 도식 · 영상 창 · 사진 높이와 위치로 조정 */
 #K27 .photo{background-image:url(assets/s4/k2-agency.webp)!important;background-position:center 12%!important}
-#K02 .bt{top:170px;height:1190px;left:1250px;right:300px;grid-template-columns:repeat(4,minmax(0,1fr));grid-template-rows:repeat(3,minmax(0,1fr))}
+#K02 .bt{top:170px;height:1250px;left:1250px;right:220px;grid-template-columns:repeat(4,minmax(0,1fr));grid-template-rows:repeat(3,minmax(0,1fr))}
 #K02 .bw,#K02 .bc{min-height:0}
 #K08 .k8h{top:310px!important}#K08 canvas.viz{top:410px!important}
 #K10 .rows{top:470px}
@@ -1643,6 +1643,14 @@ body.grid #sg{display:flex}
 body:not(.idle) #sgb{opacity:.9}body.grid #sgb{opacity:0;pointer-events:none}
 /* 11/26 19:25 간지 · 장 제목 한 줄 글씨는 모두 흰색(그라데이션 없음): 표지 2027 · IR큐더스, K15 「소집통지 · 리허설까지」, K21 「A to Z」 */
 .sec-h .g,.h .g,.h .ac,#K15 .h .ac,#K21 .k21t em{background:none!important;-webkit-background-clip:border-box!important;background-clip:border-box!important;color:#F2F5FA!important;-webkit-text-fill-color:#F2F5FA!important}
+/* 11/26 19:30 K02: 카드 영역 오른쪽 · 아래로 넓힘(1250~3980 · 170~1420). 중계 · 관리기관 크롭 다시(위쪽 부드러운 페더), 장애 대응 인물 오른쪽, 사전신청제 · 난이도 도식을 아래로(글과 간격), 전자출석 카드: 위 오른쪽 1장 · 아래 2장 나란히 */
+#K02 .bw.d .bc.im video{transform-origin:-20px -352px!important;-webkit-mask-image:linear-gradient(180deg,transparent 0,rgba(0,0,0,.3) 10%,#000 26%)!important;mask-image:linear-gradient(180deg,transparent 0,rgba(0,0,0,.3) 10%,#000 26%)!important}
+#K02 .bw.f .bc.im i{background-position:42% 190px!important;-webkit-mask-image:linear-gradient(180deg,transparent 0,transparent 46%,rgba(0,0,0,.5) 56%,#000 70%)!important;mask-image:linear-gradient(180deg,transparent 0,transparent 46%,rgba(0,0,0,.5) 56%,#000 70%)!important}
+#K02 .bw.g .bc.im i{background-size:128% auto!important;background-position:0% 4%!important}
+#K02 .tg{bottom:44px}#K02 .stp{height:130px;bottom:40px}#K02 .stp .sb i{height:calc(var(--h)*78px)}#K02 .stp .sb span{font-size:26px}
+#K02 .bc.ph .u1{left:551px!important;right:auto!important;top:59px!important;bottom:auto!important;width:551px!important}
+#K02 .bc.ph .u2{left:122px!important;right:auto!important;top:364px!important;bottom:auto!important;width:576px!important}
+#K02 .bc.ph .u3{left:776px!important;right:auto!important;top:364px!important;bottom:auto!important;width:483px!important}
 </style></head>
 <body>
 <div class="stage" id="stage">
@@ -1676,7 +1684,7 @@ body:not(.idle) #sgb{opacity:.9}body.grid #sgb{opacity:0;pointer-events:none}
 <section class="s" id="K04" data-t="의무화 기업 212개사" data-dim=".18" data-steps="1">
  <div class="ab" style="left:300px;top:300px;width:1500px">
   <p class="eb fu k5e" style="--i:0">전자주총 의무화 기업</p>
-  <p class="num g fu" style="--i:1;font-size:560px;margin-top:60px"><span class="cnt" data-to="212">212</span><small style="font-family:KakaoBig;font-weight:700;font-size:130px;-webkit-text-fill-color:#F2F5FA">개사</small></p>
+  <p class="num g fu" style="--i:1;font-size:440px;margin-top:60px"><span class="cnt" data-to="212">212</span><small style="font-family:KakaoBig;font-weight:700;font-size:130px;-webkit-text-fill-color:#F2F5FA">개사</small></p>
   <p class="sub fu" style="--i:2;margin-top:70px">2025년 말 자산총액 2조원 이상 상장기업 기준</p>
   <p class="sub fu k04n" style="--i:2;margin-top:18px">('26년 3분기 말 기준 229개사)</p>
   <div data-b="1" style="margin-top:90px;display:flex;gap:30px"><span class="chip"><i style="width:30px;height:30px;border-radius:50%;background:#0081cc"></i>코스피 <b>203</b></span><span class="chip"><i style="width:30px;height:30px;border-radius:50%;background:#00ada9"></i>코스닥 <b>9</b></span></div>

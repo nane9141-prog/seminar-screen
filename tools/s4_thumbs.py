@@ -1,5 +1,5 @@
-# 세션 4 썸네일 다시 만들기: 저장소 폴더에서 python3 -m http.server 8766 실행 후 python3 tools/s4_thumbs.py
-import asyncio,io
+# 세션 4 썸네일 다시 만들기: 저장소 폴더에서 python3 -m http.server 8766 실행 후 python3 tools/s4_thumbs.py [장번호 ...] (예: K02 K04, 없으면 전체)
+import asyncio,io,sys
 from PIL import Image
 from playwright.async_api import async_playwright
 async def main():
@@ -7,7 +7,9 @@ async def main():
         b=await p.chromium.launch();ctx=await b.new_context(viewport={'width':4200,'height':1600},device_scale_factor=.2);pg=await ctx.new_page()
         await pg.goto('http://localhost:8766/session4.html');await pg.wait_for_timeout(1500)
         ids=await pg.evaluate("[...document.querySelectorAll('section.s')].map(x=>x.id)")
+        only=sys.argv[1:]
         for i,id in enumerate(ids):
+            if only and id not in only:continue
             await pg.evaluate(f"S4.go({i})");await pg.wait_for_timeout(300)
             if id=='K01':
                 await pg.wait_for_timeout(1900);await pg.evaluate("document.body.classList.add('idle')")
