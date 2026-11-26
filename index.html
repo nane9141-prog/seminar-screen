@@ -552,6 +552,12 @@ body.idle{cursor:none}
 .slide[data-ph=e] .s3-e .title-m{animation:s3Bl 1.3s cubic-bezier(.2,.7,.2,1) .15s both}
 .slide[data-ph=e] .s3-e .title-m b{display:inline-block;animation:s3Bl 1.3s cubic-bezier(.2,.7,.2,1) .55s both}
 @keyframes s3Bl{0%{opacity:0;filter:blur(36px);transform:scale(1.06)}100%{opacity:1;filter:blur(0);transform:none}}
+/* 11/26 10:40 카운트다운 이전 숫자 — 덜 크게(3.4 → 1.9배) · 더 빨리 사라짐(0.8 → 0.45초) */
+.s3-dots.gh{animation:s3Gh2 .45s cubic-bezier(.2,.7,.3,1) forwards}
+@keyframes s3Gh2{0%{transform:translate(-50%,-50%) scale(1);opacity:1;filter:drop-shadow(0 0 22px rgba(0,129,204,.55)) blur(0)}100%{transform:translate(-50%,-50%) scale(1.9);opacity:0;filter:drop-shadow(0 0 40px rgba(0,173,169,.9)) blur(10px)}}
+/* ANYWHERE 영문 112 → 80px, 아래 국문과 간격도 80px(글자 크기와 같게) */
+.s3-en{font-size:80px}
+.s3-kh{margin-top:60px}  /* 글자 박스 여백을 빼고 보이는 간격이 80px(영문 글자 크기)이 되도록 */
 </style></head>
 <body>
 <div class="stage" id="scr" data-foot="full">
