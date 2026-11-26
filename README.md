@@ -129,3 +129,7 @@
 - 노출 시간 변경: 주소 뒤에 `?tt=10&tb=10&show=8` (초)
 - `→` `←` 단계 이동 · `P` 재생/정지 · `F` 전체화면 · `O` 단계 목록
 - 이전 버전(Four States 배경 7컷 롤링)은 `lobby/cuts.html` 에 남겨 두었습니다.
+
+## 세션 4 슬라이드 전체 보기 (`session4.html`)
+- `G` 또는 오른쪽 아래 격자 버튼: PPT 여러 슬라이드 보기처럼 썸네일 · 페이지 번호 격자. 클릭 또는 ← → ↑ ↓ + Enter로 이동, `G` / `Esc` 닫기
+- 썸네일은 `assets/s4/thumbs/장번호.webp`. 장 내용을 바꾸면 `python3 -m http.server 8766` 실행 후 `python3 tools/s4_thumbs.py`로 다시 만듭니다

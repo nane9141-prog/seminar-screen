@@ -1623,6 +1623,24 @@ html,body,body *{touch-action:none;-webkit-touch-callout:none;-webkit-user-selec
 #K14 .tr{height:300px!important}
 /* K15 아래 여백: 열 바탕이 화면 아래까지 내려오지 않게 · 좌우 300 */
 #K15 .ph>div{top:460px}
+/* 11/26 슬라이드 전체 보기(G): PPT 여러 슬라이드 보기처럼 썸네일 격자 + 페이지 번호. 썸네일은 assets/s4/thumbs (tools/s4_thumbs.py로 다시 만듦) */
+#sg{position:fixed;inset:0;z-index:70;background:rgba(6,8,12,.97);display:none;flex-direction:column;padding:28px 36px 36px;font-family:"Pretendard Variable",sans-serif;color:#e8ebf0}
+body.grid #sg{display:flex}
+#sg .sgh{display:flex;align-items:baseline;gap:18px;margin-bottom:18px}#sg .sgh b{font-size:20px;font-weight:700}#sg .sgh span{font-size:13px;color:#8a919c}
+#sg .sgg{flex:1;overflow:auto;display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:22px 18px;align-content:start;padding:4px}
+#sg a{display:block;cursor:pointer;text-decoration:none;color:inherit;border-radius:10px;outline:none}
+#sg a .th{position:relative;aspect-ratio:21/8;border-radius:8px;overflow:hidden;background:#111 center/cover no-repeat;box-shadow:0 0 0 1px #2a2f38;transition:box-shadow .15s,transform .15s}
+#sg a .th i{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-style:normal;font-size:13px;color:#555}
+#sg a:hover .th{box-shadow:0 0 0 2px #4a5260;transform:translateY(-2px)}
+#sg a.on .th{box-shadow:0 0 0 3px #1a7cff}
+#sg a.sel .th{box-shadow:0 0 0 3px #fff}
+#sg a .cp{display:flex;gap:10px;align-items:baseline;margin-top:8px;font-size:13px;line-height:1.35;color:#a9b0bb}
+#sg a .cp b{flex:none;min-width:26px;font-size:15px;font-weight:700;color:#e8ebf0;font-variant-numeric:tabular-nums}
+#sg a.on .cp b{color:#5aa2ff}
+#sg a .cp em{font-style:normal;color:#6c7480;margin-left:auto;flex:none}
+#sgb{position:fixed;right:22px;bottom:22px;z-index:65;width:46px;height:46px;border-radius:12px;border:0;background:rgba(30,34,42,.85);cursor:pointer;display:flex;align-items:center;justify-content:center;opacity:.0;transition:opacity .3s}
+#sgb svg{width:22px;height:22px;fill:#cfd5de}
+body:not(.idle) #sgb{opacity:.9}body.grid #sgb{opacity:0;pointer-events:none}
 </style></head>
 <body>
 <div class="stage" id="stage">
@@ -2265,7 +2283,9 @@ html,body,body *{touch-action:none;-webkit-touch-callout:none;-webkit-user-selec
 <div class="prog" id="prog"></div>
 </div>
 <div id="black"></div>
-<div id="ov"><p>→ / Space / PageDown 다음 · ← 이전 · 번호 입력 후 Enter (예: 11) · O 목록 · B 블랙아웃 · F 전체화면 · L 가벼운 모드 · T 임시값 표시</p><div id="ovl"></div></div>
+<div id="sg" aria-hidden="true"><div class="sgh"><b>슬라이드 전체 보기</b><span>클릭 또는 ← → ↑ ↓ 이동 · Enter 열기 · G / Esc 닫기</span></div><div class="sgg" id="sgg"></div></div>
+<button id="sgb" title="슬라이드 전체 보기 (G)" aria-label="슬라이드 전체 보기"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="8" height="6" rx="1.5"/><rect x="13" y="4" width="8" height="6" rx="1.5"/><rect x="3" y="14" width="8" height="6" rx="1.5"/><rect x="13" y="14" width="8" height="6" rx="1.5"/></svg></button>
+<div id="ov"><p>G 전체 보기 · → / Space / PageDown 다음 · ← 이전 · 번호 입력 후 Enter (예: 11) · O 목록 · B 블랙아웃 · F 전체화면 · L 가벼운 모드 · T 임시값 표시</p><div id="ovl"></div></div>
 <div id="num"></div>
 <script>
 (()=>{
@@ -2427,6 +2447,24 @@ addEventListener('message',e=>{const d=e.data||{};if(!EMB||e.source!==parent||!d
 /* 목록 */
 function ov(){document.getElementById('ovl').innerHTML=slides.map((s,i)=>`<a data-i="${i}" class="${i===idx?'on':''}"><b>${i}</b>${s.id} · ${s.dataset.t||''}${steps(s)?' <span style="color:#888">(+'+steps(s)+')</span>':''}</a>`).join('');}
 document.getElementById('ov').addEventListener('click',e=>{const a=e.target.closest('a');if(a)go(+a.dataset.i);});
+/* 슬라이드 전체 보기 */
+(function(){const G=document.getElementById('sgg');let sel=0;
+ const build=()=>{G.innerHTML=slides.map((s,i)=>`<a data-i="${i}" class="${i===idx?'on':''}"><div class="th" style="background-image:url(assets/s4/thumbs/${s.id}.webp)"></div><div class="cp"><b>${i}</b><span>${(s.dataset.t||s.id).replace(/</g,'&lt;')}</span>${steps(s)?'<em>+'+steps(s)+'</em>':''}</div></a>`).join('');};
+ const mark=()=>G.querySelectorAll('a').forEach((a,i)=>a.classList.toggle('sel',i===sel));
+ window.S4GRID={open(){build();sel=idx;document.body.classList.add('grid');document.body.classList.remove('list');mark();const a=G.children[sel];if(a)a.scrollIntoView({block:'center'});},close(){document.body.classList.remove('grid');},get on(){return document.body.classList.contains('grid')}};
+ G.addEventListener('click',e=>{const a=e.target.closest('a');if(!a)return;S4GRID.close();go(+a.dataset.i);});
+ document.getElementById('sgb').onclick=()=>S4GRID.open();
+ addEventListener('keydown',e=>{const k=e.key;
+  if(!S4GRID.on){if((k==='g'||k==='G')&&!e.ctrlKey&&!e.metaKey){e.stopImmediatePropagation();S4GRID.open();}return;}
+  e.stopImmediatePropagation();e.preventDefault();
+  const cols=Math.max(1,Math.round(G.clientWidth/(G.children[0]?G.children[0].offsetWidth+18:320)));
+  if(k==='Escape'||k==='g'||k==='G')S4GRID.close();
+  else if(k==='ArrowRight')sel=Math.min(slides.length-1,sel+1);else if(k==='ArrowLeft')sel=Math.max(0,sel-1);
+  else if(k==='ArrowDown')sel=Math.min(slides.length-1,sel+cols);else if(k==='ArrowUp')sel=Math.max(0,sel-cols);
+  else if(k==='Enter'||k===' '){S4GRID.close();go(sel);return;}
+  mark();const a=G.children[sel];if(a)a.scrollIntoView({block:'nearest'});},true);
+})();
+
 let buf='',bt=0;const nb=document.getElementById('num');
 addEventListener('keydown',e=>{const k=e.key;
  if(/^[0-9]$/.test(k)){buf+=k;nb.textContent=buf;nb.style.display='block';clearTimeout(bt);bt=setTimeout(()=>{buf='';nb.style.display='none';},2500);return;}
