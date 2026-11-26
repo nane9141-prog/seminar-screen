@@ -1776,6 +1776,14 @@ body:not(.idle) #sgb{opacity:.9}body.grid #sgb{opacity:0;pointer-events:none}
 #K28e .g7{gap:22px}#K28e .g7>div{padding:36px 40px}
 #K28e .g7 b{font-size:48px}#K28e .g7 p{font-size:37px}
 #K09b .gl li{padding:7px 0 7px 58px}#K09b .gl li::before{top:10px}#K09b .gchips span{padding:13px 6px}#K09b .gbx{padding:32px 40px}
+/* 11/26 20:30 K02: 중계 영상 위쪽 마스킹 구간 축소, 관리기관 사진 위로 + 투명도, 장애 대응 사진 오른쪽으로 조금 + 같은 투명도, 전자출석 카드 3장 배치 그대로 패딩(64px) 안에서 1.07배 */
+#K02 .bw.d .bc.im video{-webkit-mask-image:linear-gradient(180deg,transparent 0,rgba(0,0,0,.35) 8%,#000 20%)!important;mask-image:linear-gradient(180deg,transparent 0,rgba(0,0,0,.35) 8%,#000 20%)!important}
+#K02 .bw.f .bc.im i{background-position:42% 30px!important;opacity:.62}
+#K02 .bw.g .bc.im i{background-size:108% auto!important;background-position:0% 12%!important;opacity:.62}
+#K02 .bc.ph .uc{scale:1.07;transform-origin:0 0}
+#K02 .bc.ph .u1{left:523px!important;top:64px!important}
+#K02 .bc.ph .u2{left:64px!important;top:338px!important}
+#K02 .bc.ph .u3{left:764px!important;top:338px!important}
 </style></head>
 <body>
 <div class="stage" id="stage">
