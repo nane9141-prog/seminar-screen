@@ -68,7 +68,7 @@ td.pl{color:var(--fg-3);font-variant-numeric:tabular-nums}.d{font-variant-numeri
 #warn{color:var(--bad);margin-top:6px}
 .scr{display:flex;flex-wrap:wrap;gap:6px}
 .dsr label{display:inline-flex;align-items:center;gap:8px;font-size:13px;color:var(--fg-2)}.dsr input[type=range]{width:180px;accent-color:var(--blue-2)}.dsr b{font-weight:600;min-width:34px;font-variant-numeric:tabular-nums;color:var(--fg)}
-.scr button{font-weight:600;min-height:30px;padding:0 10px;font-size:12px;border-radius:7px}
+.scr button{font-weight:600;min-height:30px;padding:0 10px;font-size:12px;border-radius:7px;white-space:nowrap}
 .scr button.msg{background:none;border:1px dashed #3a3a3a;color:var(--fg-2)}
 .scr .grp{width:100%;font-size:12px;color:var(--fg-3);margin-top:8px}
 .scr .grp b{font-weight:500;color:var(--fg-2);margin-left:8px}
@@ -602,7 +602,7 @@ let lastState=null,black=false;
 function drawScr(v){if(!v)return;lastState=v;$('curno').textContent=v.cur;let g='',h='';
   const dl=s=>s.auto?s.auto+'초':s.vid?'영상 '+s.vid+'초':'',loop={};v.slides.forEach(s=>{if(s.auto){const st=s.no.split('-')[0];loop[st]=(loop[st]||0)+s.auto;}});
   v.slides.forEach(s=>{const st=s.no.split('-')[0];if(st!==g){g=st;h+='<div class="grp">'+(st==='M0'?'상시 · 비상':'단계 '+st.slice(1))+(loop[st]?'<b>자동순환 한 바퀴 '+loop[st]+'초</b>':'')+'</div>';}
-    const d=dl(s);h+='<button class="'+(s.msg?'msg ':'')+(s.no===v.cur?'on':'')+'" data-go="'+s.no+'" title="'+s.title+(d?' · '+d:'')+'">'+s.title.replace('[상황] ','')+(d?'<i class="dl">'+d+'</i>':'')+'</button>';});
+    const d=dl(s);h+='<button class="'+(s.msg?'msg ':'')+(s.no===v.cur?'on':'')+'" data-go="'+s.no+'" title="'+s.title.replace(/<br\s*\/?>/g,' ')+(d?' · '+d:'')+'">'+s.title.replace(/<br\s*\/?>/g,' ').replace('[상황] ','')+(d?'<i class="dl">'+d+'</i>':'')+'</button>';});
   $('scr').innerHTML=h;}
 $('scr').addEventListener('click',e=>{const b=e.target.closest('[data-go]');if(b)SCHED.cmd({go:b.dataset.go});});
 $('nprev').onclick=()=>SCHED.cmd({nav:-1});$('nnext').onclick=()=>SCHED.cmd({nav:1});
