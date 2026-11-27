@@ -161,13 +161,14 @@ details.adm .bar{margin:10px 0 0}
 .atstat>#atnet{grid-column:4;grid-row:1;align-self:start;text-align:right}
 .atstat>#atreload{grid-column:4;grid-row:1;align-self:end}
 .atq{width:100%;margin-top:14px;font:inherit;font-size:17px!important;min-height:50px!important;padding:0 16px!important;border-radius:10px!important}
-.atcard{margin-top:12px;display:grid;grid-template-columns:1fr auto auto auto;gap:28px;align-items:center;border:1px solid var(--blue-2);border-radius:12px;padding:16px 20px;background:#16213a}
+.atcard{margin-top:12px;display:grid;grid-template-columns:1fr auto auto 1fr;gap:36px;align-items:center;border:1px solid var(--blue-2);border-radius:12px;padding:16px 20px;background:#16213a}
 .atcard.none{display:block;border-color:#5a2a2a;background:#2a1717}.atcard.none .big{color:var(--bad)}
 .atcard.empty{display:block;border:1px dashed #3a3a3a;background:var(--card-2);padding:14px 18px;color:var(--fg-3)}  /* 안내 문구 영역 #232323 */
 .atcard .big{font-size:24px;font-weight:800;margin-top:2px}.atcard .big small{font-size:14px;font-weight:500;color:var(--fg-3);margin-left:6px}
 .atcard .co{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}.atcard .co b{font-size:24px;font-weight:800;color:#fff;line-height:1.25}.atcard .co .mut{font-size:13px}.atcard .co .grp{font-size:13px;font-weight:700;padding:3px 9px;border-radius:6px;background:rgba(226,176,74,.16);color:#e2b04a;align-self:center}
 .atcard .nt{margin-top:4px;color:#ffcf70;font-size:13px}
 .atcard .st{text-align:center;min-width:96px}
+.atcard>div:last-child{justify-self:end}.atcard button[data-a=arr].pri{background:var(--blue);border-color:var(--blue);color:#fff}.atcard button[data-a=arr]{width:auto;min-height:64px;padding:16px 34px;font-size:19px;font-weight:800;border-radius:12px}   /* 데스크 · 좌석은 카드 한가운데, 참석 체크는 오른쪽 끝에 크게 */
 .atcard .seatv{font-size:34px;font-weight:800;color:var(--warn);line-height:1.2;font-variant-numeric:tabular-nums}
 .atcard .seatv.none{font-size:18px;color:var(--fg-3);font-weight:600}
 .attw{max-height:calc(100vh - 520px);min-height:220px;overflow:auto;margin-top:10px;border:1px solid var(--line);border-radius:12px}
