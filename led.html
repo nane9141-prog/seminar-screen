@@ -222,7 +222,13 @@ addEventListener('message',e=>{const d=e.data||{};if(e.source!==DK.f.contentWind
  if(d.s4==='ready'){DK.ready=true;setTimeout(()=>DK.tintFrame(),900);try{DK.f.contentWindow.postMessage({s4:'enter',at:'first'},'*');}catch(e){}DK.label=null;setTimeout(()=>DK.sync(),300);}});
 function qaShow(no){const m=String(no||'').toUpperCase().match(/^M([68])-(1|S1)$/);document.body.classList.toggle('qa',!!m);
  if(m){const e=brkEnd(m[1]==='6'?'brk1':'brk2');$('qar').textContent=e!=null?'휴식 후 '+F(e)+'에 다시 시작합니다':'';}}
-function apply(v,from){if(!v)return;lastRx=Date.now();src=from;if(v.sch)SCH=v.sch;document.body.classList.toggle('black',!!v.black);if(FOLLOW&&v.cur){DK.show(DK.of(v));qaShow(v.cur);}
+/* 11/27 20:00 메인이 여러 곳(이전 버전 탭 · 다른 PC)에서 열려 있으면 번갈아 따라가며 기본 화면과 오가던 문제 — 최신 빌드만, 같은 빌드면 마지막으로 화면을 바꾼 메인 하나만 따름 */
+const SRC={ver:0,sid:null,last:{}};
+function okSrc(v){const ver=+v.ver||0,sid=v.sid||'';if(!sid)return true;if(ver<SRC.ver)return false;if(ver>SRC.ver){SRC.ver=ver;SRC.sid=sid;}
+ const k=(v.cur||'')+'|'+(v.pos||'')+'|'+(v.pdk||0),prev=SRC.last[sid];SRC.last[sid]=k;
+ if(!SRC.sid||(prev!==undefined&&prev!==k&&!/^(M1-|시작)/i.test(v.cur||'')))SRC.sid=sid;  /* 대기(M1) 자동 순환은 사람이 넘긴 것이 아니라 제외 */
+ return sid===SRC.sid;}
+function apply(v,from){if(!v)return;if(!okSrc(v))return;lastRx=Date.now();src=from;if(v.sch)SCH=v.sch;document.body.classList.toggle('black',!!v.black);if(FOLLOW&&v.cur){DK.show(DK.of(v));qaShow(v.cur);}
  if(FOLLOW&&v.cur)show(keyOf(v.cur));else if(SP[CUR]&&SP[CUR].brk)tick();}
 function tick(){const d=SP[CUR];if(d&&d.brk){const e=brkEnd(d.brk),el=$('cd');if(el&&e!=null){const left=Math.max(0,e*60-SCHED.nowSec());el.textContent=String(Math.floor(left/60)).padStart(2,'0')+':'+String(Math.floor(left%60)).padStart(2,'0');}}
  const age=(Date.now()-lastRx)/1000,ok=lastRx&&age<20,st=$('st');st.classList.toggle('ok',!!ok);
@@ -232,7 +238,7 @@ SCHED.onState(v=>apply(v,'local'));
 {const v=SCHED.getState();show(v&&v.cur?keyOf(v.cur):'base',true);if(v){SCH=v.sch||null;if(v.cur){DK.show(DK.of(v));qaShow(v.cur);}}}
 /* 사회자 화면용 방송도 같이 받음 (메인이 온라인일 때) */
 if(SCHED.net.state!=='off')try{const sb=supabase.createClient('https://zrhtqpzgubaqzsdaxhvt.supabase.co','sb_publishable_JwET6KLGmdYBkOIIttgOOQ_HEpCKLar',{auth:{persistSession:false}});
- sb.channel('seminar-mc').on('broadcast',{event:'state'},({payload})=>{if(payload&&payload.cur){apply({cur:payload.cur,pos:payload.pos,pdk:payload.pdk,black:payload.black,sch:payload.sch?payload.sch:null},'net');}}).subscribe();}catch(e){}
+ sb.channel('seminar-mc').on('broadcast',{event:'state'},({payload})=>{if(payload&&payload.cur){apply({ver:payload.ver,sid:payload.sid,cur:payload.cur,pos:payload.pos,pdk:payload.pdk,black:payload.black,sch:payload.sch?payload.sch:null},'net');}}).subscribe();}catch(e){}
 /* 직접 조작 (오프라인 예비) */
 addEventListener('keydown',e=>{const k=e.key,i=ORDER.indexOf(CUR);
  if(k==='ArrowRight'||k==='PageDown'||k===' '){e.preventDefault();FOLLOW=false;show(ORDER[Math.min(ORDER.length-1,i+1)]);}
