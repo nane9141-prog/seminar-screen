@@ -672,8 +672,6 @@ body.idle{cursor:none}
 .bk-qs{margin:10px 0 0;font:400 42px/1.3 "Pretendard Variable";color:#A9B4C4}
 .m81s{line-height:1.5}
 #m6_1 .bk-nk,#m8_1 .bk-nk{top:94px}
-#m0_3{padding-left:300px;padding-right:300px}
-#m0_3 .head{margin-bottom:0}#m0_3 #n-text{margin:24px 0 44px}
 .ncols{display:flex;gap:120px;width:3600px}
 .ncol{flex:1;min-width:0}
 .nrow{display:flex;gap:40px;align-items:baseline;padding:18px 0;border-top:3px solid #1C2A40}
@@ -720,6 +718,17 @@ body.idle{cursor:none}
 .mx-ag.inl>div{grid-column:2/4;display:flex;align-items:baseline;gap:32px;white-space:nowrap}
 .mx-ag.inl>span:last-child{display:none}
 .mx-ag.inl .mx-as{margin-top:0}
+/* 11/27 19:23 [상황] 화면 통일: M0-3을 2단(왼쪽 제목 183px · 공지, 오른쪽 한 열 목록)으로 — M3-2 · M9-3 · M9-5와 같은 틀 */
+#m0_3 .ncols{width:auto;display:block}
+#m0_3 .nrow{padding:16px 0}
+#m0_3 .ncol .nrow:first-child{border-top:3px solid #1C2A40}
+#m0_3 .nl{font-size:52px}
+#m0_3 .nw{font-size:38px;margin-top:6px}
+#m0_3 .nt{width:200px}
+#m0_3 .nt1{font-size:56px}
+#m0_3 .nb{display:flex;align-items:baseline;gap:28px;white-space:nowrap}
+#m0_3 .nw{margin-top:0!important}
+#m0_3 .nrow{padding:20px 0}
 </style></head>
 <body>
 <div class="stage" id="scr" data-foot="full">
@@ -752,12 +761,12 @@ body.idle{cursor:none}
 </div>
 </section>
 <section class="slide" id="m1_s1" data-no="M1-S1" data-title="M1-S1 [상황] 착석 요청" data-bg="B" data-foot="full" data-msg="1" data-tr="fade" data-lay="center">
-<p class="eyebrow fu" style="--i:0">NOTICE</p>
+<p class="eyebrow fu" style="--i:0">Notice</p>
 <h1 class="title-m" data-words style="--i:1">잠시 후 설명회가 시작됩니다.</h1>
 <p class="lead fu" style="--i:2">안내받은 좌석에 앉아 주시고, 휴대폰은 무음으로 설정해주세요.</p>
 </section>
 <section class="slide" id="m1_s2" data-no="M1-S2" data-title="M1-S2 [상황] 시작 지연" data-bg="B" data-foot="full" data-msg="1" data-tr="fade" data-lay="center">
-<p class="eyebrow fu" style="--i:0">NOTICE</p>
+<p class="eyebrow fu" style="--i:0">Notice</p>
 <h1 class="title-m" data-words style="--i:1">설명회는 잠시 후 시작합니다.</h1>
 <p class="lead fu" style="--i:2">자리에 앉아 잠시만 기다려 주세요.</p>
 </section>
@@ -834,9 +843,9 @@ body.idle{cursor:none}
 </div>
 </section>
 <section class="slide" id="m6_s1" data-no="M6-S1" data-title="M6-S1 [상황] 재개 임박 (Session 3)" data-bg="B" data-foot="full" data-msg="1" data-tr="fade" data-lay="center">
-<p class="eyebrow fu" style="--i:0">NOTICE</p>
+<p class="eyebrow fu" style="--i:0">Notice</p>
 <h1 class="title-m" data-words style="--i:1">곧 Session 3이 시작됩니다.</h1>
-<p class="lead fu" style="--i:2">자리로 돌아와 주세요.<br>세션 3은 영어로 진행됩니다. 좌석의 리시버를 미리 착용해 주세요.</p>
+<p class="lead fu" style="--i:2">세션 3은 영어로 진행됩니다. 좌석의 리시버를 미리 착용해 주세요.</p>
 </section>
 <section class="slide" id="m7_1" data-no="M7-1" data-title="M7-1 파트 타이틀 · 전자주주총회 및<br>의결권 행사의 미래" data-bg="A" data-foot="logo" data-tr="zoom" data-glow="1" data-fill="1" data-lay="center">
 <p class="eyebrow en-eb fu" style="--i:0">Part 2.</p>
@@ -883,7 +892,7 @@ body.idle{cursor:none}
 </div>
 </section>
 <section class="slide" id="m8_s1" data-no="M8-S1" data-title="M8-S1 [상황] 재개 임박 (시연)" data-bg="B" data-foot="full" data-msg="1" data-tr="fade" data-lay="center">
-<p class="eyebrow fu" style="--i:0">NOTICE</p>
+<p class="eyebrow fu" style="--i:0">Notice</p>
 <h1 class="title-m" data-words style="--i:1">곧 모의 전자주주총회 시연이 시작됩니다.</h1>
 <p class="lead fu" style="--i:2">입장하실 때 설치하신 현장표결앱으로 모의 표결에 참여하실 수 있습니다.</p>
 </section>
@@ -1011,14 +1020,13 @@ body.idle{cursor:none}
 <p class="ensub fu" style="--i:2">Live Demo Briefing</p>
 </section>
 <section class="slide" id="m0_2" data-no="M0-2" data-title="M0-2 [상황] 기술 점검" data-bg="B" data-foot="full" data-msg="1" data-tr="fade" data-lay="center">
-<p class="eyebrow fu" style="--i:0">NOTICE</p>
+<p class="eyebrow fu" style="--i:0">Notice</p>
 <h1 class="title-m" data-words style="--i:1">잠시 화면을 점검하고 있습니다.</h1>
 <p class="lead fu" style="--i:2">곧 이어서 진행하겠습니다.</p>
 </section>
-<section class="slide" id="m0_3" data-no="M0-3" data-title="M0-3 [상황] 일정 변경 공지" data-bg="B" data-foot="full" data-msg="1" data-tr="fade">
-<p class="eyebrow">NOTICE</p>
-<h2 class="head">진행 순서 안내</h2>
-<p class="lead" id="n-text"></p>
+<section class="slide" id="m0_3" data-no="M0-3" data-title="M0-3 [상황] 일정 변경 공지" data-bg="B" data-foot="full" data-msg="1" data-tr="fade" data-lay="split">
+<h2 class="head">진행 순서<br>안내</h2>
+<p class="mx-sub lay-l" id="n-text"></p>
 <div class="ncols" id="n-rows"></div>
 </section>
 <div id="footer"><img src="assets/irk-white.svg" alt="IR KUDOS"><p>전자주주총회 플랫폼 시연 설명회</p></div>
@@ -1325,7 +1333,7 @@ function renderNotice(){/* 11/27 기본 타임테이블 전체(등록 제외)를
     return '<div class="nrow'+(adj?' adj':'')+(brk?' brk':'')+st+'"><div class="nt"><p class="nt1">'+SCHED.fmt(x.start)+'</p>'+(adj?'<p class="nt0">'+SCHED.fmt(x.ps)+'</p>':'')+'</div>'
       +'<div class="nb"><p class="nl">'+x.label+'</p>'+((x.tag||x.who)?'<p class="nw">'+[x.tag,x.who].filter(Boolean).join(' · ')+'</p>':'')+'</div></div>';};
   const h=Math.ceil(it.length/2);
-  document.getElementById('n-rows').innerHTML='<div class="ncol">'+it.slice(0,h).map(row).join('')+'</div><div class="ncol">'+it.slice(h).map(row).join('')+'</div>';}
+  document.getElementById('n-rows').innerHTML='<div class="ncol">'+it.map(row).join('')+'</div>';}  /* 11/27 19:23 한 열(오른쪽), 왼쪽 제목 · 공지 — M3-2 · M9-3과 같은 2단 */
 renderNotice();setInterval(()=>{if(slides[idx]&&slides[idx].dataset.no==='M0-3')renderNotice();},30000);
 // ── 질문 화면 ──
 let QA=SCHED.loadQ(),QSRC=SCHED.getSrc(),OQ=null,oqKey='';
