@@ -2299,6 +2299,15 @@ html.r169 #K13 .dg{margin-bottom:210px!important}
 #K24b .k24fl .k24bv .scr{border-radius:54px!important}
 #K24a .k24map{padding:22px;border-radius:56px 0 0 0!important;background:linear-gradient(135deg,rgba(0,129,204,.55),rgba(0,173,169,.35) 45%,rgba(255,255,255,.08))!important;box-shadow:0 0 160px rgba(0,129,204,.22)!important}
 #K24a .k24map video{border-radius:36px 0 0 0;box-shadow:0 0 0 2px rgba(255,255,255,.6)}
+/* 11/27 23:40 K24b 왼쪽 글 등장 순서: 서브제목 → 제목 → 설명 → 목록 (목록이 먼저 뜨던 것 수정) */
+.s.cur#K24b .k24bt>:nth-child(1){animation-delay:.2s!important}.s.cur#K24b .k24bt>:nth-child(2){animation-delay:.35s!important}.s.cur#K24b .k24bt>:nth-child(3){animation-delay:.55s!important}.s.cur#K24b .k24bt>:nth-child(4){animation-delay:.8s!important}
+
+/* 11/27 23:45 K26 휴대폰 프레임 없이 화면만(446×981, 둥근 모서리), 고객센터 카드 폭 줄이고(3300~오른쪽 끝) 글 왼쪽 정렬, 남는 폭에 휴대폰 고르게 */
+#K26 .k26r{width:2920px!important}
+#K26 .k26p{width:446px!important;height:981px!important;padding:0!important;background:none!important;box-shadow:0 40px 100px rgba(0,0,0,.5)!important;border-radius:52px!important}
+#K26 .k26p .sc{border-radius:52px!important}
+#K26 .k26s{left:3300px!important;height:1082px!important;align-items:flex-start!important;text-align:left!important;padding:0 72px 80px!important;box-sizing:border-box}
+#K26 .k26s i{background-position:62% 30%!important;background-size:cover!important}
 /* ═════ 16:9 버전 (?a=16x9, 11/27) ═════
    ※ 빔프로젝터(led.html?a=16x9) M7-7이 이 모드를 씀. 장을 고치면 ?a=16x9로도 확인하고, 21:8 원본 위치를 바꾸면 아래 html.r169 #Kxx 규칙도 같이 맞출 것.
       R169Z(묶음 축소) 장은 내용 범위를 자동으로 재서 배치하므로 대부분 따라감.
