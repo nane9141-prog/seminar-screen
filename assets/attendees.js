@@ -163,14 +163,14 @@ $('atxaform').addEventListener('submit',async e=>{e.preventDefault();const co=$(
   const ok=await addExtra(Array.from({length:n},(_,i)=>({label:n>1?co+' '+(i+1):co,grp:g||null,desk:d||null,seat:n===1?(sk||st||null):null})));if(ok){$('atxa').close();desk='all';q=co;$('atq').value=co;draw();msg(co+' '+n+'명을 추가했습니다'+(xdb?'':' (이 브라우저에만 저장)'));}});
 $('atth').addEventListener('click',e=>{const th=e.target.closest('th[data-s]');if(!th)return;const k=th.dataset.s;sort=sort.k!==k?{k,d:1}:sort.d===1?{k,d:-1}:{k:null,d:1};draw();});   // 오름차순 → 내림차순 → 원래 순서
 /* 데스크별 배정 표: 자리배치 엑셀 '06. 출입 데스크' 탭과 같은 구성(담당 범위 · 인원 · 회사 수 · 회사별 인원)을 현재 배정 기준으로 보여 줌 */
-function deskTable(){const by={},ex={};let exn=0;R.forEach(x=>{const d=deskOf(S[x.id])||'none',m=by[d]=by[d]||{};m[x.company_name]=(m[x.company_name]||0)+1;});
-  EXTRA.forEach(e=>{if(!/^D[1-7]$/.test(e.desk))return;const c=e.company_name.replace(/ \d+$/,'')||'(기업명 없음)',m=by[e.desk]=by[e.desk]||{};m[c]=(m[c]||0)+1;ex[e.desk+'|'+c]=(ex[e.desk+'|'+c]||0)+1;exn++;});   // 기업명 인원(★미신청) — 데스크 D1~D7만
+function deskTable(){const by={},ex={},vp={};let exn=0;R.forEach(x=>{const d=deskOf(S[x.id])||'none',m=by[d]=by[d]||{};m[x.company_name]=(m[x.company_name]||0)+1;if(grpOf(x)==='VIP')vp[d+'|'+x.company_name]=1;});
+  EXTRA.forEach(e=>{if(!/^D[1-7]$/.test(e.desk))return;const c=e.company_name.replace(/ \d+$/,'')||'(기업명 없음)',m=by[e.desk]=by[e.desk]||{};m[c]=(m[c]||0)+1;ex[e.desk+'|'+c]=(ex[e.desk+'|'+c]||0)+1;exn++;if(e.grp==='VIP')vp[e.desk+'|'+c]=1;});   // 기업명 인원(★미신청) — 데스크 D1~D7만
   const cols=DESKS.filter(d=>d[0]!=='VIP'||by.VIP).concat([['none','데스크 미배정']]);
   const tot=R.length,cos=new Set(R.map(x=>x.company_name).concat(Object.keys(ex).map(k=>k.split('|')[1]))).size;
-  $('atdtsum').textContent='총 '+(tot+exn)+'명(신청 '+tot+' + 미신청 '+exn+') · '+cos+'개사 — 현재 배정 기준 · ★ 는 신청 명단에 없는 인원 (데스크 이름을 누르면 그 데스크 목록으로 이동)';
+  $('atdtsum').textContent='총 '+(tot+exn)+'명(신청 '+tot+' + 기업명 등록 '+exn+') · '+cos+'개사 — 현재 배정 기준 (데스크 이름을 누르면 그 데스크 목록으로 이동)';
   $('atdtgrid').innerHTML=cols.map(d=>{const m=by[d[0]]||{},names=Object.keys(m).sort((a,b)=>a.localeCompare(b,'ko')),n=names.reduce((s,k)=>s+m[k],0);
     return '<section><button data-d="'+d[0]+'" class="hd">'+(d[0]==='none'?'미배정':d[0])+'</button><div class="rg">'+esc(d[1])+'</div><div class="ct"><b>'+n+'</b>명 · '+names.length+'개사</div>'+
-      (names.length?'<ol>'+names.map(k=>'<li>'+esc(k)+' <span>('+m[k]+')</span>'+(ex[d[0]+'|'+k]?' <em>★미신청'+(ex[d[0]+'|'+k]<m[k]?' '+ex[d[0]+'|'+k]:'')+'</em>':'')+'</li>').join('')+'</ol>':'<div class="mut none">'+(d[0]==='D1'?'현장에서 수동 등록한 인원이 여기에 표시됩니다':'없음')+'</div>')+'</section>';}).join('');}
+      (names.length?'<ol>'+names.map(k=>'<li>'+esc(k)+' <span>('+m[k]+')</span>'+(vp[d[0]+'|'+k]?' <em>VIP</em>':'')+'</li>').join('')+'</ol>':'<div class="mut none">'+(d[0]==='D1'?'현장에서 수동 등록한 인원이 여기에 표시됩니다':'없음')+'</div>')+'</section>';}).join('');}
 /* 좌석배치도: 좌석 배치 탭 평면 좌석도와 같은 표. 배정된 칸을 누르면 창을 닫고 그 참석자를 목록에서 보여 줌 */
 let spz=1;
 function seatPlan(){if(!window.SeatPlan)return;const g=$('atspgrid');g.style.setProperty('--z',spz);g.innerHTML=window.SeatPlan.html();$('atspz').textContent=Math.round(spz*100)+'%';
