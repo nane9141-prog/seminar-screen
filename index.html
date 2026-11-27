@@ -662,6 +662,14 @@ body.idle{cursor:none}
 .m4lab .s0 b{color:#5bade1}
 .m4lab span{margin-top:6px;font-size:56px;font-weight:500;color:#F2F5FA}
 .m4lab i{font-style:normal;font-size:46px;color:#8D99AB}
+
+/* 11/27 사회자 대본 최종본 반영: 휴식 화면 질문 QR, M7-2 통역 안내 */
+.bk-qr{position:absolute;left:3540px;top:404px;width:380px;display:flex;flex-direction:column;align-items:center;text-align:center}.bk-qt,.bk-qs{white-space:nowrap}
+.bk-qi{width:380px;height:380px;padding:28px;border-radius:28px;background:#fff;box-sizing:border-box}
+.bk-qi img{display:block;width:100%;height:100%}
+.bk-qt{margin:30px 0 0;font:700 56px/1.2 "Pretendard Variable";color:#F2F5FA}
+.bk-qs{margin:10px 0 0;font:400 42px/1.3 "Pretendard Variable";color:#A9B4C4}
+.m71b-en{margin-top:56px;font:400 44px/1.3 "Pretendard Variable";color:#8D99AB;letter-spacing:0}
 </style></head>
 <body>
 <div class="stage" id="scr" data-foot="full">
@@ -713,7 +721,7 @@ body.idle{cursor:none}
 </section>
 <section class="slide" id="m3_2" data-no="M3-2" data-title="M3-2 행사 안내 · 안내 말씀" data-bg="B" data-foot="full" data-lay="split">
 <h2 class="head fu" style="--i:0">안내 말씀</h2>
-<div class="grid2" data-stagger style="--i:1"><div class="case"><p class="num">01</p><p class="lead">휴대폰은 무음으로 설정해주세요.</p></div><div class="case"><p class="num">02</p><p class="lead">휴식은 14:25, 15:40 두 차례 15분씩 있습니다.</p></div><div class="case"><p class="num">03</p><p class="lead">현장 질의는 명찰 뒷면의 QR코드로 남겨주세요.<br>사전 질문과 함께 질의응답 시간(17:30)에 답변드립니다.</p></div><div class="case"><p class="num">04</p><p class="lead">설명회는 오프라인으로만 진행되며,<br>온라인 생중계 · 다시보기와 발표자료는 제공되지 않습니다.</p></div><div class="case"><p class="num">05</p><p class="lead">원활한 진행을 위해 영상 촬영은 삼가 주시기 바랍니다.</p></div><div class="case"><p class="num">06</p><p class="lead">행사 종료 후 설문 참여 안내를 이메일로 보내드립니다.</p></div></div>
+<div class="grid2" data-stagger style="--i:1"><div class="case"><p class="num">01</p><p class="lead">휴대폰은 무음으로 설정해주세요.</p></div><div class="case"><p class="num">02</p><p class="lead">휴식은 14:25, 15:40 두 차례 15분씩 있습니다.</p></div><div class="case"><p class="num">03</p><p class="lead">현장 질의는 명찰 뒷면의 QR코드로 남겨주세요.<br>쉬는 시간마다 화면에도 QR코드를 띄워 드립니다.<br>사전 질문과 함께 질의응답 시간(17:30)에 답변드립니다.</p></div><div class="case"><p class="num">04</p><p class="lead">설명회는 오프라인으로만 진행되며,<br>온라인 생중계 · 다시보기와 발표자료는 제공되지 않습니다.</p></div><div class="case"><p class="num">05</p><p class="lead">원활한 진행을 위해 영상 촬영은 삼가 주시기 바랍니다.</p></div><div class="case"><p class="num">06</p><p class="lead">행사 종료 후 설문 참여 안내를 이메일로 보내드립니다.</p></div></div>
 </section>
 <section class="slide" id="m4_1" data-no="M4-1" data-title="M4-1 파트 타이틀 · 축사 및 출범식" data-bg="A" data-foot="logo" data-tr="zoom" data-glow="1" data-fill="1" data-lay="center">
 <p class="eyebrow en-eb fu" style="--i:0">Opening Remarks</p>
@@ -770,18 +778,26 @@ body.idle{cursor:none}
 <div class="bk">
 <p class="bk-e fu" style="--i:0">BREAK</p>
 <div class="bk-tw"><div class="t-normal"><h1 class="bk-t" data-words style="--i:1">잠시 쉬어가는<br>시간입니다.</h1></div><div class="t-soon"><h1 class="bk-t">곧 Session 3이<br>시작됩니다</h1></div></div>
-<p class="bk-s fu" style="--i:2"><span class="t-normal-i">로비에 간단한 다과와 음료가 마련되어 있습니다.</span><span class="t-soon-i">자리로 돌아와 주세요.</span></p>
+<p class="bk-s fu" style="--i:2"><span class="t-normal-i">출입문 밖 복도에 간단한 다과와 음료가 마련되어 있습니다.</span><span class="t-soon-i">자리로 돌아와 주세요.<br>세션 3은 영어로 진행됩니다. 좌석의 리시버를 미리 착용해 주세요.</span></p>
 <div class="bk-timer fu" style="--i:2"><span class="bk-tv" data-timer>15:00</span><svg class="dots" aria-hidden="true"></svg><p class="bk-r"><span data-resume>--:--</span>에 다시 시작합니다.</p></div>
+<div class="bk-qr fu" style="--i:3"><div class="bk-qi"><img src="assets/qr-ask.svg" alt="질문 남기기 QR"></div><p class="bk-qt">질문 남기기</p><p class="bk-qs">명찰 뒷면 QR과 같습니다</p></div>
 <div class="bk-next fu" style="--i:3"><p class="bk-nk">NEXT</p><div><p class="bk-nt">Proxymity, 글로벌 의결권 행사 인프라의 혁신과 미래</p><p class="bk-nw">Scott Oakland · Proxymity, Head of APAC</p></div></div>
 </div>
 </section>
 <section class="slide" id="m6_s1" data-no="M6-S1" data-title="M6-S1 [상황] 재개 임박 (Session 3)" data-bg="B" data-foot="full" data-msg="1" data-tr="fade" data-lay="center">
 <p class="eyebrow fu" style="--i:0">NOTICE</p>
 <h1 class="title-m" data-words style="--i:1">곧 Session 3이 시작됩니다.</h1>
+<p class="lead fu" style="--i:2">자리로 돌아와 주세요.<br>세션 3은 영어로 진행됩니다. 좌석의 리시버를 미리 착용해 주세요.</p>
 </section>
 <section class="slide" id="m7_1" data-no="M7-1" data-title="M7-1 파트 타이틀 · 전자주주총회 및<br>의결권 행사의 미래" data-bg="A" data-foot="logo" data-tr="zoom" data-glow="1" data-fill="1" data-lay="center">
 <p class="eyebrow en-eb fu" style="--i:0">Part 2.</p>
 <h1 class="title-m" data-words style="--i:1">전자주주총회 및<br>의결권 행사의 미래</h1>
+</section>
+<section class="slide" id="m7_1b" data-no="M7-1b" data-title="M7-1b Session 3 통역 안내" data-bg="B" data-foot="full" data-lay="center">
+<p class="eyebrow fu" style="--i:0">Session 3 · 통역 안내</p>
+<h1 class="title-m" data-words style="--i:1">세션 3은 영어로 진행됩니다.</h1>
+<p class="lead fu" style="--i:2">좌석에 놓인 리시버로 한국어 통역을 들으실 수 있습니다.<br>세션이 끝나면 리시버는 그대로 자리에 두시면 됩니다.</p>
+<p class="m71b-en fu" style="--i:3">This session will be presented in English with Korean interpretation.</p>
 </section>
 <section class="slide" id="m7_2" data-no="M7-2" data-title="M7-2 Session 3 연사 소개 · Scott Oakland" data-bg="B" data-foot="full" data-spk="speaker-scott">
 <div class="cg sp"><p class="cg-e fu" style="--i:0">Session 3.</p><div class="cg-b"><h2 class="sp-t" data-words style="--i:1">Proxymity, 글로벌 의결권 행사<br>인프라의 혁신과 미래</h2><p class="sp-n fu" style="--i:2">Scott Oakland</p><p class="sp-r fu" style="--i:3">Proxymity, Head of APAC</p></div></div>
@@ -813,15 +829,16 @@ body.idle{cursor:none}
 <div class="bk">
 <p class="bk-e fu" style="--i:0">BREAK</p>
 <div class="bk-tw"><div class="t-normal"><h1 class="bk-t" data-words style="--i:1">잠시 쉬어가는<br>시간입니다.</h1></div><div class="t-soon"><h1 class="bk-t">곧 시연이<br>시작됩니다</h1></div></div>
-<p class="bk-s fu" style="--i:2"><span class="t-normal-i">로비에 간단한 다과와 음료가 마련되어 있습니다.</span><span class="t-soon-i">자리로 돌아와 주세요.</span></p>
+<p class="bk-s fu" style="--i:2"><span class="t-normal-i">출입문 밖 복도에 간단한 다과와 음료가 마련되어 있습니다.<br>시연에는 휴대폰이 필요합니다. 미리 준비해 주세요.</span><span class="t-soon-i">자리로 돌아와 주세요.<br>주주PASS 앱으로 모의 표결에 참여하실 수 있습니다.</span></p>
 <div class="bk-timer fu" style="--i:2"><span class="bk-tv" data-timer>15:00</span><svg class="dots" aria-hidden="true"></svg><p class="bk-r"><span data-resume>--:--</span>에 다시 시작합니다.</p></div>
-<div class="bk-next fu" style="--i:3"><p class="bk-nk">NEXT</p><div><p class="bk-nt">모의 전자주주총회 시연</p><p class="bk-nw">박성용 · IR큐더스, 본부장 · 참석자와 함께 모의 전자주주총회를 진행합니다.</p></div></div>
+<div class="bk-qr fu" style="--i:3"><div class="bk-qi"><img src="assets/qr-ask.svg" alt="질문 남기기 QR"></div><p class="bk-qt">질문 남기기</p><p class="bk-qs">명찰 뒷면 QR과 같습니다</p></div>
+<div class="bk-next fu" style="--i:3"><p class="bk-nk">NEXT</p><div><p class="bk-nt">모의 전자주주총회 시연</p><p class="bk-nw">박성용 · IR큐더스, 본부장 · 주주PASS 앱으로 표결에 직접 참여하실 수 있습니다.</p></div></div>
 </div>
 </section>
 <section class="slide" id="m8_s1" data-no="M8-S1" data-title="M8-S1 [상황] 재개 임박 (시연)" data-bg="B" data-foot="full" data-msg="1" data-tr="fade" data-lay="center">
 <p class="eyebrow fu" style="--i:0">NOTICE</p>
-<h1 class="title-m" data-words style="--i:1">곧 모의 전자주주총회 시연이 시작됩니다</h1>
-<p class="lead fu" style="--i:2">자리로 돌아와 주세요.</p>
+<h1 class="title-m" data-words style="--i:1">곧 모의 전자주주총회 시연이 시작됩니다.</h1>
+<p class="lead fu" style="--i:2">자리로 돌아와 주세요.<br>입장하실 때 설치하신 주주PASS 앱으로 모의 표결에 참여하실 수 있습니다.</p>
 </section>
 <section class="slide" id="m9_1" data-no="M9-1" data-title="M9-1 시연 타이틀" data-bg="A" data-foot="logo" data-tr="zoom" data-glow="1" data-fill="1" data-lay="center">
 <p class="eyebrow en-eb fu" style="--i:0">Part 3.</p>
