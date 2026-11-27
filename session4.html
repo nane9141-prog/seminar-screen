@@ -2017,6 +2017,13 @@ html.r169 #K27 .sec-c{--k27y:560px}
 #K11 .day{font-size:70px}
 /* 11/27 21:08 K22s 시스템 구성도 40px 더 아래로 */
 #K22s .zw{translate:0 80px}
+/* 11/27 21:11 K24a 오른쪽 배경: 지도 카드 대신 웹 「의결권 수집 관제」 화면(다크 모드, 권유 기간이 흐르며 위임완료가 차오름 · 15초 반복)을 크게 — 오른쪽 · 아래는 화면 밖으로 잘림, 휴대폰 뒤 */
+#K24a .k24map{left:2160px!important;top:200px!important;width:2400px!important;height:1500px!important;border-radius:32px 0 0 0!important;filter:none!important;box-shadow:0 0 0 2px rgba(255,255,255,.06)}
+.s.cur#K24a .k24map{opacity:.42!important}
+#K24a .k24map video{object-fit:cover;object-position:left top}
+/* 11/27 21:12 K25 왼쪽 목록 점을 글줄 세로 가운데에 */
+#K25 .lst li{align-items:center}
+#K25 .lst li:before{top:calc(50% - 11px)}
 /* ═════ 16:9 버전 (?a=16x9, 11/27) ═════
    ※ 빔프로젝터(led.html?a=16x9) M7-7이 이 모드를 씀. 장을 고치면 ?a=16x9로도 확인하고, 21:8 원본 위치를 바꾸면 아래 html.r169 #Kxx 규칙도 같이 맞출 것.
       R169Z(묶음 축소) 장은 내용 범위를 자동으로 재서 배치하므로 대부분 따라감.
@@ -2102,6 +2109,7 @@ html.r169 #K08 .k8h{top:540px!important}
 html.r169 #K08 canvas.viz{top:580px!important}
 html.r169 #K18a .rp,html.r169 #K18c .rp{width:1800px}
 html.r169 #K18a .card,html.r169 #K18c .card{left:60px;right:220px}
+html.r169 #K24a .k24map{left:1520px!important;top:170px!important;width:2000px!important;height:1500px!important}
 /* ═════ 16:9 끝 ═════ */
 </style></head>
 <body>
@@ -2454,7 +2462,7 @@ html.r169 #K18a .card,html.r169 #K18c .card{left:60px;right:220px}
   <ul class="lst"><li>실질 기관주주 파악 · 타겟팅</li><li>프록시 미팅 · 행사내역 추적 · 결과분석</li></ul></div>
  </div>
  <canvas class="viz" data-viz="kr24" style="left:2250px;top:110px;width:1750px;height:1400px" width="1750" height="1400"></canvas>
- <div class="k24map"><video src="assets/s4/pc-map.mp4" poster="assets/s4/pc-map.webp" muted playsinline preload="auto"></video></div>
+ <div class="k24map"><video src="assets/s4/pc-web.mp4" poster="assets/s4/pc-web.webp" muted playsinline loop preload="auto"></video></div>
  <div class="k24app">
  <div class="phone fu k24p" style="--i:3"><div class="scr"><video class="k24v" src="assets/s4/agent-app.mp4" poster="assets/s4/agent-app.webp" muted loop playsinline preload="auto"></video></div></div>
 </div>
@@ -2865,7 +2873,7 @@ const R169=document.documentElement.classList.contains('r169'),SW=R169?3200:4200
 /* 16:9 재배치를 마친 장 */
 const R169OK='K00 K01 K03 K12 K16 K21b K20 K27 K04 K09 K05 K06 K07 K08 K13 K14 K09b K10 K11 K28e K17 K18a K18c K18b K19 K23 K23b K25 K25b K28b K24a K24b K24c K26 K28c K15 K19b K19c K21 K22s K28p K29 K28d K28a K02'.split(' ');if(R169)R169OK.forEach(k=>{const e=document.getElementById(k);if(e)e.dataset.r=1;});
 /* 16:9: 큰 도식 장은 제목(.top) 외 요소를 한 묶음(.zr)으로 감싸 폭 2760에 맞게 줄이고 제목 아래 세로 공간을 씀. [배율, 원본 내용 왼쪽, 원본 내용 위, 16:9 내용 위, 제외 선택자] */
-window.R169Z={K02:[.9,'.top'],K24a:[.82,'.ab',1480,3120],K24b:[.82,'.k24bt,.k24bi',1480,3120],K19b:[.767,'.top,.k19i'],K19c:[.767,'.top'],K21:[.767,'.k21t,.k21bg'],K22s:[.767,'.top'],K28p:[.767,'.ab:first-child'],K29:[.767,'.top'],K28d:[.767,'.top'],K28a:[.767,'.top'],K28c:[.767,'.top,.k28ph',null,null,-250],K24c:[.767,'.top',null,null,-80],K26:[.767,'.top'],K15:[.767,'.top']};
+window.R169Z={K02:[.9,'.top'],K24a:[.82,'.ab,.k24map',1480,3120],K24b:[.82,'.k24bt,.k24bi',1480,3120],K19b:[.767,'.top,.k19i'],K19c:[.767,'.top'],K21:[.767,'.k21t,.k21bg'],K22s:[.767,'.top'],K28p:[.767,'.ab:first-child'],K29:[.767,'.top'],K28d:[.767,'.top'],K28a:[.767,'.top'],K28c:[.767,'.top,.k28ph',null,null,-250],K24c:[.767,'.top',null,null,-80],K26:[.767,'.top'],K15:[.767,'.top']};
 /* 묶음을 줄인 뒤 실제 내용 범위를 재서 제목 아래 남는 공간의 가운데(가로는 화면 가운데)에 놓음 */
 window.r169wrap=function(){const st=document.getElementById('stage');for(const id in R169Z){const S=document.getElementById(id);if(!S)continue;const [z,skip,X0,X1,DY]=R169Z[id];const w=document.createElement('div');w.className='zr';[...S.children].filter(c=>!(skip&&c.matches(skip))).forEach(c=>w.appendChild(c));S.appendChild(w);S.dataset.r=1;w.dataset.z=z;if(X0!=null){w.dataset.x0=X0;w.dataset.x1=X1;}w.dataset.dy=DY||0;}
  const place=()=>{const sr=st.getBoundingClientRect(),k=sr.width/3200;document.querySelectorAll('.zr').forEach(w=>{const z=+w.dataset.z;w.style.transform=`scale(${z})`;let L=1e9,T=1e9,R=-1e9,B=-1e9;
