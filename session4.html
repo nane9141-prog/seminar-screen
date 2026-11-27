@@ -1890,7 +1890,10 @@ html.embed #sgb,html.embed #sg{display:none!important}  /* 11/26 메인 스크�
 #K02 .bc,#K02 .bc.co,#K02 .bc.im,#K02 .bc.ph{border-radius:40px!important}
 /* 11/27 20:25 KP: 실시간 중계 · 관리기관 · 장애 대응 — 배경 그라데이션 · 페더 마스크 없애고 사진 · 영상 투명도만 */
 #K02 .bw:is(.d,.f,.g) .bc.im::after{display:none!important;background:none!important}
-#K02 .bw:is(.d,.f,.g) .bc.im i,#K02 .bw:is(.d,.f,.g) .bc.im video{-webkit-mask-image:none!important;mask-image:none!important;filter:none!important;opacity:.5!important}
+#K02 .bw:is(.d,.f,.g) .bc.im i,#K02 .bw:is(.d,.f,.g) .bc.im video{-webkit-mask-image:none!important;mask-image:none!important;filter:none!important;opacity:.42!important}
+/* 11/27 20:30 KP: 실시간 중계 영상 다시 크롭 · 배치 — 카드 꽉(위 빈 띠 없음), 1.5배, 얼굴이 제목 오른쪽. 장애 대응 사진 위로(인물 머리 높이 = 관리기관 인물 머리) */
+#K02 .bw.d .bc.im video{inset:0!important;top:0!important;left:0!important;width:100%!important;height:100%!important;object-fit:cover!important;object-position:50% 50%!important;transform:scale(1.5)!important;transform-origin:0% 0%!important}
+#K02 .bw.g .bc.im i{background-position:0% 44%!important}
 
 /* K26(11/26 22:00) 휴대폰 5대 — 제목만 위에(서브 글 삭제), 프레임 작게(320×692), 화면은 KOSMOS 데모(shareholder-pass) 실제 조작 녹화: 전자출석(입장 → 생중계 · AI 자막) · 동시출석(다른 주총으로 두 번 전환) · 멀티알림(메인 홈 알림) · 투표(안건 선택 → 찬성 → 투표 완료) · 질의(작성 → 제출). 고객센터는 K21 주주 쪽 사진 카드처럼 */
 #K26 .k26r{position:absolute;left:300px;top:480px;width:2860px;display:flex;justify-content:space-between}
