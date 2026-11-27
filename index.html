@@ -703,6 +703,17 @@ body.idle{cursor:none}
 .m4lab b{font-size:76px!important}
 .m4lab span{margin-top:4px!important;font-size:44px!important}
 .m4lab i{font-size:38px!important}
+/* 11/27 19:18 M9-4 지분율 %를 막대 안으로 — 막대 330px, % 64px 흰색(막대가 다 자란 뒤 나타남), 오른쪽은 그룹명 · 주식수만(구간 세로 가운데) */
+.m4{grid-template-columns:minmax(0,1fr) 620px!important;column-gap:120px!important}
+.m4bar{width:330px!important}
+.m4bar>div{display:flex;align-items:center;justify-content:center;overflow:hidden}
+.m4bar b{font:600 64px/1 "Pretendard Variable";color:#fff;letter-spacing:-.02em;font-variant-numeric:tabular-nums;opacity:0;animation:fadeIn .45s ease both}
+.m4bar .s0 b{animation-delay:1.3s}.m4bar .s1 b{animation-delay:1.65s}.m4bar .s2 b{animation-delay:2s}
+.m4lab>div{justify-content:center!important;padding-top:0!important}
+.m4lab span{margin-top:0!important;font-size:46px!important}
+.m4lab .s0 span{color:#5bade1}
+.m4lab i{margin-top:6px;font-size:38px!important}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
 </style></head>
 <body>
 <div class="stage" id="scr" data-foot="full">
@@ -906,8 +917,7 @@ body.idle{cursor:none}
 </div>
 </div>
 <div class="m4b">
-<div class="m4bar"><div class="s0" style="--h:21.99"></div><div class="s1" style="--h:64.53"></div><div class="s2" style="--h:13.48"></div></div>
-<div class="m4lab"><div class="s0" style="--h:21.99"><b data-n="21.99">21.99%</b><span>최대주주 등</span><i>26,136주</i></div><div class="s1" style="--h:64.53"><b data-n="64.53">64.53%</b><span>최대주주 외</span><i>76,702주</i></div><div class="s2" style="--h:13.48"><b data-n="13.48">13.48%</b><span>기타</span><i>16,020주</i></div></div>
+<div class="m4bar"><div class="s0" style="--h:21.99"><b data-n="21.99">21.99%</b></div><div class="s1" style="--h:64.53"><b data-n="64.53">64.53%</b></div><div class="s2" style="--h:13.48"><b data-n="13.48">13.48%</b></div></div><div class="m4lab"><div class="s0" style="--h:21.99"><span>최대주주 등</span><i>26,136주</i></div><div class="s1" style="--h:64.53"><span>최대주주 외</span><i>76,702주</i></div><div class="s2" style="--h:13.48"><span>기타</span><i>16,020주</i></div></div>
 </div>
 </div>
 </section>
@@ -1422,7 +1432,7 @@ st('오프라인 저장 중…');
 navigator.serviceWorker.register('sw.js').then(()=>navigator.serviceWorker.ready).then(()=>caches.keys()).then(k=>st(k.some(x=>x.startsWith('seminar-screen-'))?'오프라인 저장 완료':'오프라인 저장 중…')).catch(e=>st('오프라인 캐시 실패: '+e.message));
 })();
 /* M9-4 막대 숫자 카운트 */
-(function(){const S=document.getElementById('m9_4');if(!S)return;const run=()=>{S.querySelectorAll('.m4lab b').forEach((b,j)=>{const n=+b.dataset.n,t0=performance.now()+900+j*350;b.textContent='0.00%';const f=t=>{const k=Math.min(1,Math.max(0,(t-t0)/1100)),e=1-Math.pow(1-k,3);b.textContent=(n*e).toFixed(2)+'%';if(k<1&&S.classList.contains('on'))requestAnimationFrame(f);else b.textContent=n.toFixed(2)+'%';};requestAnimationFrame(f);});};new MutationObserver(()=>{if(S.classList.contains('on')&&!S._m4){S._m4=1;run();}else if(!S.classList.contains('on'))S._m4=0;}).observe(S,{attributes:true,attributeFilter:['class']});})();
+(function(){const S=document.getElementById('m9_4');if(!S)return;const run=()=>{S.querySelectorAll('.m4bar b').forEach((b,j)=>{const n=+b.dataset.n,t0=performance.now()+1300+j*350;b.textContent='0.00%';const f=t=>{const k=Math.min(1,Math.max(0,(t-t0)/1100)),e=1-Math.pow(1-k,3);b.textContent=(n*e).toFixed(2)+'%';if(k<1&&S.classList.contains('on'))requestAnimationFrame(f);else b.textContent=n.toFixed(2)+'%';};requestAnimationFrame(f);});};new MutationObserver(()=>{if(S.classList.contains('on')&&!S._m4){S._m4=1;run();}else if(!S.classList.contains('on'))S._m4=0;}).observe(S,{attributes:true,attributeFilter:['class']});})();
 </script>
 
 </body></html>
