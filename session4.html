@@ -2245,6 +2245,20 @@ html.r169 #K24a .k24map{left:1540px!important;top:50px!important}
 #K28p .k28pl{top:910px}
 #K28p .k28bg{top:860px!important}
 html.r169 #K28p .k28bg{top:840px!important}
+
+/* 11/27 23:05 K27 배경 = image/partner.jpg(행사장 로비 운영 인원), 글은 왼쪽 위 한 묶음(위 · 왼쪽 어둡게) — 인물 머리와 겹치지 않게 사진을 108% · 아래 기준 */
+#K27 .photo{background-image:url(assets/s4/k27-partner.webp)!important;background-size:108% auto!important;background-position:center bottom!important;filter:brightness(.8) saturate(.9)!important}
+html.r169 #K27 .photo{background-size:cover!important;background-position:center bottom!important}
+#K27.sec .shade{display:block!important;background:linear-gradient(180deg,rgba(0,0,0,.78) 0%,rgba(0,0,0,.45) 24%,rgba(0,0,0,0) 46%),linear-gradient(90deg,rgba(0,0,0,.45) 0%,rgba(0,0,0,0) 40%),linear-gradient(0deg,rgba(0,0,0,.35) 0%,rgba(0,0,0,0) 18%)!important}
+#K27 .sec-c{align-items:flex-start!important;justify-content:flex-start!important;text-align:left!important;padding:150px 0 0!important}
+.s.cur#K27 .sec-c{animation:none!important}
+#K27 .k27e{margin:0 0 24px!important;font-size:52px!important}
+#K27 .sec-h{font-size:104px!important;line-height:1.2!important;white-space:nowrap}
+html.r169 #K27 .sec-c{padding-top:170px!important}
+html.r169 #K27 .sec-h{font-size:92px!important}
+.s.cur#K27 .photo{animation:k27p2 1.6s cubic-bezier(.2,.7,.2,1) .9s both!important}
+.s.cur#K27 .shade{animation:k27s .1s linear .9s both!important}
+@keyframes k27p2{from{opacity:0;scale:1.04}to{opacity:1;scale:1}}
 /* ═════ 16:9 버전 (?a=16x9, 11/27) ═════
    ※ 빔프로젝터(led.html?a=16x9) M7-7이 이 모드를 씀. 장을 고치면 ?a=16x9로도 확인하고, 21:8 원본 위치를 바꾸면 아래 html.r169 #Kxx 규칙도 같이 맞출 것.
       R169Z(묶음 축소) 장은 내용 범위를 자동으로 재서 배치하므로 대부분 따라감.
