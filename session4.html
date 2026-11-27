@@ -2232,6 +2232,19 @@ html.r169 #K24a .k24map{left:1540px!important;top:50px!important}
 /* 11/27 22:38 K24a 뒤 관제 화면 더 어둡게, 휴대폰 80px 아래로 */
 .s.cur#K24a .k24map{opacity:.26!important}
 #K24a .k24p{top:250px!important}
+
+/* 11/27 22:40 K26 휴대폰 프레임 446px · 노치 삭제 · 화면이 프레임에 꽉(녹화 390×858 = 화면 426×937), 고객센터 카드는 오른쪽 화면 끝까지, 남는 폭에 휴대폰 5대 다시 배치 */
+#K26 .k26r{left:300px!important;top:430px!important;width:2560px!important;justify-content:space-between}
+#K26 .k26c{width:446px!important}
+#K26 .k26p{width:446px!important;height:957px!important;padding:10px!important;border-radius:66px!important}
+#K26 .k26p .sc{border-radius:56px!important;padding-top:0!important}
+#K26 .k26p .sc::before{display:none!important}
+#K26 .k26p video{object-fit:cover!important;object-position:50% 0!important}
+#K26 .k26s{left:2950px!important;right:0!important;width:auto!important;top:430px!important;height:1058px!important;border-radius:28px 0 0 28px!important;box-shadow:inset 2px 0 0 rgba(242,245,250,.12),0 24px 60px rgba(0,0,0,.45)!important}
+/* 11/27 22:40 K28p 특허 목록 · 배경 40px 아래로 */
+#K28p .k28pl{top:910px}
+#K28p .k28bg{top:860px!important}
+html.r169 #K28p .k28bg{top:840px!important}
 /* ═════ 16:9 버전 (?a=16x9, 11/27) ═════
    ※ 빔프로젝터(led.html?a=16x9) M7-7이 이 모드를 씀. 장을 고치면 ?a=16x9로도 확인하고, 21:8 원본 위치를 바꾸면 아래 html.r169 #Kxx 규칙도 같이 맞출 것.
       R169Z(묶음 축소) 장은 내용 범위를 자동으로 재서 배치하므로 대부분 따라감.
