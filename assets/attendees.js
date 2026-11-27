@@ -5,18 +5,21 @@ const $=id=>document.getElementById(id);
 const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const norm=s=>String(s||'').toLowerCase().replace(/\s|\(주\)|㈜|주식회사|-/g,'');
 let R=[],S={},flt='all',q='',pick=null,timer=null,loading=false,desk='all',sort={k:null,d:1};
-const SORTV={grp:x=>grpOf(x),co:x=>x.company_name||'',name:x=>x.name||'',status:x=>x.status==='confirmed'?0:1,desk:x=>{const d=deskOf(S[x.id]);return d?(d==='VIP'?8:+d.slice(1)):'';},
-  seat:x=>{const raw=String((S[x.id]||{}).seat||''),k=window.SEAT_KEY&&window.SEAT_KEY(raw),m=/^(\d+)-(\d+)$/.exec(k||'');return m?(+m[1])*100+(+m[2]):raw;},arr:x=>x.status!=='confirmed'?'':(x.attended?0:1)};
+const SORTV={grp:x=>grpOf(x),co:x=>x.company_name||'',name:x=>x.name||'',status:x=>x._x?2:x.status==='confirmed'?0:1,desk:x=>{const d=xD(x);return d?(d==='VIP'?8:d==='스태프'?9:+d.slice(1)):'';},
+  seat:x=>{const raw=String(xS(x)||''),k=window.SEAT_KEY&&window.SEAT_KEY(raw),m=/^(\d+)-(\d+)$/.exec(k||''),sd=/^(상|하)사이드-(\d+)$/.exec(raw);return m?(+m[1])*100+(+m[2]):sd?(sd[1]==='상'?5000:6000)+(+sd[2]):raw;},arr:x=>x.status!=='confirmed'?'':(x.attended?0:1)};
 /* 안내 데스크 배정: seat_assign 에 전용 칸이 없어 메모(note) 앞에 "[D3] " 꼴 꼬리표로 저장합니다. 화면에서는 데스크와 메모를 따로 보여 줍니다. */
 const DESKS=[['D1','VIP · 미등록자'],['D2','ㄱ · ㄴ · ㄷ'],['D3','ㄹ · ㅁ · ㅂ · ㅅ'],['D4','ㅇ (아 · 에 · 엔)'],['D5','ㅇ (엘 · 오 · 우 · 유 · 이)'],['D6','ㅈ · ㅋ · ㅌ · ㅍ, 하'],['D7','한 · 현'],['VIP','VIP 별도']];   // 최종 엑셀 06. 출입 데스크 기준
 /* 그룹(05. 좌석 명단의 '그룹' 열): 회사 → 그룹. 단독 참석 회사는 비움 */
 const GROUPS={"한화오션":"한화","한화손해보험":"한화","한화솔루션":"한화","한화생명":"한화","한화":"한화","한화에어로스페이스":"한화","현대건설":"현대차","현대로템":"현대차","기아":"현대차","현대차증권":"현대차","현대모비스":"현대차","현대오토에버":"현대차","현대차":"현대차","현대제철":"현대차","kcc글라스":"KCC","kcc":"KCC","hd현대중공업":"HD현대","hd건설기계":"HD현대","hd한국조선해양":"HD현대","한화투자증권":"한화","lg전자":"LG","lg생활건강":"LG","lg":"LG","lg유플러스":"LG","gs리테일":"GS","lg씨엔에스":"LG","lg화학":"LG","lg이노텍":"LG","lg에너지솔루션":"LG","ls":"LS","lselectric":"LS","ls증권":"LS","e1":"LS","카카오뱅크":"카카오","카카오페이":"카카오","카카오":"카카오","sk네트웍스":"SK","sk이노베이션":"SK","skc":"SK","sk케미칼":"SK","sk스퀘어":"SK","sk텔레콤":"SK","sk바이오사이언스":"SK","sk아이이테크놀로지":"SK","sk가스":"SK","신세계":"신세계·이마트","이마트":"신세계·이마트","두산에너빌리티":"두산","두산":"두산","hl만도":"HL","hl홀딩스":"HL","코오롱글로벌":"코오롱","코오롱인더":"코오롱","두산밥캣":"두산","삼양홀딩스":"삼양","삼양사":"삼양","한국의결권자문":"기관·전문가","gs":"GS","gs건설":"GS","db증권":"DB","lg디스플레이":"LG","ir큐더스":"IRK","삼성증권":"삼성","삼성에스디에스":"삼성","삼성전기":"삼성","삼성sdi":"삼성","에스원":"삼성","삼성생명":"삼성","삼성물산":"삼성","삼성바이오로직스":"삼성","롯데정밀화학":"롯데","롯데리츠":"롯데","롯데지주":"롯데","롯데케미칼":"롯데","롯데렌탈":"롯데","한진":"한진","대한항공":"한진","한진칼":"한진","posco홀딩스":"포스코","포스코퓨처엠":"포스코","에코프로":"에코프로","db손해보험":"DB","에코프로비엠":"에코프로","한국타이어앤테크놀로지":"한국앤컴퍼니","한국앤컴퍼니":"한국앤컴퍼니","한온시스템":"한국앤컴퍼니","호텔신라":"삼성","삼양식품":"삼양","hd현대산업개발":"HD현대","법무법인바른":"VIP","한국상장회사협의회":"VIP","ir큐더스아이알큐더스":"IRK"};
-const gnorm=s=>String(s||'').replace(/[\s·.,()㈜]|주식회사/g,'').toLowerCase(),grpOf=x=>GROUPS[gnorm(x.company_name)]||'';
+const gnorm=s=>String(s||'').replace(/[\s·.,()㈜]|주식회사/g,'').toLowerCase(),grpOf=x=>x._x?x.grp:GROUPS[gnorm(x.company_name)]||'';
 const DRE=/^\[(D[1-7]|VIP)\]\s?/;
 const deskOf=a=>{const m=DRE.exec((a&&a.note)||'');return m?m[1]:'';};
 const memoOf=a=>String((a&&a.note)||'').replace(DRE,'');
 const pack=(d,memo)=>{const t=(d?'['+d+'] ':'')+String(memo||'').trim();return t.trim()||null;};
-const inDesk=x=>desk==='all'||(desk==='none'?!deskOf(S[x.id]):deskOf(S[x.id])===desk);
+/* 신청 명단에 없는 인원(연사 · VIP · 미신청 · 스태프 · 사이드 좌석) — 최종 엑셀 05. 좌석 명단 기준. 공개 저장소라 소속만 적고 이름은 넣지 않음. 표시 전용(수정 · 참석 체크 없음) */
+const EXTRA=[["발표 박성용","연사","VIP","16-1"],["연사 김승준","연사","VIP","16-2"],["연사 권재열","연사","VIP","16-3"],["축사 김광록","연사","VIP","16-4"],["축사 정우용","연사","VIP","16-5"],["코스닥협회 1","VIP","D1","16-8"],["코스닥협회 2","VIP","D1",""],["한국IR협의회 1","VIP","D1",""],["한국IR협의회 2","VIP","D1",""],["김앤장 1","VIP","D1","17-1"],["김앤장 2","VIP","D1","17-2"],["김앤장 3","VIP","D1","17-3"],["DB증권 VIP 1","VIP","D1","14-1"],["DB증권 VIP 2","VIP","D1","14-2"],["DB증권 VIP 3","VIP","D1","14-3"],["메타넷엑스","","D1","15-1"],["녹십자","","D2","12-6"],["유안타증권","","D5","42-3"],["큐더스벤처스 1","큐더스벤처스","스태프","14-4"],["큐더스벤처스 2","큐더스벤처스","스태프","14-5"],["큐더스벤처스 3","큐더스벤처스","스태프","14-6"],["IR큐더스 1","IRK","스태프","15-3"],["IR큐더스 2","IRK","스태프","15-4"],["IR큐더스 3","IRK","스태프","15-5"],["IR큐더스 4","IRK","스태프","15-6"],["OPR 1","운영(OPR)","스태프","31-1"],["OPR 2","운영(OPR)","스태프","31-2"],["OPR 3","운영(OPR)","스태프","31-3"],["OPR 4","운영(OPR)","스태프","31-4"],["OPR 5","운영(OPR)","스태프","31-5"],["OPR 6","운영(OPR)","스태프","31-6"],["OPR 7","운영(OPR)","스태프","32-6"],["에이전트 1","에이전트","스태프","상사이드-1"],["에이전트 2","에이전트","스태프","상사이드-2"],["에이전트 3","에이전트","스태프","상사이드-3"],["에이전트 4","에이전트","스태프","상사이드-4"],["에이전트 5","에이전트","스태프","상사이드-5"],["에이전트 6","에이전트","스태프","상사이드-6"],["에이전트 7","에이전트","스태프","상사이드-7"],["에이전트 8","에이전트","스태프","상사이드-8"],["에이전트 9","에이전트","스태프","상사이드-9"],["에이전트 10","에이전트","스태프","상사이드-10"],["AGM개발실 1","AGM개발실","스태프","하사이드-1"],["AGM개발실 2","AGM개발실","스태프","하사이드-2"],["AGM개발실 3","AGM개발실","스태프","하사이드-3"],["AGM개발실 4","AGM개발실","스태프","하사이드-4"],["AGM개발실 5","AGM개발실","스태프","하사이드-5"],["AGM개발실 6","AGM개발실","스태프","하사이드-6"],["AGM개발실 7","AGM개발실","스태프","하사이드-7"],["AGM개발실 8","AGM개발실","스태프","하사이드-8"],["AGM개발실 9","AGM개발실","스태프","하사이드-9"],["AGM개발실 10","AGM개발실","스태프","하사이드-10"],["AGM개발실 11","AGM개발실","스태프","하사이드-11"]].map((e,i)=>({id:'x'+i,_x:1,company_name:e[0],name:'',status:'extra',grp:e[1],desk:e[2],seat:e[3]}));
+const xD=x=>x._x?x.desk:deskOf(S[x.id]),xS=x=>x._x?x.seat:(S[x.id]||{}).seat;
+const inDesk=x=>desk==='all'||(desk==='none'?!xD(x):xD(x)===desk);
 
 function sb(){return window.QAOnline&&QAOnline.client();}
 function msg(t,bad){const e=$('atmsg');e.textContent=t;e.style.color=bad?'#FF8A7A':'#7FD6A0';clearTimeout(e._t);e._t=setTimeout(()=>e.textContent='',bad?6000:2000);}
@@ -41,20 +44,20 @@ function view(){
 }
 const last4=p=>String(p||'').replace(/\D/g,'').slice(-4);
 function match(x){if(!q)return true;const n=norm(q),d=q.replace(/\D/g,'');
-  return norm(x.name).includes(n)||norm(x.company_name).includes(n)||norm(grpOf(x)).includes(n)||(d.length>=3&&String(x.phone||'').replace(/\D/g,'').includes(d))||norm((S[x.id]||{}).seat).includes(n);}
+  return norm(x.name).includes(n)||norm(x.company_name).includes(n)||norm(grpOf(x)).includes(n)||(d.length>=3&&String(x.phone||'').replace(/\D/g,'').includes(d))||norm(xS(x)).includes(n);}
 function draw(){
   const conf=R.filter(x=>x.status==='confirmed'),seat=R.filter(x=>(S[x.id]||{}).seat),arr=conf.filter(x=>x.attended);
   /* 대상자 = 사전 신청 + VIP·연사 고정석(신청자가 앉지 않은 자리) */
   const FX=window.SEAT_FIXED||{},taken=new Set(R.map(x=>String((S[x.id]||{}).seat||'').toUpperCase().replace(/[\s-]/g,''))),vip=Object.keys(FX).filter(k=>!taken.has(k)).length;
-  $('atc-all').textContent=R.length+vip;$('atc-reg').textContent=R.length;$('atc-vip').textContent=vip;{const key=window.SEAT_KEY,tot=window.SEAT_TOTAL;if(key&&tot){const used=new Set(R.map(x=>key((S[x.id]||{}).seat)).filter(Boolean));$('atc-left').textContent=tot-used.size-Object.keys(FX).filter(k=>!used.has(k)).length;$('atc-left').parentNode.title='전체 '+tot+'석 − 배정 '+used.size+'석 − VIP·연사 고정석 '+Object.keys(FX).filter(k=>!used.has(k)).length+'석';}}
-  $('atc-all').parentNode.title='신청 '+R.length+'명(확정 '+conf.length+' · 대기 '+(R.length-conf.length)+') + 고정석(연사 · VIP · 운영 등) '+vip+'석';
+  $('atc-all').textContent=R.length+EXTRA.length;$('atc-reg').textContent=R.length;$('atc-vip').textContent=EXTRA.length;{const key=window.SEAT_KEY,tot=window.SEAT_TOTAL;if(key&&tot){const used=new Set(R.map(x=>key((S[x.id]||{}).seat)).filter(Boolean));$('atc-left').textContent=tot-used.size-Object.keys(FX).filter(k=>!used.has(k)).length;$('atc-left').parentNode.title='전체 '+tot+'석 − 배정 '+used.size+'석 − VIP·연사 고정석 '+Object.keys(FX).filter(k=>!used.has(k)).length+'석';}}
+  $('atc-all').parentNode.title='신청 '+R.length+'명(확정 '+conf.length+' · 대기 '+(R.length-conf.length)+') + 신청 명단에 없는 연사 · VIP · 스태프 '+EXTRA.length+'명';
   $('atc-seat').textContent=seat.length;$('atc-noseat').textContent=R.length-seat.length;$('atc-arr').textContent=arr.length;
   document.querySelectorAll('#atflt [data-f]').forEach(b=>b.classList.toggle('sel',b.dataset.f===flt));
-  const dc={};R.forEach(x=>{const d=deskOf(S[x.id])||'none';dc[d]=(dc[d]||0)+1;});
-  $('atdesk').innerHTML='<button data-d="all" class="'+(desk==='all'?'sel':'')+'">전체 <small>'+R.length+'</small></button>'+DESKS.map(d=>'<button data-d="'+d[0]+'" title="'+esc(d[1])+'" class="'+(desk===d[0]?'sel':'')+'">'+d[0]+' <small>'+(dc[d[0]]||0)+'</small></button>').join('')+'<button data-d="none" class="'+(desk==='none'?'sel':'')+'">미배정 <small>'+(dc.none||0)+'</small></button>';
-  $('atdeskinfo').textContent=desk==='all'?'':(desk==='none'?'데스크 미배정 인원':(DESKS.find(d=>d[0]===desk)||[])[1]||'');
-  let L=R.filter(inDesk).filter(match);
-  if(flt==='noseat')L=L.filter(x=>!(S[x.id]||{}).seat);
+  const ALL=R.concat(EXTRA),dc={};ALL.forEach(x=>{const d=xD(x)||'none';dc[d]=(dc[d]||0)+1;});
+  $('atdesk').innerHTML='<button data-d="all" class="'+(desk==='all'?'sel':'')+'">전체 <small>'+ALL.length+'</small></button>'+DESKS.map(d=>'<button data-d="'+d[0]+'" title="'+esc(d[1])+'" class="'+(desk===d[0]?'sel':'')+'">'+d[0]+' <small>'+(dc[d[0]]||0)+'</small></button>').join('')+'<button data-d="스태프" title="운영 · 에이전트 · 개발실 등 스태프(사이드 좌석 포함)" class="'+(desk==='스태프'?'sel':'')+'">스태프 <small>'+(dc['스태프']||0)+'</small></button>'+'<button data-d="none" class="'+(desk==='none'?'sel':'')+'">미배정 <small>'+(dc.none||0)+'</small></button>';
+  $('atdeskinfo').textContent=desk==='all'?'':(desk==='none'?'데스크 미배정 인원':desk==='스태프'?'운영 · 에이전트 · 개발실 등 (소속만 표시)':(DESKS.find(d=>d[0]===desk)||[])[1]||'');
+  let L=ALL.filter(inDesk).filter(match);
+  if(flt==='noseat')L=L.filter(x=>!xS(x));
   if(flt==='arr')L=L.filter(x=>x.status==='confirmed'&&x.attended);
   if(flt==='notarr')L=L.filter(x=>x.status==='confirmed'&&!x.attended);
   if(sort.k){const f=SORTV[sort.k],ko=(a,b)=>String(a).localeCompare(String(b),'ko',{numeric:true});   // 헤더 정렬: 빈 값(좌석 미지정 등)도 함께 정렬 — 오름차순이면 맨 아래, 내림차순이면 맨 위
@@ -63,7 +66,7 @@ function draw(){
   $('atcnt').textContent=L.length+'명';
   const cos=[...new Set(R.map(x=>x.company_name))];if($('atcos').childElementCount!==cos.length)$('atcos').innerHTML=cos.map(c=>'<option value="'+esc(c)+'">').join('');
   const ae=document.activeElement,keep=ae&&ae.dataset&&ae.dataset.k?ae.dataset.k+':'+ae.closest('tr').dataset.id:null;
-  $('attb').innerHTML=L.length?L.map(x=>{const a=S[x.id]||{};return '<tr data-id="'+x.id+'" class="'+(pick===x.id?'sel':'')+'">'+
+  $('attb').innerHTML=L.length?L.map(x=>{if(x._x)return '<tr class="xrow"><td><b>'+esc(x.company_name)+'</b></td><td>'+(x.grp?'<span class="grp">'+esc(x.grp)+'</span>':'')+'</td><td class="mut">—</td><td></td><td><span class="pill ex">'+(x.desk==='스태프'?'스태프':'미신청')+'</span></td><td class="xv">'+esc(x.desk==='VIP'?'VIP 별도':x.desk)+'</td><td class="xv">'+esc(x.seat||'좌석 없음')+'</td><td></td><td></td></tr>';const a=S[x.id]||{};return '<tr data-id="'+x.id+'" class="'+(pick===x.id?'sel':'')+'">'+
     '<td><b>'+esc(x.company_name)+'</b></td><td>'+(grpOf(x)?'<span class="grp">'+esc(grpOf(x))+'</span>':'')+'</td><td><b class="nm">'+esc(x.name)+'</b><div class="mut">'+esc([x.dept,x.title].filter(Boolean).join(' · '))+'</div></td>'+
     '<td class="mut tn">'+(last4(x.phone)?'···'+last4(x.phone):'')+'</td>'+
     '<td>'+(x.status==='confirmed'?'<span class="pill ok">확정</span>':'<span class="pill wait">대기</span>')+'</td>'+
