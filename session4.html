@@ -2015,6 +2015,8 @@ html.r169 #K27 .sec-c{--k27y:560px}
 #K19b .cf{font-size:40px}
 /* 11/27 21:06 K11 x축 날짜 숫자 70px */
 #K11 .day{font-size:70px}
+/* 11/27 21:08 K22s 시스템 구성도 40px 더 아래로 */
+#K22s .zw{translate:0 80px}
 /* ═════ 16:9 버전 (?a=16x9, 11/27) ═════
    ※ 빔프로젝터(led.html?a=16x9) M7-7이 이 모드를 씀. 장을 고치면 ?a=16x9로도 확인하고, 21:8 원본 위치를 바꾸면 아래 html.r169 #Kxx 규칙도 같이 맞출 것.
       R169Z(묶음 축소) 장은 내용 범위를 자동으로 재서 배치하므로 대부분 따라감.
@@ -2984,9 +2986,9 @@ VIZ.kr24=(cv)=>{const g=cv.getContext('2d'),W=cv.width,H=cv.height;let t0=0;
 VIZ.xs=(cv)=>{const g=cv.getContext("2d"),W=cv.width,H=cv.height,N=380;/* K19b 인트로 × — K21 ∞처럼 점 입자가 X 두 획을 따라 흐름(파랑 → 청록) */
  const P=[...Array(N)].map((_,i)=>({k:i%2,u:Math.random(),o:(Math.random()-.5)*2,s:.002+Math.random()*.003,r:3+Math.random()*5.5}));
  const pt=(k,u)=>{const m=W*.16;return k?[m+(W-2*m)*u,m+(H-2*m)*u]:[W-m-(W-2*m)*u,m+(H-2*m)*u];};
- return{enter(){},draw(){g.clearRect(0,0,W,H);g.globalAlpha=.22;g.strokeStyle='#3aa0ea';g.lineWidth=4;g.lineCap='round';
+ return{enter(){},draw(){g.clearRect(0,0,W,H);g.globalAlpha=.22;g.strokeStyle='#F2F5FA';g.lineWidth=4;g.lineCap='round';
   for(const k of [0,1]){const[a,b]=pt(k,0),[c,d]=pt(k,1);g.beginPath();g.moveTo(a,b);g.lineTo(c,d);g.stroke();}
-  for(const q of P){q.u=(q.u+q.s)%1;const[x,y]=pt(q.k,q.u),w=q.o*16,f=Math.sin(q.u*Math.PI);g.fillStyle=mix(q.u);g.globalAlpha=(.35+.65*(1-Math.abs(q.o)))*(.25+.75*f);g.beginPath();g.arc(x+(q.k?-w:w)*.707,y+w*.707,q.r,0,7);g.fill();}
+  for(const q of P){q.u=(q.u+q.s)%1;const[x,y]=pt(q.k,q.u),w=q.o*16,f=Math.sin(q.u*Math.PI);g.fillStyle='#F2F5FA';g.globalAlpha=(.35+.65*(1-Math.abs(q.o)))*(.25+.75*f);g.beginPath();g.arc(x+(q.k?-w:w)*.707,y+w*.707,q.r,0,7);g.fill();}
   g.globalAlpha=1;}};};
 VIZ.inf=(cv)=>{const g=cv.getContext('2d'),W=cv.width,H=cv.height,N=620;
  const P=[...Array(N)].map(()=>({u:Math.random(),o:(Math.random()-.5)*2,s:.0009+Math.random()*.0016,r:2.4+Math.random()*5.2}));
