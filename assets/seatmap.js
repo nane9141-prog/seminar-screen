@@ -10,6 +10,8 @@ const norm=s=>String(s||'').toLowerCase().replace(/\s|\(주\)|㈜|주식회사|-
 const FIXED={"16-1":"발표 박성용","16-2":"연사 김승준","16-3":"연사 권재열","16-4":"축사 김광록","16-5":"축사 정우용","16-8":"코스닥협회","17-1":"김앤장 1","17-2":"김앤장 2","17-3":"김앤장 3","14-1":"DB증권","14-2":"DB증권","14-3":"DB증권","14-4":"큐더스벤처스","14-5":"큐더스벤처스","14-6":"큐더스벤처스","15-1":"메타넷엑스","15-3":"IR큐더스","15-4":"IR큐더스","15-5":"IR큐더스","15-6":"IR큐더스","12-6":"녹십자","42-3":"유안타증권","31-1":"OPR","31-2":"OPR","31-3":"OPR","31-4":"OPR","31-5":"OPR","31-6":"OPR","32-6":"OPR"};
 /* 명패 없음(05. 좌석 명단 비고): 좌석은 배정하되 명패를 놓지 않는 자리 */
 const NOCARD={};["2-2","6-1","6-2","13-5","13-6","18-7","19-2","20-9","21-1","21-2","27-2","27-3","27-4","27-5","27-6","27-7","30-3","30-4","34-3","34-4","35-4","35-5","38-3","38-4","39-4","42-3","42-4","43-1","43-2","44-3","44-4","44-5","44-6"].forEach(k=>NOCARD[k]=1);
+/* VIP석: 신청자가 앉지만 VIP로 표시하는 자리(상장협 16-6 · 16-7) */
+const VIPSEAT={'16-6':1,'16-7':1};
 const NOSEAT={};   // 없는 좌석 없음 — 315석 모두 사용
 window.SEAT_FIXED=FIXED;   // 참석자 관리의 '대상자(신청 + VIP)' 집계에 사용
 const COL={vip:0xe2b04a,empty:0x3a3f4d,assigned:0x2f6bff,arrived:0x5ed39a,pending:0xffb74d,dup:0xff7a7a};
@@ -51,7 +53,7 @@ function sync(){
   if(sel&&!byId[sel.id])sel=null;
   paint();side();
 }
-function seatColor(s){const o=occ[s.id];if(!o)return FIXED[s.id]?COL.vip:COL.empty;if(o.length>1)return COL.dup;if(o[0].attended)return COL.arrived;if(o[0].status!=='confirmed')return COL.pending;return COL.assigned;}
+function seatColor(s){const o=occ[s.id];if(!o)return FIXED[s.id]?COL.vip:COL.empty;if(o.length>1)return COL.dup;if(o[0].attended)return COL.arrived;if(o[0].status!=='confirmed')return COL.pending;return VIPSEAT[s.id]?COL.vip:COL.assigned;}
 
 /* ---------- 3D ---------- */
 function loadLib(cb){
@@ -357,7 +359,7 @@ function planDraw(){if(!PL.el||!PL.on)return;var g=PL.el.querySelector('#splgrid
 window.SeatPlan={html:planHTML};   // 참석자 관리의 '좌석배치도' 창에서도 같은 표를 씀
 function planInfo(id){const o=occ[id],sl=!!(sel&&sel.id===id);if(NOSEAT[id])return{cls:'x',a:'좌석 없음',b:''};
   if(!o)return{cls:FIXED[id]?'vip':'',a:FIXED[id]||'',b:'',sel:sl};
-  return{cls:o.length>1?'dup':o[0].attended?'arr':o[0].status!=='confirmed'?'pend':'as',a:o[0].company_name||'',b:o.map(x=>x.name).join(', '),sel:sl};}
+  return{cls:o.length>1?'dup':o[0].attended?'arr':o[0].status!=='confirmed'?'pend':VIPSEAT[id]?'vip':'as',a:o[0].company_name||'',b:o.map(x=>x.name).join(', '),sel:sl};}
 function planPick(id){const s=byId[id];if(!s||NOSEAT[id])return;if(moveFrom)return doMove(moveFrom,s);select(s);}
 const VIEWS={persp:[[30,17,27],[2,0,0]],top:[[0,62,.01],[0,0,0]],stage:[[-23,4.6,-.4],[6,0,-.4]],back:[[33,10,-.4],[-6,0,-.4]],all:[[-20,88,96],[-20,0,10]]};
 function setView(v){const p=VIEWS[v];camera.position.set(p[0][0],p[0][1],p[0][2]);controls.target.set(p[1][0],p[1][1],p[1][2]);controls.update();
