@@ -102,7 +102,7 @@ function draw(){
     '<td><select class="desk" data-k="desk">'+'<option value="">미배정</option>'+DESKS.map(d=>'<option value="'+d[0]+'"'+(deskOf(a)===d[0]?' selected':'')+'>'+d[0]+'</option>').join('')+'</select></td>'+
     '<td><input type="text" class="seat" data-k="seat" value="'+esc(a.seat||'')+'" placeholder="좌석" maxlength="20"></td>'+
     '<td><input type="text" class="note" data-k="note" value="'+esc(memoOf(a))+'" placeholder="메모" maxlength="90"></td>'+
-    '<td>'+(x.status==='confirmed'?'<button data-a="arr" class="'+(x.attended?'arr on':'arr')+'">'+(x.attended?'참석 '+(x.attended_at?new Date(x.attended_at).toTimeString().slice(0,5):''):'미확인')+'</button>':'<span class="mut" title="관리자 페이지에서 확정하면 참석 체크할 수 있습니다">확정 후 가능</span>')+'</td></tr>';}).join('')
+    '<td class="xact">'+(x.status==='confirmed'?'<button data-a="arr" class="'+(x.attended?'arr on':'arr')+'">'+(x.attended?'참석 '+(x.attended_at?new Date(x.attended_at).toTimeString().slice(0,5):''):'미확인')+'</button>':'<span class="mut" title="관리자 페이지에서 확정하면 참석 체크할 수 있습니다">확정 후 가능</span>')+'<button data-a="redit" class="xdel" title="회사 · 이름 · 부서 · 직급 · 휴대폰 · 이메일 수정">상세</button></td></tr>';}).join('')
     :'<tr><td colspan="9" class="mut empty">'+(q?'"'+esc(q)+'"에 해당하는 신청자가 없습니다. 사전 신청하지 않은 분입니다 — 현장 등록 데스크로 안내하세요.':'목록이 비어 있습니다.')+'</td></tr>';
   if(keep){const [k,id]=keep.split(':');const el=document.querySelector('#attb tr[data-id="'+id+'"] [data-k="'+k+'"]');if(el){el.focus();if(el.setSelectionRange&&el.tagName==='INPUT'){const v=el.value;el.setSelectionRange(v.length,v.length);}}}
   {const dl=$('atfreelist');if(dl)dl.innerHTML=freeSeats().map(s=>'<option value="'+s+'">').join('');}
@@ -150,7 +150,7 @@ $('attb').addEventListener('change',e=>{if(SP.skip)return;const k=e.target.datas
   saveSeat(id,{[k]:v||null});});
 $('attb').addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.dataset.k){e.preventDefault();e.target.blur();}if(e.key==='Escape'&&e.target===SP.inp){e.target.value=curSeat(e.target.closest('tr').dataset.id);e.target.blur();}});
 $('attb').addEventListener('click',e=>{const tr=e.target.closest('tr[data-id]');if(!tr)return;if(isX(tr.dataset.id)){const xe=xOf(tr.dataset.id);if(e.target.closest('[data-a=xdel]'))delExtra(tr.dataset.id);else if(e.target.closest('[data-a=xarr]')&&xe)saveExtra(xe.id,{attended:!xe.attended});else if(e.target.closest('[data-a=xedit]')&&xe)xDialog(xe);return;}const id=tr.dataset.id;
-  if(e.target.closest('[data-a=arr]'))return toggleArr(id);if(e.target.tagName==='INPUT'||e.target.tagName==='SELECT'||e.target.tagName==='OPTION')return;pick=pick===id?null:id;draw();});
+  if(e.target.closest('[data-a=arr]'))return toggleArr(id);if(e.target.closest('[data-a=redit]'))return rDialog(id);if(e.target.tagName==='INPUT'||e.target.tagName==='SELECT'||e.target.tagName==='OPTION')return;pick=pick===id?null:id;draw();});
 $('atcard').addEventListener('click',e=>{const b=e.target.closest('[data-a=arr]');if(b)toggleArr(b.dataset.id);});
 $('atq').addEventListener('input',e=>{q=e.target.value.trim();pick=null;draw();});
 $('atq').addEventListener('keydown',e=>{if(e.key==='Escape'){e.target.value='';q='';pick=null;draw();}});
@@ -158,6 +158,19 @@ document.querySelectorAll('#atflt [data-f]').forEach(b=>b.onclick=()=>{flt=b.dat
 $('atdesk').addEventListener('click',e=>{const b=e.target.closest('[data-d]');if(!b)return;desk=b.dataset.d;pick=null;draw();});
 $('atreload').onclick=()=>load();
 /* 기업명만 등록: 이름 · 연락처 없이 기업명과 인원 수만으로 추가(VIP · 미신청 · 스태프 등). 2명 이상이면 '기업명 1', '기업명 2' … */
+/* 사전 신청자 상세: 회사 · 이름 · 부서 · 직급 · 휴대폰 · 이메일 수정(삭제 없음). 신청 DB(registrations)를 직접 고침 */
+let rEdit=null;const RD={co:'company_name',name:'name',dept:'dept',title:'title',phone:'phone',email:'email'};
+function rDialog(id){const x=R.find(r=>r.id===id);if(!x)return;rEdit=x;$('atrderr').textContent='';Object.keys(RD).forEach(k=>{$('atrd'+k).value=x[RD[k]]||'';});
+  $('atrdinfo').textContent='No. '+x.reg_no+' · '+(x.status==='confirmed'?'확정':'대기')+(x.created_at?' · 신청 '+new Date(x.created_at).toLocaleString('ko-KR',{month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit'}):'');$('atrd').showModal();}
+$('atrdclose').onclick=()=>$('atrd').close();
+$('atrdform').addEventListener('submit',async e=>{e.preventDefault();const x=rEdit,c=sb();if(!x||!c)return;const err=t=>{$('atrderr').textContent=t||'';},v={};Object.keys(RD).forEach(k=>v[RD[k]]=$('atrd'+k).value.trim());
+  if(v.company_name.length<2)return err('회사명을 입력해 주세요');if(v.name.length<2)return err('이름을 입력해 주세요');
+  v.email=v.email.toLowerCase();if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v.email))return err('이메일 형식을 확인해 주세요');
+  const d=v.phone.replace(/\D/g,'');if(!/^01[016789]\d{7,8}$/.test(d))return err('휴대폰 번호를 확인해 주세요');v.phone=/-/.test(x.phone||'')?d.replace(/^(\d{3})(\d{3,4})(\d{4})$/,'$1-$2-$3'):d;   // 기존 저장 형식(하이픈 유무)을 따름
+  const p={};Object.keys(v).forEach(k=>{if(v[k]!==(x[k]||''))p[k]=v[k]||null;});if(!Object.keys(p).length)return $('atrd').close();
+  err('저장 중…');const {error}=await c.from('registrations').update(p).eq('id',x.id);
+  if(error)return err(/reg_email_active|reg_phone_active|duplicate/.test(error.message)?'다른 신청자가 이미 쓰고 있는 이메일 또는 휴대폰입니다.':'저장하지 못했습니다: '+error.message);
+  Object.assign(x,p);$('atrd').close();msg(x.name+'님 정보를 수정했습니다');draw();});
 let xEdit=null;const XD={co:'label',grp:'grp',desk:'desk',seat:'seat',name:'name',dept:'dept',title:'title',phone:'phone',email:'email',memo:'memo'};
 function xDialog(e){xEdit=e||null;$('atxaform').reset();$('atxaerr').textContent='';$('atxah').textContent=e?'VIP · 스태프 수정':'VIP · 스태프 등록';$('atxago').textContent=e?'저장하기':'추가하기';$('atxanw').style.display=e?'none':'';
   if(e)Object.keys(XD).forEach(k=>{$('atxa'+k).value=k==='co'?e.company_name:e[XD[k]]||'';});$('atxa').showModal();$('atxaco').focus();}

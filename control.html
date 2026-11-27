@@ -491,6 +491,14 @@ body.kflash #pvslot,body.kflash #pvbox{box-shadow:0 0 0 2px #2f6bff}
     <div class="two"><label>좌석<input type="text" id="atxaseat" maxlength="20" placeholder="예: 16-9" list="atfreelist" autocomplete="off"></label><label>메모<input type="text" id="atxamemo" maxlength="90"></label></div>
     <div class="ft"><span id="atxaerr" class="late"></span><span class="sp"></span><button type="button" id="atxaclose">닫기</button><button class="pri" type="submit" id="atxago">추가하기</button></div>
    </form></dialog>
+   <dialog id="atrd" class="atmr"><form id="atrdform" method="dialog">
+    <h3>신청자 상세 · 수정</h3><p class="mut" id="atrdinfo"></p>
+    <label>소속 회사 <em>필수</em><input type="text" id="atrdco" maxlength="80" required></label>
+    <div class="two"><label>이름 <em>필수</em><input type="text" id="atrdname" maxlength="40" required></label><label>휴대폰 <em>필수</em><input type="tel" id="atrdphone" maxlength="13" required></label></div>
+    <div class="two"><label>부서<input type="text" id="atrddept" maxlength="60"></label><label>직급<input type="text" id="atrdtitle" maxlength="40"></label></div>
+    <label>이메일 <em>필수</em><input type="email" id="atrdemail" maxlength="120" required></label>
+    <div class="ft"><span id="atrderr" class="late"></span><span class="sp"></span><button type="button" id="atrdclose">닫기</button><button class="pri" type="submit">저장하기</button></div>
+   </form></dialog>
    <dialog id="atmr" class="atmr"><form id="atmrform" method="dialog">
     <h3>참석자 수동 등록</h3>
     <p class="mut">사전 신청 명단에도 VIP에도 없는 예외 참석자를 등록합니다. 등록하면 바로 참석 확정되고 관리자 페이지에도 반영됩니다.</p>
