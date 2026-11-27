@@ -49,6 +49,7 @@ const active=()=>document.body.dataset.m==='seat';
 function msg(t,bad){const e=$('smmsg');if(!e)return;e.textContent=t;e.style.color=bad?'#FF8A7A':'#7FD6A0';clearTimeout(e._t);e._t=setTimeout(()=>e.textContent='',bad?6000:2500);}
 function sync(){
   const d=A()&&A().get?A().get():{R:[],S:{}};R=d.R||[];S=d.S||{};occ={};
+  if(A()&&A().extras&&A().extras().length){Object.keys(FIXED).forEach(k=>delete FIXED[k]);A().extras().forEach(e=>{const k=seatKey(e.seat);if(k)FIXED[k]=e.card;});}   // 고정석 = 참석자 관리의 VIP · 스태프 좌석(변경하면 따라감)
   R.forEach(x=>{const k=seatKey((S[x.id]||{}).seat);if(k)(occ[k]=occ[k]||[]).push(x);});
   if(sel&&!byId[sel.id])sel=null;
   paint();side();
