@@ -86,12 +86,33 @@ body.wide .id .en{font-size:36px!important}
 body.wide .id h1{margin-top:30px!important;font-size:100px!important}
 body.wide .id .lg{height:76px!important;margin-top:48px!important}
 body.wide .fsw iframe{width:1440px!important;height:1440px!important;left:auto!important;margin-left:0!important;left:620px!important;top:-180px!important}
+/* 11/27 휴식(M6 · M8) 현장 질의 QR 화면 — 4:3 위아래 쌓기 · 16:9 왼쪽 글 · 오른쪽 QR */
+#qa{position:absolute;inset:0;background:#000;opacity:0;visibility:hidden;transition:opacity .6s,visibility 0s .6s;z-index:4;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:56px}
+body.qa #qa{opacity:1;visibility:visible;transition:opacity .6s}
+#qa::before{content:"";position:absolute;left:-10%;right:-10%;bottom:-460px;height:760px;border-radius:50%;background:radial-gradient(closest-side,rgba(0,129,204,.34),rgba(0,173,169,.12) 60%,transparent);pointer-events:none}
+.qa-t,.qa-q{position:relative}
+.qa-e{font:600 34px/1 "Pretendard Variable";letter-spacing:.06em;color:#3aa0ea}
+.qa-h{margin-top:28px;font:700 92px/1.16 "Pretendard Variable";letter-spacing:-.025em;color:#fff}
+.qa-d{margin-top:28px;font:400 38px/1.45 "Pretendard Variable";color:#C9D2DE}
+.qa-r{margin-top:18px;font:500 32px/1.4 "Pretendard Variable";color:#8D99AB}
+.qa-r:empty{display:none}
+.qa-q{display:flex;flex-direction:column;align-items:center}
+.qa-qi{width:420px;height:420px;padding:30px;border-radius:32px;background:#fff;box-sizing:border-box}
+.qa-qi img{display:block;width:100%;height:100%}
+.qa-qs{margin-top:22px;font:500 30px/1.3 "Pretendard Variable";color:#A9B4C4}
+body:not(.wide) #qa{gap:44px}
+body:not(.wide) .qa-h br{display:none}
+body.wide #qa{flex-direction:row;gap:150px;text-align:left}
+body.wide .qa-t{width:820px}
+body.wide .qa-h{font-size:96px}
+body.wide .qa-qi{width:460px;height:460px}
 </style></head>
 <body>
 <div class="stage" id="stage">
  <div class="fsw"><iframe id="fs" src="assets/four-states.html" tabindex="-1" title="" aria-hidden="true"></iframe></div>
  <div class="id"><p class="en">Live Demo Briefing</p><h1>전자주주총회<br>플랫폼<br>시연 설명회</h1><img class="lg" src="assets/irk-white.svg" alt="IR KUDOS"></div>
  <div class="ph" id="ph"></div>
+ <div id="qa"><div class="qa-t"><p class="qa-e">BREAK · 현장 질의</p><h2 class="qa-h">궁금한 점을 <br>남겨 주세요</h2><p class="qa-d">QR코드로 질문을 보내 주시면<br>질의응답 시간에 연사가 직접 답변드립니다.</p><p class="qa-r" id="qar"></p></div><div class="qa-q"><div class="qa-qi"><img src="assets/qr-ask.svg" alt="현장 질의 QR"></div><p class="qa-qs">명찰 뒷면 QR코드와 같습니다</p></div></div>
  <div id="dk"><div id="dkb"><iframe id="dkf" tabindex="-1" title="" aria-hidden="true"></iframe><div id="dkp"></div></div></div>
 </div>
 <div id="black"></div><div id="st"><i></i><span>신호 대기</span></div>
@@ -165,14 +186,16 @@ const DK={cur:null,label:null,ready:false,f:$('dkf'),p:$('dkp'),b:$('dkb'),
 window.DK=DK;
 addEventListener('message',e=>{const d=e.data||{};if(e.source!==DK.f.contentWindow||!d.s4)return;
  if(d.s4==='ready'){DK.ready=true;try{DK.f.contentWindow.postMessage({s4:'enter',at:'first'},'*');}catch(e){}DK.label=null;setTimeout(()=>DK.sync(),300);}});
-function apply(v,from){if(!v)return;lastRx=Date.now();src=from;if(v.sch)SCH=v.sch;document.body.classList.toggle('black',!!v.black);if(FOLLOW&&v.cur)DK.show(DK.of(v));
+function qaShow(no){const m=String(no||'').toUpperCase().match(/^M([68])-(1|S1)$/);document.body.classList.toggle('qa',!!m);
+ if(m){const e=brkEnd(m[1]==='6'?'brk1':'brk2');$('qar').textContent=e!=null?'휴식 후 '+F(e)+'에 다시 시작합니다':'';}}
+function apply(v,from){if(!v)return;lastRx=Date.now();src=from;if(v.sch)SCH=v.sch;document.body.classList.toggle('black',!!v.black);if(FOLLOW&&v.cur){DK.show(DK.of(v));qaShow(v.cur);}
  if(FOLLOW&&v.cur)show(keyOf(v.cur));else if(SP[CUR]&&SP[CUR].brk)tick();}
 function tick(){const d=SP[CUR];if(d&&d.brk){const e=brkEnd(d.brk),el=$('cd');if(el&&e!=null){const left=Math.max(0,e*60-SCHED.nowSec());el.textContent=String(Math.floor(left/60)).padStart(2,'0')+':'+String(Math.floor(left%60)).padStart(2,'0');}}
  const age=(Date.now()-lastRx)/1000,ok=lastRx&&age<20,st=$('st');st.classList.toggle('ok',!!ok);
  st.querySelector('span').textContent=(FOLLOW?'':'직접 넘기는 중(A: 다시 따라가기) · ')+(ok?(src==='net'?'온라인 연동':'같은 PC 연동'):lastRx?'신호 끊김 '+Math.round(age)+'초 · 마지막 장면 유지':'메인 스크린 신호 대기')+' · 온라인 '+({on:'연결',connecting:'연결 중',down:'끊김',off:'꺼짐'}[SCHED.net.state]||'')+' · 장면 '+CUR;}
 setInterval(tick,1000);
 SCHED.onState(v=>apply(v,'local'));
-{const v=SCHED.getState();show(v&&v.cur?keyOf(v.cur):'base',true);if(v)SCH=v.sch||null;}
+{const v=SCHED.getState();show(v&&v.cur?keyOf(v.cur):'base',true);if(v){SCH=v.sch||null;if(v.cur){DK.show(DK.of(v));qaShow(v.cur);}}}
 /* 사회자 화면용 방송도 같이 받음 (메인이 온라인일 때) */
 if(SCHED.net.state!=='off')try{const sb=supabase.createClient('https://zrhtqpzgubaqzsdaxhvt.supabase.co','sb_publishable_JwET6KLGmdYBkOIIttgOOQ_HEpCKLar',{auth:{persistSession:false}});
  sb.channel('seminar-mc').on('broadcast',{event:'state'},({payload})=>{if(payload&&payload.cur){apply({cur:payload.cur,pos:payload.pos,pdk:payload.pdk,black:payload.black,sch:payload.sch?payload.sch:null},'net');}}).subscribe();}catch(e){}
