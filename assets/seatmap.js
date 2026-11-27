@@ -6,9 +6,11 @@
 const $=id=>document.getElementById(id);
 const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const norm=s=>String(s||'').toLowerCase().replace(/\s|\(주\)|㈜|주식회사|-/g,'');
-/* 1열 VIP·연사 고정석(자리배치 엑셀 '04. 좌석도' 기준) · 좌석 없음(5열 중앙 7~9번) */
-const FIXED={"A21": "축사 김광록", "A20": "축사 정우용", "A19": "연사 김승준", "A18": "연사 권재열", "A17": "연사 Scott", "A15": "김앤장 1", "A14": "김앤장 2", "A13": "김앤장 3", "A12": "상장협 전규향", "A11": "상장협 서지원", "A10": "IR협의회 1", "A9": "IR협의회 2", "A8": "코스닥협회 1", "A7": "코스닥협회 2", "A6": "IRK 1", "A5": "IRK 2", "A4": "IRK 3", "A3": "IRK 4", "A2": "IRK 5", "A1": "IRK 6"};
-const NOSEAT={E7:1,E8:1,E9:1};
+/* 고정석: 신청 명단에 없는 자리(연사 · VIP · 운영 등) — '전자주총 세미나 운영-최종.xlsx' 04. 좌석도 기준. 연사 외에는 소속만 표기 */
+const FIXED={"16-1":"발표 박성용","16-2":"연사 김승준","16-3":"연사 권재열","16-4":"축사 김광록","16-5":"축사 정우용","16-8":"코스닥협회","17-1":"김앤장 1","17-2":"김앤장 2","17-3":"김앤장 3","14-1":"DB증권","14-2":"DB증권","14-3":"DB증권","14-4":"큐더스벤처스","14-5":"큐더스벤처스","14-6":"큐더스벤처스","15-1":"메타넷엑스","15-3":"IR큐더스","15-4":"IR큐더스","15-5":"IR큐더스","15-6":"IR큐더스","12-6":"녹십자","42-3":"유안타증권","31-1":"OPR","31-2":"OPR","31-3":"OPR","31-4":"OPR","31-5":"OPR","31-6":"OPR","32-6":"OPR"};
+/* 명패 없음(05. 좌석 명단 비고): 좌석은 배정하되 명패를 놓지 않는 자리 */
+const NOCARD={};["2-2","6-1","6-2","13-5","13-6","18-7","19-2","20-9","21-1","21-2","27-2","27-3","27-4","27-5","27-6","27-7","30-3","30-4","34-3","34-4","35-4","35-5","38-3","38-4","39-4","42-3","42-4","43-1","43-2","44-3","44-4","44-5","44-6"].forEach(k=>NOCARD[k]=1);
+const NOSEAT={};   // 없는 좌석 없음 — 315석 모두 사용
 window.SEAT_FIXED=FIXED;   // 참석자 관리의 '대상자(신청 + VIP)' 집계에 사용
 const COL={vip:0xe2b04a,empty:0x3a3f4d,assigned:0x2f6bff,arrived:0x5ed39a,pending:0xffb74d,dup:0xff7a7a};
 
@@ -307,7 +309,7 @@ function paint(){
   seats.forEach(s=>{tmpColor.setHex(seatColor(s));seatMesh.setColorAt(s.i,tmpColor);backMesh.setColorAt(s.i,tmpColor);
     const o=occ[s.id],lb=labels[s.i],text=o?o[0].company_name||'':(FIXED[s.id]||'');
     if(lb.text!==text){lb.text=text;drawLabel(lb);}
-    const k=NOSEAT[s.id]?0:(big?4:1),cx=s.x-T_DEP/2+k*LBL_H/2;lb.mesh.scale.set(k,k,k);lb.mesh.position.set(cx,T_H+.004+k*.001,s.z);});
+    const k=NOSEAT[s.id]||NOCARD[s.id]?0:(big?4:1),cx=s.x-T_DEP/2+k*LBL_H/2;lb.mesh.scale.set(k,k,k);lb.mesh.position.set(cx,T_H+.004+k*.001,s.z);});
   seatMesh.instanceColor.needsUpdate=backMesh.instanceColor.needsUpdate=true;
   if(sel){hl.visible=true;hl.position.set(sel.x+.6,.05,sel.z);}else hl.visible=false;
   planDraw();
@@ -414,7 +416,7 @@ function side(){
         '<div class="acts">'+(x.status==='confirmed'?'<button data-a="arr" data-id="'+x.id+'" class="'+(x.attended?'arr on':'')+'">'+(x.attended?'참석 체크됨':'참석 체크')+'</button>':'')+
         '<button data-a="move" data-id="'+x.id+'" class="'+(moveFrom&&moveFrom.reg===x.id?'on':'')+'">자리 이동</button><button data-a="un" data-id="'+x.id+'">배정 해제</button></div></div>').join('')+
         (moveFrom?'<div class="hintm">옮길 좌석을 클릭하세요. 사람이 있으면 서로 맞바꿉니다. (Esc 취소)</div>':'')
-       :(FIXED[sel.id]?'<div class="occ"><b>'+esc(FIXED[sel.id])+'</b> <span class="pill wait">고정석</span><div class="mut">VIP·연사석 — 신청자를 배정하면 그 이름으로 바뀝니다.</div></div>':'<div class="mut">빈 좌석 — 아래 목록에서 배정할 사람을 고르세요.</div>'));}
+       :(FIXED[sel.id]?'<div class="occ"><b>'+esc(FIXED[sel.id])+'</b> <span class="pill wait">고정석</span><div class="mut">연사 · VIP · 운영 등 신청 명단에 없는 자리 — 신청자를 배정하면 그 이름으로 바뀝니다.</div></div>':'<div class="mut">빈 좌석 — 아래 목록에서 배정할 사람을 고르세요.</div>'));}
   /* 목록 */
   const n=norm(q),assignMode=sel&&!(occ[sel.id]||[]).length;
   let L=(assignMode?un:R).filter(x=>!n||norm(x.name).includes(n)||norm(x.company_name).includes(n)||norm((S[x.id]||{}).seat).includes(n));

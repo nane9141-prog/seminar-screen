@@ -5,10 +5,13 @@ const $=id=>document.getElementById(id);
 const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const norm=s=>String(s||'').toLowerCase().replace(/\s|\(주\)|㈜|주식회사|-/g,'');
 let R=[],S={},flt='all',q='',pick=null,timer=null,loading=false,desk='all',sort={k:null,d:1};
-const SORTV={co:x=>x.company_name||'',name:x=>x.name||'',status:x=>x.status==='confirmed'?0:1,desk:x=>{const d=deskOf(S[x.id]);return d?(d==='VIP'?8:+d.slice(1)):'';},
+const SORTV={grp:x=>grpOf(x),co:x=>x.company_name||'',name:x=>x.name||'',status:x=>x.status==='confirmed'?0:1,desk:x=>{const d=deskOf(S[x.id]);return d?(d==='VIP'?8:+d.slice(1)):'';},
   seat:x=>{const raw=String((S[x.id]||{}).seat||''),k=window.SEAT_KEY&&window.SEAT_KEY(raw),m=/^(\d+)-(\d+)$/.exec(k||'');return m?(+m[1])*100+(+m[2]):raw;},arr:x=>x.status!=='confirmed'?'':(x.attended?0:1)};
 /* 안내 데스크 배정: seat_assign 에 전용 칸이 없어 메모(note) 앞에 "[D3] " 꼴 꼬리표로 저장합니다. 화면에서는 데스크와 메모를 따로 보여 줍니다. */
-const DESKS=[['D1','미등록자 · 현장등록'],['D2','ㄱ · ㄴ · ㄷ'],['D3','ㄹ · ㅁ · ㅂ · ㅅ'],['D4','ㅇ (아 · 에 · 엔)'],['D5','ㅇ (엘 · 우 · 유 · 이), ㅈ'],['D6','ㅋ · ㅌ · ㅍ, 하 · 한국'],['D7','한온 · 한진 · 한화 · 현대'],['VIP','VIP 별도']];
+const DESKS=[['D1','VIP · 미등록자'],['D2','ㄱ · ㄴ · ㄷ'],['D3','ㄹ · ㅁ · ㅂ · ㅅ'],['D4','ㅇ (아 · 에 · 엔)'],['D5','ㅇ (엘 · 오 · 우 · 유 · 이)'],['D6','ㅈ · ㅋ · ㅌ · ㅍ, 하'],['D7','한 · 현'],['VIP','VIP 별도']];   // 최종 엑셀 06. 출입 데스크 기준
+/* 그룹(05. 좌석 명단의 '그룹' 열): 회사 → 그룹. 단독 참석 회사는 비움 */
+const GROUPS={"한화오션":"한화","한화손해보험":"한화","한화솔루션":"한화","한화생명":"한화","한화":"한화","한화에어로스페이스":"한화","현대건설":"현대차","현대로템":"현대차","기아":"현대차","현대차증권":"현대차","현대모비스":"현대차","현대오토에버":"현대차","현대차":"현대차","현대제철":"현대차","kcc글라스":"KCC","kcc":"KCC","hd현대중공업":"HD현대","hd건설기계":"HD현대","hd한국조선해양":"HD현대","한화투자증권":"한화","lg전자":"LG","lg생활건강":"LG","lg":"LG","lg유플러스":"LG","gs리테일":"GS","lg씨엔에스":"LG","lg화학":"LG","lg이노텍":"LG","lg에너지솔루션":"LG","ls":"LS","lselectric":"LS","ls증권":"LS","e1":"LS","카카오뱅크":"카카오","카카오페이":"카카오","카카오":"카카오","sk네트웍스":"SK","sk이노베이션":"SK","skc":"SK","sk케미칼":"SK","sk스퀘어":"SK","sk텔레콤":"SK","sk바이오사이언스":"SK","sk아이이테크놀로지":"SK","sk가스":"SK","신세계":"신세계·이마트","이마트":"신세계·이마트","두산에너빌리티":"두산","두산":"두산","hl만도":"HL","hl홀딩스":"HL","코오롱글로벌":"코오롱","코오롱인더":"코오롱","두산밥캣":"두산","삼양홀딩스":"삼양","삼양사":"삼양","한국의결권자문":"기관·전문가","gs":"GS","gs건설":"GS","db증권":"DB","lg디스플레이":"LG","ir큐더스":"IRK","삼성증권":"삼성","삼성에스디에스":"삼성","삼성전기":"삼성","삼성sdi":"삼성","에스원":"삼성","삼성생명":"삼성","삼성물산":"삼성","삼성바이오로직스":"삼성","롯데정밀화학":"롯데","롯데리츠":"롯데","롯데지주":"롯데","롯데케미칼":"롯데","롯데렌탈":"롯데","한진":"한진","대한항공":"한진","한진칼":"한진","posco홀딩스":"포스코","포스코퓨처엠":"포스코","에코프로":"에코프로","db손해보험":"DB","에코프로비엠":"에코프로","한국타이어앤테크놀로지":"한국앤컴퍼니","한국앤컴퍼니":"한국앤컴퍼니","한온시스템":"한국앤컴퍼니","호텔신라":"삼성","삼양식품":"삼양","hd현대산업개발":"HD현대","법무법인바른":"VIP","한국상장회사협의회":"VIP","ir큐더스아이알큐더스":"IRK"};
+const gnorm=s=>String(s||'').replace(/[\s·.,()㈜]|주식회사/g,'').toLowerCase(),grpOf=x=>GROUPS[gnorm(x.company_name)]||'';
 const DRE=/^\[(D[1-7]|VIP)\]\s?/;
 const deskOf=a=>{const m=DRE.exec((a&&a.note)||'');return m?m[1]:'';};
 const memoOf=a=>String((a&&a.note)||'').replace(DRE,'');
@@ -38,13 +41,13 @@ function view(){
 }
 const last4=p=>String(p||'').replace(/\D/g,'').slice(-4);
 function match(x){if(!q)return true;const n=norm(q),d=q.replace(/\D/g,'');
-  return norm(x.name).includes(n)||norm(x.company_name).includes(n)||(d.length>=3&&String(x.phone||'').replace(/\D/g,'').includes(d))||norm((S[x.id]||{}).seat).includes(n);}
+  return norm(x.name).includes(n)||norm(x.company_name).includes(n)||norm(grpOf(x)).includes(n)||(d.length>=3&&String(x.phone||'').replace(/\D/g,'').includes(d))||norm((S[x.id]||{}).seat).includes(n);}
 function draw(){
   const conf=R.filter(x=>x.status==='confirmed'),seat=R.filter(x=>(S[x.id]||{}).seat),arr=conf.filter(x=>x.attended);
   /* 대상자 = 사전 신청 + VIP·연사 고정석(신청자가 앉지 않은 자리) */
   const FX=window.SEAT_FIXED||{},taken=new Set(R.map(x=>String((S[x.id]||{}).seat||'').toUpperCase().replace(/[\s-]/g,''))),vip=Object.keys(FX).filter(k=>!taken.has(k)).length;
   $('atc-all').textContent=R.length+vip;$('atc-reg').textContent=R.length;$('atc-vip').textContent=vip;{const key=window.SEAT_KEY,tot=window.SEAT_TOTAL;if(key&&tot){const used=new Set(R.map(x=>key((S[x.id]||{}).seat)).filter(Boolean));$('atc-left').textContent=tot-used.size-Object.keys(FX).filter(k=>!used.has(k)).length;$('atc-left').parentNode.title='전체 '+tot+'석 − 배정 '+used.size+'석 − VIP·연사 고정석 '+Object.keys(FX).filter(k=>!used.has(k)).length+'석';}}
-  $('atc-all').parentNode.title='신청 '+R.length+'명(확정 '+conf.length+' · 대기 '+(R.length-conf.length)+') + VIP·연사 '+vip+'석';
+  $('atc-all').parentNode.title='신청 '+R.length+'명(확정 '+conf.length+' · 대기 '+(R.length-conf.length)+') + 고정석(연사 · VIP · 운영 등) '+vip+'석';
   $('atc-seat').textContent=seat.length;$('atc-noseat').textContent=R.length-seat.length;$('atc-arr').textContent=arr.length;
   document.querySelectorAll('#atflt [data-f]').forEach(b=>b.classList.toggle('sel',b.dataset.f===flt));
   const dc={};R.forEach(x=>{const d=deskOf(S[x.id])||'none';dc[d]=(dc[d]||0)+1;});
@@ -61,14 +64,14 @@ function draw(){
   const cos=[...new Set(R.map(x=>x.company_name))];if($('atcos').childElementCount!==cos.length)$('atcos').innerHTML=cos.map(c=>'<option value="'+esc(c)+'">').join('');
   const ae=document.activeElement,keep=ae&&ae.dataset&&ae.dataset.k?ae.dataset.k+':'+ae.closest('tr').dataset.id:null;
   $('attb').innerHTML=L.length?L.map(x=>{const a=S[x.id]||{};return '<tr data-id="'+x.id+'" class="'+(pick===x.id?'sel':'')+'">'+
-    '<td><b>'+esc(x.company_name)+'</b></td><td><b class="nm">'+esc(x.name)+'</b><div class="mut">'+esc([x.dept,x.title].filter(Boolean).join(' · '))+'</div></td>'+
+    '<td><b>'+esc(x.company_name)+'</b></td><td>'+(grpOf(x)?'<span class="grp">'+esc(grpOf(x))+'</span>':'')+'</td><td><b class="nm">'+esc(x.name)+'</b><div class="mut">'+esc([x.dept,x.title].filter(Boolean).join(' · '))+'</div></td>'+
     '<td class="mut tn">'+(last4(x.phone)?'···'+last4(x.phone):'')+'</td>'+
     '<td>'+(x.status==='confirmed'?'<span class="pill ok">확정</span>':'<span class="pill wait">대기</span>')+'</td>'+
     '<td><select class="desk" data-k="desk">'+'<option value="">미배정</option>'+DESKS.map(d=>'<option value="'+d[0]+'"'+(deskOf(a)===d[0]?' selected':'')+'>'+d[0]+'</option>').join('')+'</select></td>'+
     '<td><input type="text" class="seat" data-k="seat" value="'+esc(a.seat||'')+'" placeholder="좌석" maxlength="20"></td>'+
     '<td><input type="text" class="note" data-k="note" value="'+esc(memoOf(a))+'" placeholder="메모" maxlength="90"></td>'+
     '<td>'+(x.status==='confirmed'?'<button data-a="arr" class="'+(x.attended?'arr on':'arr')+'">'+(x.attended?'참석 '+(x.attended_at?new Date(x.attended_at).toTimeString().slice(0,5):''):'미확인')+'</button>':'<span class="mut" title="관리자 페이지에서 확정하면 참석 체크할 수 있습니다">확정 후 가능</span>')+'</td></tr>';}).join('')
-    :'<tr><td colspan="8" class="mut empty">'+(q?'"'+esc(q)+'"에 해당하는 신청자가 없습니다. 사전 신청하지 않은 분입니다 — 현장 등록 데스크로 안내하세요.':'목록이 비어 있습니다.')+'</td></tr>';
+    :'<tr><td colspan="9" class="mut empty">'+(q?'"'+esc(q)+'"에 해당하는 신청자가 없습니다. 사전 신청하지 않은 분입니다 — 현장 등록 데스크로 안내하세요.':'목록이 비어 있습니다.')+'</td></tr>';
   if(keep){const [k,id]=keep.split(':');const el=document.querySelector('#attb tr[data-id="'+id+'"] [data-k="'+k+'"]');if(el){el.focus();if(el.setSelectionRange&&el.tagName==='INPUT'){const v=el.value;el.setSelectionRange(v.length,v.length);}}}
   {const dl=$('atfreelist');if(dl)dl.innerHTML=freeSeats().map(s=>'<option value="'+s+'">').join('');}
   if(SP.inp){const el=document.activeElement;if(el&&el.matches&&el.matches('#attb input.seat'))spOpen(el);else spClose();}
