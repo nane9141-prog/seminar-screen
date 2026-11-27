@@ -2,6 +2,7 @@
 <html lang="ko"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
+<meta name="build" content="11271545">
 <title>전자주주총회 플랫폼 시연 설명회 — 스크린</title>
 <style>
 @font-face{font-family:"Pretendard Variable";src:url(assets/PretendardVariable.woff2) format("woff2");font-weight:45 920;font-display:block}
@@ -1096,8 +1097,9 @@ addEventListener('message',e=>{const d=e.data||{};if(!d.s4)return;const f=KN.fra
   else if(d.s4==='bg'){if(cur&&fs.dataset.kn){const c=document.getElementById('c');if(c)c.style.opacity=d.dim;dsPost({ds:'ox',v:d.ox});}}
   else if(d.s4==='pos'){if(cur){KN.pos=d.label;if(window.CtrlPanel)CtrlPanel.draw();MC.pub();}}});
 /* 사회자 화면(mc.html) 연동: 같은 PC는 SCHED(BroadcastChannel), 다른 기기는 Supabase Realtime 방송(온라인일 때). 8초마다 재전송 */
-var MC={st:null,q:null,
- pub(o){if(o)this.st=o;if(!this.st||window.VIEW_MODE)return;const bk=document.getElementById('black');const s={...this.st,...MC.panel(),cp:(window.CtrlPanel&&CtrlPanel.geo)?CtrlPanel.geo():null,pos:(typeof KN!=='undefined'&&KN.pos)||'',q:this.q,black:!!(bk&&bk.classList.contains('on')),sch:(()=>{try{return SCHED.load().items.map(x=>[x.id,x.start,x.end]);}catch(e){return null;}})(),t:Date.now()};SCHED.pub(s);
+var MC={st:null,q:null,sid:Math.random().toString(36).slice(2,8),  /* 11/27 ver(빌드) · sid(탭) — 운영 입력이 이전 버전 메인 신호를 걸러냄 */
+
+ pub(o){if(o)this.st=o;if(!this.st||window.VIEW_MODE)return;const bk=document.getElementById('black');const s={...this.st,ver:+((document.querySelector('meta[name=build]')||{}).content||0),sid:MC.sid,...MC.panel(),cp:(window.CtrlPanel&&CtrlPanel.geo)?CtrlPanel.geo():null,pos:(typeof KN!=='undefined'&&KN.pos)||'',q:this.q,black:!!(bk&&bk.classList.contains('on')),sch:(()=>{try{return SCHED.load().items.map(x=>[x.id,x.start,x.end]);}catch(e){return null;}})(),t:Date.now()};SCHED.pub(s);
   try{const sc=SCHED.load();fetch('https://zrhtqpzgubaqzsdaxhvt.supabase.co/realtime/v1/api/broadcast',{method:'POST',headers:{apikey:'sb_publishable_JwET6KLGmdYBkOIIttgOOQ_HEpCKLar','Content-Type':'application/json'},
    body:JSON.stringify({messages:[{topic:'seminar-mc',event:'state',payload:{cur:s.cur,pos:s.pos,q:s.q,nx:s.nx,msg:s.msg,at0:s.at0,alen:s.alen,auto:s.auto,bgm:s.bgm,sfx:s.sfx,pdk:s.pdk,pdkn:s.pdkn,spd:s.spd,ex:s.ex,snd:s.snd,black:s.black,cp:s.cp,sch:sc.items.map(x=>[x.id,x.start,x.end]),t:Date.now()}}]})}).catch(()=>{});}catch(e){}}};
 /* 11/26 운영 입력 「화면 전환」 탭에 메인 P 패널 정보 보내기: 다음 화면 · 자동 넘김 진행 · 대기 자동순환 · 배경음악 · 효과음 · 배속 · 진행 일정 */
