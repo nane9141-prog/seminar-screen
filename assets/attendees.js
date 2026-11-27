@@ -20,23 +20,25 @@ const pack=(d,memo)=>{const t=(d?'['+d+'] ':'')+String(memo||'').trim();return t
 const EXTRA0=[["발표 박성용","연사","VIP","16-1"],["연사 김승준","연사","VIP","16-2"],["연사 권재열","연사","VIP","16-3"],["축사 김광록","연사","VIP","16-4"],["축사 정우용","연사","VIP","16-5"],["코스닥협회 1","VIP","D1","16-8"],["코스닥협회 2","VIP","D1",""],["한국IR협의회 1","VIP","D1",""],["한국IR협의회 2","VIP","D1",""],["김앤장 1","VIP","D1","17-1"],["김앤장 2","VIP","D1","17-2"],["김앤장 3","VIP","D1","17-3"],["DB증권 VIP 1","VIP","D1","14-1"],["DB증권 VIP 2","VIP","D1","14-2"],["DB증권 VIP 3","VIP","D1","14-3"],["메타넷엑스","","D1","15-1"],["녹십자","","D2","12-6"],["유안타증권","","D5","42-3"],["큐더스벤처스 1","큐더스벤처스","스태프","14-4"],["큐더스벤처스 2","큐더스벤처스","스태프","14-5"],["큐더스벤처스 3","큐더스벤처스","스태프","14-6"],["IR큐더스 1","IRK","스태프","15-3"],["IR큐더스 2","IRK","스태프","15-4"],["IR큐더스 3","IRK","스태프","15-5"],["IR큐더스 4","IRK","스태프","15-6"],["OPR 1","운영(OPR)","스태프","31-1"],["OPR 2","운영(OPR)","스태프","31-2"],["OPR 3","운영(OPR)","스태프","31-3"],["OPR 4","운영(OPR)","스태프","31-4"],["OPR 5","운영(OPR)","스태프","31-5"],["OPR 6","운영(OPR)","스태프","31-6"],["OPR 7","운영(OPR)","스태프","32-6"],["에이전트 1","에이전트","스태프","상사이드-1"],["에이전트 2","에이전트","스태프","상사이드-2"],["에이전트 3","에이전트","스태프","상사이드-3"],["에이전트 4","에이전트","스태프","상사이드-4"],["에이전트 5","에이전트","스태프","상사이드-5"],["에이전트 6","에이전트","스태프","상사이드-6"],["에이전트 7","에이전트","스태프","상사이드-7"],["에이전트 8","에이전트","스태프","상사이드-8"],["에이전트 9","에이전트","스태프","상사이드-9"],["에이전트 10","에이전트","스태프","상사이드-10"],["AGM개발실 1","AGM개발실","스태프","하사이드-1"],["AGM개발실 2","AGM개발실","스태프","하사이드-2"],["AGM개발실 3","AGM개발실","스태프","하사이드-3"],["AGM개발실 4","AGM개발실","스태프","하사이드-4"],["AGM개발실 5","AGM개발실","스태프","하사이드-5"],["AGM개발실 6","AGM개발실","스태프","하사이드-6"],["AGM개발실 7","AGM개발실","스태프","하사이드-7"],["AGM개발실 8","AGM개발실","스태프","하사이드-8"],["AGM개발실 9","AGM개발실","스태프","하사이드-9"],["AGM개발실 10","AGM개발실","스태프","하사이드-10"],["AGM개발실 11","AGM개발실","스태프","하사이드-11"]];   // 처음 한 번 채우는 기본 목록
 /* 기업명만으로 관리하는 인원(VIP · 미신청 · 스태프 등): 추가 · 수정 · 삭제 가능. DB의 seat_extra 테이블(backend SQL 1회 실행)에 저장해 모든 운영자와 공유하고,
    테이블이 아직 없으면 이 브라우저(localStorage)에만 저장. 처음에는 위 기본 목록으로 채움 */
-let EXTRA=[],xdb=false;const XKEY='seminar-extra-v2',XCOLS='id,label,grp,desk,seat',isX=id=>String(id)[0]==='x',xOf=id=>EXTRA.find(e=>e.id===id),curSeat=id=>isX(id)?(xOf(id)||{}).seat||'':(S[id]||{}).seat||'';
-const xrow=o=>({id:'x'+o.id,xid:o.id,_x:1,company_name:o.label||'',name:'',status:'extra',grp:o.grp||'',desk:o.desk||'',seat:o.seat||''}),xraw=e=>({id:e.xid,label:e.company_name,grp:e.grp,desk:e.desk,seat:e.seat});
+let EXTRA=[],xdb=false;const XKEY='seminar-extra-v2',XCOLS='id,label,grp,desk,seat,name,dept,title,phone,email,memo,attended,attended_at',XF=['label','grp','desk','seat','name','dept','title','phone','email','memo'],isX=id=>String(id)[0]==='x',xOf=id=>EXTRA.find(e=>e.id===id),curSeat=id=>isX(id)?(xOf(id)||{}).seat||'':(S[id]||{}).seat||'';
+const xrow=o=>({id:'x'+o.id,xid:o.id,_x:1,company_name:o.label||'',name:o.name||'',dept:o.dept||'',title:o.title||'',phone:o.phone||'',email:o.email||'',memo:o.memo||'',attended:!!o.attended,attended_at:o.attended_at||null,status:'extra',grp:o.grp||'',desk:o.desk||'',seat:o.seat||''}),
+  xraw=e=>({id:e.xid,label:e.company_name,grp:e.grp,desk:e.desk,seat:e.seat,name:e.name,dept:e.dept,title:e.title,phone:e.phone,email:e.email,memo:e.memo,attended:e.attended,attended_at:e.attended_at});   // 이름 · 부서 · 직급 · 휴대폰 · 이메일은 모두 선택
 const cardOf=l=>/^김앤장/.test(l)?l:l.replace(/( VIP)? \d+$/,'');   // 3D 명패 · 좌석도 표기(번호 뗀 소속)
 const xLocal=()=>{try{localStorage.setItem(XKEY,JSON.stringify(EXTRA.map(xraw)));}catch(_){}};
 async function loadExtra(){const c=sb();let rows=null,loc=null;try{loc=JSON.parse(localStorage.getItem(XKEY)||'null');}catch(e){}
   const seed=()=>(loc&&loc.length?loc:EXTRA0.map(e=>({label:e[0],grp:e[1],desk:e[2],seat:e[3]})));
   xdb=false;if(c){try{const r=await c.from('seat_extra').select(XCOLS).order('ord');if(!r.error){xdb=true;rows=r.data||[];
-      if(!rows.length){const ins=await c.from('seat_extra').insert(seed().map(o=>({label:o.label,grp:o.grp||null,desk:o.desk||null,seat:o.seat||null,updated_by:QAOnline.who()}))).select(XCOLS).order('ord');if(!ins.error)rows=ins.data||[];}}}catch(e){}}
+      if(!rows.length){const ins=await c.from('seat_extra').insert(seed().map(o=>{const r={updated_by:QAOnline.who(),attended:!!o.attended,attended_at:o.attended_at||null};XF.forEach(k=>r[k]=o[k]||null);return r;})).select(XCOLS).order('ord');if(!ins.error)rows=ins.data||[];}}}catch(e){}}
   if(!xdb)rows=seed().map((o,i)=>Object.assign({id:o.id||('l'+i)},o));
-  EXTRA=rows.map(xrow);$('atxnote').textContent=xdb?'':'VIP · 스태프 줄의 변경은 이 브라우저에만 저장됩니다 (공유하려면 seat-extra.sql 적용)';}
+  EXTRA=rows.map(xrow);$('atxnote').textContent=xdb?'':'VIP · 스태프 명단은 지금 이 브라우저에만 저장됩니다 — seat-extra.sql 을 실행하면 전용 DB에 저장되어 함께 봅니다';}
 async function saveExtra(id,patch){const e=xOf(id);if(!e)return false;const p=Object.assign({},patch);
   if('seat' in p){p.seat=String(p.seat||'').trim();const k=window.SEAT_KEY&&window.SEAT_KEY(p.seat);if(k)p.seat=k;
     const who=k&&(R.find(r=>window.SEAT_KEY((S[r.id]||{}).seat)===k)||EXTRA.find(o=>o!==e&&o.seat===k));if(who&&!confirm(p.seat+' 좌석에는 이미 '+who.company_name+(who.name?' '+who.name:'')+' 님이 있습니다. 그래도 지정할까요?')){draw();return false;}}
   if('label' in p&&!p.label){msg('기업명은 비울 수 없습니다',true);draw();return false;}
-  const db={};if('seat' in p)db.seat=p.seat||null;if('desk' in p)db.desk=p.desk||null;if('grp' in p)db.grp=p.grp||null;if('label' in p)db.label=p.label;
+  if('note' in p){p.memo=p.note;delete p.note;}if(p.phone){const d=String(p.phone).replace(/\D/g,'');p.phone=d.replace(/^(\d{3})(\d{3,4})(\d{4})$/,'$1-$2-$3');}
+  const db={};XF.forEach(k=>{if(k in p)db[k]=p[k]||null;});if('attended' in p){db.attended=!!p.attended;db.attended_at=p.attended?new Date().toISOString():null;}
   if(xdb){const r=await sb().from('seat_extra').update(Object.assign(db,{updated_by:QAOnline.who(),updated_at:new Date().toISOString()})).eq('id',e.xid);if(r.error){msg('저장하지 못했습니다: '+r.error.message,true);draw();return false;}}
-  if('seat' in p)e.seat=p.seat;if('desk' in p)e.desk=p.desk;if('grp' in p)e.grp=p.grp;if('label' in p)e.company_name=p.label;if(!xdb)xLocal();
+  XF.forEach(k=>{if(k in p)e[k==='label'?'company_name':k]=p[k]||'';});if('attended' in p){e.attended=!!p.attended;e.attended_at=db.attended_at;}if(!xdb)xLocal();
   msg(e.company_name+' 저장했습니다'+(xdb?'':' (이 브라우저에만)'));draw();return true;}
 async function addExtra(list){let rows;if(xdb){const r=await sb().from('seat_extra').insert(list.map(o=>Object.assign({updated_by:QAOnline.who()},o))).select(XCOLS).order('ord');if(r.error){msg('추가하지 못했습니다: '+r.error.message,true);return false;}rows=r.data||[];}
   else rows=list.map((o,i)=>Object.assign({id:'l'+Date.now()+i},o));
@@ -76,7 +78,7 @@ function draw(){
   /* 대상자 = 사전 신청 + VIP·연사 고정석(신청자가 앉지 않은 자리) */
   $('atc-all').textContent=R.length+EXTRA.length;$('atc-reg').textContent=R.length;$('atc-vip').textContent=EXTRA.length;{const key=window.SEAT_KEY,tot=window.SEAT_TOTAL;if(key&&tot){const ur=new Set(R.map(x=>key((S[x.id]||{}).seat)).filter(Boolean)),ux=new Set(EXTRA.map(e=>key(e.seat)).filter(k=>k&&!ur.has(k)));$('atc-left').textContent=tot-ur.size-ux.size;$('atc-left').parentNode.title='전체 '+tot+'석 − 신청자 배정 '+ur.size+'석 − VIP · 스태프 '+ux.size+'석';}}
   $('atc-all').parentNode.title='신청 '+R.length+'명(확정 '+conf.length+' · 대기 '+(R.length-conf.length)+') + 신청 명단에 없는 연사 · VIP · 스태프 '+EXTRA.length+'명';
-  $('atc-seat').textContent=seat.length;$('atc-noseat').textContent=R.length-seat.length;$('atc-arr').textContent=arr.length;
+  $('atc-seat').textContent=seat.length;$('atc-noseat').textContent=R.length-seat.length;$('atc-arr').textContent=arr.length+EXTRA.filter(e=>e.attended).length;
   document.querySelectorAll('#atflt [data-f]').forEach(b=>b.classList.toggle('sel',b.dataset.f===flt));
   const ALL=R.concat(EXTRA),dc={};ALL.forEach(x=>{const d=xD(x)||'none';dc[d]=(dc[d]||0)+1;});
   $('atdesk').innerHTML='<button data-d="all" class="'+(desk==='all'?'sel':'')+'">전체 <small>'+ALL.length+'</small></button>'+DESKS.map(d=>'<button data-d="'+d[0]+'" title="'+esc(d[1])+'" class="'+(desk===d[0]?'sel':'')+'">'+d[0]+' <small>'+(dc[d[0]]||0)+'</small></button>').join('')+'<button data-d="스태프" title="운영 · 에이전트 · 개발실 등 스태프(사이드 좌석 포함)" class="'+(desk==='스태프'?'sel':'')+'">스태프 <small>'+(dc['스태프']||0)+'</small></button>'+'<button data-d="none" class="'+(desk==='none'?'sel':'')+'">미배정 <small>'+(dc.none||0)+'</small></button>';
@@ -91,9 +93,9 @@ function draw(){
   $('atcnt').textContent=L.length+'명';
   const cos=[...new Set(R.map(x=>x.company_name))];if($('atcos').childElementCount!==cos.length)$('atcos').innerHTML=cos.map(c=>'<option value="'+esc(c)+'">').join('');
   const ae=document.activeElement,keep=ae&&ae.dataset&&ae.dataset.k?ae.dataset.k+':'+ae.closest('tr').dataset.id:null;
-  $('attb').innerHTML=L.length?L.map(x=>{if(x._x)return '<tr class="xrow" data-id="'+x.id+'"><td><input type="text" class="xl" data-k="label" value="'+esc(x.company_name)+'" placeholder="기업명" maxlength="40"></td><td><input type="text" class="xg" data-k="grp" value="'+esc(x.grp)+'" placeholder="그룹" maxlength="20"></td><td class="mut">—</td><td></td><td><span class="pill ex">'+(x.desk==='스태프'?'스태프':'기업명')+'</span></td>'+
+  $('attb').innerHTML=L.length?L.map(x=>{if(x._x)return '<tr class="xrow" data-id="'+x.id+'"><td><input type="text" class="xl" data-k="label" value="'+esc(x.company_name)+'" placeholder="기업명" maxlength="40"></td><td><input type="text" class="xg" data-k="grp" value="'+esc(x.grp)+'" placeholder="그룹" maxlength="20"></td><td><input type="text" class="xn" data-k="name" value="'+esc(x.name)+'" placeholder="이름" maxlength="40">'+([x.dept,x.title].filter(Boolean).length?'<div class="mut xsub">'+esc([x.dept,x.title].filter(Boolean).join(' · '))+'</div>':'')+'</td><td class="mut tn">'+(last4(x.phone)?'···'+last4(x.phone):'')+'</td><td><span class="pill ex">'+(x.desk==='스태프'?'스태프':'VIP·기타')+'</span></td>'+
     '<td><select class="desk" data-k="desk"><option value="">미배정</option>'+DESKS.map(d=>d[0]).concat(['스태프']).map(d=>'<option value="'+d+'"'+(x.desk===d?' selected':'')+'>'+d+'</option>').join('')+'</select></td>'+
-    '<td><input type="text" class="seat" data-k="seat" value="'+esc(x.seat||'')+'" placeholder="좌석" maxlength="20"></td><td></td><td><button data-a="xdel" class="xdel" title="이 줄 삭제">삭제</button></td></tr>';const a=S[x.id]||{};return '<tr data-id="'+x.id+'" class="'+(pick===x.id?'sel':'')+'">'+
+    '<td><input type="text" class="seat" data-k="seat" value="'+esc(x.seat||'')+'" placeholder="좌석" maxlength="20"></td><td><input type="text" class="note" data-k="note" value="'+esc(x.memo)+'" placeholder="메모" maxlength="90"></td><td class="xact"><button data-a="xarr" class="'+(x.attended?'arr on':'arr')+'">'+(x.attended?'참석 '+(x.attended_at?new Date(x.attended_at).toTimeString().slice(0,5):''):'미확인')+'</button><button data-a="xedit" class="xdel" title="부서 · 직급 · 휴대폰 · 이메일 수정">상세</button><button data-a="xdel" class="xdel" title="이 줄 삭제">삭제</button></td></tr>';const a=S[x.id]||{};return '<tr data-id="'+x.id+'" class="'+(pick===x.id?'sel':'')+'">'+
     '<td><b>'+esc(x.company_name)+'</b></td><td>'+(grpOf(x)?'<span class="grp">'+esc(grpOf(x))+'</span>':'')+'</td><td><b class="nm">'+esc(x.name)+'</b><div class="mut">'+esc([x.dept,x.title].filter(Boolean).join(' · '))+'</div></td>'+
     '<td class="mut tn">'+(last4(x.phone)?'···'+last4(x.phone):'')+'</td>'+
     '<td>'+(x.status==='confirmed'?'<span class="pill ok">확정</span>':'<span class="pill wait">대기</span>')+'</td>'+
@@ -147,7 +149,7 @@ $('attb').addEventListener('change',e=>{if(SP.skip)return;const k=e.target.datas
   if(k==='note')return saveSeat(id,{note:pack(deskOf(S[id]),v)});
   saveSeat(id,{[k]:v||null});});
 $('attb').addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.dataset.k){e.preventDefault();e.target.blur();}if(e.key==='Escape'&&e.target===SP.inp){e.target.value=curSeat(e.target.closest('tr').dataset.id);e.target.blur();}});
-$('attb').addEventListener('click',e=>{const tr=e.target.closest('tr[data-id]');if(!tr)return;if(isX(tr.dataset.id)){if(e.target.closest('[data-a=xdel]'))delExtra(tr.dataset.id);return;}const id=tr.dataset.id;
+$('attb').addEventListener('click',e=>{const tr=e.target.closest('tr[data-id]');if(!tr)return;if(isX(tr.dataset.id)){const xe=xOf(tr.dataset.id);if(e.target.closest('[data-a=xdel]'))delExtra(tr.dataset.id);else if(e.target.closest('[data-a=xarr]')&&xe)saveExtra(xe.id,{attended:!xe.attended});else if(e.target.closest('[data-a=xedit]')&&xe)xDialog(xe);return;}const id=tr.dataset.id;
   if(e.target.closest('[data-a=arr]'))return toggleArr(id);if(e.target.tagName==='INPUT'||e.target.tagName==='SELECT'||e.target.tagName==='OPTION')return;pick=pick===id?null:id;draw();});
 $('atcard').addEventListener('click',e=>{const b=e.target.closest('[data-a=arr]');if(b)toggleArr(b.dataset.id);});
 $('atq').addEventListener('input',e=>{q=e.target.value.trim();pick=null;draw();});
@@ -156,11 +158,17 @@ document.querySelectorAll('#atflt [data-f]').forEach(b=>b.onclick=()=>{flt=b.dat
 $('atdesk').addEventListener('click',e=>{const b=e.target.closest('[data-d]');if(!b)return;desk=b.dataset.d;pick=null;draw();});
 $('atreload').onclick=()=>load();
 /* 기업명만 등록: 이름 · 연락처 없이 기업명과 인원 수만으로 추가(VIP · 미신청 · 스태프 등). 2명 이상이면 '기업명 1', '기업명 2' … */
-$('atxadd').onclick=()=>{$('atxaform').reset();$('atxaerr').textContent='';$('atxa').showModal();$('atxaco').focus();};
+let xEdit=null;const XD={co:'label',grp:'grp',desk:'desk',seat:'seat',name:'name',dept:'dept',title:'title',phone:'phone',email:'email',memo:'memo'};
+function xDialog(e){xEdit=e||null;$('atxaform').reset();$('atxaerr').textContent='';$('atxah').textContent=e?'VIP · 스태프 수정':'VIP · 스태프 등록';$('atxago').textContent=e?'저장하기':'추가하기';$('atxanw').style.display=e?'none':'';
+  if(e)Object.keys(XD).forEach(k=>{$('atxa'+k).value=k==='co'?e.company_name:e[XD[k]]||'';});$('atxa').showModal();$('atxaco').focus();}
+$('atxadd').onclick=()=>xDialog(null);
 $('atxaclose').onclick=()=>$('atxa').close();
-$('atxaform').addEventListener('submit',async e=>{e.preventDefault();const co=$('atxaco').value.trim(),n=Math.max(1,Math.min(30,+$('atxan').value||1)),g=$('atxagrp').value.trim(),d=$('atxadesk').value,st=$('atxaseat').value.trim();if(co.length<1)return;
-  const key=window.SEAT_KEY,sk=key&&key(st);if(st&&n===1&&sk&&!freeSeats().includes(sk)&&!confirm(sk+' 좌석은 이미 사용 중입니다. 그래도 지정할까요?'))return;
-  const ok=await addExtra(Array.from({length:n},(_,i)=>({label:n>1?co+' '+(i+1):co,grp:g||null,desk:d||null,seat:n===1?(sk||st||null):null})));if(ok){$('atxa').close();desk='all';q=co;$('atq').value=co;draw();msg(co+' '+n+'명을 추가했습니다'+(xdb?'':' (이 브라우저에만 저장)'));}});
+$('atxaphone').addEventListener('input',e=>{const d=e.target.value.replace(/\D/g,'').slice(0,11);e.target.value=d.replace(/^(\d{3})(\d{1,4})?(\d{1,4})?$/,(m,a,b,c)=>[a,b,c].filter(Boolean).join('-'));});
+$('atxaform').addEventListener('submit',async e=>{e.preventDefault();const v={};Object.keys(XD).forEach(k=>v[XD[k]]=$('atxa'+k).value.trim());if(!v.label)return;
+  if(xEdit){const p={};Object.keys(v).forEach(k=>{if(v[k]!==(k==='label'?xEdit.company_name:xEdit[k]||''))p[k]=v[k];});if(!Object.keys(p).length||await saveExtra(xEdit.id,p))$('atxa').close();return;}
+  const n=Math.max(1,Math.min(30,+$('atxan').value||1)),key=window.SEAT_KEY,sk=key&&key(v.seat);if(v.seat&&n===1&&sk&&!freeSeats().includes(sk)&&!confirm(sk+' 좌석은 이미 사용 중입니다. 그래도 지정할까요?'))return;
+  const one=i=>{const r={};XF.forEach(k=>r[k]=v[k]||null);r.label=n>1?v.label+' '+(i+1):v.label;r.seat=n===1?(sk||v.seat||null):null;if(n>1)r.name=r.phone=r.email=null;return r;};
+  const ok=await addExtra(Array.from({length:n},(_,i)=>one(i)));if(ok){$('atxa').close();desk='all';q=v.label;$('atq').value=v.label;draw();msg(v.label+' '+n+'명을 추가했습니다'+(xdb?'':' (이 브라우저에만 저장)'));}});
 $('atth').addEventListener('click',e=>{const th=e.target.closest('th[data-s]');if(!th)return;const k=th.dataset.s;sort=sort.k!==k?{k,d:1}:sort.d===1?{k,d:-1}:{k:null,d:1};draw();});   // 오름차순 → 내림차순 → 원래 순서
 /* 데스크별 배정 표: 자리배치 엑셀 '06. 출입 데스크' 탭과 같은 구성(담당 범위 · 인원 · 회사 수 · 회사별 인원)을 현재 배정 기준으로 보여 줌 */
 function deskTable(){const by={},ex={},vp={};let exn=0;R.forEach(x=>{const d=deskOf(S[x.id])||'none',m=by[d]=by[d]||{};m[x.company_name]=(m[x.company_name]||0)+1;if(grpOf(x)==='VIP')vp[d+'|'+x.company_name]=1;});
