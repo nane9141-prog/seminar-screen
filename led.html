@@ -221,6 +221,8 @@ const DK={cur:null,label:null,ready:false,f:$('dkf'),p:$('dkp'),b:$('dkb'),
    const d=x.getImageData(0,0,8,2).data;let r=0,g=0,b=0;for(let i=0;i<d.length;i+=4){r+=d[i];g+=d[i+1];b+=d[i+2];}const n=d.length/4;this.tint(`rgb(${r/n|0},${g/n|0},${b/n|0})`);}catch(e){this.tint('#000');}};if(im.complete&&im.naturalWidth)go();else im.onload=go;},
  sync(){if(!this.ready||!this.want||this.want===this.label)return;this.label=this.want;try{this.f.contentWindow.postMessage({s4:'goto',label:this.want},'*');}catch(e){}setTimeout(()=>this.tintFrame(),700);}};
 window.DK=DK;
+/* 11/27 20:22 세션 4(K 장 이동 시 scrollIntoView)가 LED 무대를 위로 스크롤해 자료가 위에 붙던 문제 — 무대 스크롤 고정 */
+(()=>{const st=document.getElementById('stage');const fix=()=>{if(st.scrollTop||st.scrollLeft){st.scrollTop=0;st.scrollLeft=0;}};st.addEventListener('scroll',fix);setInterval(fix,500);})();
 addEventListener('message',e=>{const d=e.data||{};if(e.source!==DK.f.contentWindow||!d.s4)return;
  if(d.s4==='ready'){DK.ready=true;setTimeout(()=>DK.tintFrame(),900);try{DK.f.contentWindow.postMessage({s4:'enter',at:'first'},'*');}catch(e){}DK.label=null;setTimeout(()=>DK.sync(),300);}});
 function qaShow(no){const m=String(no||'').toUpperCase().match(/^M([68])-(1|S1)$/);document.body.classList.toggle('qa',!!m);
