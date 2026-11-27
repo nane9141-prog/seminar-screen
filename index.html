@@ -1142,11 +1142,11 @@ function S3(s,on){if(!s||!s.dataset.s3)return;(s._t3||[]).forEach(clearTimeout);
 var SFX={vol:.7,a:{},T:[],off:localStorage.getItem('scr-sfx-off')==='1',
  F:{s3:'sfx-s3-part.mp3',s4:'sfx-s4-reveal.mp3',s5:'sfx-s5-proxymity.mp3',s6:'sfx-s6-chime.mp3',s7:'sfx-s7-close.mp3'},
  MAP:{'M4-1':['s3',400],'M5-1':['s3',400],'M7-1':['s3',400],'M9-1':['s3',400],  /* 파트 첫 장: Blue Bloom이 차오르는 약 1.0초에 붐(11/26 교체 · 파일 0.65초) */
-  'M4-4':['s4',700],      /* 출범식: KISM 로고가 뜨는 0.75초 무렵 타격(11/26 교체 · 파일 0.05초) */
+  'M4-4':['s4',300],      /* 출범식: KISM 로고가 뜨는 0.75초 무렵 정점(11/27 교체 · Epidemic Sound 로고 사운드 · 파일 0.45초) */
   'M7-3':['s5',13900],    /* Proxymity: 로고가 모이는 13.1~14.3초, 14.3초에 타격(파일 0.4초) */
   'M6-S1':['s6',550],'M8-S1':['s6',550],  /* 휴식 끝 안내: 제목이 뜨는 0.6초에 첫 음(파일 0.05초) */
   'M11-1':['s7',200]},    /* 폐회: 감사 인사와 함께 스웰이 차올라 약 3.3초에 정점(11/26 교체) */
- el(k){if(!this.a[k]){const x=new Audio('assets/sound/'+this.F[k]+'?v=11262320');x.preload='auto';x._t=null;this.a[k]=x;}return this.a[k];},
+ el(k){if(!this.a[k]){const x=new Audio('assets/sound/'+this.F[k]+'?v=11271530');x.preload='auto';x._t=null;this.a[k]=x;}return this.a[k];},
  load(s){const m=s&&this.MAP[s.dataset.no];if(m)this.el(m[0]);},
  clear(){this.T.forEach(clearTimeout);this.T=[];Object.values(this.a).forEach(x=>{if(!x.paused)BGM.ramp(x,0,300,()=>x.pause());});},
  duck(ms){if(!BGM.cur||BGM.muted)return;const t=BGM.T[BGM.cur];(t.a||[]).forEach(x=>{if(!x.paused&&x.volume>0)BGM.ramp(x,BGM.vol*.5,200);});clearTimeout(this.dk);this.dk=setTimeout(()=>{if(!BGM.cur||BGM.muted)return;(BGM.T[BGM.cur].a||[]).forEach(x=>{if(!x.paused&&x.volume>0)BGM.ramp(x,BGM.vol,900);});},ms);},
