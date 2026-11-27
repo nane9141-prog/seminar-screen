@@ -206,14 +206,20 @@ const DK={cur:null,label:null,ready:false,f:$('dkf'),p:$('dkp'),b:$('dkb'),
   document.body.classList.add('deck');this.fitBox(d.w,d.h);
   if(d.pdf){this.f.style.display='none';this.p.style.display='block';
    if(this.cur!==d.k){this.p.innerHTML=Array.from({length:d.pdf},(_,n)=>`<img src="assets/s3/p${String(n+1).padStart(2,'0')}.webp" alt="" decoding="async">`).join('');this.cur=d.k;}
-   [...this.p.children].forEach((im,n)=>im.classList.toggle('on',n===Math.max(0,Math.min(d.pdf-1,d.i))));return;}
+   [...this.p.children].forEach((im,n)=>{const on=n===Math.max(0,Math.min(d.pdf-1,d.i));im.classList.toggle('on',on);if(on)this.tintImg(im);});return;}
   this.p.style.display='none';this.f.style.display='block';this.f.style.width=d.w+'px';this.f.style.height=d.h+'px';
   if(this.cur!==d.k){this.cur=d.k;this.ready=false;this.label=null;this.want=d.label;this.f.src=d.src;return;}
   this.want=d.label;this.sync();},
- sync(){if(!this.ready||!this.want||this.want===this.label)return;this.label=this.want;try{this.f.contentWindow.postMessage({s4:'goto',label:this.want},'*');}catch(e){}}};
+ /* 11/27 19:53 위아래(옆) 남는 곳을 발표자료 배경색으로 채움 — iframe은 화면 가운데 · 위쪽 배경색, PDF는 장 이미지 위 · 아래 가장자리 색 */
+ tint(c){const d=document.getElementById('dk');d.style.background=c||'#000';this.b.style.background=c||'#000';},
+ tintFrame(){try{const w=this.f.contentWindow,doc=w.document;const pick=el=>{for(;el&&el!==doc.documentElement;el=el.parentElement){const c=w.getComputedStyle(el).backgroundColor;if(c&&!/rgba\(0, 0, 0, 0\)|transparent/.test(c))return c;}return null;};
+   const st=doc.querySelector('.stage');const c=pick(doc.elementFromPoint(w.innerWidth/2,8))||(st&&pick(st))||'#000';this.tint(c);}catch(e){this.tint('#000');}},
+ tintImg(im){const go=()=>{try{const c=document.createElement('canvas');c.width=8;c.height=2;const x=c.getContext('2d');x.drawImage(im,0,0,im.naturalWidth,4,0,0,8,1);x.drawImage(im,0,im.naturalHeight-4,im.naturalWidth,4,0,1,8,1);
+   const d=x.getImageData(0,0,8,2).data;let r=0,g=0,b=0;for(let i=0;i<d.length;i+=4){r+=d[i];g+=d[i+1];b+=d[i+2];}const n=d.length/4;this.tint(`rgb(${r/n|0},${g/n|0},${b/n|0})`);}catch(e){this.tint('#000');}};if(im.complete&&im.naturalWidth)go();else im.onload=go;},
+ sync(){if(!this.ready||!this.want||this.want===this.label)return;this.label=this.want;try{this.f.contentWindow.postMessage({s4:'goto',label:this.want},'*');}catch(e){}setTimeout(()=>this.tintFrame(),700);}};
 window.DK=DK;
 addEventListener('message',e=>{const d=e.data||{};if(e.source!==DK.f.contentWindow||!d.s4)return;
- if(d.s4==='ready'){DK.ready=true;try{DK.f.contentWindow.postMessage({s4:'enter',at:'first'},'*');}catch(e){}DK.label=null;setTimeout(()=>DK.sync(),300);}});
+ if(d.s4==='ready'){DK.ready=true;setTimeout(()=>DK.tintFrame(),900);try{DK.f.contentWindow.postMessage({s4:'enter',at:'first'},'*');}catch(e){}DK.label=null;setTimeout(()=>DK.sync(),300);}});
 function qaShow(no){const m=String(no||'').toUpperCase().match(/^M([68])-(1|S1)$/);document.body.classList.toggle('qa',!!m);
  if(m){const e=brkEnd(m[1]==='6'?'brk1':'brk2');$('qar').textContent=e!=null?'휴식 후 '+F(e)+'에 다시 시작합니다':'';}}
 function apply(v,from){if(!v)return;lastRx=Date.now();src=from;if(v.sch)SCH=v.sch;document.body.classList.toggle('black',!!v.black);if(FOLLOW&&v.cur){DK.show(DK.of(v));qaShow(v.cur);}
