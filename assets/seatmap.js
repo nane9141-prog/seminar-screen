@@ -272,6 +272,12 @@ function build(){
     dummy.position.set(s.x+sx,.225*M,s.z);dummy.updateMatrix();seatMesh.setMatrixAt(s.i,dummy.matrix);
     dummy.position.set(s.x+sx+.265*M,.46*M,s.z);dummy.updateMatrix();backMesh.setMatrixAt(s.i,dummy.matrix);});
   scene.add(seatMesh,backMesh);
+  /* 사이드 좌석(테이블 없이 의자만): 상단 사이드 = 오른쪽 블록 바깥 6~15열(에이전트 10석) · 하단 사이드 = 왼쪽 블록 바깥 5~15열(AGM개발실 11석) — 최종 엑셀 04 · 05 기준 */
+  (function(){var ssx=T_DEP/2+.345*M,sg=new THREE.BoxGeometry(.45*M,.45*M,.48*M),bg=new THREE.BoxGeometry(.08*M,.92*M,.48*M),mt=new THREE.MeshStandardMaterial({color:0xe2b04a,roughness:.8});
+    [{label:'상단 사이드 · 에이전트 10석',from:6,z:-12.3},{label:'하단 사이드 · AGM개발실 11석',from:5,z:12.3}].forEach(function(d){
+      for(var r=d.from;r<=15;r++){var x=ROW_X0+(r-1)*ROW_DX,a=new THREE.Mesh(sg,mt),b=new THREE.Mesh(bg,mt);a.position.set(x+ssx,.225*M,d.z);b.position.set(x+ssx+.265*M,.46*M,d.z);scene.add(a,b);}
+      sprite(d.label,ROW_X0+(d.from+13)/2*ROW_DX,1.9,d.z,'#e2b04a',3.2);});
+  })();
   /* 테이블 번호: 블록 왼쪽 끝 테이블 위에 A4 스탠드로 세움(옆면 부착 대신) */
   const STB=new THREE.BoxGeometry(.220*M,.015*M,.065*M),STBM=new THREE.MeshStandardMaterial({color:0x0b0b0d,roughness:.5}),STA=new THREE.BoxGeometry(.214*M,.300*M,.004*M),STAM=new THREE.MeshStandardMaterial({color:0xffffff,transparent:true,opacity:.28,roughness:.1}),sideGeo=new THREE.PlaneGeometry(.210*M,.297*M),sideTex={};
   tables.forEach(t=>{if(!t.blockFirst)return;
@@ -334,6 +340,8 @@ function planShow(){if(!PL.el)return;PL.el.classList.toggle('on',PL.on);document
 function planHTML(){
   var h='<div class="h k">◀ 스크린</div>',r,n,k,bn,id,f;
   for(r=0;r<ROWS;r++)h+='<div class="h">'+(r+1)+'<small>열</small></div>';
+  var side=function(nm,lab,from){var t='<div class="l">'+nm+'<br>사이드</div>';for(var c=0;c<ROWS;c++)t+=c>=from-1?'<div class="c vip sd" title="'+nm+' 사이드 '+(c-from+2)+' · '+lab+'"><b>'+lab+'</b><i>'+nm[0]+'사이드-'+(c-from+2)+'</i></div>':'<div></div>';return t;};
+  h+=side('상단','에이전트',6);
   for(n=21;n>=1;n--){
     if(n===21||n===15||n===6){bn=n>15?2:n>6?1:0;h+='<div class="l tl">테이블</div>';for(r=0;r<ROWS;r++)h+='<div class="tn">'+(bn*ROWS+r+1)+'</div>';}
     k=n>15?n-15:n>6?n-6:n;
@@ -342,6 +350,7 @@ function planHTML(){
       h+='<div class="c '+f.cls+(f.sel?' sel':'')+'" data-s="'+id+'" title="'+planEsc(id+(f.a?' · '+f.a:'')+(f.b?' '+f.b:''))+'"><b>'+planEsc(f.a)+'</b>'+(f.b?'<span>'+planEsc(f.b)+'</span>':'')+'<i>'+id+'</i></div>';}
     if(n===16||n===7)h+='<div class="ai">통로</div>';
   }
+  h+=side('하단','AGM개발실',5);
   return h;
 }
 function planDraw(){if(!PL.el||!PL.on)return;var g=PL.el.querySelector('#splgrid');g.style.setProperty('--z',PL.z);g.innerHTML=planHTML();PL.el.querySelector('#splz').textContent=Math.round(PL.z*100)+'%';}
