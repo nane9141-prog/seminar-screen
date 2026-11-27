@@ -59,13 +59,18 @@ function mount(c){cfg=c;SPD=+(localStorage.getItem(c.key+'-spd')||1)||1;if(c.set
   // 끌어서 위치 이동
   let dr=null;q('.hd').addEventListener('mousedown',e=>{if(e.target.tagName==='BUTTON')return;const r=el.getBoundingClientRect();dr={x:e.clientX-r.left,y:e.clientY-r.top};e.preventDefault();});
   addEventListener('mousemove',e=>{if(!dr)return;el.style.left=Math.max(0,e.clientX-dr.x)+'px';el.style.top=Math.max(0,e.clientY-dr.y)+'px';el.style.bottom='auto';});
-  addEventListener('mouseup',()=>dr=null);
-  addEventListener('keydown',e=>{if(e.target.tagName==='INPUT'||e.target.tagName==='TEXTAREA')return;if(e.key==='p'||e.key==='P'){e.preventDefault();toggle();}});
-  if(localStorage.getItem(c.key+'-panel')==='1')toggle();
+  addEventListener('mouseup',()=>{if(dr&&c.onToggle)c.onToggle(el.classList.contains('on'));dr=null;});   // 옮긴 위치도 미리보기에 알림
+  addEventListener('keydown',e=>{if(e.target.tagName==='INPUT'||e.target.tagName==='TEXTAREA')return;if(window.VIEW_MODE)return;if(e.key==='p'||e.key==='P'){e.preventDefault();toggle();}});
+  if(!window.VIEW_MODE&&localStorage.getItem(c.key+'-panel')==='1')toggle();   // 미리보기(?view=1)는 스스로 열지 않고 실제 화면을 따라감(mirror)
 }
 function setSpeed(v){SPD=v;localStorage.setItem(cfg.key+'-spd',v);if(cfg.setSpeed)cfg.setSpeed(v);rate();draw();}
-function toggle(){el.classList.toggle('on');const on=el.classList.contains('on');localStorage.setItem(cfg.key+'-panel',on?'1':'0');
+function show(on,save){el.classList.toggle('on',on);if(save)localStorage.setItem(cfg.key+'-panel',on?'1':'0');
   document.body.classList.toggle('cp-open',on);clearInterval(timer);if(on){draw(true);timer=setInterval(draw,500);}}
+function toggle(){const on=!el.classList.contains('on');show(on,true);if(cfg.onToggle)cfg.onToggle(on);}
+/* 실제 화면의 패널 상태(열림 · 위치 · 화면 폭) — 미리보기가 같은 자리에 같은 비율로 그리도록 방송에 실음 */
+function geo(){if(!el||!el.classList.contains('on'))return null;const r=el.getBoundingClientRect();return {x:+(r.left/innerWidth).toFixed(4),y:+(r.top/innerHeight).toFixed(4),w:innerWidth};}
+function mirror(g){if(!el)return;const on=!!g;if(on!==el.classList.contains('on'))show(on,false);if(!on)return;const k=innerWidth/(g.w||innerWidth);
+  el.style.transformOrigin='left top';el.style.transform='scale('+k+')';el.style.left=(g.x*innerWidth)+'px';el.style.top=(g.y*innerHeight)+'px';el.style.bottom='auto';el.style.maxHeight='calc('+(100/k)+'vh - 36px)';}
 let lastList='';
 function draw(force){if(!el||!el.classList.contains('on'))return;const c=cfg,q=s=>el.querySelector(s);
   const n=new Date(Date.now()+32400e3);q('.clk').textContent=String(n.getUTCHours()).padStart(2,'0')+':'+String(n.getUTCMinutes()).padStart(2,'0')+':'+String(n.getUTCSeconds()).padStart(2,'0');
@@ -78,5 +83,5 @@ function draw(force){if(!el||!el.classList.contains('on'))return;const c=cfg,q=s
   if(key!==lastList||force){lastList=key;q('.ls').innerHTML=L.map((x,i)=>`<div data-i="${i}" class="${x.cur?'cur':''} ${x.msg?'msg':''}">${x.dur?`<span class="du">${x.dur}</span>`:''}<span class="no">${x.no}</span>${x.label}</div>`).join('');
     const cur=q('.ls .cur');if(cur)cur.scrollIntoView({block:'nearest'});}
 }
-window.CtrlPanel={mount,draw:()=>draw(),toggle,speed:()=>SPD,setSpeed};
+window.CtrlPanel={mount,draw:()=>draw(),toggle,speed:()=>SPD,setSpeed,geo,mirror};
 })();

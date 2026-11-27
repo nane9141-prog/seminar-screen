@@ -1066,9 +1066,9 @@ addEventListener('message',e=>{const d=e.data||{};if(!d.s4)return;const f=KN.fra
   else if(d.s4==='pos'){if(cur){KN.pos=d.label;if(window.CtrlPanel)CtrlPanel.draw();MC.pub();}}});
 /* 사회자 화면(mc.html) 연동: 같은 PC는 SCHED(BroadcastChannel), 다른 기기는 Supabase Realtime 방송(온라인일 때). 8초마다 재전송 */
 var MC={st:null,q:null,
- pub(o){if(o)this.st=o;if(!this.st||window.VIEW_MODE)return;const bk=document.getElementById('black');const s={...this.st,...MC.panel(),pos:(typeof KN!=='undefined'&&KN.pos)||'',q:this.q,black:!!(bk&&bk.classList.contains('on')),sch:(()=>{try{return SCHED.load().items.map(x=>[x.id,x.start,x.end]);}catch(e){return null;}})(),t:Date.now()};SCHED.pub(s);
+ pub(o){if(o)this.st=o;if(!this.st||window.VIEW_MODE)return;const bk=document.getElementById('black');const s={...this.st,...MC.panel(),cp:(window.CtrlPanel&&CtrlPanel.geo)?CtrlPanel.geo():null,pos:(typeof KN!=='undefined'&&KN.pos)||'',q:this.q,black:!!(bk&&bk.classList.contains('on')),sch:(()=>{try{return SCHED.load().items.map(x=>[x.id,x.start,x.end]);}catch(e){return null;}})(),t:Date.now()};SCHED.pub(s);
   try{const sc=SCHED.load();fetch('https://zrhtqpzgubaqzsdaxhvt.supabase.co/realtime/v1/api/broadcast',{method:'POST',headers:{apikey:'sb_publishable_JwET6KLGmdYBkOIIttgOOQ_HEpCKLar','Content-Type':'application/json'},
-   body:JSON.stringify({messages:[{topic:'seminar-mc',event:'state',payload:{cur:s.cur,pos:s.pos,q:s.q,nx:s.nx,msg:s.msg,at0:s.at0,alen:s.alen,auto:s.auto,bgm:s.bgm,sfx:s.sfx,pdk:s.pdk,pdkn:s.pdkn,spd:s.spd,ex:s.ex,snd:s.snd,black:s.black,sch:sc.items.map(x=>[x.id,x.start,x.end]),t:Date.now()}}]})}).catch(()=>{});}catch(e){}}};
+   body:JSON.stringify({messages:[{topic:'seminar-mc',event:'state',payload:{cur:s.cur,pos:s.pos,q:s.q,nx:s.nx,msg:s.msg,at0:s.at0,alen:s.alen,auto:s.auto,bgm:s.bgm,sfx:s.sfx,pdk:s.pdk,pdkn:s.pdkn,spd:s.spd,ex:s.ex,snd:s.snd,black:s.black,cp:s.cp,sch:sc.items.map(x=>[x.id,x.start,x.end]),t:Date.now()}}]})}).catch(()=>{});}catch(e){}}};
 /* 11/26 운영 입력 「화면 전환」 탭에 메인 P 패널 정보 보내기: 다음 화면 · 자동 넘김 진행 · 대기 자동순환 · 배경음악 · 효과음 · 배속 · 진행 일정 */
 MC.panel=function(){try{const s=slides[idx];let nx=null;if(s){const j=nextMain(isMsg(s)?home:idx,1);nx=j!==idx?slides[j]:null;}
   let ex='';try{const n=SCHED.next(SC),c=SCHED.current(SC);ex='진행 '+(c?(c.tag||c.label):'—');if(n){const d=n.start-n.ps;ex+=' · 다음 '+(n.tag||n.label)+' '+SCHED.fmt(n.start)+(d?' ('+(d>0?'+':'')+d+'분)':'');}ex=[ex].concat(SCHED.warnings(SC).map(w=>'⚠ '+w)).join('\n');}catch(e){}
@@ -1329,7 +1329,7 @@ applySched();renderQ();
 // ── 컨트롤 패널 (P) ──
 const black=()=>document.getElementById('black');
 const nm=s=>s.dataset.title.replace(/&amp;/g,'&').replace(/<br\s*\/?>/g,' ').replace(s.dataset.no+' ','');
-CtrlPanel.mount({title:'메인 스크린',key:'scr-main',placeholder:'예: 4-5, 9-s1',
+CtrlPanel.mount({title:'메인 스크린',key:'scr-main',placeholder:'예: 4-5, 9-s1',onToggle:()=>MC.pub(),
   prev:()=>step(-1),next:()=>step(1),go:i=>{const m=slides.map((x,k)=>x.dataset.skip?-1:k).filter(k=>k>=0);go(m[i]);},  /* 목록에서 예비 화면(data-skip)을 빼서 순번을 실제 화면 번호로 바꿈 */
   goNo:t=>{const n=byNo('M'+t.trim().toUpperCase().replace(/^M/,''));if(n<0)return false;go(n);return true;},
   list:()=>slides.map((s,i)=>s.dataset.skip?null:({no:s.dataset.no,label:nm(s),cur:i===idx,msg:isMsg(s),dur:s.dataset.auto?s.dataset.auto+'초':(v=>v&&isFinite(v.duration)?'영상 '+Math.round(v.duration)+'초':'')(s.querySelector('video'))})).filter(Boolean),
@@ -1353,6 +1353,7 @@ if(window.VIEW_MODE){(function(){auto=false;
  document.documentElement.classList.add('viewmode');
  const fol=st=>{if(!st||!st.cur)return;const n=byNo(st.cur);let moved=false;if(n>=0&&n!==idx){go(n);moved=true;}
   const bk=document.getElementById('black');if(bk)bk.classList.toggle('on',!!st.black);
+  if(window.CtrlPanel&&CtrlPanel.mirror)CtrlPanel.mirror(st.cp);   /* 컨트롤 패널(P): 실제 화면에 떠 있을 때만, 같은 자리 · 같은 비율로 */
   if(st.pdk!=null){const dk=slides[idx]&&slides[idx].querySelector('.pdk');if(dk&&+dk.dataset.i!==st.pdk)PDK(dk,st.pdk);}
   if(st.pos){const f=KN.of(slides[idx]);if(f){const send=()=>KN.post(f,{s4:'goto',label:st.pos});if(moved||!f._r)setTimeout(send,1200);else send();}}};
  SCHED.onState(fol);setTimeout(()=>fol(SCHED.getState()),300);})();}
