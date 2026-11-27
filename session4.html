@@ -2133,6 +2133,63 @@ html.r169 #K24a .k24map{left:1540px!important;top:50px!important}
 #K26 .k26p .sc{padding-top:0!important}
 #K26 .k26p .sc::before{z-index:2}
 #K26 .k26p video{object-position:50% 0!important}
+
+/* 11/27 22:10 K24b 오른쪽: BLE 비콘 동작 원리 — 비콘(파동) → ID → 휴대폰 ⇄ 클라우드(오른쪽 끝 2/3만), 글자 없이 */
+#K24b .k24fl{position:absolute;left:2150px;top:170px;width:2050px;height:1160px;overflow:hidden}
+#K24b .k24fl .k24bv{left:700px!important;top:0!important}
+#K24b .k24fl .bk{position:absolute;left:150px;top:430px;width:300px;height:300px;display:flex;align-items:center;justify-content:center}
+#K24b .k24fl .bk .gm{position:relative;width:170px;height:204px;filter:drop-shadow(0 0 40px rgba(180,200,255,.45));z-index:2}
+#K24b .k24fl .bk .o{position:absolute;inset:-10px;border-radius:50%;border:3px dotted rgba(140,180,255,.45)}
+#K24b .k24fl .bk .r{position:absolute;inset:20px;border-radius:50%;background:radial-gradient(circle,rgba(90,162,255,.0) 40%,rgba(90,162,255,.28) 70%,rgba(90,162,255,0) 72%);opacity:0}
+.s.cur#K24b .k24fl .bk .r{animation:k24r 2.4s ease-out calc(var(--k)*.8s) infinite}
+@keyframes k24r{0%{transform:scale(.6);opacity:.9}100%{transform:scale(1.9);opacity:0}}
+.s.cur#K24b .k24fl .bk .gm{animation:k24gm 4s ease-in-out infinite}
+@keyframes k24gm{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-10px) rotate(2deg)}}
+.s.cur#K24b .k24fl .bk .o{animation:k24o 30s linear infinite}
+@keyframes k24o{to{transform:rotate(360deg)}}
+#K24b .k24fl .ar{position:absolute;height:6px}
+#K24b .k24fl .ar span{position:absolute;left:0;right:22px;top:2px;height:3px;background:rgba(140,190,255,.35)}
+#K24b .k24fl .ar span::after{content:"";position:absolute;left:0;top:-4px;width:12px;height:12px;border-radius:50%;background:#7fb6ff;box-shadow:0 0 18px #4fa0ff}
+#K24b .k24fl .ar b{position:absolute;right:0;top:-9px;width:0;height:0;border-left:24px solid #7fb6ff;border-top:12px solid transparent;border-bottom:12px solid transparent}
+#K24b .k24fl .a1{left:480px;top:577px;width:190px}
+.s.cur#K24b .k24fl .ar span::after{animation:k24dot 1.4s ease-in-out infinite}
+@keyframes k24dot{0%{left:0;opacity:0}15%{opacity:1}85%{opacity:1}100%{left:calc(100% - 12px);opacity:0}}
+#K24b .k24fl .ar2{position:absolute;left:1430px;top:530px;width:200px;height:100px}
+#K24b .k24fl .a2{left:0;top:20px;width:200px}
+#K24b .k24fl .a3{left:0;top:76px;width:200px;transform:scaleX(-1)}
+.s.cur#K24b .k24fl .a3 span::after{animation-delay:.7s}
+#K24b .k24fl .wv{position:absolute;top:520px;width:70px;height:120px}
+#K24b .k24fl .wv i{position:absolute;top:50%;border:6px solid #7fb6ff;border-radius:50%;border-color:transparent #7fb6ff transparent transparent;opacity:.25}
+#K24b .k24fl .wv i:nth-child(1){width:40px;height:40px;margin-top:-26px;left:0}
+#K24b .k24fl .wv i:nth-child(2){width:84px;height:84px;margin-top:-48px;left:-8px}
+#K24b .k24fl .wv.l{left:1340px;transform:scaleX(-1)}
+#K24b .k24fl .wv.r{left:1650px}
+.s.cur#K24b .k24fl .wv i{animation:k24wv 1.4s ease-in-out infinite}
+.s.cur#K24b .k24fl .wv i:nth-child(2){animation-delay:.25s}
+@keyframes k24wv{0%,100%{opacity:.2}50%{opacity:1}}
+#K24b .k24fl .cl{position:absolute;left:1740px;top:420px;width:470px;height:auto;overflow:visible}
+#K24b .k24fl .cl path{fill:#f2f6ff;filter:drop-shadow(0 0 40px rgba(127,182,255,.35))}
+.s.cur#K24b .k24fl .cl{animation:k24cl 5s ease-in-out infinite}
+@keyframes k24cl{0%,100%{translate:0 0}50%{translate:0 -12px}}
+#K24b .k24fl>*:not(.k24bv){opacity:0}
+.s.cur#K24b .k24fl>*:not(.k24bv){animation-name:none;opacity:1;transition:opacity .8s ease .8s}
+
+/* 11/27 22:15 K24b 흐름 요소 크게 — 비콘 · 화살표 · 신호 파동 */
+#K24b .k24fl .bk{left:110px;top:400px;width:360px;height:360px}
+#K24b .k24fl .bk .gm{width:210px;height:252px}
+#K24b .k24fl .ar span{height:5px;top:1px;background:rgba(140,190,255,.5)}
+#K24b .k24fl .ar span::after{width:16px;height:16px;top:-6px}
+#K24b .k24fl .ar b{border-left-width:30px;border-top-width:15px;border-bottom-width:15px;top:-12px}
+#K24b .k24fl .a1{left:500px;width:180px}
+#K24b .k24fl .ar2{left:1440px;width:190px;top:520px}
+#K24b .k24fl .a2,#K24b .k24fl .a3{width:190px}#K24b .k24fl .a3{top:90px}
+#K24b .k24fl .wv{top:500px;width:100px;height:160px}
+#K24b .k24fl .wv i{border-width:9px}
+#K24b .k24fl .wv i:nth-child(1){width:60px;height:60px;margin-top:-39px}
+#K24b .k24fl .wv i:nth-child(2){width:120px;height:120px;margin-top:-69px;left:-10px}
+#K24b .k24fl .wv.l{left:1330px}
+#K24b .k24fl .wv.r{left:1660px}
+#K24b .k24fl .cl{left:1770px;top:400px;width:520px}
 /* ═════ 16:9 버전 (?a=16x9, 11/27) ═════
    ※ 빔프로젝터(led.html?a=16x9) M7-7이 이 모드를 씀. 장을 고치면 ?a=16x9로도 확인하고, 21:8 원본 위치를 바꾸면 아래 html.r169 #Kxx 규칙도 같이 맞출 것.
       R169Z(묶음 축소) 장은 내용 범위를 자동으로 재서 배치하므로 대부분 따라감.
@@ -2590,8 +2647,15 @@ html.r169 #K28p .k28bg{top:800px}
   <p class="sub" style="margin-top:34px">모바일 출입증으로 간편하게 출석하고<br>현장 · 온라인 표결 결과를 실시간 통합 집계</p>
   <ul class="k24bl"><li>회원가입 없는 모바일 출입증</li><li>태그 한 번으로 출석 확인</li><li>생체인증으로 간편한 본인확인</li><li>현장에서도 간편한 전자표결</li></ul>
  </div>
- <div class="k24vk"><div class="bcn"><i class="w"></i><i class="w" style="--k:1"></i><i class="w" style="--k:2"></i><div class="pk"><span class="lg"><img src="assets/s4/kosmos-color.svg" alt=""></span><em>NFC · BLE</em></div><p>현장 출석 비콘</p></div><div class="vcd"><div class="vh"><small>제1호 의안</small><span class="lv">● 표결 중</span></div><b>재무제표 승인의 건</b><div class="ch"><span class="pro">찬성</span><span>반대</span><span>기권</span></div><div class="bt">투표하기</div><p class="dn"><i></i>투표가 완료되었습니다</p></div></div>
- <div class="phone k24bv" style="left:3100px;top:118px;width:706px;height:1364px"><div class="scr"><video class="k24bvid" src="assets/s4/onsite-vote.mp4" poster="assets/s4/onsite-vote.webp" muted loop playsinline preload="auto"></video></div></div>
+ <div class="k24fl">
+  <div class="bk"><i class="r" style="--k:0"></i><i class="r" style="--k:1"></i><i class="r" style="--k:2"></i><i class="o"></i><svg class="gm" viewBox="0 0 200 240"><defs><linearGradient id="k24g1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffd6e8"/><stop offset=".5" stop-color="#c9d8ff"/><stop offset="1" stop-color="#9ff0e6"/></linearGradient><linearGradient id="k24g2" x1="1" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff3c8"/><stop offset="1" stop-color="#ffc2d6"/></linearGradient><linearGradient id="k24g3" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#b7f3ff"/><stop offset="1" stop-color="#d8c8ff"/></linearGradient></defs><polygon points="100,4 176,44 196,120 176,196 100,236 24,196 4,120 24,44" fill="url(#k24g1)"/><polygon points="100,4 176,44 130,80 70,80 24,44" fill="url(#k24g2)" opacity=".9"/><polygon points="70,80 130,80 140,160 100,236 60,160" fill="url(#k24g3)" opacity=".85"/><polygon points="24,44 70,80 60,160 24,196 4,120" fill="#ffd0e4" opacity=".75"/><polygon points="176,44 196,120 176,196 140,160 130,80" fill="#bfe9ff" opacity=".75"/><polygon points="60,160 100,236 24,196" fill="#e9d6ff" opacity=".8"/><polygon points="140,160 176,196 100,236" fill="#a8f0e0" opacity=".8"/><polygon points="70,80 130,80 100,40" fill="#fff" opacity=".55"/></svg></div>
+  <div class="ar a1"><span></span><b></b></div>
+  <div class="phone k24bv" style="left:3100px;top:118px;width:706px;height:1364px"><div class="scr"><video class="k24bvid" src="assets/s4/onsite-vote.mp4" poster="assets/s4/onsite-vote.webp" muted loop playsinline preload="auto"></video></div></div>
+  <div class="wv l"><i></i><i></i></div>
+  <div class="ar2"><div class="ar a2"><span></span><b></b></div><div class="ar a3"><span></span><b></b></div></div>
+  <div class="wv r"><i></i><i></i></div>
+  <svg class="cl" viewBox="0 0 520 320"><path d="M120 280h300a90 90 0 0 0 12-179A120 120 0 0 0 205 70 85 85 0 0 0 80 150a65 65 0 0 0 40 130z"/></svg>
+ </div>
 </section>
 
 <section class="s" id="K24c" data-t="생중계" data-dim="0">
