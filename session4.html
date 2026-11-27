@@ -2033,6 +2033,17 @@ html.r169 #K27 .sec-c{--k27y:560px}
 #K26 .k26s{top:470px!important;height:1001px!important}
 /* 11/27 21:16 K28p 아래 특허 목록 뒤에 박스(K13 띠와 같은 면) — 좌우 · 아래 화면 끝까지 */
 #K28p .k28bg{position:absolute;left:0;right:0;top:820px;bottom:0;border-top:2px solid rgba(242,245,250,.1);background:linear-gradient(180deg,rgba(14,18,24,.75),rgba(8,11,15,.55))}
+/* 11/27 21:18 K27: 제목 한 줄 「운영지원, 온보딩부터 당일 현장, 장애 대응까지.」, 인원 사진은 그라데이션 · 페더 없이 화면 전체 */
+#K27 .sec-h{font-size:120px!important;white-space:nowrap}
+html.r169 #K27 .sec-h{font-size:96px!important}
+#K27 .sec-c{--k27y:520px}
+html.r169 #K27 .sec-c{--k27y:600px}
+#K27 .photo{inset:0!important;top:0!important;bottom:0!important;background-size:cover!important;background-position:center 0%!important;-webkit-mask-image:none!important;mask-image:none!important;filter:saturate(.85) brightness(.62)!important}
+#K27.sec .shade{display:none}
+#K27 .k27e,#K27 .sec-h{text-shadow:0 4px 40px rgba(0,0,0,.6)}
+html.r169 #K27 .photo{background-position:center 30%!important}
+/* 11/27 21:19 K28c 타이틀 아래 시기 · 단계 글 전체 40px 위로 */
+#K28c .k28t{translate:0 -40px}
 /* ═════ 16:9 버전 (?a=16x9, 11/27) ═════
    ※ 빔프로젝터(led.html?a=16x9) M7-7이 이 모드를 씀. 장을 고치면 ?a=16x9로도 확인하고, 21:8 원본 위치를 바꾸면 아래 html.r169 #Kxx 규칙도 같이 맞출 것.
       R169Z(묶음 축소) 장은 내용 범위를 자동으로 재서 배치하므로 대부분 따라감.
@@ -2564,7 +2575,7 @@ html.r169 #K28p .k28bg{top:800px}
 <!-- ═════════ 6. 운영지원 ═════════ -->
 <section class="s ch sec fl" id="K27" data-t="장 표지 · 운영지원" data-dim="0">
  <div class="photo"></div><div class="shade"></div><div class="au"></div>
- <div class="sec-c"><p class="k27e fu" style="--i:0">언제나 내 곁에</p><h2 class="sec-h fu" style="--i:1">운영지원</h2><p class="sec-s fu" style="--i:2">온보딩부터 당일 현장, 장애 대응까지</p></div>
+ <div class="sec-c"><p class="k27e fu" style="--i:0">언제나 내 곁에</p><h2 class="sec-h fu" style="--i:1">운영지원, 온보딩부터 당일 현장, 장애 대응까지.</h2></div>
 </section>
 
 <section class="s" id="K28a" data-t="운영지원 1 · 온보딩" data-dim=".1">
@@ -2884,7 +2895,7 @@ const R169=document.documentElement.classList.contains('r169'),SW=R169?3200:4200
 /* 16:9 재배치를 마친 장 */
 const R169OK='K00 K01 K03 K12 K16 K21b K20 K27 K04 K09 K05 K06 K07 K08 K13 K14 K09b K10 K11 K28e K17 K18a K18c K18b K19 K23 K23b K25 K25b K28b K24a K24b K24c K26 K28c K15 K19b K19c K21 K22s K28p K29 K28d K28a K02'.split(' ');if(R169)R169OK.forEach(k=>{const e=document.getElementById(k);if(e)e.dataset.r=1;});
 /* 16:9: 큰 도식 장은 제목(.top) 외 요소를 한 묶음(.zr)으로 감싸 폭 2760에 맞게 줄이고 제목 아래 세로 공간을 씀. [배율, 원본 내용 왼쪽, 원본 내용 위, 16:9 내용 위, 제외 선택자] */
-window.R169Z={K02:[.9,'.top'],K24a:[.82,'.ab,.k24map',1480,3120],K24b:[.82,'.k24bt,.k24bi',1480,3120],K19b:[.767,'.top,.k19i'],K19c:[.767,'.top'],K21:[.767,'.k21t,.k21bg'],K22s:[.767,'.top'],K28p:[.767,'.ab:first-child,.k28bg'],K29:[.767,'.top'],K28d:[.767,'.top'],K28a:[.767,'.top'],K28c:[.767,'.top,.k28ph',null,null,-250],K24c:[.767,'.top',null,null,-80],K26:[.767,'.top'],K15:[.767,'.top']};
+window.R169Z={K02:[.9,'.top'],K24a:[.82,'.ab,.k24map',1480,3120],K24b:[.82,'.k24bt,.k24bi',1480,3120],K19b:[.767,'.top,.k19i'],K19c:[.767,'.top'],K21:[.767,'.k21t,.k21bg'],K22s:[.767,'.top'],K28p:[.767,'.ab:first-child,.k28bg'],K29:[.767,'.top'],K28d:[.767,'.top'],K28a:[.767,'.top'],K28c:[.767,'.top,.k28ph',null,null,-290],K24c:[.767,'.top',null,null,-80],K26:[.767,'.top'],K15:[.767,'.top']};
 /* 묶음을 줄인 뒤 실제 내용 범위를 재서 제목 아래 남는 공간의 가운데(가로는 화면 가운데)에 놓음 */
 window.r169wrap=function(){const st=document.getElementById('stage');for(const id in R169Z){const S=document.getElementById(id);if(!S)continue;const [z,skip,X0,X1,DY]=R169Z[id];const w=document.createElement('div');w.className='zr';[...S.children].filter(c=>!(skip&&c.matches(skip))).forEach(c=>w.appendChild(c));S.appendChild(w);S.dataset.r=1;w.dataset.z=z;if(X0!=null){w.dataset.x0=X0;w.dataset.x1=X1;}w.dataset.dy=DY||0;}
  const place=()=>{const sr=st.getBoundingClientRect(),k=sr.width/3200;document.querySelectorAll('.zr').forEach(w=>{const z=+w.dataset.z;w.style.transform=`scale(${z})`;let L=1e9,T=1e9,R=-1e9,B=-1e9;
