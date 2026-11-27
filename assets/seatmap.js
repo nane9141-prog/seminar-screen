@@ -157,7 +157,7 @@ function build(){
     var bR=(9.33-.3+28-.3-6*M)/2;var P=[[cL+pitch,1],[cL,1],[cL-pitch,1],[bR-pitch/2,-1],[bR+pitch/2,-1]];   // [x, 벽(1=좌측 +z, -1=우측 -z)]
     var back=new THREE.Mesh(new THREE.BoxGeometry(pitch*3+.3,bh+.3,.08),new THREE.MeshStandardMaterial({color:0x14161f,roughness:.9}));back.position.set(cL,by,13.46);scene.add(back);
     P.forEach(function(p,i){if(!B[i])return;var im=new Image();im.onload=function(){var tx=new THREE.Texture(im);tx.anisotropy=8;tx.needsUpdate=true;
-      var m=new THREE.Mesh(new THREE.PlaneGeometry(bw,bh),new THREE.MeshBasicMaterial({map:tx}));m.position.set(p[0],by,p[1]*13.4);if(p[1]>0)m.rotation.y=Math.PI;scene.add(m);};im.src=B[i];});
+      var m=new THREE.Mesh(new THREE.PlaneGeometry(bw,bh),new THREE.MeshBasicMaterial({map:tx}));m.position.set(p[0],p[1]<0?7.6-bh/2:by,p[1]*13.4);if(p[1]>0)m.rotation.y=Math.PI;   /* 우측 벽 04·05는 빔 스크린처럼 벽 위 끝에 맞춤 */scene.add(m);};im.src=B[i];});
   })();
   /* 출입문: 폐쇄 4곳, 사용 2곳 · 등록 데스크 */
   [-14.9,-1.6,6.6,17.6].forEach(dx=>{box(2.2,1.2,.36,0x5a1f26,dx,.6,HD+.15);if(dx!==-14.9)sprite('✕ 폐쇄',dx,2.1,HD+.2,'#ff6b6b',3.4);});
