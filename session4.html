@@ -1,5 +1,6 @@
 <!doctype html>
-<html lang="ko"><head><meta charset="utf-8">
+<html lang="ko"><head>
+<script>/* 11/27 16:9 버전: ?a=16x9 — 무대 3200×1800, 장별 재배치(.r169) */if(/[?&]a=16x9/.test(location.search))document.documentElement.classList.add('r169');</script><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <meta name="robots" content="noindex,nofollow">
 <title>Session 4 — 전자주주총회 도입 · 운영 방안 및 통합 솔루션 소개</title>
@@ -1986,6 +1987,87 @@ html.embed #sgb,html.embed #sg{display:none!important}  /* 11/26 메인 스크�
 #K28c .k28ph{background-position:center 76%!important}
 /* 11/27 20:21 간지 서브 문구 68 → 76px */
 .sec-s{font-size:76px}
+
+/* ═════ 16:9 버전 (?a=16x9, 11/27) ═════
+   ※ 빔프로젝터(led.html?a=16x9) M7-7이 이 모드를 씀. 장을 고치면 ?a=16x9로도 확인하고, 21:8 원본 위치를 바꾸면 아래 html.r169 #Kxx 규칙도 같이 맞출 것.
+      R169Z(묶음 축소) 장은 내용 범위를 자동으로 재서 배치하므로 대부분 따라감.
+   무대 3200×1800. 글자 px는 그대로라 1920 화면에서 21:8보다 약 31% 크게 보임.
+   재배치한 장은 .s에 data-r 표시 · 재배치 전 장은 21:8 원본을 무대 폭에 맞게 줄여 세로 가운데(zoom) */
+html.r169 .stage{width:3200px;height:1800px}
+html.r169 #c{width:3200px;height:1800px}
+html.r169 .s:not([data-r]){width:4200px;height:1600px;inset:auto;left:0;top:0;zoom:.7619;margin-top:381px}
+html.r169 .sec-c{padding-top:260px!important}
+html.r169 .top{left:220px;right:220px;top:150px}
+html.r169 #K04>.ab,html.r169 #K09>.ab{left:220px!important;top:400px!important;width:1250px!important}
+html.r169 #K04 canvas.viz,html.r169 #K09 canvas.viz{left:1480px!important;top:420px!important;width:1500px!important;height:954px!important}
+html.r169 #K05 .cols{left:220px;right:220px;top:480px;grid-template-columns:1fr 1fr;column-gap:160px;row-gap:90px}
+html.r169 #K05 .lab{height:auto}
+html.r169 #K05 .num{margin:20px 0 26px}
+html.r169 #K06>*{translate:none}
+html.r169 #K06>div:nth-of-type(2){left:220px!important;top:250px!important}
+html.r169 #K06>div:nth-of-type(4){left:220px!important;top:760px!important}
+html.r169 #K06 canvas.viz{left:1450px!important;top:470px!important;width:900px!important;height:520px!important}
+html.r169 #K06>div:nth-of-type(3){left:1180px!important;top:920px!important}
+html.r169 #K06>div:nth-of-type(5){left:1180px!important;top:1430px!important}
+html.r169 #K07 .cols{left:220px;right:220px;top:560px;bottom:300px;gap:36px}
+html.r169 #K07 .col{padding:52px 44px}
+html.r169 #K07 .col .n{font-size:210px}
+html.r169 #K07 .col .l{font-size:54px}
+html.r169 #K08 canvas.viz{left:220px!important;top:640px!important;width:2760px!important;height:960px!important}
+html.r169 #K08 .k8h{top:540px!important}
+html.r169 #K08 .k8h:nth-of-type(2){left:300px!important;width:970px!important}
+html.r169 #K08 .k8h:nth-of-type(3){left:1460px!important;width:1500px!important}
+html.r169 #K05 .cols{top:500px;row-gap:130px}
+html.r169 #K05 .num{font-size:330px}
+html.r169 #K06 canvas.viz{left:1650px!important;top:330px!important;width:820px!important;height:470px!important}
+html.r169 #K13 .k13c{top:420px}
+html.r169 #K13 .dg{margin-bottom:170px}
+html.r169 #K14 .k14p{left:220px!important;right:220px!important;top:620px!important}
+html.r169 #K10 .rows{left:220px;top:520px;width:1250px}
+html.r169 #K10 canvas.viz,html.r169 #K10 .mk{zoom:.82;translate:-200px 420px}
+html.r169 #K11 .chart,html.r169 #K11 .lg{left:220px;right:220px}
+html.r169 #K11 .chart{top:700px;height:900px}
+html.r169 #K11 .lg{top:760px!important}
+html.r169 #K11 .bar{width:120px}
+html.r169 #K14 .k14p{top:560px!important}
+html.r169 #K14 .tr{height:290px!important;grid-template-columns:260px 1fr 1fr!important}
+html.r169 #K09b .gcol{zoom:.78;top:400px!important}
+html.r169 #K09b .gL{left:282px!important}
+html.r169 #K09b .gR{left:2159px!important}
+html.r169 #K28e .gcol{zoom:.775;top:400px!important}
+html.r169 #K28e .gL{left:284px!important}
+html.r169 #K28e .gR{left:1681px!important}
+html.r169 #K14 .tr{grid-template-columns:300px 1fr 1fr!important}
+html.r169 #K09b .gcol{top:525px!important}
+html.r169 #K28e .gcol{top:560px!important}
+
+html.r169 #K17 .node{width:860px;top:560px!important;gap:34px}
+html.r169 #K17 #n1{left:220px!important}html.r169 #K17 #n2{left:1170px!important}html.r169 #K17 #n3{left:2120px!important}
+html.r169 #K17 .plus{left:220px;right:220px;top:1260px!important}
+html.r169 #K18a .ab.lc,html.r169 #K18c .ab.lc,html.r169 #K18b .ab.lc{width:1450px;height:1800px}
+html.r169 #K18a .rp,html.r169 #K18c .rp{left:1400px!important;width:1800px;height:1800px}
+html.r169 #K18a .card,html.r169 #K18c .card{left:60px;right:160px}
+html.r169 #K18b .zw{--zx:3150px!important;--zy:477px!important;translate:-930px 140px}
+html.r169 #K19 .half{width:1350px;top:560px}
+html.r169 #K19 .half:nth-of-type(2){left:220px!important}
+html.r169 #K19 .half:nth-of-type(4){left:1630px!important}
+html.r169 #K19 .vr{left:1599px;top:600px}
+html.r169 #K17 .node{width:820px;top:640px!important}
+html.r169 #K17 #n2{left:1190px!important}html.r169 #K17 #n3{left:2160px!important}
+html.r169 #K17 .plus{top:1340px!important}
+html.r169 #K18b .zw{translate:-850px 140px}
+html.r169 #K19 .half .b{font-size:76px;white-space:nowrap}
+html.r169 .zr{position:absolute;left:0;top:0;width:4200px;height:1600px;transform-origin:0 0}
+html.r169 .s[data-r] .top{top:150px!important;left:220px!important}
+html.r169 #K28p>.ab:first-child{left:220px!important;width:2760px!important}
+html.r169 #K23>.ab,html.r169 #K23b>.ab,html.r169 #K25>.ab,html.r169 #K25b>.ab,html.r169 #K28b>.ab{left:220px!important;top:330px!important;width:1300px!important}
+html.r169 #K23 .cxw,html.r169 #K23b .cxw,html.r169 #K25 .cxw,html.r169 #K25b .cxw,html.r169 #K28b .cxw{left:1580px!important;top:500px!important;width:1400px!important;height:801px!important;padding:16px!important;border-radius:40px!important}
+html.r169 #K25b .k25m{left:1580px;top:360px}
+html.r169 #K23b .h{font-size:100px}
+html.r169 #K24a>.ab{left:220px!important;top:200px!important;width:1250px!important}
+html.r169 #K24a>.ab .h{white-space:normal!important}
+html.r169 #K24b>.k24bt{left:220px!important;top:240px!important;width:1250px!important}
+/* ═════ 16:9 끝 ═════ */
 </style></head>
 <body>
 <div class="stage" id="stage">
@@ -2744,7 +2826,20 @@ const up=m=>{if(EMB)parent.postMessage(m,'*');};
 /* K31: 로고 파일이 있는 종목코드만 이름 대신 로고(흰색 단색)로 */
 const S4LOGO=[];
 document.querySelectorAll('#K30 .lg').forEach(e=>{if(S4LOGO.includes(e.dataset.c)){const n=e.querySelector('i').textContent.replace(/\n/g,'');e.innerHTML=`<img src="assets/s4/logos/${e.dataset.c}.png" alt="${n}">`;}});
-function fit(){const s=Math.min(innerWidth/4200,innerHeight/1600);stage.style.transform=`translate(${(innerWidth-4200*s)/2}px,${(innerHeight-1600*s)/2}px) scale(${s})`;}
+const R169=document.documentElement.classList.contains('r169'),SW=R169?3200:4200,SH=R169?1800:1600;
+/* 16:9 재배치를 마친 장 */
+const R169OK='K00 K01 K03 K12 K16 K21b K20 K27 K04 K09 K05 K06 K07 K08 K13 K14 K09b K10 K11 K28e K17 K18a K18c K18b K19 K23 K23b K25 K25b K28b K24a K24b K24c K26 K28c K15 K19b K19c K21 K22s K28p K29 K28d K28a K02'.split(' ');if(R169)R169OK.forEach(k=>{const e=document.getElementById(k);if(e)e.dataset.r=1;});
+/* 16:9: 큰 도식 장은 제목(.top) 외 요소를 한 묶음(.zr)으로 감싸 폭 2760에 맞게 줄이고 제목 아래 세로 공간을 씀. [배율, 원본 내용 왼쪽, 원본 내용 위, 16:9 내용 위, 제외 선택자] */
+window.R169Z={K02:[.9,'.top'],K24a:[.82,'.ab',1480,3120],K24b:[.82,'.k24bt,.k24bi',1480,3120],K19b:[.767,'.top,.k19i'],K19c:[.767,'.top'],K21:[.767,'.k21t,.k21bg'],K22s:[.767,'.top'],K28p:[.767,'.ab:first-child'],K29:[.767,'.top'],K28d:[.767,'.top'],K28a:[.767,'.top'],K28c:[.767,'.top,.k28ph',null,null,-250],K24c:[.767,'.top',null,null,-80],K26:[.767,'.top'],K15:[.767,'.top']};
+/* 묶음을 줄인 뒤 실제 내용 범위를 재서 제목 아래 남는 공간의 가운데(가로는 화면 가운데)에 놓음 */
+window.r169wrap=function(){const st=document.getElementById('stage');for(const id in R169Z){const S=document.getElementById(id);if(!S)continue;const [z,skip,X0,X1,DY]=R169Z[id];const w=document.createElement('div');w.className='zr';[...S.children].filter(c=>!(skip&&c.matches(skip))).forEach(c=>w.appendChild(c));S.appendChild(w);S.dataset.r=1;w.dataset.z=z;if(X0!=null){w.dataset.x0=X0;w.dataset.x1=X1;}w.dataset.dy=DY||0;}
+ const place=()=>{const sr=st.getBoundingClientRect(),k=sr.width/3200;document.querySelectorAll('.zr').forEach(w=>{const z=+w.dataset.z;w.style.transform=`scale(${z})`;let L=1e9,T=1e9,R=-1e9,B=-1e9;
+  w.querySelectorAll(':scope>*,:scope>.zw>*').forEach(e=>{if(e.classList.contains('zw'))return;const r=e.getBoundingClientRect();if(!r.width||!r.height)return;const x=(r.left-sr.left)/k,y=(r.top-sr.top)/k,ww=r.width/k,hh=r.height/k;if(ww>3000&&hh>1100)return;L=Math.min(L,x);T=Math.min(T,y);R=Math.max(R,x+ww);B=Math.max(B,y+hh);});
+  if(L>1e8)return;const tp=w.parentNode.querySelector(':scope>.top,:scope>.k21t');let tb=0;if(tp){const r=tp.getBoundingClientRect();tb=(r.bottom-sr.top)/k;}
+  const X0=w.dataset.x0!=null?+w.dataset.x0:null,X1=+w.dataset.x1;if(X0!=null)tb=0;const a0=tb?tb+70:100,a1=1700,h=B-T,ty=a0+Math.max(0,(a1-a0-h)*(tb?.32:.5))-T,tx=X0!=null?X0+(X1-X0-(R-L))/2-L:((R-L)>3000?220-300*z:(3200-(R-L))/2-L);w.style.transform=`translate(${tx}px,${ty+ +(w.dataset.dy||0)}px) scale(${z})`;});};
+ place();document.fonts&&document.fonts.ready.then(place);addEventListener('load',place);}
+if(R169)document.querySelectorAll('canvas.viz[width="4200"][height="1600"]').forEach(c=>{c.width=3200;c.height=1800;c.style.width='3200px';c.style.height='1800px';});
+function fit(){const s=Math.min(innerWidth/SW,innerHeight/SH);stage.style.transform=`translate(${(innerWidth-SW*s)/2}px,${(innerHeight-SH*s)/2}px) scale(${s})`;}
 addEventListener('resize',fit);fit();
 const ds=m=>{const f=document.getElementById('c');if(f&&f.contentWindow)f.contentWindow.postMessage(m,'*');};
 function bg(s){if(EMB){up({s4:'bg',dim:+(s.dataset.dim??.2),ox:+(s.dataset.ox||.5)});return;}const f=document.getElementById('c');f.style.opacity=s.dataset.dim??.2;ds({ds:'ox',v:+(s.dataset.ox||.5)});}
@@ -2763,7 +2858,7 @@ function count(s,sl=s){s.querySelectorAll('.cnt').forEach(el=>{const hb=el.close
 (function(){
  const D26=[[13,1],[16,0],[17,1],[18,7],[19,13],[20,20],[23,9],[24,30],[25,5],[26,91],[27,13],[30,2],[31,19]];
  const D27=[[15,1],[16,2],[17,6],[18,6],[19,7],[22,6],[23,19],[24,35],[25,3],[26,8],[29,35],[30,6],[31,19]];
- const el=document.getElementById('mar');if(!el)return;const W=3600,H=967,WD='일월화수목금토';
+ const el=document.getElementById('mar');if(!el)return;const W=document.documentElement.classList.contains('r169')?2760:3600,H=967,WD='일월화수목금토';
  function layer(y,D,hot,cls,extra){const cw=W/D.length,X=i=>cw*(i+.5),MAX=Math.max(...D.map(d=>d[1]));let h=`<div class="ml ${cls}"><div class="ax"></div>`;
   D.forEach(([d],i)=>{if(i&&new Date(y,2,d).getDay()<new Date(y,2,D[i-1][0]).getDay())h+=`<div class="wk" style="left:${cw*i}px"></div>`;});
   D.forEach(([d],i)=>{if(hot.includes(d))h+=`<div class="band" style="left:${X(i)-cw*.42}px;width:${cw*.84}px"><span>집중일</span></div>`;});
@@ -2797,13 +2892,13 @@ VIZ.grid=(cv)=>{const g=cv.getContext('2d'),C=18,R=12,N=212,gap=Math.min(cv.widt
   if(mode==='split'&&st>=1){const q=Math.min(1,Math.max(0,(t-ts-i*4)/500));col=i<203?`rgba(0,129,204,${.55+.45*q})`:`rgba(0,173,169,${.55+.45*q})`;}
   if(mode==='pick'){const on=i<138,q=Math.min(1,Math.max(0,(t-t0-900-i*7)/400));col=on?mix((i%C)/C):'rgba(242,245,250,.2)';if(on){a=a*(.35+.65*q);}else a*=.8;}
   g.globalAlpha=a;g.fillStyle=col;g.beginPath();g.arc(x,y,r,0,7);g.fill();});g.globalAlpha=1;}};};
-VIZ.rings=(cv)=>{const g=cv.getContext('2d');const R=[[93,198,'전자투표'],[36,76,'전자위임장'],[92,194,'자체 수행'],[13,28,'상대방이 모집'],[19,41,'외부(대행) 활용']];const cx=[360,1000,1840,2590,3300],cy=430,rad=270;let t0=0;
+VIZ.rings=(cv)=>{const g=cv.getContext('2d');const R=[[93,198,'전자투표'],[36,76,'전자위임장'],[92,194,'자체 수행'],[13,28,'상대방이 모집'],[19,41,'외부(대행) 활용']];const r9=document.documentElement.classList.contains('r169');if(r9)cv.width=2760;const cx=r9?[300,830,1460,1990,2520]:[360,1000,1840,2590,3300],cy=430,rad=r9?220:270;let t0=0;
  return{enter(){t0=performance.now();},
  draw(t){g.clearRect(0,0,cv.width,cv.height);R.forEach(([pct,n,l],j)=>{const N=100,k=Math.min(1,Math.max(0,(t-t0-400-j*220)/1600)),fill=Math.max(1,Math.round(pct*(1-Math.pow(1-k,3))));
   for(let i=0;i<N;i++){const a=-Math.PI/2+i/N*Math.PI*2,x=cx[j]+Math.cos(a)*rad,y=cy+Math.sin(a)*rad;g.fillStyle=i<fill?mix(i/N):'rgba(242,245,250,.16)';g.beginPath();g.arc(x,y,i<fill?10:7,0,7);g.fill();}
   g.fillStyle='#F2F5FA';g.font='600 170px "Pretendard Variable"';g.textAlign='left';g.textBaseline='alphabetic';{const tx=fill+'%',m=g.measureText(tx);/* 글자 실제 윤곽 기준으로 원 가운데에 */g.fillText(tx,cx[j]-(m.actualBoundingBoxRight-m.actualBoundingBoxLeft)/2+m.actualBoundingBoxLeft,cy+(m.actualBoundingBoxAscent-m.actualBoundingBoxDescent)/2);}g.textAlign='center';g.textBaseline='middle';
   g.font='700 62px KakaoBig';g.fillStyle='#F2F5FA';g.fillText(l,cx[j],cy+rad+110);g.font='400 50px KakaoSmall';g.fillStyle='rgba(242,245,250,.58)';g.fillText(n+'개사',cx[j],cy+rad+190);});
-  g.strokeStyle='rgba(242,245,250,.16)';g.lineWidth=3;g.beginPath();g.moveTo(1420,80);g.lineTo(1420,880);g.stroke();}};};
+  g.strokeStyle='rgba(242,245,250,.16)';g.lineWidth=3;g.beginPath();{const dx=r9?1145:1420;g.moveTo(dx,80);g.lineTo(dx,880);}g.stroke();}};};
 VIZ.stream=(cv)=>{const g=cv.getContext('2d'),P=[...Array(240)].map(()=>({p:Math.random(),y:(Math.random()-.5),s:.0015+Math.random()*.0025}));
  return{enter(){},draw(t){g.clearRect(0,0,cv.width,cv.height);const H=cv.height;for(const q of P){q.p+=q.s;if(q.p>1)q.p=0;const w=1-q.p*.55,x=q.p*cv.width,y=H/2+q.y*H*.8*w;if(q.p>.88&&Math.abs(q.y)>.42){continue;}g.fillStyle=mix(q.p);g.globalAlpha=Math.sin(q.p*Math.PI)*.9;g.beginPath();g.arc(x,y,6,0,7);g.fill();}g.globalAlpha=1;
   }};};
@@ -2992,5 +3087,6 @@ document.fonts.ready.then(()=>{go(hi>0?hi:0);up({s4:'ready'});});
 (function(){const Z={K21:[.88,2100,320,'.k21t,.k21bg'],K22s:[.9,2100,90.5,'.top'],K18b:[.86,3150,477,'.ab,.rp']};
  for(const id in Z){const S=document.getElementById(id);if(!S)continue;const [z,x,y,skip]=Z[id];const w=document.createElement('div');w.className='zw';w.style.cssText='--zs:'+z+';--zx:'+x+'px;--zy:'+y+'px';
   [...S.children].filter(c=>!c.matches(skip)).forEach(c=>w.appendChild(c));S.appendChild(w);}})();
+if(document.documentElement.classList.contains('r169'))r169wrap();
 </script>
 </body></html>

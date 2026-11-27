@@ -202,7 +202,7 @@ const DK={cur:null,label:null,ready:false,f:$('dkf'),p:$('dkp'),b:$('dkb'),
   /* M5-3 세션 1 — 자료 받으면 여기 추가 */
   if(no==='M5-5')return {k:'s2',src:'session2.html?embed=1',w:1920,h:1080,label:pos};
   if(no==='M7-5')return {k:'s3',pdf:23,w:2844,h:1600,i:+(v.pdk||0)};
-  if(no==='M7-7')return {k:'s4',src:'session4.html?embed=1',w:4200,h:1600,label:pos};
+  if(no==='M7-7')return WIDE?{k:'s4',src:'session4.html?embed=1&a=16x9',w:3200,h:1800,label:pos}:null;  /* 11/27 20:47 세션 4: 빔(16:9)은 session4 16:9 버전, LED(4:3)는 기본 화면 */
   return null;},
  fitBox(w,h){const s=Math.min(W/w,H/h);this.b.style.width=w+'px';this.b.style.height=h+'px';this.b.style.left=((W-w*s)/2)+'px';this.b.style.top=((H-h*s)/2)+'px';this.b.style.transform=`scale(${s})`;},
  show(d){if(!d){document.body.classList.remove('deck');if(this.cur){const c=this.cur;setTimeout(()=>{if(this.cur===c&&!document.body.classList.contains('deck')){this.f.removeAttribute('src');this.f.style.display='none';this.cur=null;this.label=null;}},800);}return;}
