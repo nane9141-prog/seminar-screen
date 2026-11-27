@@ -1962,6 +1962,18 @@ html.embed #sgb,html.embed #sg{display:none!important}  /* 11/26 메인 스크�
 /* K30(11/26 23:14) 마지막 Get Ready. 그라데이션이 왼쪽 → 오른쪽으로 채워짐(흰색 위로 파랑 · 청록이 왼쪽부터). y 아래 잘림: 글자 칠 영역을 아래로 넓힘(line-height · padding) */
 #K30 .gr-t{line-height:1.2;padding:.04em .06em .16em;background:linear-gradient(90deg,#0081cc 0%,#00ada9 42%,#F2F5FA 58%,#F2F5FA 100%);background-size:240% 100%;background-position:100% 0;-webkit-background-clip:text;background-clip:text}
 @keyframes k30w{from{background-position:100% 0}to{background-position:0% 0}}
+
+/* 11/27 KP: K09b 강조 흰색 · 관리기관 지정 등 파랑, K19c 마지막 요지 파랑, K25 항목 라벨 구분, K26 순서(질의 · 발언 · 동의 → 투표) · 휴대폰 크게 */
+#K09b em.w{color:#fff}
+#K09b .gkey em.b{font-style:normal;color:#7fb6ff;font-weight:600}
+#K19c .bl li.k{color:#7fb6ff}
+#K25 .lst li{display:grid;grid-template-columns:150px minmax(0,1fr);column-gap:36px;align-items:baseline;color:#c9d2de}
+#K25 .lst li b{margin:0;color:#7fb6ff;font-family:"Pretendard Variable";font-weight:700}
+#K26 .k26r{top:430px}
+#K26 .k26h{margin-bottom:34px}
+#K26 .k26p{width:380px;height:822px;border-radius:58px}
+#K26 .k26p .sc{border-radius:50px}
+#K26 .k26s{top:430px;height:923px}
 </style></head>
 <body>
 <div class="stage" id="stage">
@@ -2083,7 +2095,7 @@ html.embed #sgb,html.embed #sg{display:none!important}  /* 11/26 메인 스크�
    <ol class="gl"><li>운영 경력 · 상주인력 · 비상연락체계</li><li>동시접속 처리용량(여유율 200% 이상 권장) · 서버 이중화</li><li>UPS · 예비회선 · 재해복구(DR) · 목표복구시간(RTO)</li><li>ISMS-P 등 정보보호 인증 · 개인정보 보호체계</li><li>손해배상 이행능력(재무상태 · 배상책임보험)</li></ol></div></div></div>
   <div class="gbx fu" style="--i:3"><div class="gi"><i class="nb">2</i><div><p class="gp">위탁계약 포함 사항 <small class="in">별지 3 특약조항(표준안)</small></p>
    <div class="gchips"><span>위탁업무 범위</span><span>SLA</span><span>장애 책임 · 면책</span><span>손해배상</span><span>기록 보존 · 인계</span><span>개인정보 위탁</span><span>대리인 계정</span><span>사전 리허설</span><span>긴급 대응 · 증설</span><span>해지 · 대체수단</span><span>배상책임보험</span><span>감사 · 결과보고</span></div></div></div></div>
-  <div class="gbx fu" style="--i:4"><div class="gi"><i class="nb">3</i><p class="gp">관리기관 · 임직원은 직무상 알게 된 <em>미공개정보 이용 금지</em></p></div></div>
+  <div class="gbx fu" style="--i:4"><div class="gi"><i class="nb">3</i><p class="gp">관리기관 · 임직원은 직무상 알게 된 <em class="w">미공개정보 이용 금지</em></p></div></div>
  </div>
  <div class="gcol gR" style="left:2220px;width:1680px">
   <div class="gsrc fu" style="--i:2"><span>법무부</span><b>제6조 관리기관의 지정 및 위탁</b></div>
@@ -2091,9 +2103,9 @@ html.embed #sgb,html.embed #sg{display:none!important}  /* 11/26 메인 스크�
    <li><i class="nb">1</i><p>원활한 개최 · 운영을 위해 관리기관을 지정해 절차 운영을 위탁할 수 있음</p></li>
    <li><i class="nb">2</i><p>지정 시 인력 · 물적설비 · 업무연속성 보완설비 요건 확인</p></li>
    <li><i class="nb">3</i><p>수용능력 · 본인확인 · 출석관리 · 질의 · 표결 · 장애대응 · 기록 · 개인정보 체계를<br>고려해 선정</p></li>
-   <li><i class="nb">4</i><p>위탁하더라도 개최 · 의사진행 · 연기 · 속행 · 폐회 판단은 <em>회사 및 의장</em>이 수행</p></li>
+   <li><i class="nb">4</i><p>위탁하더라도 개최 · 의사진행 · 연기 · 속행 · 폐회 판단은 <em class="w">회사 및 의장</em>이 수행</p></li>
    <li><i class="nb">5</i><p>위탁 범위 · 장애대응 · 기록 · 개인정보 · 책임분담은 위탁계약에서 정함</p></li></ol></div>
-  <div class="gkey fu" style="--i:4"><p>관리기관 지정 등 구체적 운영방식은 <em>매번 이사회 결의 없이 대표이사에게 위임 가능</em>.<br>다만 중요한 일반기준은 이사회 결의를 거친 운영규정으로 정해두는 것이 바람직</p></div>
+  <div class="gkey fu" style="--i:4"><p><em class="b">관리기관 지정 등</em> 구체적 운영방식은 <em>매번 이사회 결의 없이 대표이사에게 위임 가능</em>.<br>다만 중요한 일반기준은 이사회 결의를 거친 운영규정으로 정해두는 것이 바람직</p></div>
  </div>
 </section>
 
@@ -2225,7 +2237,7 @@ html.embed #sgb,html.embed #sg{display:none!important}  /* 11/26 메인 스크�
    <div class="qb"><p>주주총회는 주주 전원으로 구성된다.<br><em>여기서 말하는 주주는 기준일 당시<br>주주명부에 기재 또는 기록된 자를 말한다.</em></p></div></div>
   <div class="gp fu" style="--i:3"><div class="src"><span>대법원 판례</span></div>
    <div class="cs"><div>2017. 3. 23<b>2015다248342</b></div><div>2024. 6. 13<b>2018다261322</b></div><div>2025. 6. 5<b>2024다202652</b></div></div>
-   <ul class="bl"><li>적법하게 명부에 기재된 주주가 회사에 대해 주주권을 행사한다.</li><li>회사가 실제 소유자가 따로 있다는 것을 알고 있어도,<br>그 이유만으로 명부주주의 행사를 거절할 수 없다.</li><li class="k">실제 소유자가 확인되었다는 이유만으로 명부에 없는 사람에게<br>독자적인 주주권 행사를 허용할 수도 없다.</li></ul></div>
+   <ul class="bl"><li>적법하게 명부에 기재된 주주가 회사에 대해 주주권을 행사한다.</li><li>회사가 실제 소유자가 따로 있다는 것을 알고 있어도,<br>그 이유만으로 명부주주의 행사를 거절할 수 없다.</li><li class="k">실제 소유자가 확인되었다는 이유만으로 명부에 없는 사람에게<br>독자적인 주주권 행사를 허용할 수 없다.</li></ul></div>
  </div>
  <div class="rp fu" style="--i:2"></div>
  <div class="ms fu" style="--i:3"><p>명부에 없는 실질주주가 ‘자기 자신의 주주 자격’으로<br>출석 · 질의 · 표결하는 것은 원칙적으로 할 수 없습니다.</p><p>다만, 명부주주에게서 적법하게 위임받으면 <em>‘대리인 자격’</em>으로 참여할 수 있습니다.</p></div>
@@ -2241,8 +2253,7 @@ html.embed #sgb,html.embed #sg{display:none!important}  /* 11/26 메인 스크�
  <path class="a l" pathLength="1" style="--d:1.4s" d="M3504 1025H3296"/><path class="hd l" style="--d:1.4s" d="M3282 1025L3308 1010Q3302 1025 3308 1040Z"/>
  <path class="a l" pathLength="1" style="--d:1.8s" d="M2944 1025H2736"/><path class="hd l" style="--d:1.8s" d="M2722 1025L2748 1010Q2742 1025 2748 1040Z"/>
  <path class="a l" pathLength="1" style="--d:2.2s" d="M2384 1025H2176"/><path class="hd l" style="--d:2.2s" d="M2162 1025L2188 1010Q2182 1025 2188 1040Z"/>
- <path class="a r" pathLength="1" style="--d:3.2s" d="M3090 1148V1214"/><path class="hd r" style="--d:3.2s" d="M3090 1228L3075 1202Q3090 1208 3105 1202Z"/>
- <path class="a l" pathLength="1" style="--d:3.5s" d="M3130 1228V1162"/><path class="hd l" style="--d:3.5s" d="M3130 1148L3145 1174Q3130 1168 3115 1174Z"/>
+ <path class="a r" pathLength="1" style="--d:3.2s" d="M3110 1162V1214"/><path class="hd r" style="--d:3.2s" d="M3110 1228L3095 1202Q3110 1208 3125 1202Z"/><path class="hd r" style="--d:3.2s" d="M3110 1148L3125 1174Q3110 1168 3095 1174Z"/>
  <path class="a x" pathLength="1" style="--d:2.6s" d="M1990 1146V1236Q1990 1282 2036 1282H2880"/><path class="hd x" style="--d:2.6s" d="M2900 1282L2874 1297Q2880 1282 2874 1267Z"/>
  <path class="m" style="--d:2.6s" d="M1990 1146V1236Q1990 1282 2036 1282H2880"/>
  </svg>
@@ -2372,8 +2383,9 @@ html.embed #sgb,html.embed #sg{display:none!important}  /* 11/26 메인 스크�
   <div class="k26c fu" style="--i:2"><p class="k26h">전자출석</p><div class="k26p"><div class="sc"><video src="assets/s4/ks-attend.mp4" poster="assets/s4/ks-attend.webp" muted loop playsinline preload="auto"></video></div></div></div>
   <div class="k26c fu" style="--i:3"><p class="k26h">동시출석</p><div class="k26p"><div class="sc"><video src="assets/s4/ks-switch.mp4" poster="assets/s4/ks-switch.webp" muted loop playsinline preload="auto"></video></div></div></div>
   <div class="k26c fu" style="--i:4"><p class="k26h">멀티알림</p><div class="k26p"><div class="sc"><video src="assets/s4/ks-notify.mp4" poster="assets/s4/ks-notify.webp" muted loop playsinline preload="auto"></video></div></div></div>
-  <div class="k26c fu" style="--i:5"><p class="k26h">투표</p><div class="k26p"><div class="sc"><video src="assets/s4/ks-vote.mp4" poster="assets/s4/ks-vote.webp" muted loop playsinline preload="auto"></video></div></div></div>
-  <div class="k26c fu" style="--i:6"><p class="k26h">질의 · 발언 · 동의</p><div class="k26p"><div class="sc"><video src="assets/s4/ks-qna.mp4" poster="assets/s4/ks-qna.webp" muted loop playsinline preload="auto"></video></div></div></div>
+  
+  <div class="k26c fu" style="--i:5"><p class="k26h">질의 · 발언 · 동의</p><div class="k26p"><div class="sc"><video src="assets/s4/ks-qna.mp4" poster="assets/s4/ks-qna.webp" muted loop playsinline preload="auto"></video></div></div></div>
+  <div class="k26c fu" style="--i:6"><p class="k26h">투표</p><div class="k26p"><div class="sc"><video src="assets/s4/ks-vote.mp4" poster="assets/s4/ks-vote.webp" muted loop playsinline preload="auto"></video></div></div></div>
  </div>
  <div class="k26s fu" style="--i:7"><i></i><b>주주용<br>고객센터</b><small>이용문의 · 본인확인 · 장애접수</small></div>
 </section>
