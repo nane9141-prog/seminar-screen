@@ -889,7 +889,7 @@ body.idle{cursor:none}
 <div class="cg sp"><p class="cg-e fu" style="--i:0">Session 4.</p><div class="cg-b"><h2 class="sp-t" data-words style="--i:1">전자주주총회 도입 · 운영 방안 및<br>통합 솔루션 소개</h2><p class="sp-n ko fu" style="--i:2">박성용</p><p class="sp-r fu" style="--i:3">IR큐더스, 본부장</p></div></div>
 </section>
 <section class="slide" id="m7_7" data-no="M7-7" data-title="M7-7 Session 4 발표 키노트 (session4.html · 21:8 전면)" data-bg="B" data-foot="none" data-kn="1" data-dim=".42" data-tr="blur">
-<iframe class="kn" data-src="session4.html?embed=1&v=11272035" tabindex="-1" title="Session 4 키노트" aria-hidden="true"></iframe>
+<iframe class="kn" data-src="session4.html?embed=1&v=11272200" tabindex="-1" title="Session 4 키노트" aria-hidden="true"></iframe>
 </section>
 <section class="slide" id="m8_1" data-no="M8-1" data-title="M8-1 휴식 · 재개 타이머" data-bg="B" data-foot="full" data-break="brk2">
 <div class="bk">
@@ -1143,7 +1143,8 @@ addEventListener('message',e=>{const d=e.data||{};if(!d.s4)return;const f=KN.fra
   if(d.s4==='ready'){f._r=true;if(f._q){KN.post(f,{s4:'enter',at:f._q});f._q=null;}}
   else if(d.s4==='edge'){if(cur)go(nextMain(idx,d.d));}
   else if(d.s4==='bg'){if(cur&&fs.dataset.kn){const c=document.getElementById('c');if(c)c.style.opacity=d.dim;dsPost({ds:'ox',v:d.ox});}}
-  else if(d.s4==='pos'){if(cur){KN.pos=d.label;if(window.CtrlPanel)CtrlPanel.draw();MC.pub();}}});
+  else if(d.s4==='pos'){if(cur){KN.pos=d.label;if(window.CtrlPanel)CtrlPanel.draw();MC.pub();}}
+  else if(d.s4==='sfx'){if(cur&&window.SFX)SFX.s4(d.id);}});
 /* 사회자 화면(mc.html) 연동: 같은 PC는 SCHED(BroadcastChannel), 다른 기기는 Supabase Realtime 방송(온라인일 때). 8초마다 재전송 */
 var MC={st:null,q:null,sid:Math.random().toString(36).slice(2,8),  /* 11/27 ver(빌드) · sid(탭) — 운영 입력이 이전 버전 메인 신호를 걸러냄 */
 
@@ -1190,17 +1191,20 @@ function S3(s,on){if(!s||!s.dataset.s3)return;(s._t3||[]).forEach(clearTimeout);
 /* 효과음 S3~S7 (세미나_효과음_계획.md 2-1, 모두 오픈버스 · Freesound CC0). 화면에 → 로 들어올 때만 정해진 시점(ms)에 한 번. ← 로 돌아오면 무음.
    M 음소거를 따르고, 운영 입력 「효과음」 스위치(또는 Shift+M)로 효과음만 끔. 배경음이 흐르면 효과음 동안 절반으로 낮춤. 다음 화면 소리를 미리 불러 둠 */
 var SFX={vol:.7,a:{},T:[],off:localStorage.getItem('scr-sfx-off')==='1',
- F:{s3:'sfx-s3-part.mp3',s4:'sfx-s4-reveal.mp3',s5:'sfx-s5-proxymity.mp3',s6:'sfx-s6-chime.mp3',s7:'sfx-s7-close.mp3'},
+ F:{s3:'sfx-s3-part.mp3',s4:'sfx-s4-reveal.mp3',s5:'sfx-s5-proxymity.mp3',s6:'sfx-s6-chime.mp3',s7:'sfx-s7-close.mp3',k1:'sfx-k-chapter.mp3',k6:'sfx-k-close.mp3'},
+ /* 세션 4 키노트(M7-7) 안 효과음 — 장 표지 6장 · K30. session4.html이 → 로 그 장에 들어갈 때 알려 옴. 메인 효과음보다 작게(0.45) */
+ S4:{K01:['k1',200],K03:['k1',200],K12:['k1',200],K16:['k1',200],K21b:['k1',200],K27:['k1',200],K30:['k6',3300]},S4VOL:.45,
  MAP:{'M4-1':['s3',100],'M5-1':['s3',100],'M7-1':['s3',100],'M9-1':['s3',100],  /* 파트 첫 장: 11/27 KP 지정 koiroylers light transition — Blue Bloom과 함께 차올라 약 1.5초 정점 */
   'M4-4':['s4',50],      /* 출범식: 11/27 KP 지정 alex_kizenkov panned reverbed hit — 로고가 뜬 뒤 약 1.2초 타격 */
   'M7-4':['s5',13900],    /* Proxymity: 로고가 모이는 13.1~14.3초, 14.3초에 타격(파일 0.4초) */
   'M6-S1':['s6',550],'M8-S1':['s6',550],  /* 휴식 끝 안내: 제목이 뜨는 0.6초에 첫 음(파일 0.05초) */
   'M11-1':['s7',200]},    /* 폐회: 11/27 KP 지정 grumpynora progressing — 약 2초에 본 소리, 14초 */
- el(k){if(!this.a[k]){const x=new Audio('assets/sound/'+this.F[k]+'?v=11271625');x.preload='auto';x._t=null;this.a[k]=x;}return this.a[k];},
- load(s){const m=s&&this.MAP[s.dataset.no];if(m)this.el(m[0]);},
+ el(k){if(!this.a[k]){const x=new Audio('assets/sound/'+this.F[k]+'?v=11272200');x.preload='auto';x._t=null;this.a[k]=x;}return this.a[k];},
+ load(s){const m=s&&this.MAP[s.dataset.no];if(m)this.el(m[0]);if(s&&s.dataset.no==='M7-7'){this.el('k1');this.el('k6');}},
+ s4(id){const m=this.S4[id];if(!m)return;this.el(m[0]);this.T.push(setTimeout(()=>{if(String(KN.pos||'').split(' ')[0]===id&&slides[idx]&&slides[idx].dataset.no==='M7-7')this.play(m[0],this.S4VOL);},m[1]));},
  clear(){this.T.forEach(clearTimeout);this.T=[];Object.values(this.a).forEach(x=>{if(!x.paused)BGM.ramp(x,0,300,()=>x.pause());});},
  duck(ms){if(!BGM.cur||BGM.muted)return;const t=BGM.T[BGM.cur];(t.a||[]).forEach(x=>{if(!x.paused&&x.volume>0)BGM.ramp(x,BGM.vol*.5,200);});clearTimeout(this.dk);this.dk=setTimeout(()=>{if(!BGM.cur||BGM.muted)return;(BGM.T[BGM.cur].a||[]).forEach(x=>{if(!x.paused&&x.volume>0)BGM.ramp(x,BGM.vol,900);});},ms);},
- play(k){if(this.off||(typeof BGM!=='undefined'&&BGM.muted)||window.VIEW_MODE)return;const x=this.el(k);clearInterval(x._t);x.volume=this.vol;try{x.currentTime=0;}catch(e){}const p=x.play();if(p)p.catch(e=>AUD.fail(e));this.duck(((x.duration||3)*1000)-200);},
+ play(k,v){if(this.off||(typeof BGM!=='undefined'&&BGM.muted)||window.VIEW_MODE)return;const x=this.el(k);clearInterval(x._t);x.volume=v==null?this.vol:v;try{x.currentTime=0;}catch(e){}const p=x.play();if(p)p.catch(e=>AUD.fail(e));this.duck(((x.duration||3)*1000)-200);},
  enter(oi,n){this.clear();const s=slides[n];if(oi<n&&s){const m=this.MAP[s.dataset.no];if(m)this.T.push(setTimeout(()=>{if(slides[idx]===s)this.play(m[0]);},m[1]));}
   this.load(slides[nextMain(n,1)]);},
  toggle(v){this.off=v==null?!this.off:!!v;localStorage.setItem('scr-sfx-off',this.off?'1':'0');if(this.off)this.clear();toast('효과음 '+(this.off?'끔':'켬'));}};

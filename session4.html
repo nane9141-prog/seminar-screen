@@ -3141,7 +3141,8 @@ function go(n,st=0){n=Math.max(0,Math.min(slides.length-1,n));const a=slides[idx
  if(b.id==='K24c'){const sp=document.getElementById('strip');sp.style.setProperty('--sw',-(sp.scrollWidth/2)+'px');}
  document.getElementById('prog').style.width=(idx/(slides.length-1)*100)+'%';up({s4:'pos',label:b.id+' ('+(idx+1)+'/'+slides.length+(steps(b)?' · 단계 '+step+'/'+steps(b):'')+')'});
  history.replaceState(null,'','#'+b.id);ov();}
-function next(){const s=slides[idx];if(step<steps(s)){step++;apply(s,1);pos();}else if(idx<slides.length-1)go(idx+1);else up({s4:'edge',d:1});}
+/* 11/27 효과음: → 로 다음 장에 들어갈 때만 메인에 알림(장 표지 · K30에서 메인이 소리 냄). 뒤로 · 건너뛰기 · 단독 링크는 무음 */
+function next(){const s=slides[idx];if(step<steps(s)){step++;apply(s,1);pos();}else if(idx<slides.length-1){go(idx+1);up({s4:'sfx',id:slides[idx].id});}else up({s4:'edge',d:1});}
 function prev(){const s=slides[idx];if(step>0){step--;apply(s);pos();}else if(idx>0){const p=slides[idx-1];go(idx-1,steps(p));}else up({s4:'edge',d:-1});}
 function pos(){const b=slides[idx];up({s4:'pos',label:b.id+' ('+(idx+1)+'/'+slides.length+(steps(b)?' · 단계 '+step+'/'+steps(b):'')+')'});}
 /* 메인 플레이어에서 오는 명령: nav(→←) · enter(first/last) · leave */
