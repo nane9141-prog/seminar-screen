@@ -57,8 +57,8 @@ function draw(){
   if(flt==='noseat')L=L.filter(x=>!(S[x.id]||{}).seat);
   if(flt==='arr')L=L.filter(x=>x.status==='confirmed'&&x.attended);
   if(flt==='notarr')L=L.filter(x=>x.status==='confirmed'&&!x.attended);
-  if(sort.k){const f=SORTV[sort.k],ko=(a,b)=>String(a).localeCompare(String(b),'ko',{numeric:true});   // 헤더 정렬: 빈 값은 방향과 관계없이 맨 아래
-    L=L.map((x,i)=>[f(x),i,x]).sort((a,b)=>{const ea=a[0]===''||a[0]==null,eb=b[0]===''||b[0]==null;if(ea||eb)return ea&&eb?a[1]-b[1]:ea?1:-1;return (typeof a[0]==='number'?a[0]-b[0]:ko(a[0],b[0]))*sort.d||a[1]-b[1];}).map(a=>a[2]);}
+  if(sort.k){const f=SORTV[sort.k],ko=(a,b)=>String(a).localeCompare(String(b),'ko',{numeric:true});   // 헤더 정렬: 빈 값(좌석 미지정 등)도 함께 정렬 — 오름차순이면 맨 아래, 내림차순이면 맨 위
+    L=L.map((x,i)=>[f(x),i,x]).sort((a,b)=>{const ea=a[0]===''||a[0]==null,eb=b[0]===''||b[0]==null;if(ea||eb)return ea&&eb?a[1]-b[1]:(ea?1:-1)*sort.d;return (typeof a[0]==='number'?a[0]-b[0]:ko(a[0],b[0]))*sort.d||a[1]-b[1];}).map(a=>a[2]);}
   document.querySelectorAll('#atth th[data-s]').forEach(th=>{th.classList.toggle('asc',sort.k===th.dataset.s&&sort.d===1);th.classList.toggle('desc',sort.k===th.dataset.s&&sort.d===-1);});
   $('atcnt').textContent=L.length+'명';
   const cos=[...new Set(R.map(x=>x.company_name))];if($('atcos').childElementCount!==cos.length)$('atcos').innerHTML=cos.map(c=>'<option value="'+esc(c)+'">').join('');
@@ -126,13 +126,16 @@ $('atdesk').addEventListener('click',e=>{const b=e.target.closest('[data-d]');if
 $('atreload').onclick=()=>load();
 $('atth').addEventListener('click',e=>{const th=e.target.closest('th[data-s]');if(!th)return;const k=th.dataset.s;sort=sort.k!==k?{k,d:1}:sort.d===1?{k,d:-1}:{k:null,d:1};draw();});   // 오름차순 → 내림차순 → 원래 순서
 /* 데스크별 배정 표: 자리배치 엑셀 '06. 출입 데스크' 탭과 같은 구성(담당 범위 · 인원 · 회사 수 · 회사별 인원)을 현재 배정 기준으로 보여 줌 */
-function deskTable(){const by={};R.forEach(x=>{const d=deskOf(S[x.id])||'none',m=by[d]=by[d]||{};m[x.company_name]=(m[x.company_name]||0)+1;});
+/* 신청 명단에 없지만 데스크에서 맞이하는 인원(최종 엑셀 06. 출입 데스크의 ★미신청 등) — 회사 단위 인원만 */
+const DESK_EXTRA={D1:{'김앤장 법률사무소':3,'한국IR협의회':2,'코스닥협회':2,'DB증권 VIP':3,'메타넷엑스':1},D2:{'녹십자':1},D5:{'유안타증권':1}};
+function deskTable(){const by={},ex={};let exn=0;R.forEach(x=>{const d=deskOf(S[x.id])||'none',m=by[d]=by[d]||{};m[x.company_name]=(m[x.company_name]||0)+1;});
+  Object.keys(DESK_EXTRA).forEach(d=>{const m=by[d]=by[d]||{};Object.keys(DESK_EXTRA[d]).forEach(c=>{const n=DESK_EXTRA[d][c];m[c]=(m[c]||0)+n;ex[d+'|'+c]=n;exn+=n;});});
   const cols=DESKS.filter(d=>d[0]!=='VIP'||by.VIP).concat([['none','데스크 미배정']]);
-  const tot=R.length,cos=new Set(R.map(x=>x.company_name)).size;
-  $('atdtsum').textContent='신청 '+tot+'명 · '+cos+'개사 — 현재 배정 기준 (데스크 이름을 누르면 그 데스크 목록으로 이동)';
+  const tot=R.length,cos=new Set(R.map(x=>x.company_name).concat([].concat(...Object.values(DESK_EXTRA).map(Object.keys)))).size;
+  $('atdtsum').textContent='총 '+(tot+exn)+'명(신청 '+tot+' + 미신청 '+exn+') · '+cos+'개사 — 현재 배정 기준 · ★ 는 신청 명단에 없는 인원 (데스크 이름을 누르면 그 데스크 목록으로 이동)';
   $('atdtgrid').innerHTML=cols.map(d=>{const m=by[d[0]]||{},names=Object.keys(m).sort((a,b)=>a.localeCompare(b,'ko')),n=names.reduce((s,k)=>s+m[k],0);
     return '<section><button data-d="'+d[0]+'" class="hd">'+(d[0]==='none'?'미배정':d[0])+'</button><div class="rg">'+esc(d[1])+'</div><div class="ct"><b>'+n+'</b>명 · '+names.length+'개사</div>'+
-      (names.length?'<ol>'+names.map(k=>'<li>'+esc(k)+' <span>('+m[k]+')</span></li>').join('')+'</ol>':'<div class="mut none">'+(d[0]==='D1'?'현장에서 수동 등록한 인원이 여기에 표시됩니다':'없음')+'</div>')+'</section>';}).join('');}
+      (names.length?'<ol>'+names.map(k=>'<li>'+esc(k)+' <span>('+m[k]+')</span>'+(ex[d[0]+'|'+k]?' <em>★미신청'+(ex[d[0]+'|'+k]<m[k]?' '+ex[d[0]+'|'+k]:'')+'</em>':'')+'</li>').join('')+'</ol>':'<div class="mut none">'+(d[0]==='D1'?'현장에서 수동 등록한 인원이 여기에 표시됩니다':'없음')+'</div>')+'</section>';}).join('');}
 /* 좌석배치도: 좌석 배치 탭 평면 좌석도와 같은 표. 배정된 칸을 누르면 창을 닫고 그 참석자를 목록에서 보여 줌 */
 let spz=1;
 function seatPlan(){if(!window.SeatPlan)return;const g=$('atspgrid');g.style.setProperty('--z',spz);g.innerHTML=window.SeatPlan.html();$('atspz').textContent=Math.round(spz*100)+'%';
