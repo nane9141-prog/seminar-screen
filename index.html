@@ -688,6 +688,21 @@ body.idle{cursor:none}
 .nrow.brk .nl{color:#8793A6}
 .nrow.past{opacity:.38}
 .nrow.now .nl::after{content:'진행 중';display:inline-block;margin-left:22px;padding:6px 18px;border-radius:999px;background:#0081cc;color:#fff;font:600 34px/1.2 "Pretendard Variable";vertical-align:middle;transform:translateY(-6px)}
+/* 11/27 17:35 M9-4: 그래프 축소 · 표 행 높이에 맞춤, 표 선 색 다른 화면과 통일(#1C2A40), 맨 위 · 맨 아래 선 삭제 */
+.m4{grid-template-columns:minmax(0,1fr) 560px!important;column-gap:140px!important}
+.m4r{border-bottom-color:#1C2A40!important}
+.m4r.th{border-bottom:0!important}
+.m4r.gs{border-top:3px solid #1C2A40!important}
+.m4tb [data-stagger]>.m4r:first-child{border-top:0!important}
+.m4tb [data-stagger]>.m4r:nth-last-child(2){border-bottom:0!important}
+.m4r.t{border-top:0!important}
+.m4b{align-self:end;height:880px!important;margin:0 0 127px!important;gap:44px!important}
+.m4bar{width:150px!important;gap:10px!important}
+.m4bar>div{border-radius:14px!important}
+.m4lab{gap:10px!important}
+.m4lab b{font-size:76px!important}
+.m4lab span{margin-top:4px!important;font-size:44px!important}
+.m4lab i{font-size:38px!important}
 </style></head>
 <body>
 <div class="stage" id="scr" data-foot="full">
@@ -868,10 +883,10 @@ body.idle{cursor:none}
 <p class="mx-sub lay-l fu" style="--i:.6">IR큐더스<br>제2기 정기주주총회</p>
 <div class="mx-ov" data-stagger style="--i:1">
 <div class="mx-sec"><p class="mx-k">일정 · 장소</p><dl class="mx-dl">
-<dt>개최일시</dt><dd>2027. 3. 24 (수) 09:00</dd>
+<dt>개최일시</dt><dd>2026. 11. 30 (월) 09:00</dd>
 <dt>개최장소</dt><dd>서울 영등포구 국제금융로8길 2</dd>
-<dt>주주명부 폐쇄일</dt><dd>2026. 12. 31 (목)</dd>
-<dt>사전투표 기간</dt><dd>2027. 3. 14 (일) 09:00 ~ 3. 23 (화) 17:00</dd>
+<dt>주주명부 폐쇄일</dt><dd>2025. 12. 31 (수)</dd>
+<dt>사전투표 기간</dt><dd>2026. 11. 20 (금) 09:00 ~ 11. 29 (일) 17:00</dd>
 </dl></div>
 <div class="mx-sec"><p class="mx-k">사전투표 수단</p><div class="mx-chips"><span>전자투표</span><span>전자위임장</span><span>서면위임장</span></div></div>
 <div class="mx-sec"><p class="mx-k">주식 현황</p><div class="mx-nums">
@@ -898,7 +913,7 @@ body.idle{cursor:none}
 </section>
 <section class="slide" id="m9_5" data-no="M9-5" data-title="M9-5 모의 주주총회 회의목적사항" data-bg="B" data-foot="full" data-lay="split">
 <h2 class="head fu" style="--i:0">회의<br>목적사항</h2>
-<div class="mx-agl" data-stagger style="--i:1"><div class="mx-ag"><span class="mx-no">제1호</span><div><p class="mx-an">정관 일부 변경의 건</p><p class=mx-as>전자주주총회 통신장애 대응 근거 마련</p></div><span></span></div><div class="mx-ag"><span class="mx-no">제2호</span><div><p class="mx-an">재무제표 및 연결재무제표 승인의 건</p><p class=mx-as>이익잉여금처분계산서 포함 · 보통주 1주당 현금배당금 500원</p></div><span></span></div><div class="mx-ag"><span class="mx-no">제3호</span><div><p class="mx-an">감사위원회 위원이 되는 독립이사 나분리 선임의 건</p><p class=mx-as>분리선출</p></div><span><span class="mx-tag">개별 · 합산 3%</span></span></div><div class="mx-ag"><span class="mx-no">제4호</span><div><p class="mx-an">이사 보수한도 승인의 건</p></div><span></span></div><div class="mx-ag"><span class="mx-no">제5호</span><div><p class="mx-an">선임할 이사 수 결정의 건</p></div><span><span class="mx-tag b">양립불가</span></span></div><div class="mx-ag sub"><span class="mx-no">제5-1호</span><div><p class="mx-an">이사 3인 선임의 건</p></div><span></span></div><div class="mx-ag sub"><span class="mx-no">제5-2호</span><div><p class="mx-an">이사 4인 선임의 건 (주주제안)</p></div><span></span></div><div class="mx-ag"><span class="mx-no">제6호</span><div><p class="mx-an">집중투표에 의한 이사 선임의 건</p></div><span><span class="mx-tag b">집중투표</span></span></div><div class="mx-ag sub"><span class="mx-no">제6-1호</span><div><p class="mx-an">이사 5인 중 3인 선임의 건</p><p class=mx-as>제5-1호 가결 시 · 김이사, 박이사, 이독립, 최독립, 강비상</p></div><span></span></div><div class="mx-ag sub"><span class="mx-no">제6-2호</span><div><p class="mx-an">이사 6인 중 4인 선임의 건</p><p class=mx-as>제5-2호 가결 시 · 위 5인 + 한독립(주주제안)</p></div><span></span></div></div>
+<div class="mx-agl" data-stagger style="--i:1"><div class="mx-ag"><span class="mx-no">제1호</span><div><p class="mx-an">정관 일부 변경의 건</p><p class=mx-as>전자주주총회 통신장애 대응 근거 마련</p></div><span></span></div><div class="mx-ag"><span class="mx-no">제2호</span><div><p class="mx-an">재무제표 및 연결재무제표 승인의 건</p><p class=mx-as>이익잉여금처분계산서 포함 · 보통주 1주당 현금배당금 500원</p></div><span></span></div><div class="mx-ag"><span class="mx-no">제3호</span><div><p class="mx-an">감사위원회 위원이 되는 독립이사 나분리 선임의 건</p><p class=mx-as>분리선출</p></div><span><span class="mx-tag">개별 · 합산 3%</span></span></div><div class="mx-ag"><span class="mx-no">제4호</span><div><p class="mx-an">이사 보수한도 승인의 건</p></div><span></span></div><div class="mx-ag"><span class="mx-no">제5호</span><div><p class="mx-an">선임할 이사 수 결정의 건</p></div><span><span class="mx-tag b">양립불가</span></span></div><div class="mx-ag sub"><span class="mx-no">제5-1호</span><div><p class="mx-an">이사 3인 선임의 건</p></div><span></span></div><div class="mx-ag sub"><span class="mx-no">제5-2호</span><div><p class="mx-an">이사 4인 선임의 건 (주주제안)</p></div><span></span></div><div class="mx-ag"><span class="mx-no">제6호</span><div><p class="mx-an">집중투표에 의한 이사 선임의 건</p></div><span><span class="mx-tag b">집중투표</span></span></div><div class="mx-ag sub"><span class="mx-no">제6-1호</span><div><p class="mx-an">이사 5인 중 3인 선임의 건</p><p class=mx-as>제5-1호 가결 시 · 제6-1-1~5호 김이사, 박이사, 이독립, 최독립, 강비상</p></div><span></span></div><div class="mx-ag sub"><span class="mx-no">제6-2호</span><div><p class="mx-an">이사 6인 중 4인 선임의 건</p><p class=mx-as>제5-2호 가결 시 · 제6-2-1~6호 위 5인 + 한독립(주주제안)</p></div><span></span></div></div>
 </section>
 <section class="slide" id="m9_6" data-no="M9-6" data-title="M9-6 시연 라이브 화면 — 외부 소스" data-bg="C" data-foot="full" data-ext="1">
 
