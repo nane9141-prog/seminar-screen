@@ -49,7 +49,7 @@
 | S2 | M3-1 ANYWHERE | 5.5초 | `opening-hit.mp3` | universfield cinematic piano hit (11/26 원래 소리로 되돌림 · 오픈버스 MathewHenry 636190은 `_openverse`) |
 | S3 | M4-1 · M5-1 · M7-1 · M9-1 | 1.0초 붐 | `sfx-s3-part.mp3` | Riser Hit sfx 044 · AudioPapkin (649826) |
 | S4 | M4-4 출범식 | 0.75초 | `sfx-s4-reveal.mp3` | Shimmer · adh.dreaming (632344) + Piano Stinger 1b · MathewHenry (636189) |
-| S5 | M7-3 Proxymity | 14.3초 | `sfx-s5-proxymity.mp3` | whoosh+boom.wav · Capashen (118934) |
+| S5 | M7-4 Proxymity | 14.3초 | `sfx-s5-proxymity.mp3` | whoosh+boom.wav · Capashen (118934) |
 | S6 | M6-S1 · M8-S1 | 0.6초 | `sfx-s6-chime.mp3` | Echo Chime Chime · husky70 (161316) |
 | S7 | M11-1 폐회 | 0.2초~ | `sfx-s7-close.mp3` | Movie Swell 2 · jordivburgel (218524) |
 
@@ -57,7 +57,7 @@
 - 배경음이 흐르는 화면(M6-S1 · M8-S1)에서는 효과음 동안 배경음을 절반으로 낮춥니다.
 - 오픈버스 교체본: `countdown-tick_openverse.mp3` · `opening-hit_openverse.mp3` (원래 소리 사본 `_v1`도 보관).
 - **소리가 안 날 때**: 크롬은 그 화면을 한 번도 클릭 · 키 입력하지 않으면 소리를 막습니다(운영 입력으로만 넘기면 무음). 메인 화면 왼쪽 아래에 빨간 「소리가 막혀 있습니다」가 뜨고 운영 입력 화면 전환 탭에도 표시됩니다 → 송출 PC에서 메인 화면을 한 번 클릭하거나 `F`(전체화면) 등 아무 키를 누르면 풀립니다. 송출 PC 크롬을 `--autoplay-policy=no-user-gesture-required` 옵션으로 실행하면 처음부터 막히지 않습니다.
-- **세션 3 연사 얼굴 원격 연결(M7-4)**: Meet · Teams 통화를 띄운 기기에서 https://nane9141-prog.github.io/seminar-screen/face.html 을 열고 「화면 · 창 선택해서 보내기」 → Meet 탭(또는 Teams 창) 선택 → 미리보기에서 얼굴 부분 드래그. 메인 얼굴 창이 비어 있으면 자동 연결, 운영 입력 → 화면 전환 → 세션 3 화상 화면에서 「원격 기기」 선택 · 해제. 인터넷 필요(연결 신호), 회사망에서 안 되면 HDMI 캡처보드.
+- **세션 3 연사 얼굴 원격 연결(M7-5)**: Meet · Teams 통화를 띄운 기기에서 https://nane9141-prog.github.io/seminar-screen/face.html 을 열고 「화면 · 창 선택해서 보내기」 → Meet 탭(또는 Teams 창) 선택 → 미리보기에서 얼굴 부분 드래그. 메인 얼굴 창이 비어 있으면 자동 연결, 운영 입력 → 화면 전환 → 세션 3 화상 화면에서 「원격 기기」 선택 · 해제. 인터넷 필요(연결 신호), 회사망에서 안 되면 HDMI 캡처보드.
 
 ## 로비 (`lobby/index.html`)
 
@@ -85,7 +85,7 @@
 ## 세션 4 키노트 (`session4.html`)
 
 박성용 발표(Session 4, 15:10~15:40)용 21:8 전면 키노트 35장. 메인 스크린과 같은 서체 · 색 · Data Stream 배경.
-- **메인 플레이어 M7-6에 연결됨**: M7-5에서 → 하면 키노트가 메인 화면 안에서 시작하고, → ← 는 키노트 안의 단계 · 장을 넘깁니다. 마지막 장에서 → 하면 M8-1 휴식, 첫 장에서 ← 하면 M7-4. control.html의 이전 · 다음도 같게 동작. 배경은 메인의 Data Stream 하나만 씁니다.
+- **메인 플레이어 M7-7에 연결됨**: M7-6에서 → 하면 키노트가 메인 화면 안에서 시작하고, → ← 는 키노트 안의 단계 · 장을 넘깁니다. 마지막 장에서 → 하면 M8-1 휴식, 첫 장에서 ← 하면 M7-4. control.html의 이전 · 다음도 같게 동작. 배경은 메인의 Data Stream 하나만 씁니다.
 - 온라인: https://nane9141-prog.github.io/seminar-screen/session4.html · 오프라인: `session4.html` 더블클릭
 - `→` `Space` `PageDown` 다음(단계 등장 포함) · `←` 이전 · 번호 입력 후 `Enter`(0~34) · `O` 목록 · `B` 블랙아웃 · `F` 전체화면 · `L` 가벼운 모드 · `T` 임시 수치 표시
 - 주소 뒤 `#K11` 처럼 장 번호를 붙이면 그 장부터 시작. 이미지는 `assets/s4/` (원본 PPT에서 추출)
