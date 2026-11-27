@@ -64,15 +64,13 @@ function loadLib(cb){
   add('assets/three.min.js',()=>add('assets/OrbitControls.js',()=>add('assets/seat-screen.js',()=>add('assets/seat-banners.js',()=>add('assets/seat-fascia.js',cb)))));
 }
 var FONTLED='"Pretendard Variable",Pretendard,"Noto Sans KR",sans-serif';
-function ledScreenTex(mk,logoSrc){   /* 보조 스크린(LED) 기본 화면: IR KUDOS 로고 → Live Demo Briefing → 행사명 두 줄 → 아래 점 구체 (led.html 11/27 구성) */
-  var W=1024,H=795,im=null,tex;
-  function draw(g){var k=W/1600,v=H/1200,i,n=900,cx=W/2,cy=H*1.02,r=H*.4;g.fillStyle='#03050a';g.fillRect(0,0,W,H);
+function ledScreenTex(mk,logoSrc){   /* 보조 스크린(LED) 기본 화면: Live Demo Briefing(38px) → 행사명 두 줄(102px) → 아래 점 구체, 로고 없음 (led.html 11/27 19:40 구성) */
+  var W=1024,H=795,im=null,tex;logoSrc=null;
+  function draw(g){var k=W/1600,v=H/1200,i,n=1000,cx=W/2,cy=1100*v,r=450*k;g.fillStyle='#03050a';g.fillRect(0,0,W,H);
     for(i=0;i<n;i++){var y=1-2*(i+.5)/n,rr=Math.sqrt(1-y*y),a=i*2.399963,x=Math.cos(a)*rr,z=Math.sin(a)*rr,t=.5,y2=y*Math.cos(t)-z*Math.sin(t),z2=y*Math.sin(t)+z*Math.cos(t),d=(z2+1)/2;
-      var c=(x+1)/2;g.fillStyle='rgba('+Math.round(0+0*c)+','+Math.round(129+44*c)+','+Math.round(204-35*c)+','+(.18+.8*d).toFixed(2)+')';g.beginPath();g.arc(cx+x*r,cy-y2*r,1.1+2.1*d,0,6.2832);g.fill();}
-    var gr=g.createLinearGradient(0,H*.55,0,H*.78);gr.addColorStop(0,'rgba(3,5,10,.95)');gr.addColorStop(1,'rgba(3,5,10,0)');g.fillStyle=gr;g.fillRect(0,H*.5,W,H*.3);
-    var y0=150*v,lh=72*v;if(im){var lw2=lh*im.width/im.height;if(!(lw2>0))lw2=lh*1014.29/283.46;g.drawImage(im,cx-lw2/2,y0,lw2,lh);}
-    g.textAlign='center';g.textBaseline='middle';g.fillStyle='#3d9be0';g.font='500 '+Math.round(34*k)+'px '+FONTLED;g.fillText('Live Demo Briefing',cx,y0+lh+78*v);
-    g.fillStyle='#fff';g.font='700 '+Math.round(88*k)+'px '+FONTLED;g.fillText('전자주주총회 플랫폼',cx,y0+lh+180*v);g.fillText('시연 설명회',cx,y0+lh+290*v);}
+      var c=(x+1)/2;g.fillStyle='rgba(0,'+Math.round(129+44*c)+','+Math.round(204-35*c)+','+(.18+.8*d).toFixed(2)+')';g.beginPath();g.arc(cx+x*r,cy-y2*r,1.1+2.1*d,0,6.2832);g.fill();}
+    g.textAlign='center';g.textBaseline='middle';g.fillStyle='#3d9be0';g.font='500 '+Math.round(38*k)+'px '+FONTLED;g.fillText('Live Demo Briefing',cx,200*v);
+    g.fillStyle='#fff';g.font='700 '+Math.round(102*k)+'px '+FONTLED;g.fillText('전자주주총회 플랫폼',cx,318*v);g.fillText('시연 설명회',cx,440*v);}
   tex=mk(W,H,function(g){draw(g);});
   if(logoSrc){var m=new Image();m.onload=function(){im=m;draw(tex.image.getContext('2d'));tex.needsUpdate=true;};m.src=logoSrc;}
   return tex;}
