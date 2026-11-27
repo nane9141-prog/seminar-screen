@@ -671,6 +671,22 @@ body.idle{cursor:none}
 .bk-qs{margin:10px 0 0;font:400 42px/1.3 "Pretendard Variable";color:#A9B4C4}
 .m81s{line-height:1.5}
 #m6_1 .bk-nk,#m8_1 .bk-nk{top:94px}
+#m0_3{padding-left:300px;padding-right:300px}
+#m0_3 .head{margin-bottom:0}#m0_3 #n-text{margin:24px 0 44px}
+.ncols{display:flex;gap:120px;width:3600px}
+.ncol{flex:1;min-width:0}
+.nrow{display:flex;gap:40px;align-items:baseline;padding:18px 0;border-top:3px solid #1C2A40}
+.ncol .nrow:last-child{border-bottom:3px solid #1C2A40}
+.nt{width:190px;flex:none}
+.nt1{margin:0;font:600 62px/1.1 "Pretendard Variable",sans-serif;color:#0081cc;font-variant-numeric:tabular-nums}
+.nt0{margin:8px 0 0;font:400 40px/1 "Pretendard Variable",sans-serif;color:#6B778A;text-decoration:line-through;font-variant-numeric:tabular-nums}
+.nrow.adj .nt1{color:#FFB84D}
+.nb{flex:1;min-width:0}
+.nl{margin:0;font:600 56px/1.25 "Pretendard Variable",sans-serif;color:#F2F5FA}
+.nw{margin:10px 0 0;font:500 42px/1.25 "Pretendard Variable",sans-serif;color:#A9B4C4}
+.nrow.brk .nl{color:#8793A6}
+.nrow.past{opacity:.38}
+.nrow.now .nl::after{content:'진행 중';display:inline-block;margin-left:22px;padding:6px 18px;border-radius:999px;background:#0081cc;color:#fff;font:600 34px/1.2 "Pretendard Variable";vertical-align:middle;transform:translateY(-6px)}
 </style></head>
 <body>
 <div class="stage" id="scr" data-foot="full">
@@ -822,7 +838,7 @@ body.idle{cursor:none}
 <div class="cg sp"><p class="cg-e fu" style="--i:0">Session 4.</p><div class="cg-b"><h2 class="sp-t" data-words style="--i:1">전자주주총회 도입 · 운영 방안 및<br>통합 솔루션 소개</h2><p class="sp-n ko fu" style="--i:2">박성용</p><p class="sp-r fu" style="--i:3">IR큐더스, 본부장</p></div></div>
 </section>
 <section class="slide" id="m7_6" data-no="M7-6" data-title="M7-6 Session 4 발표 키노트 (session4.html · 21:8 전면)" data-bg="B" data-foot="none" data-kn="1" data-dim=".42" data-tr="blur">
-<iframe class="kn" data-src="session4.html?embed=1&v=11262235" tabindex="-1" title="Session 4 키노트" aria-hidden="true"></iframe>
+<iframe class="kn" data-src="session4.html?embed=1&v=11271511" tabindex="-1" title="Session 4 키노트" aria-hidden="true"></iframe>
 </section>
 <section class="slide" id="m8_1" data-no="M8-1" data-title="M8-1 휴식 · 재개 타이머" data-bg="B" data-foot="full" data-break="brk2">
 <div class="bk">
@@ -971,7 +987,7 @@ body.idle{cursor:none}
 <p class="eyebrow">NOTICE</p>
 <h2 class="head">진행 순서 안내</h2>
 <p class="lead" id="n-text"></p>
-<div class="rows nrows" id="n-rows"></div>
+<div class="ncols" id="n-rows"></div>
 </section>
 <div id="footer"><img src="assets/irk-white.svg" alt="IR KUDOS"><p>전자주주총회 플랫폼 시연 설명회</p></div>
 <div id="black"></div>
@@ -1248,7 +1264,7 @@ SCHED.onSched(v=>{SC=v||SCHED.load();applySched();});
 function applySched(){
   slides.forEach(s=>s.querySelectorAll('.prow[data-item],.r[data-item]').forEach(r=>{const it=SCHED.item(SC,r.dataset.item);if(!it)return;
     const adj=SC.progAdj&&it.start!==it.ps;r.querySelector('.ptime,.r__t').textContent=SC.progAdj?SCHED.fmt(it.start)+'~'+SCHED.fmt(it.end):SCHED.fmt(it.ps)+'~'+SCHED.fmt(it.pe);r.classList.toggle('adj',adj);}));
-  tick();if(slides[idx]&&slides[idx].dataset.no==='M0-3')renderNotice();hud();}
+  tick();renderNotice();hud();}
 
 // 도트 타이포 타이머(5×7 도트): 숫자 0-9와 콜론
 const DOTF={'0':['01110','10001','10011','10101','11001','10001','01110'],'1':['00100','01100','00100','00100','00100','00100','01110'],'2':['01110','10001','00001','00010','00100','01000','11111'],'3':['11110','00001','00001','01110','00001','00001','11110'],'4':['00010','00110','01010','10010','11111','00010','00010'],'5':['11111','10000','11110','00001','00001','10001','01110'],'6':['00110','01000','10000','11110','10001','10001','01110'],'7':['11111','00001','00010','00100','01000','01000','01000'],'8':['01110','10001','10001','01110','10001','10001','01110'],'9':['01110','10001','10001','01111','00001','00010','01100'],':':['0','0','1','0','1','0','0']};
@@ -1269,10 +1285,15 @@ function tick(){const ns=SCHED.nowSec();slides.forEach(s=>{if(!s.dataset.break)r
   const m=Math.floor(r/60),sec=r%60;const tv=(m<10?'0':'')+m+':'+(sec<10?'0':'')+sec;s.querySelector('[data-timer]').textContent=tv;const dv=s.querySelector('svg.dots');if(dv)dotTimer(dv,tv);
   s.querySelector('[data-resume]').textContent=SCHED.fmt(it.end);s.classList.toggle('soon',r>0&&r<=180);});}
 setInterval(tick,500);
-function renderNotice(){const n=SCHED.nowMin(),up=SC.items.filter(x=>x.end>n&&x.id!=='reg').slice(0,5);
-  const moved=up.some(x=>x.start!==x.ps);
-  document.getElementById('n-text').textContent=SC.notice||(moved?'진행 상황에 따라 이후 순서가 조정되었습니다.':'이후 순서를 안내해 드립니다.');
-  document.getElementById('n-rows').innerHTML=up.map(x=>'<div class="prow'+(x.start!==x.ps?' adj':'')+'"><p class="ptime">'+SCHED.fmt(x.start)+'</p><p class="ptxt">'+(x.tag?x.tag+' · ':'')+x.label+'</p><p class="pwho">'+(x.who||'')+'</p></div>').join('');}
+function renderNotice(){/* 11/27 기본 타임테이블 전체(등록 제외)를 2단으로. 시간 변경 시 control 저장 즉시 반영(applySched) · 1분마다 지난 순서 흐리게 */
+  const n=SCHED.nowMin(),it=SC.items.filter(x=>x.id!=='reg'),moved=it.some(x=>x.start!==x.ps);
+  document.getElementById('n-text').textContent=SC.notice||(moved?'진행 상황에 따라 이후 순서가 조정되었습니다. 바뀐 시간은 주황색으로 표시됩니다.':'오늘의 진행 순서입니다.');
+  const row=x=>{const adj=x.start!==x.ps,brk=/^brk/.test(x.id),st=n>=x.end?' past':(n>=x.start?' now':'');
+    return '<div class="nrow'+(adj?' adj':'')+(brk?' brk':'')+st+'"><div class="nt"><p class="nt1">'+SCHED.fmt(x.start)+'</p>'+(adj?'<p class="nt0">'+SCHED.fmt(x.ps)+'</p>':'')+'</div>'
+      +'<div class="nb"><p class="nl">'+x.label+'</p>'+((x.tag||x.who)?'<p class="nw">'+[x.tag,x.who].filter(Boolean).join(' · ')+'</p>':'')+'</div></div>';};
+  const h=Math.ceil(it.length/2);
+  document.getElementById('n-rows').innerHTML='<div class="ncol">'+it.slice(0,h).map(row).join('')+'</div><div class="ncol">'+it.slice(h).map(row).join('')+'</div>';}
+renderNotice();setInterval(()=>{if(slides[idx]&&slides[idx].dataset.no==='M0-3')renderNotice();},30000);
 // ── 질문 화면 ──
 let QA=SCHED.loadQ(),QSRC=SCHED.getSrc(),OQ=null,oqKey='';
 SCHED.onQ(v=>{QA=v||{list:[],cur:null};if(QSRC==='local')renderQ();});
