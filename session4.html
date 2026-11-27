@@ -2270,6 +2270,21 @@ html.r169 #K27 .sec-h{font-size:92px!important}
 #K02.cur .bc.ph .k2live i{animation:k2lv 1.2s ease-in-out infinite}
 @keyframes k2lv{50%{opacity:.25}}
 #K02 .bw:is(.d,.f,.g) .bc.im i,#K02 .bw:is(.d,.f,.g) .bc.im video{filter:brightness(.62)!important}
+
+/* 11/27 23:25 K02 아래 사진 카드: 전체를 어둡게 하던 것 대신 왼쪽(글 쪽)만 어둡고 오른쪽은 밝게 보이는 그라데이션 */
+#K02 .bw:is(.d,.f,.g) .bc.im i,#K02 .bw:is(.d,.f,.g) .bc.im video{filter:brightness(.92)!important;opacity:.78!important}
+#K02 .bw:is(.d,.f,.g) .bc.im::after{content:""!important;display:block!important;position:absolute;inset:0;z-index:2;pointer-events:none;background:linear-gradient(90deg,rgba(38,39,43,.96) 0%,rgba(38,39,43,.78) 30%,rgba(38,39,43,.25) 62%,rgba(38,39,43,0) 85%)!important}
+/* 마이크 아이콘: 질의 · 발언 글 묶음과 세로 가운데 정확히 */
+#K02 .bc.ph .u3{display:flex!important;flex-direction:column;justify-content:center}
+#K02 .bc.ph .u3 .vic{top:50%!important;margin-top:0!important;transform:translateY(-50%)}
+/* LIVE 뱃지: 크게 · 왼쪽 아래로, 점과 글자 세로 가운데, 맥박 모션 */
+#K02 .bc.ph .k2live{left:470px!important;top:640px!important;gap:14px;padding:0 30px;height:66px;font:700 36px/66px "Pretendard Variable";letter-spacing:.05em}
+#K02 .bc.ph .k2live i{width:14px;height:14px;flex:none;margin-top:-1px}
+#K02.cur .bc.ph .k2live{animation:k2lvp 1.6s ease-in-out 2.4s infinite}
+@keyframes k2lvp{0%,100%{box-shadow:0 10px 30px rgba(229,36,59,.35),0 0 0 0 rgba(229,36,59,.55)}60%{box-shadow:0 10px 30px rgba(229,36,59,.35),0 0 0 18px rgba(229,36,59,0)}}
+/* 11/27 23:27 K13 아래 도식 박스만 40px 위로 */
+#K13 .dg{margin-bottom:180px!important}
+html.r169 #K13 .dg{margin-bottom:210px!important}
 /* ═════ 16:9 버전 (?a=16x9, 11/27) ═════
    ※ 빔프로젝터(led.html?a=16x9) M7-7이 이 모드를 씀. 장을 고치면 ?a=16x9로도 확인하고, 21:8 원본 위치를 바꾸면 아래 html.r169 #Kxx 규칙도 같이 맞출 것.
       R169Z(묶음 축소) 장은 내용 범위를 자동으로 재서 배치하므로 대부분 따라감.
