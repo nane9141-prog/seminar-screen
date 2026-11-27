@@ -63,6 +63,19 @@ function loadLib(cb){
   const add=(src,next)=>{const s=document.createElement('script');s.src=src;s.onload=next;s.onerror=()=>{libState=0;$('smstage').insertAdjacentHTML('beforeend','<p class="mut" style="padding:40px">3D 라이브러리를 불러오지 못했습니다. 새로고침해 주세요.</p>');};document.head.appendChild(s);};
   add('assets/three.min.js',()=>add('assets/OrbitControls.js',()=>add('assets/seat-screen.js',()=>add('assets/seat-banners.js',()=>add('assets/seat-fascia.js',cb)))));
 }
+var FONTLED='"Pretendard Variable",Pretendard,"Noto Sans KR",sans-serif';
+function ledScreenTex(mk,logoSrc){   /* 보조 스크린(LED) 기본 화면: IR KUDOS 로고 → Live Demo Briefing → 행사명 두 줄 → 아래 점 구체 (led.html 11/27 구성) */
+  var W=1024,H=795,im=null,tex;
+  function draw(g){var k=W/1600,v=H/1200,i,n=900,cx=W/2,cy=H*1.02,r=H*.4;g.fillStyle='#03050a';g.fillRect(0,0,W,H);
+    for(i=0;i<n;i++){var y=1-2*(i+.5)/n,rr=Math.sqrt(1-y*y),a=i*2.399963,x=Math.cos(a)*rr,z=Math.sin(a)*rr,t=.5,y2=y*Math.cos(t)-z*Math.sin(t),z2=y*Math.sin(t)+z*Math.cos(t),d=(z2+1)/2;
+      var c=(x+1)/2;g.fillStyle='rgba('+Math.round(0+0*c)+','+Math.round(129+44*c)+','+Math.round(204-35*c)+','+(.18+.8*d).toFixed(2)+')';g.beginPath();g.arc(cx+x*r,cy-y2*r,1.1+2.1*d,0,6.2832);g.fill();}
+    var gr=g.createLinearGradient(0,H*.55,0,H*.78);gr.addColorStop(0,'rgba(3,5,10,.95)');gr.addColorStop(1,'rgba(3,5,10,0)');g.fillStyle=gr;g.fillRect(0,H*.5,W,H*.3);
+    var y0=150*v,lh=72*v;if(im){var lw2=lh*im.width/im.height;if(!(lw2>0))lw2=lh*1014.29/283.46;g.drawImage(im,cx-lw2/2,y0,lw2,lh);}
+    g.textAlign='center';g.textBaseline='middle';g.fillStyle='#3d9be0';g.font='500 '+Math.round(34*k)+'px '+FONTLED;g.fillText('Live Demo Briefing',cx,y0+lh+78*v);
+    g.fillStyle='#fff';g.font='700 '+Math.round(88*k)+'px '+FONTLED;g.fillText('전자주주총회 플랫폼',cx,y0+lh+180*v);g.fillText('시연 설명회',cx,y0+lh+290*v);}
+  tex=mk(W,H,function(g){draw(g);});
+  if(logoSrc){var m=new Image();m.onload=function(){im=m;draw(tex.image.getContext('2d'));tex.needsUpdate=true;};m.src=logoSrc;}
+  return tex;}
 function ctex(w,h,draw){const c=document.createElement('canvas');c.width=w;c.height=h;draw(c.getContext('2d'),w,h);const t=new THREE.CanvasTexture(c);t.anisotropy=8;return t;}
 const FONT='"Pretendard Variable","Noto Sans KR",sans-serif';
 function sprite(text,x,y,z,color,scale){
@@ -116,9 +129,7 @@ function build(){
     const pm=new THREE.Mesh(new THREE.PlaneGeometry(5.2*21/8,5.2),new THREE.MeshBasicMaterial({map:tx}));pm.rotation.y=Math.PI/2;pm.position.set(-27.72,3.9,-.4);scene.add(pm);};im.src=window.SEAT_SCREEN_IMG;}
   box(3.2,.4,16.2,0x1c1f2a,26.15,.2,-.4);sprite('후면 단상 · 콘솔',26.15,2.6,-.4,'#aab3cc',6.5);   // 맨 뒷줄과 단상 사이 횡단 통로(약 0.8m) 확보
   /* 무대 좌·우 LED 타워: 3100(W)×2230(D)×4170(H)mm, 하단 1820mm 베이스, 블랙 패널, 안쪽으로 25° */
-  const ledTex=ctex(512,400,(g,cw,ch)=>{const gr=g.createLinearGradient(0,0,cw,ch);gr.addColorStop(0,'#1d3a7a');gr.addColorStop(1,'#0c1a3c');g.fillStyle=gr;g.fillRect(0,0,cw,ch);
-    g.strokeStyle='rgba(0,0,0,.55)';g.lineWidth=2;for(let i=1;i<6;i++){g.beginPath();g.moveTo(i*cw/6,0);g.lineTo(i*cw/6,ch);g.stroke();}for(let j=1;j<3;j++){g.beginPath();g.moveTo(0,j*ch/3);g.lineTo(cw,j*ch/3);g.stroke();}
-    g.fillStyle='rgba(255,255,255,.85)';g.font='700 54px '+FONT;g.textAlign='center';g.textBaseline='middle';g.fillText('LED',cw/2,ch/2);});
+  const ledTex=ledScreenTex(ctex,window.SEAT_IRK);
   [[-10.7,-1],[10.7,1]].forEach(p=>{const lw=3.1*M,ld=2.23*M,lh=4.17*M,grp=new THREE.Group();
     const body=new THREE.Mesh(new THREE.BoxGeometry(ld,lh,lw),new THREE.MeshStandardMaterial({color:0x08090c,roughness:.6}));body.position.y=lh/2;grp.add(body);
     var scr=new THREE.Mesh(new THREE.PlaneGeometry(2.897*M,2.248*M),new THREE.MeshBasicMaterial({map:ledTex}));scr.rotation.y=Math.PI/2;scr.position.set(ld/2+.03,2.944*M,0);grp.add(scr);   // LED 화면: 래핑 시안의 흰 영역에 맞춤
