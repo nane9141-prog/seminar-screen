@@ -53,10 +53,22 @@ body.mv #st{display:block}
 .ph .w{margin-top:16px;font-size:34px}
 .ph .w small{font-size:28px}
 .ph .big{margin-top:10px;font-size:130px}
+/* 11/27 기본 구성: Live Demo Briefing · 행사명 · IR KUDOS 로고 · 점 구체(아티팩트)만, 배경 Data Stream 없음. 장면별 칸은 시나리오 확정 전까지 숨김(?scene=1로 보기) */
+.stage{background:#000}
+body:not(.scene) .ph{display:none}
+body:not(.scene) .fsw{top:700px}
+body:not(.scene) .fsw iframe{top:-250px}
+body.wide .stage{width:1920px;height:1080px}
+body.wide .id{top:110px}
+body.wide .id .en{font-size:38px}
+body.wide .id h1{margin-top:36px;font-size:84px}
+body.wide .id .lg{height:76px;margin-top:48px}
+body.wide .fsw{top:640px}
+body.wide .fsw iframe{width:1300px;height:1300px;margin-left:-650px;top:-230px}
+body.wide .ph{top:640px}
 </style></head>
 <body>
 <div class="stage" id="stage">
- <iframe id="ds" src="assets/ds-bg.html?w=1600&amp;h=1200&amp;ox=.5&amp;bright=.7&amp;size=1&amp;scale=1" tabindex="-1" title="" aria-hidden="true"></iframe>
  <div class="fsw"><iframe id="fs" src="assets/four-states.html" tabindex="-1" title="" aria-hidden="true"></iframe></div>
  <div class="id"><p class="en">Live Demo Briefing</p><h1>전자주주총회<br>플랫폼<br>시연 설명회</h1><img class="lg" src="assets/irk-white.svg" alt="IR KUDOS"></div>
  <div class="ph" id="ph"></div>
@@ -67,7 +79,11 @@ body.mv #st{display:block}
 <script>
 (()=>{
 const stage=document.getElementById('stage'),$=id=>document.getElementById(id);
-function fit(){const s=Math.min(innerWidth/1600,innerHeight/1200);stage.style.transform=`translate(${(innerWidth-1600*s)/2}px,${(innerHeight-1200*s)/2}px) scale(${s})`;}
+/* 11/27 ?a=16x9 → 빔프로젝터(16:9, 1920×1080 기준) · 기본 LED 4:3(1600×1200). ?fit=fill → 비율 무시하고 화면 꽉(장비가 늘리는 경우 대비) */
+const QP=new URLSearchParams(location.search),WIDE=QP.get('a')==='16x9',W=WIDE?1920:1600,H=WIDE?1080:1200,FILL=QP.get('fit')==='fill';
+if(WIDE){document.body.classList.add('wide');document.title='빔프로젝터 (16:9) — 메인 스크린 연동';}
+if(QP.get('scene')==='1')document.body.classList.add('scene');
+function fit(){if(FILL){stage.style.transform=`scale(${innerWidth/W},${innerHeight/H})`;return;}const s=Math.min(innerWidth/W,innerHeight/H);stage.style.transform=`translate(${(innerWidth-W*s)/2}px,${(innerHeight-H*s)/2}px) scale(${s})`;}
 addEventListener('resize',fit);fit();
 const fsf=$('fs');fsf.addEventListener('load',()=>{try{fsf.contentWindow.postMessage('play','*');}catch(e){}});
 /* 장면별 아래 칸 (메인 화면 번호 → 칸) */
