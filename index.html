@@ -163,7 +163,7 @@ body.idle{cursor:none}
 .slide[data-lay=en]{align-items:center;text-align:center;gap:0}
 .en{font:400 141px/1.2 "Pretendard Variable",sans-serif;letter-spacing:.02em}
 .ensub{margin-top:120px;font:300 63.5px/1 "Pretendard Variable",sans-serif;letter-spacing:.01em}
-/* M7-4 Google Meet 세션: 가운데 16:9 창(2480×1395) + 좌우 정보 */
+/* M7-5 Google Meet 세션: 가운데 16:9 창(2480×1395) + 좌우 정보 */
 .zm{position:absolute;inset:0}
 .zm-c{position:absolute;left:860px;top:102px;width:2480px;height:1395px;border-radius:28px;background:#05080d;overflow:hidden;box-shadow:0 0 0 3px rgba(0,129,204,.35),0 0 120px rgba(0,173,169,.12)}
 .zm-v{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#000;display:none}.zm-c.on .zm-v{display:block}.zm-c.on .zm-ph{display:none}
@@ -181,7 +181,7 @@ body.idle{cursor:none}
 .zm-ph2 img{width:100%;height:100%;object-fit:cover;object-position:50% 12%}
 .zm-n{margin:30px 0 0;font:500 66px/1.1 "Pretendard Variable",sans-serif;color:#fff;letter-spacing:.01em}
 .zm-ro{margin:26px 0 0;font-size:52px;line-height:1.35;font-weight:400;color:#A9B4C4}
-/* 발표자료(M5-3 · M5-5 · M7-6): M7-4 틀 + 왼쪽 아래 연사, 오른쪽 세미나명 · 날짜, 가운데는 Data Stream */
+/* 발표자료(M5-3 · M5-5 · M7-7): M7-5 틀 + 왼쪽 아래 연사, 오른쪽 세미나명 · 날짜, 가운데는 Data Stream */
 /* 발표자료 화면 (slide layout.svg 11/22 · 595.28pt → 4200px, ×7.0555) */
 .pp .zm-c{left:675px;top:0;width:2850px;height:1600px;border-radius:0;box-shadow:none}
 .pp-l{position:absolute;left:92px;width:540px;top:0;bottom:0}
@@ -435,7 +435,7 @@ body.idle{cursor:none}
 .bk-nt{margin:0;font:800 99.1px/1 "KakaoBig",sans-serif;letter-spacing:0;white-space:nowrap}
 .bk-nw{margin:37px 0 0;font:700 77.6px/1 "KakaoSmall",sans-serif;letter-spacing:0;white-space:nowrap}
 
-/* M7-3 Proxymity 소개: 연사 소개와 같은 왼쪽 기준선(604px) · 오른쪽 숫자 2×2 */
+/* M7-4 Proxymity 소개: 연사 소개와 같은 왼쪽 기준선(604px) · 오른쪽 숫자 2×2 */
 .px{position:absolute;inset:0}
 .px-l{position:absolute;left:604px;top:0;bottom:0;width:2000px;display:flex;flex-direction:column;justify-content:center}
 .px-e{margin:0;font:300 63.5px/1 "Pretendard Variable",sans-serif;color:#a183bb;letter-spacing:0}
@@ -454,7 +454,7 @@ body.idle{cursor:none}
 .px-r small{display:block;font-size:32px;color:#6E7C90}
 .px-src{grid-column:1/3;margin:40px 0 0 56px;font:300 30px/1 "Pretendard Variable",sans-serif;color:#5E6B7E}
 
-/* M7-3 앞단계 카피 애니메이션(참고: text animation 영상 — 타이핑 · 단어 등장 · 줄 쌓기 · 글자 펼침, 배경 패턴 없음) → Proxymity 로고에서 멈춤 (11/23 About Proxymity 장표 삭제) */
+/* M7-4 앞단계 카피 애니메이션(참고: text animation 영상 — 타이핑 · 단어 등장 · 줄 쌓기 · 글자 펼침, 배경 패턴 없음) → Proxymity 로고에서 멈춤 (11/23 About Proxymity 장표 삭제) */
 .pa{position:absolute;inset:0;pointer-events:none;z-index:2}
 .pa>div{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;opacity:0;filter:blur(18px);transition:opacity .5s ease,filter .5s ease}
 .slide[data-pp=a] .pa-a,.slide[data-pp=b] .pa-b,.slide[data-pp=c] .pa-c,.slide[data-pp=m] .pa-m,.slide[data-pp=n] .pa-m,.slide[data-pp=j] .pa-m,.slide[data-pp=d] .pa-d{opacity:1;filter:none}
@@ -492,7 +492,7 @@ body.idle{cursor:none}
 @keyframes paU{from{opacity:0;transform:scaleX(0)}to{opacity:1;transform:none}}
 .pa-sb{margin:70px 0 0;font:400 64px/1 "Pretendard Variable",sans-serif;color:#A9B4C4;opacity:0}
 .slide[data-pp=d] .pa-sb{animation:fu .9s 1.1s cubic-bezier(.2,.7,.2,1) both}
-/* M7-4 세션 3 발표자료(세션3. IR Kudos Presentation .pdf 23장) — 슬라이드 창에 기본 표시, → ← 로 넘김. V · C(Meet 화면 공유 · 캡처보드)가 들어오면 그 위로 덮음, X 해제 시 다시 자료 */
+/* M7-5 세션 3 발표자료(세션3. IR Kudos Presentation .pdf 23장) — 슬라이드 창에 기본 표시, → ← 로 넘김. V · C(Meet 화면 공유 · 캡처보드)가 들어오면 그 위로 덮음, X 해제 시 다시 자료 */
 .pdk{position:absolute;inset:0;background:#000}
 .pdk img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;opacity:0;transition:opacity .35s ease}
 .pdk img.on{opacity:1}
@@ -500,7 +500,7 @@ body.idle{cursor:none}
 .zm-c.on .pdk,.zm-c.on .pdk-n{visibility:hidden}
 .pdk-n{position:absolute;right:28px;top:22px;margin:0;padding:8px 18px;border-radius:12px;background:rgba(0,0,0,.45);font:500 26px/1 "Pretendard Variable",sans-serif;color:rgba(255,255,255,.55);letter-spacing:.04em;opacity:0;transition:opacity .3s}
 .pdk-n.show{opacity:1}
-/* M7-4 (11/23 21:14): Meet 화면을 PIP 두 개로 — 왼쪽 큰 창 발표 슬라이드(16:9), 오른쪽 작은 창 연사 얼굴. 연결 전엔 연사 사진 */
+/* M7-5 (11/23 21:14): Meet 화면을 PIP 두 개로 — 왼쪽 큰 창 발표 슬라이드(16:9), 오른쪽 작은 창 연사 얼굴. 연결 전엔 연사 사진 */
 .pipl .zm-c.pip-s{left:700px;top:150px;width:2400px;height:1350px;border-radius:32px;box-shadow:0 0 0 3px rgba(0,129,204,.4),0 40px 120px rgba(0,0,0,.5)}
 .pipl .zm-c.pip-f{left:3160px;top:150px;width:950px;height:760px;border-radius:32px;box-shadow:0 0 0 3px rgba(0,173,169,.45),0 40px 120px rgba(0,0,0,.5)}
 .pipl .pip-f .zm-v{object-fit:cover}
@@ -515,19 +515,19 @@ body.idle{cursor:none}
 .pipl .pip-ev .pp-en{margin:0}
 .pipl .pip-ev .pp-ev{margin:22px 0 0}
 .pipl .pip-ev .pp-lg{position:static;height:72px;width:auto;align-self:flex-start;margin-top:48px}
-/* M7-4 (11/23 21:19): 슬라이드 창은 위아래 꽉(16:9 2844×1600, 다른 발표자료 화면과 같은 위치) · 테두리 없음, 연사 얼굴 창은 오른쪽 열 안 */
+/* M7-5 (11/23 21:19): 슬라이드 창은 위아래 꽉(16:9 2844×1600, 다른 발표자료 화면과 같은 위치) · 테두리 없음, 연사 얼굴 창은 오른쪽 열 안 */
 .pipl .zm-c.pip-s{left:678px;top:0;width:2844px;height:1600px;border-radius:0;box-shadow:none}
 .pipl .zm-c.pip-f{left:3560px;top:150px;width:600px;height:750px}
 .pipl .pip-f .pip-tag{font-size:30px;left:22px;bottom:22px;padding:10px 18px}
 .pipl .pip-ev{left:3560px;width:600px;top:960px;height:540px}
 .pipl .pip-ev .pp-ev{font-size:56px;line-height:1.25}
-/* M7-4 (11/23 21:20): 왼쪽 아래 = 세미나 정보, 오른쪽 연사 얼굴 아래 = LIVE · 연사 이름 · 소속 (자리 맞바꿈) */
+/* M7-5 (11/23 21:20): 왼쪽 아래 = 세미나 정보, 오른쪽 연사 얼굴 아래 = LIVE · 연사 이름 · 소속 (자리 맞바꿈) */
 .pipl .pp-l .pip-ev{left:0;width:540px;top:auto;bottom:100px;height:auto}
 .pipl .pip-sp{position:absolute;left:3560px;width:600px;top:960px;height:540px;display:flex;flex-direction:column;justify-content:flex-end}
 .pipl .pip-sp .pp-live{position:static}
 .pipl .pip-sp .pp-who{position:static;margin-top:48px}
-.pipl .pp-l .pip-ev .pp-ev{font-size:46px;line-height:1.28}  /* M7-4 왼쪽 아래 세미나명 56 → 46px */
-.pipl .zm-c.pip-f{box-shadow:0 0 0 3px rgba(255,255,255,.85),0 40px 120px rgba(0,0,0,.5)}.pipl .pip-sp{top:970px;height:auto;justify-content:flex-start}  /* M7-4 얼굴 창 흰 테두리, 연사 정보는 얼굴 창 바로 아래 */
+.pipl .pp-l .pip-ev .pp-ev{font-size:46px;line-height:1.28}  /* M7-5 왼쪽 아래 세미나명 56 → 46px */
+.pipl .zm-c.pip-f{box-shadow:0 0 0 3px rgba(255,255,255,.85),0 40px 120px rgba(0,0,0,.5)}.pipl .pip-sp{top:970px;height:auto;justify-content:flex-start}  /* M7-5 얼굴 창 흰 테두리, 연사 정보는 얼굴 창 바로 아래 */
 /* 11/25 M10-2 레이아웃 점검: 왼쪽 Q · 질문 구분 칩을 질문 본문 영역의 세로 가운데에 맞춤(아래 정보 줄 높이만큼 위로) */
 .qa2-l{justify-content:center;padding-top:0;padding-bottom:170px}.qa2-lab{margin-top:70px}
 /* 11/26 M10-13: Q 옆 세로선 · 질문 글을 왼쪽으로(왼쪽 칸 560 → 500 · 간격 120 → 40 · 선 뒤 여백 100 → 70, 선이 약 140px · 글이 약 170px 왼쪽으로), 아래 질문 세션 · 답변 연사 위 가로선 삭제(글 왼쪽 끝을 질문 글에 맞춤) */
@@ -663,7 +663,7 @@ body.idle{cursor:none}
 .m4lab span{margin-top:6px;font-size:56px;font-weight:500;color:#F2F5FA}
 .m4lab i{font-style:normal;font-size:46px;color:#8D99AB}
 
-/* 11/27 사회자 대본 최종본 반영: 휴식 화면 질문 QR, M7-2 통역 안내 */
+/* 11/27 사회자 대본 최종본 반영: 휴식 화면 질문 QR, M7-3 통역 안내 */
 .bk-qr{position:absolute;left:3540px;top:404px;width:380px;display:flex;flex-direction:column;align-items:center;text-align:center}.bk-qt,.bk-qs{white-space:nowrap}
 .bk-qi{width:380px;height:380px;padding:28px;border-radius:28px;background:#fff;box-sizing:border-box}
 .bk-qi img{display:block;width:100%;height:100%}
@@ -809,15 +809,15 @@ body.idle{cursor:none}
 <p class="eyebrow en-eb fu" style="--i:0">Part 2.</p>
 <h1 class="title-m" data-words style="--i:1">전자주주총회 및<br>의결권 행사의 미래</h1>
 </section>
-<section class="slide" id="m7_1b" data-no="M7-1b" data-title="M7-1b Session 3 통역 안내" data-bg="B" data-foot="full" data-lay="center">
+<section class="slide" id="m7_2" data-no="M7-2" data-title="M7-2 Session 3 통역 안내" data-bg="B" data-foot="full" data-lay="center">
 <p class="eyebrow fu" style="--i:0">Session 3 · 통역 안내</p>
 <h1 class="title-m" data-words style="--i:1">세션 3은 동시통역으로 진행됩니다.</h1>
 <p class="lead fu" style="--i:2">좌석에 놓인 리시버로 한국어 통역을 들으실 수 있습니다.<br>세션이 끝난 후 리시버는 그대로 자리에 두시면 됩니다.</p>
 </section>
-<section class="slide" id="m7_2" data-no="M7-2" data-title="M7-2 Session 3 연사 소개 · Scott Oakland" data-bg="B" data-foot="full" data-spk="speaker-scott">
+<section class="slide" id="m7_3" data-no="M7-3" data-title="M7-3 Session 3 연사 소개 · Scott Oakland" data-bg="B" data-foot="full" data-spk="speaker-scott">
 <div class="cg sp"><p class="cg-e fu" style="--i:0">Session 3.</p><div class="cg-b"><h2 class="sp-t" data-words style="--i:1">Proxymity, 글로벌 의결권 행사<br>인프라의 혁신과 미래</h2><p class="sp-n fu" style="--i:2">Scott Oakland</p><p class="sp-r fu" style="--i:3">Proxymity, Head of APAC</p></div></div>
 </section>
-<section class="slide" id="m7_3" data-no="M7-3" data-title="M7-3 Session 3 · Proxymity 소개 (카피 애니메이션 약 15초, 투자사 로고(2초 정지) → Proxymity 로고에서 멈춤)" data-bg="B" data-foot="full" data-pa="1">
+<section class="slide" id="m7_4" data-no="M7-4" data-title="M7-4 Session 3 · Proxymity 소개 (카피 애니메이션 약 15초, 투자사 로고(2초 정지) → Proxymity 로고에서 멈춤)" data-bg="B" data-foot="full" data-pa="1">
 <div class="pa" aria-hidden="true">
 <div class="pa-a"><p class="pa-ty"><span class="pa-t1"></span><br><span class="pa-t2"></span><i class="pa-cr"></i></p></div>
 <div class="pa-b"><p class="pa-ws"><span class="w" style="--w:0">발행회사</span> <span class="w dt" style="--w:1">·</span> <span class="w" style="--w:2">중개기관</span> <span class="w dt" style="--w:3">·</span> <span class="w" style="--w:4">투자자를</span></p></div>
@@ -826,7 +826,7 @@ body.idle{cursor:none}
 <div class="pa-d"><p class="pa-nm"><img src="assets/proxymity-logo.png" alt="Proxymity"></p><p class="pa-sb">글로벌 디지털 의결권 플랫폼</p></div>
 </div>
 </section>
-<section class="slide pipl" id="m7_4" data-no="M7-4" data-title="M7-4 Session 3 · Google Meet 화면 (슬라이드 창: 세션3 PDF 23장 → ←, V · C 화면 공유가 덮음)" data-bg="B" data-foot="none" data-zoom="1" data-ox=".5" data-dim=".25" >
+<section class="slide pipl" id="m7_5" data-no="M7-5" data-title="M7-5 Session 3 · Google Meet 화면 (슬라이드 창: 세션3 PDF 23장 → ←, V · C 화면 공유가 덮음)" data-bg="B" data-foot="none" data-zoom="1" data-ox=".5" data-dim=".25" >
 <div class="zm pp">
 <div class="pp-l"><p class="pp-s fu" style="--i:0">Session 3.</p><h2 class="pp-t" data-words style="--i:1">Proxymity,<br>글로벌 의결권<br>행사 인프라의<br>혁신과 미래</h2><div class="pip-ev fu" style="--i:3"><p class="pp-en">Live Demo Briefing</p><p class="pp-ev">전자주주총회 플랫폼<br>시연 설명회</p><img class="pp-lg" src="assets/irk-white.svg" alt="IR KUDOS"></div>
 </div>
@@ -834,10 +834,10 @@ body.idle{cursor:none}
 <div class="pip-sp fu" style="--i:3"><p class="pp-live" ><i></i>LIVE</p><div class="pp-who" ><p class="pp-n">Scott Oakland</p><p class="pp-ro">Proxymity,<br>Head of APAC</p></div></div>
 </div>
 </section>
-<section class="slide" id="m7_5" data-no="M7-5" data-title="M7-5 Session 4 연사 소개 · 박성용" data-bg="B" data-foot="full" data-spk="speaker3-1">
+<section class="slide" id="m7_6" data-no="M7-6" data-title="M7-6 Session 4 연사 소개 · 박성용" data-bg="B" data-foot="full" data-spk="speaker3-1">
 <div class="cg sp"><p class="cg-e fu" style="--i:0">Session 4.</p><div class="cg-b"><h2 class="sp-t" data-words style="--i:1">전자주주총회 도입 · 운영 방안 및<br>통합 솔루션 소개</h2><p class="sp-n ko fu" style="--i:2">박성용</p><p class="sp-r fu" style="--i:3">IR큐더스, 본부장</p></div></div>
 </section>
-<section class="slide" id="m7_6" data-no="M7-6" data-title="M7-6 Session 4 발표 키노트 (session4.html · 21:8 전면)" data-bg="B" data-foot="none" data-kn="1" data-dim=".42" data-tr="blur">
+<section class="slide" id="m7_7" data-no="M7-7" data-title="M7-7 Session 4 발표 키노트 (session4.html · 21:8 전면)" data-bg="B" data-foot="none" data-kn="1" data-dim=".42" data-tr="blur">
 <iframe class="kn" data-src="session4.html?embed=1&v=11271511" tabindex="-1" title="Session 4 키노트" aria-hidden="true"></iframe>
 </section>
 <section class="slide" id="m8_1" data-no="M8-1" data-title="M8-1 휴식 · 재개 타이머" data-bg="B" data-foot="full" data-break="brk2">
@@ -1084,7 +1084,7 @@ function initBG(){if(!window.FS)return;FS.mode(4);FS.resize();if(qp.get('bg'))FS
 let idx=-1,home=0,auto=true,autoT=null,numbuf='',SPD=1,autoT0=0,autoLen=0;
 const toast=(t)=>{const e=document.getElementById('toast');e.textContent=t;e.classList.add('on');clearTimeout(toast.t);toast.t=setTimeout(()=>e.classList.remove('on'),1600);};
 const isMsg=s=>s&&s.dataset.msg==='1';
-// ── 발표 덱 (M7-6 세션 4 키노트 · M5-5 세션 2 자료): iframe.kn 을 화면 안에 넣고 postMessage로 넘김. → ← 는 덱 안에서, 처음/끝이면 앞뒤 화면으로 ──
+// ── 발표 덱 (M7-7 세션 4 키노트 · M5-5 세션 2 자료): iframe.kn 을 화면 안에 넣고 postMessage로 넘김. → ← 는 덱 안에서, 처음/끝이면 앞뒤 화면으로 ──
 const KN={frames:[...document.querySelectorAll('iframe.kn')],pos:'',
   of(s){return s&&s.querySelector('iframe.kn');},
   post(f,m){if(f&&f.contentWindow)f.contentWindow.postMessage(m,'*');},
@@ -1143,7 +1143,7 @@ var SFX={vol:.7,a:{},T:[],off:localStorage.getItem('scr-sfx-off')==='1',
  F:{s3:'sfx-s3-part.mp3',s4:'sfx-s4-reveal.mp3',s5:'sfx-s5-proxymity.mp3',s6:'sfx-s6-chime.mp3',s7:'sfx-s7-close.mp3'},
  MAP:{'M4-1':['s3',400],'M5-1':['s3',400],'M7-1':['s3',400],'M9-1':['s3',400],  /* 파트 첫 장: Blue Bloom이 차오르는 약 1.0초에 붐(11/26 교체 · 파일 0.65초) */
   'M4-4':['s4',300],      /* 출범식: KISM 로고가 뜨는 0.75초 무렵 정점(11/27 교체 · Epidemic Sound 로고 사운드 · 파일 0.45초) */
-  'M7-3':['s5',13900],    /* Proxymity: 로고가 모이는 13.1~14.3초, 14.3초에 타격(파일 0.4초) */
+  'M7-4':['s5',13900],    /* Proxymity: 로고가 모이는 13.1~14.3초, 14.3초에 타격(파일 0.4초) */
   'M6-S1':['s6',550],'M8-S1':['s6',550],  /* 휴식 끝 안내: 제목이 뜨는 0.6초에 첫 음(파일 0.05초) */
   'M11-1':['s7',200]},    /* 폐회: 감사 인사와 함께 스웰이 차올라 약 3.3초에 정점(11/26 교체) */
  el(k){if(!this.a[k]){const x=new Audio('assets/sound/'+this.F[k]+'?v=11271530');x.preload='auto';x._t=null;this.a[k]=x;}return this.a[k];},
@@ -1155,7 +1155,7 @@ var SFX={vol:.7,a:{},T:[],off:localStorage.getItem('scr-sfx-off')==='1',
   this.load(slides[nextMain(n,1)]);},
  toggle(v){this.off=v==null?!this.off:!!v;localStorage.setItem('scr-sfx-off',this.off?'1':'0');if(this.off)this.clear();toast('효과음 '+(this.off?'끔':'켬'));}};
 window.SFX=SFX;
-/* M7-3 앞단계 카피 애니메이션: a 타이핑 → b 단어 등장 → c 줄 쌓기 → m 투자사 11곳 로고(n 정지) → j 가운데로 합쳐짐 → d Proxymity 로고에서 멈춤. → 누르면 소개 장표(i) */
+/* M7-4 앞단계 카피 애니메이션: a 타이핑 → b 단어 등장 → c 줄 쌓기 → m 투자사 11곳 로고(n 정지) → j 가운데로 합쳐짐 → d Proxymity 로고에서 멈춤. → 누르면 소개 장표(i) */
 function PDK(dk,i){const im=dk.children,n=im.length;i=Math.max(0,Math.min(n-1,i));dk.dataset.i=i;[...im].forEach((e,k)=>e.classList.toggle('on',k===i));const c=dk.parentNode.querySelector('.pdk-n');if(c){c.textContent=(i+1)+' / '+n;c.classList.add('show');clearTimeout(c._t);c._t=setTimeout(()=>c.classList.remove('show'),1500);}if(!window.VIEW_MODE&&typeof MC!=='undefined'&&slides[idx]&&slides[idx].contains(dk))MC.pub();}
 function PDKin(prev,s){const dk=s&&s.querySelector('.pdk');if(!dk)return;const back=prev&&slides.indexOf(prev)>slides.indexOf(s);PDK(dk,back?dk.children.length-1:0);}
 function PXA(s,on){if(!s||!s.dataset.pa)return;(s._tp||[]).forEach(clearTimeout);clearInterval(s._ip);s._tp=[];if(!on){s.dataset.pp='';return;}
@@ -1170,7 +1170,7 @@ function PXA(s,on){if(!s||!s.dataset.pa)return;(s._tp||[]).forEach(clearTimeout)
   at(9000,()=>{s.dataset.pp='m';});
   at(11100,()=>{s.dataset.pp='n';});
   at(13100,()=>{const g=s.querySelector('.pa-lg'),cx=g.offsetWidth/2,cy=g.offsetHeight/2;li.forEach(e=>{e.style.setProperty('--dx',(cx-e.offsetLeft-e.offsetWidth/2)+'px');e.style.setProperty('--dy',(cy-e.offsetTop-e.offsetHeight/2)+'px');});s.dataset.pp='j';});
-  at(14300,()=>{s.dataset.pp='d';});}  /* 로고에서 끝. 애니메이션 중 → 는 로고로 건너뜀, 로고에서 → 는 M7-4 */
+  at(14300,()=>{s.dataset.pp='d';});}  /* 로고에서 끝. 애니메이션 중 → 는 로고로 건너뜀, 로고에서 → 는 M7-5 */
 /* four states (발표자료 오른쪽 아래): 들어오면 처음부터 재생, 나가면 멈춤. 처음 들어올 때 불러옴 */
 function FS(a,b){const pa=a&&a.querySelector('iframe.fs');if(pa&&pa.contentWindow)pa.contentWindow.postMessage('pause','*');const f=b&&b.querySelector('iframe.fs');if(!f)return;if(!f.getAttribute('src')){f.onload=()=>{if(slides[idx]===b)f.contentWindow.postMessage('play','*');};f.src=f.dataset.src;}else if(f.contentWindow)f.contentWindow.postMessage('play','*');}
 function go(n){n=Math.max(0,Math.min(slides.length-1,n));if(n===idx)return;const oi=idx;
@@ -1207,17 +1207,17 @@ document.querySelectorAll('[data-words]').forEach(el=>{let w=0;[...el.childNodes
 document.querySelectorAll('[data-stagger]').forEach(el=>[...el.children].forEach((c,i)=>c.style.setProperty('--w',i)));
 
 
-// M7-4 Meet 화면 (PIP 두 개): V · C = 발표 슬라이드 창(화면 캡처 · 캡처보드), Shift+V · Shift+C = 연사 얼굴 창, X = 모두 해제. 다른 발표자료 화면은 V · C · X 그대로
+// M7-5 Meet 화면 (PIP 두 개): V · C = 발표 슬라이드 창(화면 캡처 · 캡처보드), Shift+V · Shift+C = 연사 얼굴 창, X = 모두 해제. 다른 발표자료 화면은 V · C · X 그대로
 async function zoomIn(m,sel){const sl=slides[idx];const stop=b=>{if(b._s){b._s.getTracks().forEach(t=>t.stop());b._s=null;}const v=b.querySelector('video');if(v)v.srcObject=null;b.classList.remove('on');};
   if(m==='x'){sl.querySelectorAll('.zm-c').forEach(stop);toast('화면 입력 해제');return;}
   const box=sl.querySelector(sel||'.zm-c'),v=box&&box.querySelector('video');if(!v)return;stop(box);
   try{const S=m==='v'?await navigator.mediaDevices.getDisplayMedia({video:{frameRate:30},audio:false}):await navigator.mediaDevices.getUserMedia({video:{width:{ideal:1920},height:{ideal:1080},frameRate:{ideal:30}},audio:false});
     box._s=S;v.srcObject=S;await v.play();box.classList.add('on');S.getVideoTracks()[0].addEventListener('ended',()=>{box.classList.remove('on');box._s=null;});toast((sel==='.pip-f'?'연사 화면 ':'')+(m==='v'?'화면 캡처 연결':'캡처보드 연결'));if(sel==='.pip-f'&&typeof MC!=='undefined')MC.pub();}
   catch(err){toast('입력 연결 실패: '+(err.name||err));}}
-/* 11/26 M7-4 오른쪽 연사 얼굴 창을 운영 입력에서 미리 연결: 캡처보드 · 카메라 장치를 골라 연결(화면이 M7-4가 아니어도 미리 붙여 둠), 채우기/전체 보기, 해제.
+/* 11/26 M7-5 오른쪽 연사 얼굴 창을 운영 입력에서 미리 연결: 캡처보드 · 카메라 장치를 골라 연결(화면이 M7-5가 아니어도 미리 붙여 둠), 채우기/전체 보기, 해제.
    마지막에 고른 장치는 저장해 두고 메인을 다시 열면 자동으로 다시 연결. 화면 캡처(Shift+V)는 크롬 정책상 송출 PC에서 직접 */
 var FACE={devs:[],err:'',fit:localStorage.getItem('scr-face-fit')||'cover',
- box(){return document.querySelector('#m7_4 .pip-f');},
+ box(){return document.querySelector('#m7_5 .pip-f');},
  async list(ask){if(window.VIEW_MODE||!navigator.mediaDevices)return;try{
    if(ask){let t=null;try{t=await navigator.mediaDevices.getUserMedia({video:true,audio:false});}catch(e){if(e.name!=='NotFoundError')throw e;t=await navigator.mediaDevices.getUserMedia({audio:true});/* 카메라 없는 송출 PC: 마이크 권한으로 원격 연결용 내부 IP 공개 */}t.getTracks().forEach(x=>x.stop());}
    const d=await navigator.mediaDevices.enumerateDevices();this.devs=d.filter(x=>x.kind==='videoinput').map((x,i)=>({id:x.deviceId,label:x.label||('영상 장치 '+(i+1)+' (이름은 권한 허용 뒤 표시)')}));this.err='';}catch(e){this.err=e.name||String(e);}MC.pub();},

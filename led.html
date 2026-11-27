@@ -94,7 +94,7 @@ function keyOf(no){no=String(no||'').toUpperCase();const m=no.match(/^M(\d+)-(S?
  if(a===4)return b==='1'?'cer':b==='2'?'cong1':b==='3'?'cong2':'kism';
  if(a===5)return b==='1'?'p1':(b==='2'||b==='3')?'s1':'s2';
  if(a===6)return 'brk1';
- if(a===7)return b==='1'?'p2':(b==='5'||b==='6')?'s4':'s3';
+ if(a===7)return b==='1'?'p2':(b==='6'||b==='7')?'s4':'s3';  /* 11/27 번호 정리: M7-2 통역 안내 ~ M7-5 화상 = 세션 3, M7-6 · M7-7 = 세션 4 */
  if(a===8)return 'brk2';if(a===9)return 'demo';if(a===10)return 'qna';if(a===11)return 'close';return 'base';}
 const ORDER=['base','wait','open','cer','cong1','cong2','kism','p1','s1','s2','brk1','p2','s3','s4','brk2','demo','qna','close'];
 let CUR='base',SCH=null,FOLLOW=true,lastRx=0,src='';

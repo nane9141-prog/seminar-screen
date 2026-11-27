@@ -224,7 +224,7 @@ body.list #ov{display:block}
 #ov a:hover{background:#222}#ov a.on{background:#1d3b55;color:#fff}
 #ov a b{width:64px;color:#0081cc;font-weight:600}
 #ov p{color:#888;padding:6px 10px 12px;font-size:12px}
-/* 메인 플레이어 안(M7-6)에 들어갈 때: ?embed=1 — 배경 · 진행 막대 없이 투명, 배경 밝기는 메인에 전달 */
+/* 메인 플레이어 안(M7-7)에 들어갈 때: ?embed=1 — 배경 · 진행 막대 없이 투명, 배경 밝기는 메인에 전달 */
 html.embed,html.embed body,html.embed .stage{background:transparent}html.embed #c,html.embed .prog{display:none}
 #num{position:fixed;left:24px;bottom:24px;z-index:60;font:600 28px "Pretendard Variable";color:#fff;background:rgba(0,0,0,.7);padding:6px 14px;border-radius:8px;display:none}
 
@@ -1234,7 +1234,7 @@ html,body,body *{touch-action:none;-webkit-touch-callout:none;-webkit-user-selec
 #K02 .bc.ph .u3 b{font-size:38px}#K02 .bc.ph .u3 span{margin-top:8px}
 @keyframes k2uf{from{translate:0 0}to{translate:0 -16px}}
 #K02 .bc.ph::after{background:linear-gradient(180deg,rgba(6,10,18,0) 50%,rgba(6,10,18,.9) 100%)}
-/* 11/26 10:50 M7-6 수정: K22 집계 · 보존 제목도 사전 · 당일처럼 흰색, K17 + 두 줄((포함) · (별도)) */
+/* 11/26 10:50 M7-7 수정: K22 집계 · 보존 제목도 사전 · 당일처럼 흰색, K17 + 두 줄((포함) · (별도)) */
 #K22 .q2 .ph b{color:#F2F5FA}
 #K17 .plus{display:flex;flex-direction:column;align-items:center;gap:22px;top:1200px}
 #K17 .plus p{margin:0}
@@ -1642,7 +1642,7 @@ body.grid #sg{display:flex}
 #sgb{position:fixed;right:22px;bottom:22px;z-index:65;width:46px;height:46px;border-radius:12px;border:0;background:rgba(30,34,42,.85);cursor:pointer;display:flex;align-items:center;justify-content:center;opacity:.0;transition:opacity .3s}
 #sgb svg{width:22px;height:22px;fill:#cfd5de}
 body:not(.idle) #sgb{opacity:.9}body.grid #sgb{opacity:0;pointer-events:none}
-html.embed #sgb,html.embed #sg{display:none!important}  /* 11/26 메인 스크린 안(M7-6)에서는 썸네일 보기 버튼 · 격자 숨김 */
+html.embed #sgb,html.embed #sg{display:none!important}  /* 11/26 메인 스크린 안(M7-7)에서는 썸네일 보기 버튼 · 격자 숨김 */
 /* 11/26 19:25 간지 · 장 제목 한 줄 글씨는 모두 흰색(그라데이션 없음): 표지 2027 · IR큐더스, K15 「소집통지 · 리허설까지」, K21 「A to Z」 */
 .sec-h .g,.h .g,.h .ac,#K15 .h .ac,#K21 .k21t em{background:none!important;-webkit-background-clip:border-box!important;background-clip:border-box!important;color:#F2F5FA!important;-webkit-text-fill-color:#F2F5FA!important}
 /* 11/26 19:30 K02: 카드 영역 오른쪽 · 아래로 넓힘(1250~3980 · 170~1420). 중계 · 관리기관 크롭 다시(위쪽 부드러운 페더), 장애 대응 인물 오른쪽, 사전신청제 · 난이도 도식을 아래로(글과 간격), 전자출석 카드: 위 오른쪽 1장 · 아래 2장 나란히 */
