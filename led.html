@@ -37,14 +37,29 @@ body.black #black{opacity:1}
 body.mv #st{display:block}
 #st i{display:inline-block;width:10px;height:10px;border-radius:50%;background:#e5484d;margin-right:8px;vertical-align:1px}#st.ok i{background:#30a46c}
 @media (prefers-reduced-motion:reduce){.ph.on,.ph.out{animation:none}}
+/* 11/27 세션 발표자료(M5-3 등) 오른쪽 면 레이아웃 — 가운데 정렬 Live Demo Briefing · 행사명 3줄 · IR KUDOS 로고 · 아래 점 구체(four-states) */
+#ds{opacity:.35}
+.id{left:0;right:0;top:120px;display:flex;flex-direction:column;align-items:center;text-align:center}
+.id .en{font:300 42px/1 "Pretendard Variable";letter-spacing:.01em;color:#fff}
+.id h1{margin-top:40px;font:700 92px/1.24 "Pretendard Variable";letter-spacing:-.02em}
+.id .lg{position:static;height:84px;margin-top:56px;opacity:1}
+.fsw{position:absolute;left:0;right:0;top:960px;bottom:0;overflow:hidden;pointer-events:none}
+.fsw iframe{position:absolute;left:50%;top:-120px;width:1500px;height:1500px;margin-left:-750px;border:0;mix-blend-mode:screen;background:#000;pointer-events:none}
+.fsw iframe{top:-230px}
+.ph{left:0;right:0;top:750px;height:auto;padding-top:0;border-top:0;text-align:center}
+.ph::before{display:none}
+.ph .k{font-size:34px}
+.ph .t{margin-top:20px;font-size:54px}
+.ph .w{margin-top:16px;font-size:34px}
+.ph .w small{font-size:28px}
+.ph .big{margin-top:10px;font-size:130px}
 </style></head>
 <body>
 <div class="stage" id="stage">
  <iframe id="ds" src="assets/ds-bg.html?w=1600&amp;h=1200&amp;ox=.5&amp;bright=.7&amp;size=1&amp;scale=1" tabindex="-1" title="" aria-hidden="true"></iframe>
- <div class="glow"></div>
- <div class="id"><p class="en">LIVE DEMO BRIEFING</p><h1>전자주주총회<br>플랫폼 시연 설명회</h1><p class="meta">2026. 11. 30 (월) · 페어몬트 앰배서더 서울 B1 그랜드볼룸</p></div>
+ <div class="fsw"><iframe id="fs" src="assets/four-states.html" tabindex="-1" title="" aria-hidden="true"></iframe></div>
+ <div class="id"><p class="en">Live Demo Briefing</p><h1>전자주주총회<br>플랫폼<br>시연 설명회</h1><img class="lg" src="assets/irk-white.svg" alt="IR KUDOS"></div>
  <div class="ph" id="ph"></div>
- <img class="lg" src="assets/irk-white.svg" alt="IR KUDOS">
 </div>
 <div id="black"></div><div id="st"><i></i><span>신호 대기</span></div>
 <script src="assets/supabase.min.js"></script>
@@ -54,6 +69,7 @@ body.mv #st{display:block}
 const stage=document.getElementById('stage'),$=id=>document.getElementById(id);
 function fit(){const s=Math.min(innerWidth/1600,innerHeight/1200);stage.style.transform=`translate(${(innerWidth-1600*s)/2}px,${(innerHeight-1200*s)/2}px) scale(${s})`;}
 addEventListener('resize',fit);fit();
+const fsf=$('fs');fsf.addEventListener('load',()=>{try{fsf.contentWindow.postMessage('play','*');}catch(e){}});
 /* 장면별 아래 칸 (메인 화면 번호 → 칸) */
 const SP={
  cong1:{k:'축사',t:'김광록',w:'한국기업법학회 회장 · 충북대 법학전문대학원 교수'},
