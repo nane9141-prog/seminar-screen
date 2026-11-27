@@ -76,6 +76,17 @@ function ledScreenTex(mk,logoSrc){   /* 보조 스크린(LED) 기본 화면: IR 
   tex=mk(W,H,function(g){draw(g);});
   if(logoSrc){var m=new Image();m.onload=function(){im=m;draw(tex.image.getContext('2d'));tex.needsUpdate=true;};m.src=logoSrc;}
   return tex;}
+function beamScreenTex(mk,logoSrc){   /* 빔프로젝터(16:9) 기본 화면: 왼쪽 Live Demo Briefing · 행사명 두 줄 · IR KUDOS 로고, 오른쪽 점 구체 (led.html?a=16x9) */
+  var W=1280,H=720,im=null,tex;
+  function draw(g){var k=W/1920,i,n=1100,cx=1340*k,cy=540*k,r=430*k;g.fillStyle='#03050a';g.fillRect(0,0,W,H);
+    for(i=0;i<n;i++){var y=1-2*(i+.5)/n,rr=Math.sqrt(1-y*y),a=i*2.399963,x=Math.cos(a)*rr,z=Math.sin(a)*rr,t=.5,y2=y*Math.cos(t)-z*Math.sin(t),z2=y*Math.sin(t)+z*Math.cos(t),d=(z2+1)/2,c=(x+1)/2;
+      g.fillStyle='rgba(0,'+Math.round(129+44*c)+','+Math.round(204-35*c)+','+(.15+.8*d).toFixed(2)+')';g.beginPath();g.arc(cx+x*r,cy-y2*r,1+2*d,0,6.2832);g.fill();}
+    var x0=180*k,y0=H/2-150*k;g.textAlign='left';g.textBaseline='middle';g.fillStyle='#3d9be0';g.font='500 '+Math.round(30*k)+'px '+FONTLED;g.fillText('Live Demo Briefing',x0,y0);
+    g.fillStyle='#fff';g.font='700 '+Math.round(74*k)+'px '+FONTLED;g.fillText('전자주주총회 플랫폼',x0,y0+78*k);g.fillText('시연 설명회',x0,y0+170*k);
+    var lh=68*k;if(im){var lw2=lh*im.width/im.height;if(!(lw2>0))lw2=lh*1014.29/283.46;g.drawImage(im,x0,y0+250*k,lw2,lh);}}
+  tex=mk(W,H,function(g){draw(g);});
+  if(logoSrc){var m=new Image();m.onload=function(){im=m;draw(tex.image.getContext('2d'));tex.needsUpdate=true;};m.src=logoSrc;}
+  return tex;}
 function ctex(w,h,draw){const c=document.createElement('canvas');c.width=w;c.height=h;draw(c.getContext('2d'),w,h);const t=new THREE.CanvasTexture(c);t.anisotropy=8;return t;}
 const FONT='"Pretendard Variable","Noto Sans KR",sans-serif';
 function sprite(text,x,y,z,color,scale){
@@ -135,10 +146,14 @@ function build(){
     var scr=new THREE.Mesh(new THREE.PlaneGeometry(2.897*M,2.248*M),new THREE.MeshBasicMaterial({map:ledTex}));scr.rotation.y=Math.PI/2;scr.position.set(ld/2+.03,2.944*M,0);grp.add(scr);   // LED 화면: 래핑 시안의 흰 영역에 맞춤
     (function(g2){var sk=window.SEAT_LED_SKIN;if(!sk||!sk.length)return;[[sk[0],ld,0,lh/2,lw/2+.015,0],[sk[1],lw,ld/2+.015,lh/2,0,Math.PI/2],[sk[2],ld,0,lh/2,-lw/2-.015,Math.PI]].forEach(function(d){var im=new Image();im.onload=function(){var tx=new THREE.Texture(im);tx.anisotropy=8;tx.needsUpdate=true;var m=new THREE.Mesh(new THREE.PlaneGeometry(d[1],lh),new THREE.MeshBasicMaterial({map:tx}));m.rotation.y=d[5];m.position.set(d[2],d[3],d[4]);g2.add(m);};im.src=d[0];});})(grp);   // 래핑(LED.jpg): 좌측면 · 앞면 · 우측면
     grp.position.set(-25.1,0,p[0]);grp.rotation.y=p[1]*Math.PI*25/180;scene.add(grp);});
-  /* 벽면 현수막: 1장 750×4200mm. 01~03 = 스크린을 바라볼 때 좌측 벽(C·D열 옆), 04·05 = 우측 벽(I·J열 옆). 벽을 마주 보고 왼쪽부터 번호순 */
+  /* 우측 벽 빔프로젝터 스크린 2곳(16:9, 화면 4000×2250mm 가정): 그랜드볼룸 2 · 3 구역 끝 쪽. 현수막 04·05는 2구역 스크린 왼쪽(무대 쪽)으로 옮김 */
+  (function(){var sw=4*M,sh=sw*9/16,sy=1.55*M+sh/2,tx=beamScreenTex(ctex,window.SEAT_IRK);[5.8,24.5].forEach(function(x){
+    var fr=new THREE.Mesh(new THREE.BoxGeometry(sw+.24,sh+.24,.08),new THREE.MeshStandardMaterial({color:0x0b0c10,roughness:.8}));fr.position.set(x,sy,-13.44);scene.add(fr);
+    var m=new THREE.Mesh(new THREE.PlaneGeometry(sw,sh),new THREE.MeshBasicMaterial({map:tx}));m.position.set(x,sy,-13.38);scene.add(m);});})();
+  /* 벽면 현수막: 1장 750×4200mm. 01~03 = 스크린을 바라볼 때 좌측 벽(C·D열 옆), 04·05 = 우측 벽(빔 스크린 왼쪽). 벽을 마주 보고 왼쪽부터 번호순 */
   (function(){var B=window.SEAT_BANNERS;if(!B||!B.length)return;
     var bw=.75*M,bh=4.2*M,gap=.05*M,by=.8*M+bh/2,pitch=bw+gap,cL=(ROW_X0+2*ROW_DX+ROW_X0+3*ROW_DX)/2,cR=(ROW_X0+8*ROW_DX+ROW_X0+9*ROW_DX)/2;
-    var P=[[cL+pitch,1],[cL,1],[cL-pitch,1],[cR-pitch/2,-1],[cR+pitch/2,-1]];   // [x, 벽(1=좌측 +z, -1=우측 -z)]
+    var bR=5.8-2*M-.45-bw/2;var P=[[cL+pitch,1],[cL,1],[cL-pitch,1],[bR-pitch,-1],[bR,-1]];   // [x, 벽(1=좌측 +z, -1=우측 -z)]
     var back=new THREE.Mesh(new THREE.BoxGeometry(pitch*3+.3,bh+.3,.08),new THREE.MeshStandardMaterial({color:0x14161f,roughness:.9}));back.position.set(cL,by,13.46);scene.add(back);
     P.forEach(function(p,i){if(!B[i])return;var im=new Image();im.onload=function(){var tx=new THREE.Texture(im);tx.anisotropy=8;tx.needsUpdate=true;
       var m=new THREE.Mesh(new THREE.PlaneGeometry(bw,bh),new THREE.MeshBasicMaterial({map:tx}));m.position.set(p[0],by,p[1]*13.4);if(p[1]>0)m.rotation.y=Math.PI;scene.add(m);};im.src=B[i];});
